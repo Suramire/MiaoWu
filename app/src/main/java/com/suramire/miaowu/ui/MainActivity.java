@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.widget.Toast;
+
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.util.CommonUtil;
+
 import java.util.HashMap;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -22,8 +24,6 @@ import static com.suramire.miaowu.R.id.editText;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
     @Bind(editText)
     TextInputEditText mEditText;
     @Bind(R.id.tl_url)

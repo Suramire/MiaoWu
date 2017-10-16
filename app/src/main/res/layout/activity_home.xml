@@ -22,9 +22,8 @@
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
                 app:layout_scrollFlags="scroll|enterAlways"/>
+
         </android.support.design.widget.AppBarLayout>
-
-
 
 
         <android.support.v4.widget.SwipeRefreshLayout
@@ -50,6 +49,7 @@
             app:layout_behavior=".util.BottomNavigationViewBehavior"
             android:background="@color/background"
             app:menu="@menu/bottom"/>
+
 
     </android.support.design.widget.CoordinatorLayout>
 
