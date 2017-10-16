@@ -19,20 +19,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:elevation="2dp"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
                 app:layout_scrollFlags="scroll|enterAlways"/>
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/relist_home"
+
+
+
+        <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/background"
-            android:scrollbars="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            />
+            >
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/relist_home"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background"
+                android:scrollbars="vertical"
+                />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottomnavigationview"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            app:layout_behavior=".util.BottomNavigationViewBehavior"
+            android:background="@color/background"
+            app:menu="@menu/bottom"/>
+
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
@@ -40,6 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer"/>
