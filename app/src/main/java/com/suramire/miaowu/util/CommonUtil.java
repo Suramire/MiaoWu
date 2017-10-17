@@ -1,8 +1,12 @@
 package com.suramire.miaowu.util;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.design.widget.TextInputLayout;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
 import com.suramire.miaowu.base.App;
@@ -15,6 +19,7 @@ import java.io.IOException;
  */
 
 public class CommonUtil {
+    private static Context mContext = App.getApp();
 
     /**
      * 设置输入框的错误提示
@@ -37,10 +42,30 @@ public class CommonUtil {
     public static Bitmap getBitmap(String fileName){
         Bitmap bitmap = null;
         try {
-            bitmap = BitmapFactory.decodeStream(App.getApp().getAssets().open(fileName));
+            bitmap = BitmapFactory.decodeStream(mContext.getAssets().open(fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return bitmap;
     }
+
+    /**
+     * 控制控件显示与隐藏
+     * @param view 目标控件
+     * @param views 目标控件的数组集合
+     */
+    public static void switchVisiable(ViewGroup view, ViewGroup[] views){
+        for (int i = 0; i < views.length; i++) {
+            ViewGroup tView = views[i];
+            if(tView.getVisibility()!=View.GONE){
+                tView.setVisibility(View.GONE);
+                tView.setAnimation(AnimationUtils.makeOutAnimation(mContext, true));
+            }
+            if(view.getVisibility()!=View.VISIBLE){
+                view.setVisibility(View.VISIBLE);
+                view.setAnimation(AnimationUtils.makeInAnimation(mContext, true));
+            }
+        }
+    }
+
 }

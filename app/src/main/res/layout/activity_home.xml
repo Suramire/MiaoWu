@@ -47,7 +47,7 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="bottom"
             app:layout_behavior=".util.BottomNavigationViewBehavior"
-            android:background="@color/background"
+            android:background="@color/white"
             app:menu="@menu/bottom"/>
 
 
@@ -58,9 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer"/>
 
 </android.support.v4.widget.DrawerLayout>

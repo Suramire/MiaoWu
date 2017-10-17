@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+
 /**
  * 自定义的圆形ImageView，可以直接当组件在布局中使用。
  * @author caizhiming
@@ -55,7 +56,6 @@ public class MyImageView extends ImageView{
             final Rect rectDest = new Rect(0,0,getWidth(),getHeight());
             paint.reset();
             canvas.drawBitmap(b, rectSrc, rectDest, paint);
-
         } else {
             super.onDraw(canvas);
         }

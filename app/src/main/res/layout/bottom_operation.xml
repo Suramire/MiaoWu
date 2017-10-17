@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/ll_bottom"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_gravity="bottom"
@@ -16,9 +17,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@drawable/shape_comment"
-        android:drawableLeft="@drawable/ic_border_color_black_24dp"
-        android:enabled="false"
+        android:drawableLeft="@drawable/ic_create_black_24dp"
         android:ems="10"
+        android:focusable="false"
         android:hint="写下你的评论……"
         android:inputType="textPersonName"
         android:padding="4dp"
@@ -29,14 +30,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:srcCompat="@drawable/ic_chat_bubble_outline_black_24dp"/>
+        android:src="@drawable/ic_chat_bubble_outline_black_24dp"/>
 
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:srcCompat="@drawable/ic_favorite_border_black_24dp"/>
+        android:src="@drawable/ic_favorite_border_black_24dp"/>
 
     <ImageView
         android:id="@+id/imageView6"

@@ -5,11 +5,9 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_sentcount"
-            android:icon="@drawable/ic_comment_black_24dp"
             android:title="发帖数："/>
         <item
             android:id="@+id/nav_replycount"
-            android:icon="@drawable/ic_thumb_up_black_24dp"
             android:title="回帖数："/>
         <item
             android:id="@+id/nav_history"
