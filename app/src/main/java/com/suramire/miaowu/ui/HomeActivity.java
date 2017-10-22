@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -43,6 +44,16 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
 
     @Override
+    protected String getTitleString() {
+        return "首页";
+    }
+
+    @Override
+    protected boolean getDisplayHomeAsUpEnabled() {
+        return false;
+    }
+
+    @Override
     public int bindLayout() {
         return R.layout.activity_home;
     }
@@ -54,7 +65,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         inflateHeaderView.findViewById(R.id.textView_profile_username).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(RegisterActivity.class);
+                startActivity(LoginActivity.class);
             }
         });
         mNavView.setNavigationItemSelectedListener(this);
@@ -82,10 +93,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
-    @Override
-    public void doBusiness(Context mContext) {
 
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -93,5 +101,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             startActivity(MainActivity.class);
         }
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuItem search = menu.add(0, 100, 0, "Search");
+        search.setIcon(R.drawable.ic_search_black_24dp);
+        search.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return super.onCreateOptionsMenu(menu);
     }
 }

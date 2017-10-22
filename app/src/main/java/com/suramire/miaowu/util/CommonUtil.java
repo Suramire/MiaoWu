@@ -68,4 +68,18 @@ public class CommonUtil {
         }
     }
 
+    /**
+     * 切换view的可见性
+     * @param view
+     */
+    public static void toggleVisiable(View view){
+        int visibility = view.getVisibility();
+        if(visibility ==View.GONE ||visibility == View.INVISIBLE){
+            view.setVisibility(View.VISIBLE);
+        }else {
+            view.setVisibility(View.GONE);
+        }
+    }
+
+
 }

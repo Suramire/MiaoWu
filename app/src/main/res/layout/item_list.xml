@@ -29,7 +29,7 @@
             android:orientation="horizontal"
             android:padding="8dp">
 
-            <com.suramire.miaowu.view.MyImageView
+            <com.suramire.miaowu.weight.MyImageView
                 android:id="@+id/imageView2"
                 android:layout_width="36dp"
                 android:layout_height="36dp"

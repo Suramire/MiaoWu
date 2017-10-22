@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:padding="4dp">
 
     <TextView
         android:id="@+id/textView18"
@@ -10,7 +11,16 @@
         android:layout_height="wrap_content"
         android:maxLines="5"
         android:text="TextView"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/black"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:text="回复"
+        android:textAlignment="textEnd"/>
 
     <View
         android:layout_width="match_parent"

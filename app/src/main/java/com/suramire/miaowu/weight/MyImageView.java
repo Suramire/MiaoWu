@@ -1,4 +1,4 @@
-package com.suramire.miaowu.view;
+package com.suramire.miaowu.weight;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

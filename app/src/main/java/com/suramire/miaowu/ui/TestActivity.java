@@ -1,8 +1,5 @@
 package com.suramire.miaowu.ui;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -10,48 +7,57 @@ import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.App;
+import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.test.model.ReceiveItem;
+import com.suramire.miaowu.util.CommonUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static android.view.View.GONE;
 
 /**
  * Created by Suramire on 2017/10/17.
  */
 
-public class TestActivity extends AppCompatActivity {
+public class TestActivity extends BaseActivity {
     @Bind(R.id.list_receive_test)
     RecyclerView mListReceiveTest;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.ll_bottom)
-    LinearLayout mLlBottom;
-    @Bind(R.id.edittext_comment)
-    EditText mEdittextComment;
-    @Bind(R.id.ll_popup)
-    LinearLayout mLlPopup;
+    @Bind(R.id.ll_reply)
+    LinearLayout mLlReply;
+    @Bind(R.id.imageView11)
+    ImageView mImageView11;
+    @Bind(R.id.rl_replydetail)
+    RelativeLayout mRlReplydetail;
+
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_receive_test);
-        ButterKnife.bind(this);
+    protected String getTitleString() {
+        return "评论详情";
+    }
+
+    @Override
+    public int bindLayout() {
+        return R.layout.activity_reply_test;
+    }
+
+    @Override
+    public void initView(View view) {
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("评论详情");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mListReceiveTest.setLayoutManager(new LinearLayoutManager(this));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         ArrayList<ReceiveItem> receiveItems = new ArrayList<>();
@@ -78,31 +84,53 @@ public class TestActivity extends AppCompatActivity {
                 }
             }
         }
-        mListReceiveTest.setAdapter(new CommonRecyclerAdapter<Spanned>(App.getApp(), R.layout.item_receive_test, receives) {
+        mListReceiveTest.setAdapter(new CommonRecyclerAdapter<Spanned>(App.getApp(), R.layout.item_reply_test, receives) {
             @Override
             public void onUpdate(BaseAdapterHelper helper, Spanned item, int position) {
                 helper.setText(R.id.textView18, item);
             }
         });
 
+
     }
 
-    @OnClick(R.id.editText3)
-    public void onViewClicked() {
-        if (mLlBottom.getVisibility() != GONE) {
-            mLlBottom.setVisibility(GONE);
-        }
-        mLlPopup.setVisibility(View.VISIBLE);
-    }
+
+//
+//    @OnClick(R.id.editText3)
+//    public void onViewClicked() {
+////        if (mLlBottom.getVisibility() != GONE) {
+////            mLlBottom.setVisibility(GONE);
+////        }
+////        mLlPopup.setVisibility(View.VISIBLE);
+//    }
 
     @Override
     public void onBackPressed() {
-        if (mLlPopup.getVisibility() == View.VISIBLE) {
-            mLlPopup.setVisibility(GONE);
-            mLlBottom.setVisibility(View.VISIBLE);
-        } else {
-            super.onBackPressed();
-        }
-
+//        if (mLlPopup.getVisibility() == View.VISIBLE) {
+//            mLlPopup.setVisibility(GONE);
+//            mLlBottom.setVisibility(View.VISIBLE);
+//        } else {
+//            super.onBackPressed();
+//        }
     }
+
+
+    @OnClick({R.id.imageView11, R.id.btn_reply})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.imageView11:
+                CommonUtil.toggleVisiable(mRlReplydetail);
+//                mLlReply.setVisibility(View.VISIBLE);
+                break;
+            case R.id.btn_reply:
+                Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        mGestureDetector.onTouchEvent(event);
+//        return true;
+//    }
 }

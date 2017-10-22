@@ -1,11 +1,12 @@
 package com.suramire.miaowu.base;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -22,6 +23,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     private View mContextView = null;
+    private boolean mDisplayHomeAsUpEnabled = true;
+
 
     public View getContextView() {
         return mContextView;
@@ -35,9 +38,25 @@ public abstract class BaseActivity extends AppCompatActivity {
             setContentView(mContextView);
             ButterKnife.bind(this);
             initView(mContextView);
+            setActionBarTitle();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void setActionBarTitle() {
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar !=null){
+            actionBar.setTitle(getTitleString());
+            actionBar.setDisplayHomeAsUpEnabled(getDisplayHomeAsUpEnabled());
+
+        }
+    }
+
+    protected abstract String getTitleString();
+
+    protected boolean getDisplayHomeAsUpEnabled(){
+        return mDisplayHomeAsUpEnabled;
     }
 
     @Override
@@ -56,6 +75,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() ==android.R.id.home){
+            finish();
+        }
+        return true;
     }
 
     /**
@@ -86,12 +113,5 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param view
      */
     public abstract void initView(View view);
-
-    /**
-     * [业务操作]
-     *
-     * @param mContext
-     */
-    public abstract void doBusiness(Context mContext);
 
 }

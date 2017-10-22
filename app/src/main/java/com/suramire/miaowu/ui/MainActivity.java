@@ -1,6 +1,5 @@
 package com.suramire.miaowu.ui;
 
-import android.content.Context;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
@@ -31,6 +30,11 @@ public class MainActivity extends BaseActivity {
 
 
     @Override
+    protected String getTitleString() {
+        return "测试";
+    }
+
+    @Override
     public int bindLayout() {
         return R.layout.activity_main;
     }
@@ -40,10 +44,7 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    @Override
-    public void doBusiness(Context mContext) {
 
-    }
 
     @OnClick(R.id.button)
     public void onViewClicked() {

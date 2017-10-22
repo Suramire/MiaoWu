@@ -2,51 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/ll_bottom"
+              android:id="@+id/ll_reply"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_gravity="bottom"
               android:background="@drawable/shape_comment"
               android:gravity="center_vertical"
               android:orientation="horizontal"
-              android:padding="8dp">
+              android:padding="4dp">
 
     <EditText
         android:id="@+id/editText3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_weight="1"
         android:background="@drawable/shape_comment"
-        android:drawableLeft="@drawable/ic_create_black_24dp"
         android:ems="10"
         android:focusable="false"
-        android:hint="写下你的评论……"
+        android:hint="留下你的回复……"
         android:inputType="textPersonName"
         android:padding="4dp"
         android:textSize="16sp"/>
 
     <ImageView
-        android:id="@+id/btn_comment"
+        android:id="@+id/imageView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/selector_normal"
-        android:src="@drawable/ic_chat_bubble_outline_black_24dp"/>
+        android:layout_marginLeft="4dp"
+        app:srcCompat="@drawable/ic_insert_emoticon_black_24dp"/>
 
-    <ImageView
-        android:id="@+id/btn_like"
+    <Button
+        android:id="@+id/btn_reply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/selector_normal"
-        android:src="@drawable/ic_favorite_border_black_24dp"/>
-
-    <ImageView
-        android:id="@+id/btn_share"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/selector_normal"
-        android:src="@drawable/ic_share_black_24dp"/>
+        android:layout_marginRight="8dp"
+        android:text="回复"/>
 
 </LinearLayout>

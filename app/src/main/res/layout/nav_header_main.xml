@@ -9,7 +9,7 @@
               android:padding="32dp"
               android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <com.suramire.miaowu.view.MyImageView
+    <com.suramire.miaowu.weight.MyImageView
         android:id="@+id/imageView"
         android:layout_width="64dp"
         android:layout_height="64dp"
@@ -24,7 +24,8 @@
         android:layout_below="@+id/imageView"
         android:layout_gravity="center"
         android:layout_marginLeft="32dp"
-        android:text="Android Studio"
+        android:text="登录/注册"
+        android:background="@drawable/selector_normal"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/black"/>
 

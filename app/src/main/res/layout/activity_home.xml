@@ -6,52 +6,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.design.widget.AppBarLayout
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_home"
+            <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme"
-                app:layout_scrollFlags="scroll|enterAlways"/>
+                android:layout_height="wrap_content">
 
-        </android.support.design.widget.AppBarLayout>
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:minHeight="?attr/actionBarSize"
+                    android:theme="?attr/actionBarTheme"
+                    app:layout_scrollFlags="scroll|enterAlways"/>
+
+            </android.support.design.widget.AppBarLayout>
 
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            >
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/relist_home"
+            <android.support.v4.widget.SwipeRefreshLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background"
-                android:scrollbars="vertical"
-                />
-        </android.support.v4.widget.SwipeRefreshLayout>
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                >
 
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/bottomnavigationview"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_gravity="bottom"
-            app:layout_behavior=".util.BottomNavigationViewBehavior"
-            android:background="@color/white"
-            app:menu="@menu/bottom"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/relist_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/background"
+                    android:scrollbars="vertical"
+                    />
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+            <android.support.design.widget.BottomNavigationView
+                android:id="@+id/bottomnavigationview"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="bottom"
+                android:background="@color/white"
+                android:theme="@style/AppTheme.Black"
+                app:layout_behavior=".util.BottomNavigationViewBehavior"
+                app:menu="@menu/bottom"/>
 
 
-    </android.support.design.widget.CoordinatorLayout>
+        </android.support.design.widget.CoordinatorLayout>
+            />
+
+
+
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
@@ -60,6 +65,8 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:menu="@menu/activity_main_drawer"/>
+
+
 
 </android.support.v4.widget.DrawerLayout>
 
