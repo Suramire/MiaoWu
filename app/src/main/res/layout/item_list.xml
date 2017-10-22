@@ -29,12 +29,13 @@
             android:orientation="horizontal"
             android:padding="8dp">
 
-            <com.suramire.miaowu.weight.MyImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/imageView2"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/header"
+                app:riv_oval="true"
                 />
 
             <TextView

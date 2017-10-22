@@ -1,6 +1,7 @@
 package com.suramire.miaowu.presenter;
 
 import android.os.Handler;
+import android.text.TextUtils;
 
 import com.suramire.miaowu.listener.OnLoginListener;
 import com.suramire.miaowu.model.ILoginModel;
@@ -22,38 +23,45 @@ public class LoginPresenter {
         mHandler = new Handler();
     }
 
-    public void login(){
+    public void login(String name,String password){
         mILoginView.showLoading();
-        mLoginModel.doLogin(mILoginView.getUserName(), mILoginView.getPassword(), new OnLoginListener() {
+        String sName = name;
+        String sPassword = password;
+        //若传入用户名密码则从页面上的输入框获取
+        if(TextUtils.isEmpty(sName) && TextUtils.isEmpty(sPassword)){
+            sName = mILoginView.getUserName();
+            sPassword = mILoginView.getPassword();
+        }
+        mLoginModel.doLogin(sName, sPassword, new OnLoginListener() {
             @Override
-            public void onSuccess() {
+            public void onSuccess(final String resultString) {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         mILoginView.cancelLoading();
-                        mILoginView.onSuccess();
+                        mILoginView.onSuccess(resultString);
                     }
                 });
             }
 
             @Override
-            public void onFailure() {
+            public void onFailure(final String failureMessage) {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         mILoginView.cancelLoading();
-                        mILoginView.onFailure();
+                        mILoginView.onFailure(failureMessage);
                     }
                 });
             }
 
             @Override
-            public void onError() {
+            public void onError(final String errorMessage) {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         mILoginView.cancelLoading();
-                        mILoginView.onFailure();
+                        mILoginView.onError(errorMessage);
                     }
                 });
             }

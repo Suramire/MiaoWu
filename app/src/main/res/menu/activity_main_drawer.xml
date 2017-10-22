@@ -2,31 +2,33 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group>
         <item
             android:id="@+id/nav_sentcount"
-            android:title="发帖数："/>
+            android:title="我的关注"/>
         <item
             android:id="@+id/nav_replycount"
-            android:title="回帖数："/>
+            android:title="我的收藏"/>
         <item
             android:id="@+id/nav_history"
-            android:title="历史记录"/>
+            android:title="我的帖子"/>
+
     </group>
 
-    <item android:title="高级选项">
-        <menu>
-            <item
-                android:id="@+id/nav_systemsetting"
-                android:title="系统设置"/>
-        </menu>
-    </item>
+    <group>
+        <item
+            android:id="@+id/nav_systemsetting"
+            android:title="草稿箱"/>
+        <item
+            android:id="@+id/nav_signout"
+            android:title="夜间模式"/>
+        <item
+            android:id="@+id/nav_quit"
+            android:title="设置"/>
 
-    <item
-        android:id="@+id/nav_signout"
-        android:title="注销登录"/>
-    <item
-        android:id="@+id/nav_quit"
-        android:title="退出系统"/>
+    </group>
+
+
+
 
 </menu>

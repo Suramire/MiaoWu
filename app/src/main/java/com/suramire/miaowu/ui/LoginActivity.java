@@ -10,7 +10,10 @@ import android.widget.Toast;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.pojo.User;
 import com.suramire.miaowu.presenter.LoginPresenter;
+import com.suramire.miaowu.util.GsonUtil;
+import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.view.ILoginView;
 
 import butterknife.Bind;
@@ -35,6 +38,25 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     LinearLayout mLlLogin;
     private ProgressDialog mProgressDialog;
     private LoginPresenter mLoginPresenter;
+
+    public String getNameString() {
+        return mNameString;
+    }
+
+    public void setNameString(String nameString) {
+        mNameString = nameString;
+    }
+
+    private String mNameString;
+    private String mPasswordString;
+
+    public String getPasswordString() {
+        return mPasswordString;
+    }
+
+    public void setPasswordString(String passwordString) {
+        mPasswordString = passwordString;
+    }
 
     @Override
     protected String getTitleString() {
@@ -62,7 +84,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
             case R.id.edt_password:
                 break;
             case R.id.btn_login:
-                mLoginPresenter.login();
+                mLoginPresenter.login(null,null);
                 break;
             case R.id.tv_reg:
                 startActivity(RegisterActivity.class);
@@ -84,21 +106,35 @@ public class LoginActivity extends BaseActivity implements ILoginView {
 
     @Override
     public String getUserName() {
-        return mEdtName.getText().toString().trim();
+        setNameString(mEdtName.getText().toString().trim());
+        return getNameString();
     }
 
     @Override
     public String getPassword() {
-        return mEdtPassword.getText().toString().trim();
+        setPasswordString(mEdtPassword.getText().toString().trim());
+        return getPasswordString();
     }
 
     @Override
-    public void onSuccess() {
+    public void onSuccess(String resultString) {
         Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+        User user = (User) GsonUtil.jsonToObject(resultString, User.class);
+        //保存用户登录信息
+        SPUtils.put("uid", user.getId());
+        SPUtils.put("nickname", user.getNickname());
+        SPUtils.put("password", user.getPassword());
+        SPUtils.put("autologin",1);
     }
 
     @Override
-    public void onFailure() {
-        Toast.makeText(this, "登录失败", Toast.LENGTH_SHORT).show();
+    public void onFailure(String failureMessage) {
+        Toast.makeText(this, "登录失败:"+failureMessage, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onError(String errorMessage) {
+        Toast.makeText(this, "出现错误:"+errorMessage, Toast.LENGTH_SHORT).show();
     }
 }

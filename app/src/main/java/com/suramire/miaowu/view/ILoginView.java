@@ -18,8 +18,10 @@ public interface ILoginView {
 
     String getPassword();
 
-    void onSuccess();
+    void onSuccess(String resultString);
 
-    void onFailure();
+    void onFailure(String fialureMessage);
+
+    void onError(String errorMessage);
 
 }

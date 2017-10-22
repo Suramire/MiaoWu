@@ -64,4 +64,6 @@ dependencies {
     //JSON
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.squareup.okhttp3:okhttp:3.3.0'
+    //圆形头像
+    compile 'com.makeramen:roundedimageview:2.2.1'
 }

@@ -81,5 +81,11 @@ public class CommonUtil {
         }
     }
 
+    public static boolean isLogined(){
+        if((int)SPUtils.get("uid",0)!=0 && (int)SPUtils.get("autologin",0)==1){
+            return true;
+        }
+        return false;
+    }
 
 }

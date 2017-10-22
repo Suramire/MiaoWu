@@ -18,12 +18,12 @@ import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
-import static com.suramire.miaowu.R.id.editText;
+import static com.suramire.miaowu.R.id.editTextPhoneNumber;
 
 
 public class MainActivity extends BaseActivity {
 
-    @Bind(editText)
+    @Bind(editTextPhoneNumber)
     TextInputEditText mEditText;
     @Bind(R.id.tl_url)
     TextInputLayout mTlUrl;

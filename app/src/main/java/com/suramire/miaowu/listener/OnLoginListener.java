@@ -5,9 +5,9 @@ package com.suramire.miaowu.listener;
  */
 
 public interface OnLoginListener {
-    void onSuccess();
+    void onSuccess(String resultJson);
 
-    void onFailure();
+    void onFailure(String FailureMessage);
 
-    void onError();
+    void onError(String errorMessage);
 }
