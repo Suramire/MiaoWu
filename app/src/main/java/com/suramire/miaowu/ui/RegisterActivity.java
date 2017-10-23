@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.App;
 import com.suramire.miaowu.base.BaseActivity;
-import com.suramire.miaowu.listener.OnEventCodeListener;
+import com.suramire.miaowu.listener.OnValidationListener;
 import com.suramire.miaowu.presenter.RegisterPresenter;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
@@ -72,7 +70,6 @@ public class RegisterActivity extends BaseActivity implements IRegisterView{
     // 2=进入密码设置界面
     private int step;
     private ViewGroup[] mViews;
-    private String mPhoneNumber;
     private ProgressDialog mProgressDialog;
     private RegisterPresenter mRegisterPresenter;
     private EventHandler mEventHandler;
@@ -88,109 +85,50 @@ public class RegisterActivity extends BaseActivity implements IRegisterView{
         setSupportActionBar(mToolbarRegister);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mViews = new ViewGroup[]{mLlPhone, mLlValidation, mLlNamed};
-//        mProgressDialog = new ProgressDialog(this);
-//        mProgressDialog.setMessage("请稍候……");
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("请稍候……");
         mRegisterPresenter = new RegisterPresenter(this);
-        regEventHandler(new OnEventCodeListener() {
-            @Override
-            public void onEventCode(int code) {
-                if (code == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                    // 成功发送短信
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            CommonUtil.switchVisiable(mLlValidation,mViews);
-                            mEditTextValidation.requestFocus();
-                            step = 1;
-                        }
-                    });
-                    L.e("成功发送验证码");
-
-                }
-                else if(code == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //验证成功 进入密码设置界面
-                            CommonUtil.switchVisiable(mLlNamed,mViews);
-                            mEditTextName.requestFocus();
-                            step = 2;
-                        }
-                    });
-
-
-                }
-            }
-
-            @Override
-            public void onEventError(final String errorMessage) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(App.getApp(), "错误："+errorMessage, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            }
-        });
-
-
-    }
-
-    private void regEventHandler(final OnEventCodeListener onEventCodeListener) {
         mEventHandler = new EventHandler() {
             public void afterEvent(int event, int result, Object data) {
                 if (data instanceof Throwable) {
-                    Throwable throwable = (Throwable)data;
+                    Throwable throwable = (Throwable) data;
                     final String msg = throwable.getMessage();
-                    L.e("error:" + msg);
-                    onEventCodeListener.onEventError(msg);
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Toast.makeText(App.getApp(), "错误："+msg, Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            onRegisterError(msg);
+                        }
+                    });
                     // {"status":468,"detail":"需要校验的验证码错误"}
                     // 短信上限 {"status":477,"detail":"当前手机号发送短信的数量超过限额"}
 
-                    //验证码错误
                 } else {
-                    onEventCodeListener.onEventCode(event);
-                    L.e("event:" + event);
-//                    if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-//                        // 成功发送短信
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                CommonUtil.switchVisiable(mLlValidation,mViews);
-//                                mEditTextValidation.requestFocus();
-//                                step = 1;
-//                            }
-//                        });
-//                        L.e("成功发送验证码");
-//
-//                    }
-//                    else if(event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE){
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                //验证成功 进入密码设置界面
-//                                CommonUtil.switchVisiable(mLlNamed,mViews);
-//                                mEditTextName.requestFocus();
-//                                step = 2;
-//                            }
-//                        });
-//
-//
-//                    }
+                    if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                        // 成功发送短信
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                goStep1();
+                            }
+                        });
+                        L.e("成功发送验证码");
+
+                    }
+                    else if(event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //验证成功 进入密码设置界面
+                                goStep2();
+                            }
+                        });
+                        L.e("成功验证验证码");
+                    }
                 }
             }
         };
-
-        // 注册监听器
         SMSSDK.registerEventHandler(mEventHandler);
+
     }
 
 
@@ -198,46 +136,73 @@ public class RegisterActivity extends BaseActivity implements IRegisterView{
             R.id.editText_name, R.id.editText_pwd, R.id.editText_repwd, R.id.btn_register_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+// step0
+            case R.id.btn_register_next:{
+                mRegisterPresenter.validatePhoneNumber(new OnValidationListener() {
+                    @Override
+                    public void onSuccess() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                SMSSDK.getVerificationCode("86", getPhoneNumber());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(final String failtureMessage) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                onRegisterFailure(failtureMessage);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(final String errorMessage) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                onRegisterError(errorMessage);
+                            }
+                        });
+                    }
+                });
+
+            }break;
+//step1
+
+            case R.id.btn_register_next_validation: {
+                String validationNumber = mEditTextValidation.getText().toString().trim();
+                SMSSDK.submitVerificationCode("86",getPhoneNumber(),validationNumber);
+            }break;
+
+
+//step2
+            case R.id.btn_register_confirm:{
+                mRegisterPresenter.validateInformation();
+            }break;
+
+            case R.id.editText_name:{
+                mTlValidationName.setErrorEnabled(false);
+            }
+                break;
+            case R.id.editText_pwd:{
+                mTlValidationPwd.setErrorEnabled(false);
+            }
+                break;
+            case R.id.editText_repwd:{
+                mTlValidationRepwd.setErrorEnabled(false);
+            }
+                break;
             case R.id.editTextPhoneNumber: {
                 mTlPhone.setErrorEnabled(false);
             }
             break;
-            case R.id.btn_register_next:{
-//                mRegisterPresenter.validatePhoneNumber();
-            }
-                //手机号验证
-                mPhoneNumber = mEditTextPhone.getText().toString().trim();
-                if (TextUtils.isEmpty(mPhoneNumber)) {
-                    CommonUtil.showError(mTlPhone, "手机号不能为空！");
-                } else {
-                    // TODO: 2017/10/20 手机号码格式判断
-                    // TODO: 2017/10/22 已经注册的手机号不能再用于注册
-                    //这里从数据库读取该手机号是否已经被注册
-                    SMSSDK.getVerificationCode("86", mPhoneNumber);
-
-                }
-                break;
             case R.id.editText_validation: {
                 mTlValidation.setErrorEnabled(false);
-            }
-            break;
-            case R.id.btn_register_next_validation: {
-                //验证码验证
-//                mRegisterPresenter.validateValidationNumber();
-                String validationNumber = mEditTextValidation.getText().toString().trim();
-                SMSSDK.submitVerificationCode("86",mPhoneNumber,validationNumber);
-            }
-            break;
-            case R.id.editText_name:
-                break;
-            case R.id.editText_pwd:
-                break;
-            case R.id.editText_repwd:
-                break;
-            case R.id.btn_register_confirm:
-                // TODO: 2017/10/21 注册信息验证
-                mRegisterPresenter.validateInformation();
-                break;
+            }break;
         }
     }
 

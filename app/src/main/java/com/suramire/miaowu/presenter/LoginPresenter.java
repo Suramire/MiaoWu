@@ -39,7 +39,7 @@ public class LoginPresenter {
                     @Override
                     public void run() {
                         mILoginView.cancelLoading();
-                        mILoginView.onSuccess(resultString);
+                        mILoginView.onLoginSuccess(resultString);
                     }
                 });
             }
@@ -50,7 +50,7 @@ public class LoginPresenter {
                     @Override
                     public void run() {
                         mILoginView.cancelLoading();
-                        mILoginView.onFailure(failureMessage);
+                        mILoginView.onLoginFailure(failureMessage);
                     }
                 });
             }
@@ -61,7 +61,7 @@ public class LoginPresenter {
                     @Override
                     public void run() {
                         mILoginView.cancelLoading();
-                        mILoginView.onError(errorMessage);
+                        mILoginView.onLoginError(errorMessage);
                     }
                 });
             }

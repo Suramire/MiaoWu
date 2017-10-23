@@ -1,9 +1,9 @@
 package com.suramire.miaowu.util;
 
 
+import com.suramire.miaowu.pojo.M;
+
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -55,16 +55,17 @@ public class HTTPUtil {
     /**
      * post表单
      * @param url
-     * @param map
+     * @param
      * @param callback
      * @return
      */
-    public static Call getPost(String url, HashMap<String,String> map, Callback callback){
+    public static Call getPost(String url, Object object, Callback callback){
         OkHttpClient okHttpClient = new OkHttpClient();
         FormBody.Builder formBuilder = new FormBody.Builder();
-        for (Entry<String,String> entry: map.entrySet()) {
-            formBuilder.add(entry.getKey(),entry.getValue());
-        }
+        String userJson = GsonUtil.objectToJson(object);
+        M m = new M(M.CODE_SUCCESS,userJson);
+        String messageString = GsonUtil.objectToJson(m);
+        formBuilder.add("jsonString",messageString);
         FormBody formBody = formBuilder.build();
         Request build = new Request.Builder().post(formBody).url(url).build();
         Call call = okHttpClient.newCall(build);

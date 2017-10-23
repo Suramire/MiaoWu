@@ -16,7 +16,7 @@ public class App extends MobApplication {
         mApp = this;
     }
 
-    public static App getApp() {
+    public static App getContext() {
         return mApp;
     }
 }

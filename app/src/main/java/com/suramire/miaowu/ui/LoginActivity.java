@@ -117,7 +117,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     }
 
     @Override
-    public void onSuccess(String resultString) {
+    public void onLoginSuccess(String resultString) {
         Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
         User user = (User) GsonUtil.jsonToObject(resultString, User.class);
         //保存用户登录信息
@@ -125,16 +125,17 @@ public class LoginActivity extends BaseActivity implements ILoginView {
         SPUtils.put("nickname", user.getNickname());
         SPUtils.put("password", user.getPassword());
         SPUtils.put("autologin",1);
+        finish();
     }
 
     @Override
-    public void onFailure(String failureMessage) {
+    public void onLoginFailure(String failureMessage) {
         Toast.makeText(this, "登录失败:"+failureMessage, Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
-    public void onError(String errorMessage) {
-        Toast.makeText(this, "出现错误:"+errorMessage, Toast.LENGTH_SHORT).show();
+    public void onLoginError(String errorMessage) {
+        Toast.makeText(this, "登录出现错误:"+errorMessage, Toast.LENGTH_SHORT).show();
     }
 }

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import com.suramire.miaowu.base.App;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 /**
  * Created by Suramire on 2017/10/16.
@@ -19,7 +20,7 @@ import java.io.IOException;
  */
 
 public class CommonUtil {
-    private static Context mContext = App.getApp();
+    private static Context mContext = App.getContext();
 
     /**
      * 设置输入框的错误提示
@@ -86,6 +87,15 @@ public class CommonUtil {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 判断字符串是否为手机号码格式
+     * @param mobiles
+     * @return
+     */
+    public static boolean isMobileNumber(String mobiles) {
+        return Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[^1^4,\\D]))\\d{8}").matcher(mobiles).matches();
     }
 
 }

@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity {
 
                 @Override
                 public void onError(Platform platform, int i, Throwable throwable) {
-                    Toast.makeText(MainActivity.this, "onError", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "onLoginError", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override

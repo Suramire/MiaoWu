@@ -9,13 +9,14 @@ import android.view.View;
 
 /**
  * Created by Suramire on 2017/10/16.
+ * 自定义行为 作用于首页
+ * 使底部导航跟随Toolbar显示隐藏
  */
 
 public class BottomNavigationViewBehavior extends CoordinatorLayout.Behavior<View> {
     public BottomNavigationViewBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
 
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {

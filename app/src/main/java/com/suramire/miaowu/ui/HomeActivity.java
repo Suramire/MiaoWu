@@ -1,20 +1,24 @@
 package com.suramire.miaowu.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
@@ -40,7 +44,7 @@ import butterknife.Bind;
  */
 
 public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, ILoginView {
-    Context mContext = App.getApp();
+    Context mContext = this;
     @Bind(R.id.toolbar_home)
     Toolbar mToolbarHome;
     @Bind(R.id.relist_home)
@@ -54,6 +58,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private LoginPresenter mLoginPresenter;
     private ImageView mImageView;
     private TextView mTextView;
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
 
 
     @Override
@@ -80,16 +85,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!CommonUtil.isLogined()){
-                    startActivity(LoginActivity.class);
-                }
-
+                startActivity(LoginActivity.class);
             }
         });
         mImageView = inflateHeaderView.findViewById(R.id.imageView);
         mNavView.setNavigationItemSelectedListener(this);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerlayout, mToolbarHome, R.string.open, R.string.close);
-        actionBarDrawerToggle.syncState();
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerlayout, mToolbarHome, R.string.open, R.string.close);
+        mActionBarDrawerToggle.syncState();
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             list.add("test");
@@ -100,7 +102,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
             @Override
             public void onUpdate(BaseAdapterHelper helper, Object item, int position) {
-                Picasso.with(App.getApp()).load(images[position]).into((ImageView) helper.getView(R.id.imageView3));
+                Picasso.with(App.getContext()).load(images[position]).into((ImageView) helper.getView(R.id.imageView3));
                 helper.setOnClickListener(R.id.cardview_item, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -110,6 +112,14 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
+
+    }
+
+    private void doLoginout() {
+        onLoginSuccess(null);
+    }
+
+    private void doLogin() {
         //进入程序时 尝试自动登录
         if ((int) SPUtils.get("uid", 0) != 0 && (int) SPUtils.get("autologin", 0) == 1) {
             //之前登录过 自动登录
@@ -117,9 +127,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             String password = (String) SPUtils.get("password", "");
             mLoginPresenter.login(nickname, password);
         }
-
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        doLogin();
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -159,31 +173,85 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public void onSuccess(String resultString) {
-        L.e("登录成功");
-        // TODO: 2017/10/22 这里进行信息更新操作
-        User user = (User) GsonUtil.jsonToObject(resultString, User.class);
-        String icon = user.getIcon();
-        //头像设置
-        if(!TextUtils.isEmpty(icon)){
-            L.e(Constant.BASEURL + "upload/" + icon);
-            Picasso.with(this).load(Constant.BASEURL + "upload/" + icon).into(mImageView);
+    public void onLoginSuccess(String resultString) {
+        if(TextUtils.isEmpty(resultString)){
+            //注销情况下
+            SPUtils.clear();
+            mDrawerlayout.closeDrawer(Gravity.START);
+            mTextView.setText("登录或注册");
+            mTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(LoginActivity.class);
+                }
+            });
+            Picasso.with(this).load(R.drawable.default_port2).into(mImageView);
+            Toast.makeText(mContext, "注销成功", Toast.LENGTH_SHORT).show();
         }else{
-            //默认头像
+            L.e("登录成功");
+            User user = (User) GsonUtil.jsonToObject(resultString, User.class);
+            String icon = user.getIcon();
+            //头像设置
+            if(!TextUtils.isEmpty(icon)){
+                //异步加载头像
+                Picasso.with(this).load(Constant.BASEURL + "upload/" + icon).into(mImageView);
+            }else{
+                //默认头像
+            }
+            //文本标签设置
+            mTextView.setText(user.getNickname());
+            mTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        builder.setTitle("提示")
+                                .setMessage("是否注销登录")
+                                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        doLoginout();
+                                    }
+                                })
+                                .setNegativeButton("取消",null)
+                                .setCancelable(true)
+                                .show();
+                    }
+            });
         }
 
-        //文本标签设置
-        mTextView.setText(user.getNickname());
 
+
+        mTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!CommonUtil.isLogined()){
+                    startActivity(LoginActivity.class);
+                }else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle("提示")
+                            .setMessage("是否注销登录")
+                            .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    doLoginout();
+                                }
+                            })
+                            .setNegativeButton("取消",null)
+                            .setCancelable(true)
+                            .show();
+                }
+
+            }
+        });
     }
 
     @Override
-    public void onFailure(String fialureMessage) {
+    public void onLoginFailure(String fialureMessage) {
         L.e("登录失败");
     }
 
     @Override
-    public void onError(String errorMessage) {
+    public void onLoginError(String errorMessage) {
         L.e("登录出错");
     }
 

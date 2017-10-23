@@ -84,7 +84,7 @@ public class TestActivity extends BaseActivity {
                 }
             }
         }
-        mListReceiveTest.setAdapter(new CommonRecyclerAdapter<Spanned>(App.getApp(), R.layout.item_reply_test, receives) {
+        mListReceiveTest.setAdapter(new CommonRecyclerAdapter<Spanned>(App.getContext(), R.layout.item_reply_test, receives) {
             @Override
             public void onUpdate(BaseAdapterHelper helper, Spanned item, int position) {
                 helper.setText(R.id.textView18, item);

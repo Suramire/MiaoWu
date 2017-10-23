@@ -29,7 +29,7 @@ public class SPUtils
     public static void put( String key, Object object)
     {
 
-        SharedPreferences sp = App.getApp().getSharedPreferences(FILE_NAME,
+        SharedPreferences sp = App.getContext().getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
@@ -65,7 +65,7 @@ public class SPUtils
      */
     public static Object get( String key, Object defaultObject)
     {
-        SharedPreferences sp =  App.getApp().getSharedPreferences(FILE_NAME,
+        SharedPreferences sp =  App.getContext().getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
 
         if (defaultObject instanceof String)
@@ -90,12 +90,11 @@ public class SPUtils
 
     /**
      * 移除某个key值已经对应的值
-     * @param context
      * @param key
      */
-    public static void remove(Context context, String key)
+    public static void remove( String key)
     {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME,
+        SharedPreferences sp =  App.getContext().getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(key);
@@ -104,11 +103,10 @@ public class SPUtils
 
     /**
      * 清除所有数据
-     * @param context
      */
-    public static void clear(Context context)
+    public static void clear()
     {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME,
+        SharedPreferences sp = App.getContext().getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.clear();

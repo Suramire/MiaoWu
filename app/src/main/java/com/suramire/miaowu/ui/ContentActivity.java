@@ -1,6 +1,5 @@
 package com.suramire.miaowu.ui;
 
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebView;
@@ -13,7 +12,6 @@ import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -58,12 +56,6 @@ public class ContentActivity extends BaseActivity {
 
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
     @Override
     protected String getTitleString() {
