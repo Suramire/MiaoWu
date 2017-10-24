@@ -19,7 +19,7 @@ public class User implements java.io.Serializable {
 
 	// Constructors
 
-	/** default constructor */
+	/** default_icon constructor */
 	public User() {
 	}
 

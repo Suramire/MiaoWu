@@ -64,17 +64,13 @@ public class RegisterModel implements IRegisterModel {
 
     @Override
     public void validateRegisterInformation(String phoneNumber,String userName, String password, final String rePassword, final OnValidationListener onValidationListener) {
-        // TODO: 2017/10/22 信息校验
+        // 信息校验
         //验证成功提交注册信息 并注册
-        if(CommonUtil.isMobileNumber(userName)){
+        if(TextUtils.isEmpty(phoneNumber)|| TextUtils.isEmpty(password)|| TextUtils.isEmpty(rePassword)){
+            onValidationListener.onFailure("请将注册信息填写完整");
+        }else if(CommonUtil.isMobileNumber(userName)){
             onValidationListener.onFailure("不能使用手机号格式的用户名，请重新输入");
-        }else if(TextUtils.isEmpty(userName)){
-            onValidationListener.onFailure("用户名不能为空，请重新输入");
-        }else if(TextUtils.isEmpty(password)){
-            onValidationListener.onFailure("密码不能为空，请重新输入");
-        }if(!rePassword.equals(password)&&!rePassword.isEmpty()){
-            onValidationListener.onFailure("两次输入的密码不一致，请重新输入");
-        }else{
+        }else if(rePassword.equals(password)){
             //转成json传送
             User user = new User(phoneNumber, userName, password);
             HTTPUtil.getPost(Constant.BASEURL + "addUser", user, new Callback() {
@@ -98,8 +94,11 @@ public class RegisterModel implements IRegisterModel {
                     }
                 }
             });
+        }else if(!rePassword.equals(password)){
+            onValidationListener.onFailure("两次输入的密码不一致，请重新输入");
+        }else {
+            onValidationListener.onError("注册出现异常，请检查注册信息");
         }
-
     }
 
 

@@ -18,6 +18,8 @@ public class SPUtils
     /**
      * 保存在手机里面的文件名
      */
+    private static Context mContext = App.getContext();
+    
     public static final String FILE_NAME = "common_data";
 
     /**
@@ -29,7 +31,7 @@ public class SPUtils
     public static void put( String key, Object object)
     {
 
-        SharedPreferences sp = App.getContext().getSharedPreferences(FILE_NAME,
+        SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
@@ -65,7 +67,7 @@ public class SPUtils
      */
     public static Object get( String key, Object defaultObject)
     {
-        SharedPreferences sp =  App.getContext().getSharedPreferences(FILE_NAME,
+        SharedPreferences sp =  mContext.getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
 
         if (defaultObject instanceof String)
@@ -94,7 +96,7 @@ public class SPUtils
      */
     public static void remove( String key)
     {
-        SharedPreferences sp =  App.getContext().getSharedPreferences(FILE_NAME,
+        SharedPreferences sp =  mContext.getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(key);
@@ -106,7 +108,7 @@ public class SPUtils
      */
     public static void clear()
     {
-        SharedPreferences sp = App.getContext().getSharedPreferences(FILE_NAME,
+        SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.clear();

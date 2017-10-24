@@ -25,7 +25,7 @@
             android:id="@+id/imageView10"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:src="@drawable/header"
+            android:src="@drawable/default_icon"
             app:riv_oval="true"/>
 
         <LinearLayout

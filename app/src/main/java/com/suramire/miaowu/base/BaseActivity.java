@@ -1,5 +1,6 @@
 package com.suramire.miaowu.base;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-
+    protected Context mContext = this;
     private View mContextView = null;
     private boolean mDisplayHomeAsUpEnabled = true;
 
@@ -67,7 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /*为Activity切换提供动画效果*/
     public void startActivity(Class<?> cls){
-        startActivity(new Intent(App.getContext(),cls));
+        startActivity(new Intent(mContext,cls));
         overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
     }
     /*为Activity退出提供动画效果*/

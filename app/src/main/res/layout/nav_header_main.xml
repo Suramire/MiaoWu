@@ -3,7 +3,7 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@drawable/bg_profile"
+              android:background="@drawable/bg_home"
               android:gravity="bottom"
               android:orientation="horizontal"
               android:padding="16dp"
@@ -16,7 +16,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="8dp"
-        android:src="@drawable/default_port2"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_icon"
+        app:riv_border_width="2dp"
+        app:riv_border_color="@color/white"
         app:riv_oval="true"/>
 
     <RelativeLayout

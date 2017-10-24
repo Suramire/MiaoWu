@@ -1,13 +1,12 @@
 package com.suramire.miaowu.ui;
 
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -24,12 +23,9 @@ import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.App;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.pojo.User;
 import com.suramire.miaowu.presenter.LoginPresenter;
-import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.Constant;
 import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.SPUtils;
@@ -39,11 +35,14 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 
+import static com.suramire.miaowu.util.Constant.BASEURL;
+
 /**
  * Created by Suramire on 2017/10/16.
  */
 
 public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, ILoginView {
+    private static final int REQUESTCODE = 0x100;
     Context mContext = this;
     @Bind(R.id.toolbar_home)
     Toolbar mToolbarHome;
@@ -59,6 +58,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private ImageView mImageView;
     private TextView mTextView;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
+    private ImageView mImageView7;
 
 
     @Override
@@ -89,20 +89,39 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
         mImageView = inflateHeaderView.findViewById(R.id.imageView);
+        mImageView7 = inflateHeaderView.findViewById(R.id.imageView7);
+        mImageView7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTextView.callOnClick();
+            }
+        });
         mNavView.setNavigationItemSelectedListener(this);
         mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerlayout, mToolbarHome, R.string.open, R.string.close);
         mActionBarDrawerToggle.syncState();
         ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            list.add("test");
-        }
-        final int[] images = new int[]{R.drawable.cat, R.drawable.cat1, R.drawable.cat2, R.drawable.cat3};
+        list.add(BASEURL+"upload/cat.jpg");
+        list.add(BASEURL+"upload/cat1.jpg");
+        list.add(BASEURL+"upload/cat2.jpg");
+        list.add(BASEURL+"upload/cat3.jpg");
+        final String icon = BASEURL+"upload/0000.png";
+
         mRelistHome.setLayoutManager(new LinearLayoutManager(mContext));
-        mRelistHome.setAdapter(new CommonRecyclerAdapter(mContext, R.layout.item_list, list) {
+        mRelistHome.setAdapter(new CommonRecyclerAdapter<String>(mContext, R.layout.item_list, list) {
 
             @Override
-            public void onUpdate(BaseAdapterHelper helper, Object item, int position) {
-                Picasso.with(App.getContext()).load(images[position]).into((ImageView) helper.getView(R.id.imageView3));
+            public void onUpdate(BaseAdapterHelper helper, String item, int position) {
+
+                Picasso.with(mContext)
+                        .load(item)
+                        .placeholder(R.drawable.ic_loading)
+                        .error(R.drawable.ic_loading_error)
+                        .into((ImageView) helper.getView(R.id.imageView3));
+                Picasso.with(mContext)
+                        .load(icon)
+                        .placeholder(R.drawable.default_icon)
+                        .into((ImageView) helper.getView(R.id.imageView2));
+
                 helper.setOnClickListener(R.id.cardview_item, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -126,6 +145,15 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             String nickname = (String) SPUtils.get("nickname", "");
             String password = (String) SPUtils.get("password", "");
             mLoginPresenter.login(nickname, password);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUESTCODE &&resultCode==ProfileActivity.SUCCESS){
+            //在个人中心点击了注销
+            doLoginout();
         }
     }
 
@@ -185,7 +213,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                     startActivity(LoginActivity.class);
                 }
             });
-            Picasso.with(this).load(R.drawable.default_port2).into(mImageView);
+            Picasso.with(this).load(R.drawable.default_icon).into(mImageView);
             Toast.makeText(mContext, "注销成功", Toast.LENGTH_SHORT).show();
         }else{
             L.e("登录成功");
@@ -194,7 +222,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             //头像设置
             if(!TextUtils.isEmpty(icon)){
                 //异步加载头像
-                Picasso.with(this).load(Constant.BASEURL + "upload/" + icon).into(mImageView);
+                Picasso.with(this).load(BASEURL + "upload/" + icon).into(mImageView);
             }else{
                 //默认头像
             }
@@ -203,46 +231,11 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             mTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                        builder.setTitle("提示")
-                                .setMessage("是否注销登录")
-                                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        doLoginout();
-                                    }
-                                })
-                                .setNegativeButton("取消",null)
-                                .setCancelable(true)
-                                .show();
+//                        startActivity(ProfileActivity.class);
+                    startActivityForResult(new Intent(mContext,ProfileActivity.class),REQUESTCODE);
                     }
             });
         }
-
-
-
-        mTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!CommonUtil.isLogined()){
-                    startActivity(LoginActivity.class);
-                }else{
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                    builder.setTitle("提示")
-                            .setMessage("是否注销登录")
-                            .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    doLoginout();
-                                }
-                            })
-                            .setNegativeButton("取消",null)
-                            .setCancelable(true)
-                            .show();
-                }
-
-            }
-        });
     }
 
     @Override

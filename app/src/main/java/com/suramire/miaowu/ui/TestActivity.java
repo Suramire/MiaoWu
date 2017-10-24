@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.App;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.test.model.ReceiveItem;
 import com.suramire.miaowu.util.CommonUtil;
@@ -84,7 +83,7 @@ public class TestActivity extends BaseActivity {
                 }
             }
         }
-        mListReceiveTest.setAdapter(new CommonRecyclerAdapter<Spanned>(App.getContext(), R.layout.item_reply_test, receives) {
+        mListReceiveTest.setAdapter(new CommonRecyclerAdapter<Spanned>(mContext, R.layout.item_reply_test, receives) {
             @Override
             public void onUpdate(BaseAdapterHelper helper, Spanned item, int position) {
                 helper.setText(R.id.textView18, item);
