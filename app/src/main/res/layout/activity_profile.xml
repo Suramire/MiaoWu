@@ -1,89 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+              xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"/>
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_scrollFlags="scroll"/>
 
-        <RelativeLayout
+        </android.support.design.widget.AppBarLayout>
+
+
+        <ListView
+            android:id="@+id/list_profile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/bg_profile"/>
-
-            <LinearLayout
-                android:id="@+id/ll_name"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_below="@+id/imageView8"
-                android:background="@color/white"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"/>
-
-            </LinearLayout>
-
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/imageView10"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/default_icon"
-                app:riv_oval="true"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tl_profile"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/ll_name"
-                android:visibility="invisible">
 
-                <android.support.design.widget.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Left"/>
 
-                <android.support.design.widget.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Center"/>
 
-                <android.support.design.widget.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Right"/>
-            </android.support.design.widget.TabLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/list_profile"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/tl_profile"/>
-
-        </RelativeLayout>
-    </ScrollView>
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

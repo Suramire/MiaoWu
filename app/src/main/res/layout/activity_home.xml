@@ -53,10 +53,6 @@
 
 
         </android.support.design.widget.CoordinatorLayout>
-            />
-
-
-
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

@@ -2,16 +2,15 @@ package com.suramire.miaowu.ui;
 
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 import com.classic.adapter.BaseAdapterHelper;
-import com.classic.adapter.CommonRecyclerAdapter;
+import com.classic.adapter.CommonAdapter;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
@@ -28,11 +27,10 @@ import static com.suramire.miaowu.util.Constant.BASEURL;
 
 public class ProfileActivity extends BaseActivity {
     public static final int SUCCESS = 0x101 ;
-    public static final int FAILURE = 0x102 ;
     @Bind(R.id.toolbar4)
     Toolbar mToolbar4;
     @Bind(R.id.list_profile)
-    RecyclerView mListProfile;
+    ListView mListProfile;
 
     @Override
     protected String getTitleString() {
@@ -47,15 +45,13 @@ public class ProfileActivity extends BaseActivity {
     @Override
     public void initView(View view) {
         setSupportActionBar(mToolbar4);
-//        View emptyView = getLayoutInflater().inflate(R.layout.empty_list, null);
+        View headerView = getLayoutInflater().inflate(R.layout.header_profile, null);
         ArrayList<String> list = new ArrayList<>();
         list.add(BASEURL+"upload/cat.jpg");
         list.add(BASEURL+"upload/cat1.jpg");
-        list.add(BASEURL+"upload/cat2.jpg");
-        list.add(BASEURL+"upload/cat3.jpg");
         final String icon = BASEURL+"upload/0000.png";
-        mListProfile.setLayoutManager(new LinearLayoutManager(mContext));
-        mListProfile.setAdapter(new CommonRecyclerAdapter<String>(mContext, R.layout.item_list, list) {
+        mListProfile.addHeaderView(headerView);
+        mListProfile.setAdapter(new CommonAdapter<String>(mContext, R.layout.item_list, list) {
 
             @Override
             public void onUpdate(BaseAdapterHelper helper, String item, int position) {
