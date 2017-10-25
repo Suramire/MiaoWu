@@ -17,9 +17,10 @@
         android:id="@+id/ll_name"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_below="@+id/imageView8"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@+id/imageView8"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/textView8"
@@ -27,7 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:text="TextView"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:textSize="18sp"/>
 
     </LinearLayout>
 
@@ -36,6 +38,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
         android:src="@drawable/default_icon"
         app:riv_oval="true"/>
 
@@ -48,17 +51,17 @@
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Left"/>
+            android:text="简介"/>
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Center"/>
+            android:text="话题"/>
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Right"/>
+            android:text="帖子"/>
     </android.support.design.widget.TabLayout>
 
 

@@ -2,7 +2,7 @@ package com.suramire.miaowu.presenter;
 
 import android.os.Handler;
 
-import com.suramire.miaowu.listener.OnValidationListener;
+import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.model.RegisterModel;
 import com.suramire.miaowu.view.IRegisterView;
 
@@ -26,13 +26,13 @@ public class RegisterPresenter {
     /**
      * 验证手机号是否可以注册
      */
-    public void validatePhoneNumber(final OnValidationListener onPhoneValidListener){
+    public void validatePhoneNumber(final OnGetResultListener onPhoneValidListener){
         mIRegisterView.showLoading();
-        mRegisterModel.validatePhoneNumber(mIRegisterView.getPhoneNumber(), new OnValidationListener() {
+        mRegisterModel.validatePhoneNumber(mIRegisterView.getPhoneNumber(), new OnGetResultListener() {
             @Override
-            public void onSuccess() {
+            public void onSuccess(Object object) {
                 cancelLoading();
-                onPhoneValidListener.onSuccess();
+                onPhoneValidListener.onSuccess(null);
             }
 
             @Override
@@ -64,9 +64,9 @@ public class RegisterPresenter {
      */
     public void validateInformation(){
         mIRegisterView.showLoading();
-        mRegisterModel.validateRegisterInformation(mIRegisterView.getPhoneNumber(),mIRegisterView.getUserName(), mIRegisterView.getPassword(), mIRegisterView.getRePassword(), new OnValidationListener() {
+        mRegisterModel.validateRegisterInformation(mIRegisterView.getPhoneNumber(),mIRegisterView.getUserName(), mIRegisterView.getPassword(), mIRegisterView.getRePassword(), new OnGetResultListener() {
             @Override
-            public void onSuccess() {
+            public void onSuccess(Object object) {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {

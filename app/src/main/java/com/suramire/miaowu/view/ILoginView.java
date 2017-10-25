@@ -18,7 +18,7 @@ public interface ILoginView {
 
     String getPassword();
 
-    void onLoginSuccess(String resultString);
+    void onLoginSuccess(Object resultObject);
 
     void onLoginFailure(String fialureMessage);
 

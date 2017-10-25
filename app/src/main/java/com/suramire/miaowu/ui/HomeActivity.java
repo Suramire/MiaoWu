@@ -21,12 +21,13 @@ import android.widget.Toast;
 
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.pojo.User;
 import com.suramire.miaowu.presenter.LoginPresenter;
-import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.view.ILoginView;
@@ -131,7 +132,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-
     }
 
     private void doLoginout() {
@@ -201,8 +201,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public void onLoginSuccess(String resultString) {
-        if(TextUtils.isEmpty(resultString)){
+    public void onLoginSuccess(Object resultObject) {
+        if(resultObject==null){
             //注销情况下
             SPUtils.clear();
             mDrawerlayout.closeDrawer(Gravity.START);
@@ -213,16 +213,24 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                     startActivity(LoginActivity.class);
                 }
             });
-            Picasso.with(this).load(R.drawable.default_icon).into(mImageView);
+            Picasso.with(this)
+                    .load(R.drawable.default_icon)
+                    .into(mImageView);
             Toast.makeText(mContext, "注销成功", Toast.LENGTH_SHORT).show();
         }else{
             L.e("登录成功");
-            User user = (User) GsonUtil.jsonToObject(resultString, User.class);
+            User user = (User) resultObject;
             String icon = user.getIcon();
             //头像设置
             if(!TextUtils.isEmpty(icon)){
                 //异步加载头像
-                Picasso.with(this).load(BASEURL + "upload/" + icon).into(mImageView);
+                Picasso.with(this)
+                        .load(BASEURL + "upload/" + icon)
+                        .placeholder(R.drawable.default_icon)
+                        //刷新缓存
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .into(mImageView);
             }else{
                 //默认头像
             }

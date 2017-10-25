@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
-import com.suramire.miaowu.listener.OnValidationListener;
+import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.presenter.RegisterPresenter;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
@@ -138,9 +138,9 @@ public class RegisterActivity extends BaseActivity implements IRegisterView{
         switch (view.getId()) {
 // step0
             case R.id.btn_register_next:{
-                mRegisterPresenter.validatePhoneNumber(new OnValidationListener() {
+                mRegisterPresenter.validatePhoneNumber(new OnGetResultListener() {
                     @Override
-                    public void onSuccess() {
+                    public void onSuccess(Object object) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -254,12 +254,12 @@ public class RegisterActivity extends BaseActivity implements IRegisterView{
 
     @Override
     public void onRegisterFailure(String failureMessage) {
-        Toast.makeText(RegisterActivity.this, "注册失败,"+failureMessage, Toast.LENGTH_SHORT).show();
+        Toast.makeText(RegisterActivity.this, "注册失败："+failureMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRegisterError(String errorMessage) {
-        Toast.makeText(RegisterActivity.this, "注册出现异常,"+errorMessage, Toast.LENGTH_SHORT).show();
+        Toast.makeText(RegisterActivity.this, "注册出现错误:"+errorMessage, Toast.LENGTH_SHORT).show();
     }
 
 

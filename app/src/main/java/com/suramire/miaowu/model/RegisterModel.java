@@ -2,7 +2,7 @@ package com.suramire.miaowu.model;
 
 import android.text.TextUtils;
 
-import com.suramire.miaowu.listener.OnValidationListener;
+import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.pojo.M;
 import com.suramire.miaowu.pojo.User;
 import com.suramire.miaowu.util.CommonUtil;
@@ -29,7 +29,7 @@ public class RegisterModel implements IRegisterModel {
     }
 
     @Override
-    public void validatePhoneNumber(final String phoneNumber, final OnValidationListener onValidationListener) {
+    public void validatePhoneNumber(final String phoneNumber, final OnGetResultListener onValidationListener) {
         //判断手机号是否被注册
         if(CommonUtil.isMobileNumber(phoneNumber)) {
             User user = new User(phoneNumber, null, null);
@@ -45,7 +45,7 @@ public class RegisterModel implements IRegisterModel {
                     M m = (M) GsonUtil.jsonToObject(result, M.class);
                     switch (m.getCode()) {
                         case M.CODE_SUCCESS: {
-                            onValidationListener.onSuccess();
+                            onValidationListener.onSuccess(null);
                         }
                         break;
                         case M.CODE_FAILURE: {
@@ -63,7 +63,7 @@ public class RegisterModel implements IRegisterModel {
     }
 
     @Override
-    public void validateRegisterInformation(String phoneNumber,String userName, String password, final String rePassword, final OnValidationListener onValidationListener) {
+    public void validateRegisterInformation(String phoneNumber,String userName, String password, final String rePassword, final OnGetResultListener onValidationListener) {
         // 信息校验
         //验证成功提交注册信息 并注册
         if(TextUtils.isEmpty(phoneNumber)|| TextUtils.isEmpty(password)|| TextUtils.isEmpty(rePassword)){
@@ -83,7 +83,7 @@ public class RegisterModel implements IRegisterModel {
                     M m = (M) GsonUtil.jsonToObject(result, M.class);
                     switch (m.getCode()){
                         case M.CODE_SUCCESS:{
-                            onValidationListener.onSuccess();
+                            onValidationListener.onSuccess(null);
                         }break;
                         case M.CODE_FAILURE:{
                             onValidationListener.onFailure(m.getMessage());

@@ -12,7 +12,6 @@ import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.pojo.User;
 import com.suramire.miaowu.presenter.LoginPresenter;
-import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.view.ILoginView;
 
@@ -117,9 +116,9 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     }
 
     @Override
-    public void onLoginSuccess(String resultString) {
+    public void onLoginSuccess(Object resultObject) {
         Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-        User user = (User) GsonUtil.jsonToObject(resultString, User.class);
+        User user = (User) resultObject;
         //保存用户登录信息
         SPUtils.put("uid", user.getId());
         SPUtils.put("nickname", user.getNickname());

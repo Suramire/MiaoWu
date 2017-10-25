@@ -3,7 +3,7 @@ package com.suramire.miaowu.presenter;
 import android.os.Handler;
 import android.text.TextUtils;
 
-import com.suramire.miaowu.listener.OnLoginListener;
+import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.model.ILoginModel;
 import com.suramire.miaowu.model.LoginModel;
 import com.suramire.miaowu.view.ILoginView;
@@ -32,9 +32,9 @@ public class LoginPresenter {
             sName = mILoginView.getUserName();
             sPassword = mILoginView.getPassword();
         }
-        mLoginModel.doLogin(sName, sPassword, new OnLoginListener() {
+        mLoginModel.doLogin(sName, sPassword, new OnGetResultListener() {
             @Override
-            public void onSuccess(final String resultString) {
+            public void onSuccess(final Object resultString) {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {

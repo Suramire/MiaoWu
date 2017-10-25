@@ -2,7 +2,7 @@ package com.suramire.miaowu.model;
 
 import android.text.TextUtils;
 
-import com.suramire.miaowu.listener.OnLoginListener;
+import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.pojo.M;
 import com.suramire.miaowu.pojo.User;
 import com.suramire.miaowu.util.GsonUtil;
@@ -22,7 +22,7 @@ import static com.suramire.miaowu.util.Constant.BASEURL;
 
 public class LoginModel implements ILoginModel {
     @Override
-    public void doLogin(final String username, final String password, final OnLoginListener onLoginListener) {
+    public void doLogin(final String username, final String password, final OnGetResultListener onLoginListener) {
         //信息完整性验证
         if(TextUtils.isEmpty(username)|| TextUtils.isEmpty(password)){
             onLoginListener.onFailure("请将帐号信息补充完整");
@@ -43,7 +43,8 @@ public class LoginModel implements ILoginModel {
                             M m = (M) GsonUtil.jsonToObject(result, M.class);
                             switch (m.getCode()){
                                 case M.CODE_SUCCESS:{
-                                    onLoginListener.onSuccess(m.getData());
+                                    User user = (User) GsonUtil.jsonToObject(m.getData(), User.class);
+                                    onLoginListener.onSuccess(user);
                                 }break;
                                 case M.CODE_FAILURE:{
                                     onLoginListener.onFailure(m.getMessage());
@@ -51,7 +52,6 @@ public class LoginModel implements ILoginModel {
                                 case M.CODE_ERROR:{
                                     onLoginListener.onError(m.getMessage());
                                 }break;
-
                             }
                         }
                     });

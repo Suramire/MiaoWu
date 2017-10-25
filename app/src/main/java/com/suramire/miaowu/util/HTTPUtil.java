@@ -39,12 +39,12 @@ public class HTTPUtil {
      * @param callback
      * @return
      */
-    public static Call getPost(String url,File file,Callback callback){
+    public static Call getPost(String url,File file,String fileName,Callback callback){
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"),file );
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("picture", file.getName(), fileBody)
+                .addFormDataPart("picture", fileName, fileBody)
                 .build();
         Request build = new Request.Builder().post(requestBody).url(url).build();
         Call call = okHttpClient.newCall(build);

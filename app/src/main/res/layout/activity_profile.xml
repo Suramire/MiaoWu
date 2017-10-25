@@ -20,16 +20,53 @@
 
         </android.support.design.widget.AppBarLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="538dp"
+        android:orientation="vertical">
+
+
+        <include layout="@layout/header_profile"/>
 
         <ListView
             android:id="@+id/list_profile"
             android:layout_width="match_parent"
+            android:layout_height="568dp"
+            />
+
+        <RelativeLayout
+            android:id="@+id/rl_empty_profile"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            android:orientation="vertical"
+            android:visibility="gone">
 
+            <ImageView
+                android:id="@+id/imageView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="false"
+                android:layout_marginTop="32dp"
+                app:srcCompat="@drawable/empty_list"/>
 
-
-
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView14"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="16dp"
+                android:text="什么都没有"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+    </LinearLayout>
+    </ScrollView>
 
 
 </android.support.design.widget.CoordinatorLayout>
