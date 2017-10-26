@@ -23,7 +23,7 @@ import butterknife.OnClick;
  */
 
 public class LoginActivity extends BaseActivity implements ILoginView {
-    @Bind(R.id.toolbar3)
+    @Bind(R.id.toolbar)
     Toolbar mToolbar3;
     @Bind(R.id.edt_name)
     EditText mEdtName;

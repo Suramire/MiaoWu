@@ -5,5 +5,11 @@ package com.suramire.miaowu.view;
  */
 
 public interface IHomeView {
+    void startLoading();
 
+    void endLoading();
+
+    void onGetSuccess();
+
+    void onGetFailure();
 }

@@ -14,19 +14,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar_home"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:minHeight="?attr/actionBarSize"
-                    android:theme="?attr/actionBarTheme"
+                <include layout="@layout/toolbar"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
                     app:layout_scrollFlags="scroll|enterAlways"/>
 
             </android.support.design.widget.AppBarLayout>
 
 
             <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -46,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="bottom"
+                android:elevation="4dp"
                 android:background="@color/white"
                 android:theme="@style/AppTheme.Black"
                 app:layout_behavior=".util.BottomNavigationViewBehavior"

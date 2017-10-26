@@ -29,7 +29,7 @@ import cn.smssdk.SMSSDK;
  */
 
 public class RegisterActivity extends BaseActivity implements IRegisterView{
-    @Bind(R.id.toolbar_register)
+    @Bind(R.id.toolbar)
     Toolbar mToolbarRegister;
     @Bind(R.id.editTextPhoneNumber)
     TextInputEditText mEditTextPhone;

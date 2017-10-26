@@ -30,7 +30,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/selector_normal"
         android:src="@drawable/ic_chat_bubble_outline_black_24dp"/>
 
     <ImageView
@@ -38,7 +37,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/selector_normal"
         android:src="@drawable/ic_favorite_border_black_24dp"/>
 
     <ImageView
@@ -46,7 +44,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/selector_normal"
         android:src="@drawable/ic_share_black_24dp"/>
 
 </LinearLayout>

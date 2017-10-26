@@ -21,7 +21,7 @@ import butterknife.OnClick;
 public class ContentActivity extends BaseActivity {
     @Bind(R.id.webview_content)
     WebView mWebviewContent;
-    @Bind(R.id.toolbar2)
+    @Bind(R.id.toolbar)
     Toolbar mToolbar2;
     @Bind(R.id.editText3)
     EditText mEditText3;

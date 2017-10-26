@@ -7,7 +7,7 @@
               android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar3"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
@@ -67,7 +67,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="8dp"
-            android:background="@drawable/selector_normal"
             android:text="注册帐号"
             android:textAlignment="textStart"/>
 
@@ -77,7 +76,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="8dp"
-            android:background="@drawable/selector_normal"
             android:text="忘记密码？"
             android:textAlignment="textEnd"/>
     </RelativeLayout>

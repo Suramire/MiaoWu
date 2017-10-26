@@ -4,8 +4,13 @@
 
     <style name="AppTheme.Black" parent="AppTheme">
         <item name="colorPrimary">@color/black</item>
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
-    <style name="AppTheme.DarkActionBar" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme.DarkActionBar" parent="Theme.AppCompat.NoActionBar"/>
+
+
+    <style name="AppTheme.ButonTheme" parent="AppTheme">
+        <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
     </style>
 </resources>

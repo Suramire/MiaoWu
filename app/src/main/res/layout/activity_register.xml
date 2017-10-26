@@ -5,18 +5,17 @@
               android:orientation="vertical">
 
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"/>
+   <include
+       layout="@layout/toolbar"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:background="@android:color/transparent"/>
 
     <LinearLayout
         android:id="@+id/ll_phone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
         >
 
@@ -62,6 +61,7 @@
         android:id="@+id/ll_validation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -103,6 +103,7 @@
         android:id="@+id/ll_named"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
         android:visibility="gone">
 

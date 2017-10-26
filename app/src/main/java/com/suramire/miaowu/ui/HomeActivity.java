@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +31,7 @@ import com.suramire.miaowu.pojo.User;
 import com.suramire.miaowu.presenter.LoginPresenter;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.SPUtils;
+import com.suramire.miaowu.view.IHomeView;
 import com.suramire.miaowu.view.ILoginView;
 
 import java.util.ArrayList;
@@ -42,10 +44,10 @@ import static com.suramire.miaowu.util.Constant.BASEURL;
  * Created by Suramire on 2017/10/16.
  */
 
-public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, ILoginView {
+public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, ILoginView, IHomeView {
     private static final int REQUESTCODE = 0x100;
     Context mContext = this;
-    @Bind(R.id.toolbar_home)
+    @Bind(R.id.toolbar)
     Toolbar mToolbarHome;
     @Bind(R.id.relist_home)
     RecyclerView mRelistHome;
@@ -55,6 +57,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     BottomNavigationView mBottomnavigationview;
     @Bind(R.id.nav_view)
     NavigationView mNavView;
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private LoginPresenter mLoginPresenter;
     private ImageView mImageView;
     private TextView mTextView;
@@ -101,14 +105,14 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerlayout, mToolbarHome, R.string.open, R.string.close);
         mActionBarDrawerToggle.syncState();
         ArrayList<String> list = new ArrayList<>();
-        list.add(BASEURL+"upload/cat.jpg");
-        list.add(BASEURL+"upload/cat1.jpg");
-        list.add(BASEURL+"upload/cat2.jpg");
-        list.add(BASEURL+"upload/cat3.jpg");
-        final String icon = BASEURL+"upload/0000.png";
+        list.add(BASEURL + "upload/cat.jpg");
+        list.add(BASEURL + "upload/cat1.jpg");
+        list.add(BASEURL + "upload/cat2.jpg");
+        list.add(BASEURL + "upload/cat3.jpg");
+        final String icon = BASEURL + "upload/0000.png";
 
         mRelistHome.setLayoutManager(new LinearLayoutManager(mContext));
-        mRelistHome.setAdapter(new CommonRecyclerAdapter<String>(mContext, R.layout.item_list, list) {
+        mRelistHome.setAdapter(new CommonRecyclerAdapter<String>(mContext, R.layout.item_home, list) {
 
             @Override
             public void onUpdate(BaseAdapterHelper helper, String item, int position) {
@@ -151,7 +155,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==REQUESTCODE &&resultCode==ProfileActivity.SUCCESS){
+        if (requestCode == REQUESTCODE && resultCode == ProfileActivity.SUCCESS) {
             //在个人中心点击了注销
             doLoginout();
         }
@@ -202,7 +206,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void onLoginSuccess(Object resultObject) {
-        if(resultObject==null){
+        if (resultObject == null) {
             //注销情况下
             SPUtils.clear();
             mDrawerlayout.closeDrawer(Gravity.START);
@@ -217,12 +221,12 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                     .load(R.drawable.default_icon)
                     .into(mImageView);
             Toast.makeText(mContext, "注销成功", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             L.e("登录成功");
             User user = (User) resultObject;
             String icon = user.getIcon();
             //头像设置
-            if(!TextUtils.isEmpty(icon)){
+            if (!TextUtils.isEmpty(icon)) {
                 //异步加载头像
                 Picasso.with(this)
                         .load(BASEURL + "upload/" + icon)
@@ -231,7 +235,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .networkPolicy(NetworkPolicy.NO_CACHE)
                         .into(mImageView);
-            }else{
+            } else {
                 //默认头像
             }
             //文本标签设置
@@ -240,8 +244,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 @Override
                 public void onClick(View v) {
 //                        startActivity(ProfileActivity.class);
-                    startActivityForResult(new Intent(mContext,ProfileActivity.class),REQUESTCODE);
-                    }
+                    startActivityForResult(new Intent(mContext, ProfileActivity.class), REQUESTCODE);
+                }
             });
         }
     }
@@ -255,5 +259,27 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     public void onLoginError(String errorMessage) {
         L.e("登录出错");
     }
+
+    @Override
+    public void startLoading() {
+        mSwipeRefreshLayout.setRefreshing(true);
+    }
+
+
+    @Override
+    public void endLoading() {
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onGetSuccess() {
+        // TODO: 2017/10/26 成功获取数据后执行的操作
+    }
+
+    @Override
+    public void onGetFailure() {
+        // TODO: 2017/10/26 获取数据失败时执行的操作
+    }
+
 
 }
