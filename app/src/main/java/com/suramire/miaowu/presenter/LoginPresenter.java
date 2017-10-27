@@ -28,6 +28,7 @@ public class LoginPresenter {
         String sName = name;
         String sPassword = password;
         //若传入用户名密码则从页面上的输入框获取
+        //两个参数为空表示主页面的自动登录
         if(TextUtils.isEmpty(sName) && TextUtils.isEmpty(sPassword)){
             sName = mILoginView.getUserName();
             sPassword = mILoginView.getPassword();

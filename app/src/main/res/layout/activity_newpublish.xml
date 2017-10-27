@@ -23,14 +23,19 @@
             android:elevation="2dp"
             app:cardElevation="2dp">
 
+
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="40dp"
                 android:orientation="vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:padding="8dp">
 
                 <EditText
-                    android:id="@+id/editText4"
+                    android:id="@+id/edit_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -42,57 +47,93 @@
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="500dp"
-                    android:fillViewport="true"
                     >
 
                     <EditText
-                        android:id="@+id/editText"
+                        android:id="@+id/edit_content"
                         android:layout_width="match_parent"
-                        android:layout_height="400dp"
+                        android:layout_height="match_parent"
                         android:background="@null"
                         android:ems="10"
                         android:gravity="top"
                         android:hint="这里输入内容"
                         android:inputType="textMultiLine"
                         android:maxLines="100"
-                        android:padding="8dp"/>
+                        android:padding="8dp"
+                        android:text="@string/longtext"/>
                 </ScrollView>
 
 
             </LinearLayout>
 
+
+            <HorizontalScrollView
+                android:id="@+id/hscroll"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_gravity="bottom"
+                android:visibility="gone"
+                android:layout_marginBottom="40dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <GridView
+                        android:id="@+id/gridview_picture"
+                        android:layout_width="900dp"
+                        android:layout_height="100dp"
+                        android:background="@color/white"
+                        android:columnWidth="100dp"
+                        android:numColumns="auto_fit">
+
+                    </GridView>
+                </LinearLayout>
+            </HorizontalScrollView>
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="bottom"
-                android:orientation="horizontal"
-                android:padding="8dp">
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="vertical">
 
 
-                <ImageView
-                    android:id="@+id/imageView19"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_thumb_up2_black_24dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
 
-                <ImageView
-                    android:id="@+id/imageView18"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_insert_link_black_24dp"/>
+                    <ImageView
+                        android:id="@+id/imageView19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_thumb_up2_black_24dp"/>
 
-                <ImageView
-                    android:id="@+id/imageView17"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_insert_emoticon_black_24dp"/>
+                    <ImageView
+                        android:id="@+id/imageView18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_insert_emoticon_black_24dp"/>
+
+                    <ImageView
+                        android:id="@+id/imageView17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_insert_photo_black_24dp"/>
+                </LinearLayout>
+
+
             </LinearLayout>
-
 
         </android.support.v7.widget.CardView>
 
     </LinearLayout>
+
 </FrameLayout>

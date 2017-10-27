@@ -42,18 +42,22 @@ public class RegisterModel implements IRegisterModel {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String result = response.body().string();
-                    M m = (M) GsonUtil.jsonToObject(result, M.class);
-                    switch (m.getCode()) {
-                        case M.CODE_SUCCESS: {
-                            onValidationListener.onSuccess(null);
-                        }
-                        break;
-                        case M.CODE_FAILURE: {
-                            onValidationListener.onFailure(m.getMessage());
-                        }
-                        break;
-                        default:
+                    try {
+                        M m = (M) GsonUtil.jsonToObject(result, M.class);
+                        switch (m.getCode()) {
+                            case M.CODE_SUCCESS: {
+                                onValidationListener.onSuccess(null);
+                            }
                             break;
+                            case M.CODE_FAILURE: {
+                                onValidationListener.onFailure(m.getMessage());
+                            }
+                            break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        onValidationListener.onError(e.getMessage());
                     }
                 }
             });

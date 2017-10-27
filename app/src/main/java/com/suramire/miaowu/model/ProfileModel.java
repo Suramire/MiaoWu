@@ -36,8 +36,12 @@ public class ProfileModel implements IProfileModel {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String json = response.body().string();
-                    M m = (M) GsonUtil.jsonToObject(json, M.class);
-                    listener.onSuccess(GsonUtil.jsonToObject(m.getData(), User.class));
+                    try {
+                        M m = (M) GsonUtil.jsonToObject(json, M.class);
+                        listener.onSuccess(GsonUtil.jsonToObject(m.getData(), User.class));
+                    } catch (Exception e) {
+                        listener.onError(e.getMessage());
+                    }
                 }
             });
         } else {

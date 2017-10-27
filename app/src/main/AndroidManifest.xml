@@ -35,7 +35,11 @@
         <!--本程序-->
         <activity android:name=".ui.MainActivity"/>
         <activity android:name=".ui.HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
 
         <activity android:name=".ui.TestActivity">
@@ -47,12 +51,12 @@
         <activity android:name=".ui.ContentActivity"/>
         <activity android:name=".ui.ProfileActivity"/>
         <activity android:name=".ui.NewPublishActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
+        <activity android:name="me.iwf.photopicker.PhotoPickerActivity"
+            android:theme="@style/AppTheme"/>
+
+        <activity android:name="me.iwf.photopicker.PhotoPagerActivity"
+                  android:theme="@style/AppTheme"/>
 
     </application>
 

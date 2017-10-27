@@ -40,18 +40,23 @@ public class LoginModel implements ILoginModel {
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                             String result = response.body().string();
-                            M m = (M) GsonUtil.jsonToObject(result, M.class);
-                            switch (m.getCode()){
-                                case M.CODE_SUCCESS:{
-                                    User user = (User) GsonUtil.jsonToObject(m.getData(), User.class);
-                                    onLoginListener.onSuccess(user);
-                                }break;
-                                case M.CODE_FAILURE:{
-                                    onLoginListener.onFailure(m.getMessage());
-                                }break;
-                                case M.CODE_ERROR:{
-                                    onLoginListener.onError(m.getMessage());
-                                }break;
+                            try {
+                                M m = (M) GsonUtil.jsonToObject(result, M.class);
+                                switch (m.getCode()){
+                                    case M.CODE_SUCCESS:{
+                                        User user = (User) GsonUtil.jsonToObject(m.getData(), User.class);
+                                        onLoginListener.onSuccess(user);
+                                    }break;
+                                    case M.CODE_FAILURE:{
+                                        onLoginListener.onFailure(m.getMessage());
+                                    }break;
+                                    case M.CODE_ERROR:{
+                                        onLoginListener.onError(m.getMessage());
+                                    }break;
+                                }
+                            } catch (Exception e) {
+                                //捕获json字符串转成对象时可能发生的异常
+                                onLoginListener.onError(e.getMessage());
                             }
                         }
                     });
