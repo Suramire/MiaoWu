@@ -11,6 +11,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,5 +100,32 @@ public class FileUtil {
             e.printStackTrace();
         }
         return o;
+    }
+
+    /**
+     * 获取一个文件的MD5值
+     * @param file
+     * @return 16位MD5数值
+     */
+    public static String getFileMD5(File file){
+        String result = null;
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] buffer = new byte[1024];
+            int length = -1;
+            while ((length = fis.read(buffer, 0, 1024)) != -1) {
+                md.update(buffer, 0, length);
+            }
+            BigInteger bigInt = new BigInteger(1, md.digest());
+            result = bigInt.toString(16);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

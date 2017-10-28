@@ -97,7 +97,6 @@ public class ProfileActivity extends BaseActivity implements IProfileView {
         fragments.add(e);
         fragments.add(e2);
         fragments.add(e1);
-
         final String[] titles = new String[]{"简介", "话题", "帖子"};
         mViewpagerProfile.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override

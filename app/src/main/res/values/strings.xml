@@ -37,4 +37,5 @@
         return false;
     }
 }</string>
+    <string name="more_note">查看所有帖子 >></string>
 </resources>

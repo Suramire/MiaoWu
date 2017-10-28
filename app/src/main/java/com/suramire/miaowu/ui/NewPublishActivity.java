@@ -17,6 +17,7 @@ import com.classic.adapter.CommonAdapter;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.util.FileUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -119,6 +120,10 @@ public class NewPublishActivity extends BaseActivity {
             if (data != null) {
                 mHscroll.setVisibility(View.VISIBLE);
                 ArrayList<String> photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                for (String s : photos
+                        ) {
+                    Log.d("NewPublishActivity", FileUtil.getFileMD5(new File(s)));
+                }
                 mGridviewPicture.setAdapter(new CommonAdapter<String>(this, R.layout.item_picture, photos) {
                     @Override
                     public void onUpdate(BaseAdapterHelper helper, String item, int position) {
@@ -130,5 +135,17 @@ public class NewPublishActivity extends BaseActivity {
                 });
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == 0x12){
+            //这里执行发帖操作
+            // TODO: 2017/10/28 信息完整性判断
+            //发送帖子对象（文本）
+            //将帖子里的图片传至服务器
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

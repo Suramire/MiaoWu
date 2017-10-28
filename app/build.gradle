@@ -70,4 +70,6 @@ dependencies {
     compile 'me.iwf.photopicker:PhotoPicker:0.9.5@aar'
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.nineoldandroids:library:2.4.0'
+    //百分比布局
+    compile 'com.android.support:percent:26.+'
 }

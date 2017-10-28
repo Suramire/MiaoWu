@@ -105,6 +105,11 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         mNavView.setNavigationItemSelectedListener(this);
         mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerlayout, mToolbarHome, R.string.open, R.string.close);
         mActionBarDrawerToggle.syncState();
+        initData();
+
+    }
+
+    private void initData() {
         ArrayList<String> list = new ArrayList<>();
         list.add(BASEURL + "upload/cat.jpg");
         list.add(BASEURL + "upload/cat1.jpg");
@@ -136,7 +141,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 });
             }
         });
-
     }
 
     private void doLoginout() {
