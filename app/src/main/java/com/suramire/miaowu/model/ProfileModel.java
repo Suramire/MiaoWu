@@ -1,6 +1,7 @@
 package com.suramire.miaowu.model;
 
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.contract.ProfileContract;
 import com.suramire.miaowu.pojo.M;
 import com.suramire.miaowu.pojo.User;
 import com.suramire.miaowu.util.GsonUtil;
@@ -16,11 +17,11 @@ import okhttp3.Response;
 import static com.suramire.miaowu.util.Constant.BASEURL;
 
 /**
- * Created by Suramire on 2017/10/25.
+ * Created by Suramire on 2017/10/29.
  */
 
-public class ProfileModel {
-
+public class ProfileModel implements ProfileContract.Model {
+    @Override
     public void getProfile(int id, final OnGetResultListener listener) {
         int uid = (int) SPUtils.get("uid", 0);
         User tUser = new User();

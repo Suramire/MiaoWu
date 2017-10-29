@@ -4,6 +4,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.pojo.M;
 import com.suramire.miaowu.pojo.Note;
 import com.suramire.miaowu.util.CommonUtil;
@@ -28,7 +29,8 @@ import static com.suramire.miaowu.util.Constant.BASEURL;
  * Created by Suramire on 2017/10/29.
  */
 
-public class PublishModel {
+public class PublishModel implements PublishContract.Model {
+    @Override
     public void publish(String title, String content, final List<String> pictues, final OnGetResultListener listener){
         // TODO: 2017/10/29 获取当前用户的uid
         int uid = (int) SPUtils.get("uid", 0);
@@ -83,6 +85,7 @@ public class PublishModel {
         }
     }
 
+    @Override
     public void uploadPicture(Object object, List<String> pictues, final OnGetResultListener listener){
         int nid = Integer.parseInt(object.toString());
         List<HashMap<String,String>> names = new ArrayList<>();
@@ -120,6 +123,8 @@ public class PublishModel {
             map.put("picname",nid+"_"+i+".png");
             names.add(map);
         }
+        //上传图片
+        // TODO: 2017/10/29 对要上传的图片进行压缩处理
         HTTPUtil.getPost(BASEURL + "picToDBNote", names, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

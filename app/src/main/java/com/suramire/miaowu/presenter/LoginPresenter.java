@@ -4,24 +4,24 @@ import android.os.Handler;
 import android.text.TextUtils;
 
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.contract.LoginContract;
 import com.suramire.miaowu.model.LoginModel;
-import com.suramire.miaowu.view.ILoginView;
 
 /**
  * Created by Suramire on 2017/10/21.
  */
 
-public class LoginPresenter {
+public class LoginPresenter implements LoginContract.Presenter {
     private final LoginModel mLoginModel;
     private final Handler mHandler;
-    private final ILoginView mILoginView;
+    private final LoginContract.View mILoginView;
 
-    public LoginPresenter(ILoginView ILoginView) {
+    public LoginPresenter(LoginContract.View ILoginView) {
         mILoginView = ILoginView;
         mLoginModel = new LoginModel();
         mHandler = new Handler();
     }
-
+    @Override
     public void login(String name,String password){
         mILoginView.showLoading();
         String sName = name;

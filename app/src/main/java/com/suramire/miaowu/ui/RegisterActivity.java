@@ -14,10 +14,10 @@ import android.widget.Toast;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.contract.RegisterContract;
 import com.suramire.miaowu.presenter.RegisterPresenter;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
-import com.suramire.miaowu.view.IRegisterView;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -28,7 +28,7 @@ import cn.smssdk.SMSSDK;
  * Created by Suramire on 2017/10/17.
  */
 
-public class RegisterActivity extends BaseActivity implements IRegisterView{
+public class RegisterActivity extends BaseActivity implements RegisterContract.View{
     @Bind(R.id.toolbar)
     Toolbar mToolbarRegister;
     @Bind(R.id.editTextPhoneNumber)
@@ -268,10 +268,6 @@ public class RegisterActivity extends BaseActivity implements IRegisterView{
         return mEditTextPhone.getText().toString().trim();
     }
 
-    @Override
-    public String getValidationNumber() {
-        return mEditTextValidation.getText().toString().trim();
-    }
 
     @Override
     public String getUserName() {

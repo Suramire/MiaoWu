@@ -3,26 +3,26 @@ package com.suramire.miaowu.presenter;
 import android.os.Handler;
 
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.model.PublishModel;
 import com.suramire.miaowu.util.L;
-import com.suramire.miaowu.view.IPublishView;
 
 /**
  * Created by Suramire on 2017/10/29.
  */
 
-public class PublishPresenter {
+public class PublishPresenter implements PublishContract.Presenter {
     private final PublishModel mPublishModel;
-    private final IPublishView mIPublishView;
+    private final PublishContract.View mIPublishView;
     private final Handler mHandler;
 
     // TODO: 2017/10/29 资源回收？
-    public PublishPresenter(IPublishView IPublishView) {
+    public PublishPresenter(PublishContract.View IPublishView) {
         mIPublishView = IPublishView;
         mPublishModel = new PublishModel();
         mHandler = new Handler();
     }
-
+    @Override
     public void publish() {
         mIPublishView.startPublishing();
         mPublishModel.publish(mIPublishView.getNoteTitle(), mIPublishView.getNoteContent(),

@@ -3,10 +3,10 @@ package com.suramire.miaowu.presenter;
 import android.os.Handler;
 
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.contract.HomeContract;
 import com.suramire.miaowu.model.HomeModel;
 import com.suramire.miaowu.pojo.Note;
 import com.suramire.miaowu.util.GsonUtil;
-import com.suramire.miaowu.view.IHomeView;
 
 import java.util.List;
 
@@ -14,17 +14,18 @@ import java.util.List;
  * Created by Suramire on 2017/10/29.
  */
 
-public class HomePresenter {
+public class HomePresenter implements HomeContract.Presenter {
     private final HomeModel mHomeModel;
     private final Handler mHandler;
-    private final IHomeView mIHomeView;
+    private final HomeContract.View mIHomeView;
 
-    public HomePresenter(IHomeView IHomeView) {
+    public HomePresenter(HomeContract.View IHomeView) {
         mIHomeView = IHomeView;
         mHomeModel = new HomeModel();
         mHandler = new Handler();
     }
 
+    @Override
     public void getData(){
         mIHomeView.clearData();
         mIHomeView.startLoading();

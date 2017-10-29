@@ -3,6 +3,7 @@ package com.suramire.miaowu.model;
 import android.text.TextUtils;
 
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.contract.LoginContract;
 import com.suramire.miaowu.pojo.M;
 import com.suramire.miaowu.pojo.User;
 import com.suramire.miaowu.util.GsonUtil;
@@ -17,10 +18,11 @@ import okhttp3.Response;
 import static com.suramire.miaowu.util.Constant.BASEURL;
 
 /**
- * Created by Suramire on 2017/10/21.
+ * Created by Suramire on 2017/10/29.
  */
 
-public class LoginModel {
+public class LoginModel implements LoginContract.Model {
+    @Override
     public void doLogin(final String username, final String password, final OnGetResultListener onLoginListener) {
         //信息完整性验证
         if(TextUtils.isEmpty(username)|| TextUtils.isEmpty(password)){

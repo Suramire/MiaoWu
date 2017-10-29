@@ -3,6 +3,7 @@ package com.suramire.miaowu.model;
 import android.os.SystemClock;
 
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.contract.HomeContract;
 import com.suramire.miaowu.pojo.M;
 import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.HTTPUtil;
@@ -19,7 +20,8 @@ import static com.suramire.miaowu.util.Constant.BASEURL;
  * Created by Suramire on 2017/10/29.
  */
 
-public class HomeModel {
+public class HomeModel implements HomeContract.Model {
+    @Override
     public void getData(final OnGetResultListener listener) {
         new Thread(new Runnable() {
             @Override

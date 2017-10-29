@@ -10,10 +10,10 @@ import android.widget.Toast;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.contract.LoginContract;
 import com.suramire.miaowu.pojo.User;
 import com.suramire.miaowu.presenter.LoginPresenter;
 import com.suramire.miaowu.util.SPUtils;
-import com.suramire.miaowu.view.ILoginView;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -22,7 +22,7 @@ import butterknife.OnClick;
  * Created by Suramire on 2017/10/21.
  */
 
-public class LoginActivity extends BaseActivity implements ILoginView {
+public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Bind(R.id.toolbar)
     Toolbar mToolbar3;
     @Bind(R.id.edt_name)

@@ -22,6 +22,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.contract.ProfileContract;
 import com.suramire.miaowu.pojo.M;
 import com.suramire.miaowu.pojo.User;
 import com.suramire.miaowu.presenter.ProfilePresenter;
@@ -30,7 +31,6 @@ import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.HTTPUtil;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.SPUtils;
-import com.suramire.miaowu.view.IProfileView;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +47,7 @@ import static com.suramire.miaowu.util.Constant.BASEURL;
  * Created by Suramire on 2017/10/24.
  */
 
-public class ProfileActivity extends BaseActivity implements IProfileView {
+public class ProfileActivity extends BaseActivity implements ProfileContract.View {
     public static final int SUCCESS = 0x101;
     public static final int SELECT_PIC_BY_PICK_PHOTO = 0x102;
 

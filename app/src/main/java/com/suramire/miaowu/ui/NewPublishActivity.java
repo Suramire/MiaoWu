@@ -22,9 +22,9 @@ import com.classic.adapter.CommonAdapter;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.presenter.PublishPresenter;
 import com.suramire.miaowu.util.FileUtil;
-import com.suramire.miaowu.view.IPublishView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ import me.iwf.photopicker.PhotoPreview;
  */
 // TODO: 2017/10/27 字数限制
 
-public class NewPublishActivity extends BaseActivity implements IPublishView {
+public class NewPublishActivity extends BaseActivity implements PublishContract.View {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.gridview_picture)

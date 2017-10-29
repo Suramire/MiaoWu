@@ -28,14 +28,14 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.contract.HomeContract;
+import com.suramire.miaowu.contract.LoginContract;
 import com.suramire.miaowu.pojo.Note;
 import com.suramire.miaowu.pojo.User;
 import com.suramire.miaowu.presenter.HomePresenter;
 import com.suramire.miaowu.presenter.LoginPresenter;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.SPUtils;
-import com.suramire.miaowu.view.IHomeView;
-import com.suramire.miaowu.view.ILoginView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ import static com.suramire.miaowu.util.Constant.BASEURL;
  * Created by Suramire on 2017/10/16.
  */
 
-public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, ILoginView, IHomeView {
+public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LoginContract.View, HomeContract.View {
     private static final int REQUESTCODE = 0x100;
     Context mContext = this;
     @Bind(R.id.toolbar)
@@ -317,6 +317,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void stopLoading() {
+        // TODO: 2017/10/29 内存泄漏处理 activity已销毁应停止后台耗时操作
         mSwipeRefreshLayout.setRefreshing(false);
     }
 

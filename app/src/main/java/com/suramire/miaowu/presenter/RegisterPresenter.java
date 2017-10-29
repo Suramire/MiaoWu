@@ -3,19 +3,19 @@ package com.suramire.miaowu.presenter;
 import android.os.Handler;
 
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.contract.RegisterContract;
 import com.suramire.miaowu.model.RegisterModel;
-import com.suramire.miaowu.view.IRegisterView;
 
 /**
  * Created by Suramire on 2017/10/22.
  */
 
-public class RegisterPresenter {
+public class RegisterPresenter implements RegisterContract.Presenter {
     private final RegisterModel mRegisterModel;
     private final Handler mHandler;
-    private final IRegisterView mIRegisterView;
+    private final RegisterContract.View mIRegisterView;
 
-    public RegisterPresenter(IRegisterView IRegisterView) {
+    public RegisterPresenter(RegisterContract.View IRegisterView) {
         mIRegisterView = IRegisterView;
         mRegisterModel = new RegisterModel();
         mHandler = new Handler();
@@ -25,6 +25,7 @@ public class RegisterPresenter {
     /**
      * 验证手机号是否可以注册
      */
+    @Override
     public void validatePhoneNumber(final OnGetResultListener onPhoneValidListener){
         mIRegisterView.showLoading();
         mRegisterModel.validatePhoneNumber(mIRegisterView.getPhoneNumber(), new OnGetResultListener() {
@@ -61,6 +62,7 @@ public class RegisterPresenter {
     /**
      * 注册验证
      */
+    @Override
     public void validateInformation(){
         mIRegisterView.showLoading();
         mRegisterModel.validateRegisterInformation(mIRegisterView.getPhoneNumber(),mIRegisterView.getUserName(), mIRegisterView.getPassword(), mIRegisterView.getRePassword(), new OnGetResultListener() {

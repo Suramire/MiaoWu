@@ -3,24 +3,25 @@ package com.suramire.miaowu.presenter;
 import android.os.Handler;
 
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.contract.ProfileContract;
 import com.suramire.miaowu.model.ProfileModel;
-import com.suramire.miaowu.view.IProfileView;
 
 /**
  * Created by Suramire on 2017/10/25.
  */
 
-public class ProfilePresenter {
+public class ProfilePresenter implements ProfileContract.Presenter {
     private final ProfileModel mProfileModel;
     private final Handler mHandler;
-    private final IProfileView mIProfileView;
+    private final ProfileContract.View mIProfileView;
 
-    public ProfilePresenter(IProfileView IProfileView) {
+    public ProfilePresenter(ProfileContract.View IProfileView) {
         mIProfileView = IProfileView;
         mProfileModel = new ProfileModel();
         mHandler = new Handler();
     }
 
+    @Override
     public void getProfile(){
         mIProfileView.showLoading();
         mProfileModel.getProfile(mIProfileView.getUid(), new OnGetResultListener() {

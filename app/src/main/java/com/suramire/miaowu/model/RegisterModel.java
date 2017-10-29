@@ -3,6 +3,7 @@ package com.suramire.miaowu.model;
 import android.text.TextUtils;
 
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.contract.RegisterContract;
 import com.suramire.miaowu.pojo.M;
 import com.suramire.miaowu.pojo.User;
 import com.suramire.miaowu.util.CommonUtil;
@@ -17,17 +18,11 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
- * Created by Suramire on 2017/10/22.
+ * Created by Suramire on 2017/10/29.
  */
 
-public class RegisterModel {
-
-
-    public RegisterModel() {
-
-
-    }
-
+public class RegisterModel implements RegisterContract.Model {
+    @Override
     public void validatePhoneNumber(final String phoneNumber, final OnGetResultListener onValidationListener) {
         //判断手机号是否被注册
         if(CommonUtil.isMobileNumber(phoneNumber)) {
@@ -65,6 +60,7 @@ public class RegisterModel {
         }
     }
 
+    @Override
     public void validateRegisterInformation(String phoneNumber,String userName, String password, final String rePassword, final OnGetResultListener onValidationListener) {
         // 信息校验
         //验证成功提交注册信息 并注册
@@ -106,6 +102,4 @@ public class RegisterModel {
             onValidationListener.onError("注册出现异常，请检查注册信息");
         }
     }
-
-
 }
