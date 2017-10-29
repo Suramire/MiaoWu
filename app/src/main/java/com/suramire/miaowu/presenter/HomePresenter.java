@@ -26,6 +26,7 @@ public class HomePresenter {
     }
 
     public void getData(){
+        mIHomeView.clearData();
         mIHomeView.startLoading();
         mHomeModel.getData(new OnGetResultListener() {
             @Override

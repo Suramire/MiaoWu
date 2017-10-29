@@ -2,8 +2,10 @@ package com.suramire.miaowu.ui;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -69,7 +71,7 @@ public class NewPublishActivity extends BaseActivity implements IPublishView {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
         mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("请稍候……");
+        mProgressDialog.setMessage("发布中，请稍候……");
     }
 
     @Override
@@ -134,8 +136,26 @@ public class NewPublishActivity extends BaseActivity implements IPublishView {
             //发送帖子对象（文本）
             //将帖子里的图片传至服务器
             if(!isPublish){
-                mPublishPresenter = new PublishPresenter(this);
-                mPublishPresenter.publish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle("提示")
+                        .setMessage("是否发布该帖子")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mPublishPresenter = new PublishPresenter(NewPublishActivity.this);
+                                mPublishPresenter.publish();
+                            }
+                        })
+                        .setNegativeButton("取消", null)
+                        .setCancelable(true)
+                        .show();
+            }else{
+                Snackbar.make(findViewById(android.R.id.content),"请不要频繁发帖",Snackbar.LENGTH_INDEFINITE).setAction("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
             }
         }
         return super.onOptionsItemSelected(item);

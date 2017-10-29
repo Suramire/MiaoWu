@@ -111,7 +111,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         mActionBarDrawerToggle.syncState();
 //        initData();
         mHomePresenter = new HomePresenter(this);
-        mHomePresenter.getData();
+
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -249,6 +249,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void onLoginSuccess(Object resultObject) {
+        mHomePresenter.getData();
         if (resultObject == null) {
             //注销情况下
             SPUtils.clear();
@@ -296,12 +297,14 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void onLoginFailure(String fialureMessage) {
+        mHomePresenter.getData();
         SPUtils.clear();
         L.e("登录失败");
     }
 
     @Override
     public void onLoginError(String errorMessage) {
+        mHomePresenter.getData();
         SPUtils.clear();
         L.e("登录出错");
     }
@@ -315,6 +318,11 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void stopLoading() {
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void clearData() {
+        mRelistHome.setAdapter(null);
     }
 
     @Override
@@ -360,12 +368,14 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void onGetFailure(String failMessage) {
-        Toast.makeText(mContext, "获取首页数据失败：" + failMessage, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext,failMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onGetError(String errorMessage) {
         Toast.makeText(mContext, "获取首页数据出错：" + errorMessage, Toast.LENGTH_SHORT).show();
     }
+
+
 
 }

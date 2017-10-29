@@ -6,7 +6,6 @@ import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.pojo.M;
 import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.HTTPUtil;
-import com.suramire.miaowu.util.L;
 
 import java.io.IOException;
 
@@ -33,7 +32,6 @@ public class HomeModel {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
-                        L.e("result@getdata"+result);
                         try{
                             M m = (M) GsonUtil.jsonToObject(result, M.class);
                             SystemClock.sleep(3000);

@@ -4,6 +4,7 @@ import android.os.Handler;
 
 import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.model.PublishModel;
+import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.view.IPublishView;
 
 /**
@@ -27,12 +28,31 @@ public class PublishPresenter {
         mPublishModel.publish(mIPublishView.getNoteTitle(), mIPublishView.getNoteContent(),
                 mIPublishView.getPicturePaths(), new OnGetResultListener() {
                     @Override
-                    public void onSuccess(Object object) {
+                    public void onSuccess(final Object object) {
+                        L.e("新增id："+object);
+                        mPublishModel.uploadPicture(object, mIPublishView.getPicturePaths(), new OnGetResultListener() {
+                            @Override
+                            public void onSuccess(Object object) {
+
+                            }
+
+                            @Override
+                            public void onFailure(final String failureMessage) {
+
+                            }
+
+                            @Override
+                            public void onError(final String errorMessage) {
+
+                            }
+                        });
+
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
                                 mIPublishView.stopPublishing();
                                 mIPublishView.onPublishSuccess();
+
                             }
                         });
                     }

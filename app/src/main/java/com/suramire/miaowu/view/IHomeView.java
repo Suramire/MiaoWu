@@ -9,6 +9,8 @@ public interface IHomeView {
 
     void stopLoading();
 
+    void clearData();
+
     void onGetSuccess(Object object);
 
     void onGetFailure(String failMessage);
