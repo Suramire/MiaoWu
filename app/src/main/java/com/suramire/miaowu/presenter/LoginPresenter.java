@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.text.TextUtils;
 
 import com.suramire.miaowu.base.OnGetResultListener;
-import com.suramire.miaowu.model.ILoginModel;
 import com.suramire.miaowu.model.LoginModel;
 import com.suramire.miaowu.view.ILoginView;
 
@@ -13,9 +12,9 @@ import com.suramire.miaowu.view.ILoginView;
  */
 
 public class LoginPresenter {
-    private final ILoginModel mLoginModel;
+    private final LoginModel mLoginModel;
     private final Handler mHandler;
-    private ILoginView mILoginView;
+    private final ILoginView mILoginView;
 
     public LoginPresenter(ILoginView ILoginView) {
         mILoginView = ILoginView;

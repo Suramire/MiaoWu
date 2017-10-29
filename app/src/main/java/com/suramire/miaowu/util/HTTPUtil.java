@@ -1,6 +1,9 @@
 package com.suramire.miaowu.util;
 
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.suramire.miaowu.pojo.M;
 
 import java.io.File;
@@ -20,26 +23,13 @@ import okhttp3.RequestBody;
 
 public class HTTPUtil {
     /**
-     * get方式
-     * @param url
-     * @return
-     */
-    public static Call getCall(String url, Callback callback){
-        OkHttpClient okHttpClient = new OkHttpClient();
-        Request build = new Request.Builder().get().url(url).build();
-        Call call = okHttpClient.newCall(build);
-        call.enqueue(callback);
-        return  call;
-    }
-
-    /**
      * post文件
      * @param url
      * @param file
      * @param callback
      * @return
      */
-    public static Call getPost(String url,File file,String fileName,Callback callback){
+    public static Call getPost(String url, @NonNull File file, String fileName, Callback callback){
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"),file );
         RequestBody requestBody = new MultipartBody.Builder()
@@ -59,7 +49,7 @@ public class HTTPUtil {
      * @param callback
      * @return
      */
-    public static Call getPost(String url, Object object, Callback callback){
+    public static Call getPost(String url, @Nullable Object object, Callback callback){
         OkHttpClient okHttpClient = new OkHttpClient();
         FormBody.Builder formBuilder = new FormBody.Builder();
         String userJson = GsonUtil.objectToJson(object);

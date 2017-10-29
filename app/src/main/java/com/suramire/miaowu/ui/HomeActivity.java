@@ -28,7 +28,9 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.pojo.Note;
 import com.suramire.miaowu.pojo.User;
+import com.suramire.miaowu.presenter.HomePresenter;
 import com.suramire.miaowu.presenter.LoginPresenter;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.SPUtils;
@@ -36,6 +38,7 @@ import com.suramire.miaowu.view.IHomeView;
 import com.suramire.miaowu.view.ILoginView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 
@@ -65,6 +68,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private TextView mTextView;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     private ImageView mImageView7;
+    private HomePresenter mHomePresenter;
 
 
     @Override
@@ -105,7 +109,17 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         mNavView.setNavigationItemSelectedListener(this);
         mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerlayout, mToolbarHome, R.string.open, R.string.close);
         mActionBarDrawerToggle.syncState();
-        initData();
+//        initData();
+        mHomePresenter = new HomePresenter(this);
+        mHomePresenter.getData();
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mHomePresenter.getData();
+            }
+        });
+
 
     }
 
@@ -127,11 +141,11 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                         .load(item)
                         .placeholder(R.drawable.ic_loading)
                         .error(R.drawable.ic_loading_error)
-                        .into((ImageView) helper.getView(R.id.imageView3));
+                        .into((ImageView) helper.getView(R.id.noteimg));
                 Picasso.with(mContext)
                         .load(icon)
                         .placeholder(R.drawable.default_icon)
-                        .into((ImageView) helper.getView(R.id.imageView2));
+                        .into((ImageView) helper.getView(R.id.anthorimg));
 
                 helper.setOnClickListener(R.id.cardview_item, new View.OnClickListener() {
                     @Override
@@ -299,19 +313,59 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
 
     @Override
-    public void endLoading() {
+    public void stopLoading() {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
-    public void onGetSuccess() {
+    public void onGetSuccess(Object object) {
         // TODO: 2017/10/26 成功获取数据后执行的操作
+        final List<Note> notes = (List<Note>) object;
+        if(notes.size()>0){
+            final String icon = BASEURL + "upload/";
+
+            mRelistHome.setLayoutManager(new LinearLayoutManager(mContext));
+            mRelistHome.setAdapter(new CommonRecyclerAdapter<Note>(mContext, R.layout.item_home, notes) {
+
+                @Override
+                public void onUpdate(BaseAdapterHelper helper, Note item, int position) {
+
+                    Picasso.with(mContext)
+                            .load(BASEURL + "upload/cat.jpg")
+                            .placeholder(R.drawable.ic_loading)
+                            .error(R.drawable.ic_loading_error)
+                            .into((ImageView) helper.getView(R.id.noteimg));
+                    Picasso.with(mContext)
+                            .load(icon+item.getUid()+".png")
+                            .placeholder(R.drawable.default_icon)
+                            .into((ImageView) helper.getView(R.id.anthorimg));
+
+                    helper.setOnClickListener(R.id.cardview_item, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(ContentActivity.class);
+                        }
+                    });
+                    helper.setText(R.id.notetitle,item.getTitle())
+                            .setText(R.id.notecontent,item.getContent())
+                            .setText(R.id.notepublishtime,item.getPublish()+"");
+                }
+            });
+            Toast.makeText(mContext, "成功获取" + notes.size() + "条数据", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(mContext, "暂无新帖子", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
-    public void onGetFailure() {
-        // TODO: 2017/10/26 获取数据失败时执行的操作
+    public void onGetFailure(String failMessage) {
+        Toast.makeText(mContext, "获取首页数据失败：" + failMessage, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onGetError(String errorMessage) {
+        Toast.makeText(mContext, "获取首页数据出错：" + errorMessage, Toast.LENGTH_SHORT).show();
+    }
 
 }

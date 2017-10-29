@@ -19,8 +19,8 @@ import static com.suramire.miaowu.util.Constant.BASEURL;
  * Created by Suramire on 2017/10/25.
  */
 
-public class ProfileModel implements IProfileModel {
-    @Override
+public class ProfileModel {
+
     public void getProfile(int id, final OnGetResultListener listener) {
         int uid = (int) SPUtils.get("uid", 0);
         User tUser = new User();

@@ -7,9 +7,11 @@ package com.suramire.miaowu.view;
 public interface IHomeView {
     void startLoading();
 
-    void endLoading();
+    void stopLoading();
 
-    void onGetSuccess();
+    void onGetSuccess(Object object);
 
-    void onGetFailure();
+    void onGetFailure(String failMessage);
+
+    void onGetError(String errorMessage);
 }

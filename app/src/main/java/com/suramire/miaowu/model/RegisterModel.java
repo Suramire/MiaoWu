@@ -20,7 +20,7 @@ import okhttp3.Response;
  * Created by Suramire on 2017/10/22.
  */
 
-public class RegisterModel implements IRegisterModel {
+public class RegisterModel {
 
 
     public RegisterModel() {
@@ -28,7 +28,6 @@ public class RegisterModel implements IRegisterModel {
 
     }
 
-    @Override
     public void validatePhoneNumber(final String phoneNumber, final OnGetResultListener onValidationListener) {
         //判断手机号是否被注册
         if(CommonUtil.isMobileNumber(phoneNumber)) {
@@ -66,7 +65,6 @@ public class RegisterModel implements IRegisterModel {
         }
     }
 
-    @Override
     public void validateRegisterInformation(String phoneNumber,String userName, String password, final String rePassword, final OnGetResultListener onValidationListener) {
         // 信息校验
         //验证成功提交注册信息 并注册
@@ -84,17 +82,21 @@ public class RegisterModel implements IRegisterModel {
                 }
                 public void onResponse(Call call, Response response) throws IOException {
                     String result = response.body().string();
-                    M m = (M) GsonUtil.jsonToObject(result, M.class);
-                    switch (m.getCode()){
-                        case M.CODE_SUCCESS:{
-                            onValidationListener.onSuccess(null);
-                        }break;
-                        case M.CODE_FAILURE:{
-                            onValidationListener.onFailure(m.getMessage());
-                        }break;
-                        case M.CODE_ERROR:{
-                            onValidationListener.onError(m.getMessage());
+                    try {
+                        M m = (M) GsonUtil.jsonToObject(result, M.class);
+                        switch (m.getCode()){
+                            case M.CODE_SUCCESS:{
+                                onValidationListener.onSuccess(null);
+                            }break;
+                            case M.CODE_FAILURE:{
+                                onValidationListener.onFailure(m.getMessage());
+                            }break;
+                            case M.CODE_ERROR:{
+                                onValidationListener.onError(m.getMessage());
+                            }
                         }
+                    } catch (Exception e) {
+                        onValidationListener.onError(e.getMessage());
                     }
                 }
             });

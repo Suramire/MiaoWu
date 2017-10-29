@@ -3,7 +3,6 @@ package com.suramire.miaowu.presenter;
 import android.os.Handler;
 
 import com.suramire.miaowu.base.OnGetResultListener;
-import com.suramire.miaowu.model.IProfileModel;
 import com.suramire.miaowu.model.ProfileModel;
 import com.suramire.miaowu.view.IProfileView;
 
@@ -12,9 +11,9 @@ import com.suramire.miaowu.view.IProfileView;
  */
 
 public class ProfilePresenter {
-    private final IProfileModel mProfileModel;
+    private final ProfileModel mProfileModel;
     private final Handler mHandler;
-    private IProfileView mIProfileView;
+    private final IProfileView mIProfileView;
 
     public ProfilePresenter(IProfileView IProfileView) {
         mIProfileView = IProfileView;

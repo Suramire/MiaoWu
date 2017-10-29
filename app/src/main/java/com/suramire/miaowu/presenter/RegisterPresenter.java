@@ -13,8 +13,7 @@ import com.suramire.miaowu.view.IRegisterView;
 public class RegisterPresenter {
     private final RegisterModel mRegisterModel;
     private final Handler mHandler;
-
-    IRegisterView mIRegisterView;
+    private final IRegisterView mIRegisterView;
 
     public RegisterPresenter(IRegisterView IRegisterView) {
         mIRegisterView = IRegisterView;

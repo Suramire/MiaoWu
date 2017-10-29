@@ -1,7 +1,9 @@
 package com.suramire.miaowu.ui;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -11,30 +13,32 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonAdapter;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.presenter.PublishPresenter;
 import com.suramire.miaowu.util.FileUtil;
+import com.suramire.miaowu.view.IPublishView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
 
-import static com.suramire.miaowu.util.Constant.BASEURL;
-
 /**
  * Created by Suramire on 2017/10/26.
  */
 // TODO: 2017/10/27 字数限制
 
-public class NewPublishActivity extends BaseActivity {
+public class NewPublishActivity extends BaseActivity implements IPublishView {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.gridview_picture)
@@ -45,6 +49,10 @@ public class NewPublishActivity extends BaseActivity {
     EditText mEditContent;
     @Bind(R.id.hscroll)
     HorizontalScrollView mHscroll;
+    private ProgressDialog mProgressDialog;
+    private boolean isPublish;
+    private ArrayList<String> mPhotos;
+    private PublishPresenter mPublishPresenter;
 
     @Override
     protected String getTitleString() {
@@ -60,28 +68,8 @@ public class NewPublishActivity extends BaseActivity {
     public void initView(View view) {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
-        ArrayList<String> list = new ArrayList<>();
-        list.add(BASEURL + "upload/cat9.jpg");
-        list.add(BASEURL + "upload/cat9.jpg");
-        list.add(BASEURL + "upload/cat9.jpg");
-        list.add(BASEURL + "upload/cat9.jpg");
-        list.add(BASEURL + "upload/cat9.jpg");
-        list.add(BASEURL + "upload/cat9.jpg");
-        list.add(BASEURL + "upload/cat9.jpg");
-        list.add(BASEURL + "upload/cat9.jpg");
-        list.add(BASEURL + "upload/cat9.jpg");
-        mGridviewPicture.setAdapter(new CommonAdapter<String>(this, R.layout.item_picture, list) {
-            @Override
-            public void onUpdate(BaseAdapterHelper helper, String item, int position) {
-                Picasso.with(mContext)
-                        .load(item)
-                        .placeholder(R.drawable.newphoto)
-                        .resize(50, 50)
-                        .centerCrop()
-                        .into((ImageView) helper.getView(R.id.imageView15));
-            }
-        });
-
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("请稍候……");
     }
 
     @Override
@@ -119,12 +107,12 @@ public class NewPublishActivity extends BaseActivity {
                 (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
             if (data != null) {
                 mHscroll.setVisibility(View.VISIBLE);
-                ArrayList<String> photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-                for (String s : photos
+                mPhotos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                for (String s : mPhotos
                         ) {
                     Log.d("NewPublishActivity", FileUtil.getFileMD5(new File(s)));
                 }
-                mGridviewPicture.setAdapter(new CommonAdapter<String>(this, R.layout.item_picture, photos) {
+                mGridviewPicture.setAdapter(new CommonAdapter<String>(this, R.layout.item_picture, mPhotos) {
                     @Override
                     public void onUpdate(BaseAdapterHelper helper, String item, int position) {
                         Picasso.with(mContext)
@@ -145,7 +133,58 @@ public class NewPublishActivity extends BaseActivity {
             // TODO: 2017/10/28 信息完整性判断
             //发送帖子对象（文本）
             //将帖子里的图片传至服务器
+            if(!isPublish){
+                mPublishPresenter = new PublishPresenter(this);
+                mPublishPresenter.publish();
+            }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void startPublishing() {
+        mProgressDialog.show();
+    }
+
+    @Override
+    public void stopPublishing() {
+        mProgressDialog.dismiss();
+    }
+
+    @Override
+    public void onPublishSuccess() {
+        isPublish = true;
+        Snackbar.make(findViewById(android.R.id.content),"帖子发布成功，请等待审核",Snackbar.LENGTH_INDEFINITE)
+                .setAction("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                }).show();
+    }
+
+    @Override
+    public void onPublishFailure(String failureMessage) {
+        Toast.makeText(mContext, "发布失败：" + failureMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPublishError(String errorMessage) {
+        Toast.makeText(mContext, "发布帖子出错：" + errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public String getNoteTitle() {
+        return mEditTitle.getText().toString().trim();
+    }
+
+    @Override
+    public String getNoteContent() {
+        return mEditContent.getText().toString().trim();
+    }
+
+    @Override
+    public List<String> getPicturePaths() {
+        return mPhotos;
     }
 }

@@ -7,6 +7,7 @@ import com.suramire.miaowu.pojo.M;
 import com.suramire.miaowu.pojo.User;
 import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.HTTPUtil;
+import com.suramire.miaowu.util.L;
 
 import java.io.IOException;
 
@@ -20,8 +21,7 @@ import static com.suramire.miaowu.util.Constant.BASEURL;
  * Created by Suramire on 2017/10/21.
  */
 
-public class LoginModel implements ILoginModel {
-    @Override
+public class LoginModel {
     public void doLogin(final String username, final String password, final OnGetResultListener onLoginListener) {
         //信息完整性验证
         if(TextUtils.isEmpty(username)|| TextUtils.isEmpty(password)){
@@ -40,6 +40,7 @@ public class LoginModel implements ILoginModel {
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                             String result = response.body().string();
+                            L.e("result@login"+result);
                             try {
                                 M m = (M) GsonUtil.jsonToObject(result, M.class);
                                 switch (m.getCode()){
@@ -63,6 +64,5 @@ public class LoginModel implements ILoginModel {
                 }
             }).start();
         }
-
     }
 }

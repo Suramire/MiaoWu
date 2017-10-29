@@ -18,6 +18,8 @@ import com.suramire.miaowu.base.App;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 import static com.makeramen.roundedimageview.RoundedImageView.TAG;
@@ -154,6 +156,11 @@ public class CommonUtil {
             Log.i(TAG, "Uri Scheme:" + uri.getScheme());
         }
         return null;
+    }
+
+
+    public static Timestamp getTimeStamp(){
+        return new Timestamp(new Date().getTime());
     }
 
 }
