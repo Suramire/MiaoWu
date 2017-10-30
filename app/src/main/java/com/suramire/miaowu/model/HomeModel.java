@@ -4,7 +4,7 @@ import android.os.SystemClock;
 
 import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.contract.HomeContract;
-import com.suramire.miaowu.pojo.M;
+import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.HTTPUtil;
 
@@ -26,9 +26,10 @@ public class HomeModel implements HomeContract.Model {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                HTTPUtil.getPost(BASEURL + "listNote",null, new Callback() {
+                HTTPUtil.getPost(BASEURL + "listMultiNote",null, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
+
                         listener.onError(e.getMessage());
                     }
                     @Override

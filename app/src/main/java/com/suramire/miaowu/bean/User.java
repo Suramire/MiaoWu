@@ -1,4 +1,4 @@
-package com.suramire.miaowu.pojo;
+package com.suramire.miaowu.bean;
 
 import java.util.Date;
 

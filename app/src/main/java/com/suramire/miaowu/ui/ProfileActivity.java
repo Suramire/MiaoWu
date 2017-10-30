@@ -23,8 +23,8 @@ import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.contract.ProfileContract;
-import com.suramire.miaowu.pojo.M;
-import com.suramire.miaowu.pojo.User;
+import com.suramire.miaowu.bean.M;
+import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.presenter.ProfilePresenter;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.GsonUtil;
@@ -223,7 +223,7 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         if (user.getIcon() != null) {
 
             Picasso.with(mContext)
-                    .load(BASEURL + "upload/" + user.getIcon())
+                    .load(BASEURL + "upload/user/" + user.getIcon())
                     .placeholder(R.drawable.default_icon)
                     .into(mUserImageView);
         }

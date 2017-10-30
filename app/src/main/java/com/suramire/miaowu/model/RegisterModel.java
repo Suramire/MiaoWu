@@ -4,8 +4,8 @@ import android.text.TextUtils;
 
 import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.contract.RegisterContract;
-import com.suramire.miaowu.pojo.M;
-import com.suramire.miaowu.pojo.User;
+import com.suramire.miaowu.bean.M;
+import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.Constant;
 import com.suramire.miaowu.util.GsonUtil;

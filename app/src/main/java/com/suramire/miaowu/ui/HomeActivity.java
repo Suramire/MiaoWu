@@ -30,8 +30,8 @@ import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.contract.HomeContract;
 import com.suramire.miaowu.contract.LoginContract;
-import com.suramire.miaowu.pojo.Note;
-import com.suramire.miaowu.pojo.User;
+import com.suramire.miaowu.bean.MultiBean;
+import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.presenter.HomePresenter;
 import com.suramire.miaowu.presenter.LoginPresenter;
 import com.suramire.miaowu.util.L;
@@ -119,6 +119,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 mHomePresenter.getData();
             }
         });
+
+
 
 
     }
@@ -249,7 +251,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void onLoginSuccess(Object resultObject) {
-        mHomePresenter.getData();
         if (resultObject == null) {
             //注销情况下
             SPUtils.clear();
@@ -273,7 +274,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             if (!TextUtils.isEmpty(icon)) {
                 //异步加载头像
                 Picasso.with(this)
-                        .load(BASEURL + "upload/" + icon)
+                        .load(BASEURL + "upload/user/" + icon)
                         .placeholder(R.drawable.default_icon)
                         //刷新缓存
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -297,14 +298,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void onLoginFailure(String fialureMessage) {
-        mHomePresenter.getData();
         SPUtils.clear();
         L.e("登录失败");
     }
 
     @Override
     public void onLoginError(String errorMessage) {
-        mHomePresenter.getData();
+
         SPUtils.clear();
         L.e("登录出错");
     }
@@ -329,35 +329,38 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void onGetSuccess(Object object) {
         // TODO: 2017/10/26 成功获取数据后执行的操作
-        final List<Note> notes = (List<Note>) object;
+        final List<MultiBean> notes = (List<MultiBean>) object;
         if(notes.size()>0){
-            final String icon = BASEURL + "upload/";
 
             mRelistHome.setLayoutManager(new LinearLayoutManager(mContext));
-            mRelistHome.setAdapter(new CommonRecyclerAdapter<Note>(mContext, R.layout.item_home, notes) {
+            mRelistHome.setAdapter(new CommonRecyclerAdapter<MultiBean>(mContext, R.layout.item_home, notes) {
 
                 @Override
-                public void onUpdate(BaseAdapterHelper helper, Note item, int position) {
+                public void onUpdate(final BaseAdapterHelper helper, final MultiBean item, int position) {
+
 
                     Picasso.with(mContext)
-                            .load(BASEURL + "upload/cat.jpg")
+                            .load(BASEURL + "upload/note/"+item.getName())
                             .placeholder(R.drawable.ic_loading)
                             .error(R.drawable.ic_loading_error)
                             .into((ImageView) helper.getView(R.id.noteimg));
                     Picasso.with(mContext)
-                            .load(icon+item.getUid()+".png")
+                            .load(BASEURL+"upload/user/"+item.getIcon())
                             .placeholder(R.drawable.default_icon)
                             .into((ImageView) helper.getView(R.id.anthorimg));
 
                     helper.setOnClickListener(R.id.cardview_item, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(ContentActivity.class);
+                            Intent intent = new Intent(mContext, ContentActivity.class);
+                            intent.putExtra("noteId",item.getId());
+                            startActivity(intent);
                         }
                     });
                     helper.setText(R.id.notetitle,item.getTitle())
                             .setText(R.id.notecontent,item.getContent())
-                            .setText(R.id.notepublishtime,item.getPublish()+"");
+                            .setText(R.id.notepublishtime,item.getPublish()+"")
+                            .setText(R.id.authorname,item.getNickname());
                 }
             });
             Toast.makeText(mContext, "成功获取" + notes.size() + "条数据", Toast.LENGTH_SHORT).show();

@@ -5,8 +5,8 @@ import android.text.TextUtils;
 
 import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.contract.PublishContract;
-import com.suramire.miaowu.pojo.M;
-import com.suramire.miaowu.pojo.Note;
+import com.suramire.miaowu.bean.M;
+import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.HTTPUtil;
@@ -32,7 +32,6 @@ import static com.suramire.miaowu.util.Constant.BASEURL;
 public class PublishModel implements PublishContract.Model {
     @Override
     public void publish(String title, String content, final List<String> pictues, final OnGetResultListener listener){
-        // TODO: 2017/10/29 获取当前用户的uid
         int uid = (int) SPUtils.get("uid", 0);
         if(uid==0){
             listener.onFailure("请先登录");
@@ -45,7 +44,6 @@ public class PublishModel implements PublishContract.Model {
         }else{
             Timestamp now = CommonUtil.getTimeStamp();
             final Note note = new Note(uid,title,content,now);
-            // TODO: 2017/10/29 上传帖子配图
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -79,8 +77,6 @@ public class PublishModel implements PublishContract.Model {
                     });
                 }
             }).start();
-
-
 
         }
     }

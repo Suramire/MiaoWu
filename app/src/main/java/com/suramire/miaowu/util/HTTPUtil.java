@@ -4,7 +4,7 @@ package com.suramire.miaowu.util;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.suramire.miaowu.pojo.M;
+import com.suramire.miaowu.bean.M;
 
 import java.io.File;
 

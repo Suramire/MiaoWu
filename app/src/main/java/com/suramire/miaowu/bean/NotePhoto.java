@@ -1,4 +1,4 @@
-package com.suramire.miaowu.pojo;
+package com.suramire.miaowu.bean;
 
 /**
  * NotePhoto entity. @author MyEclipse Persistence Tools

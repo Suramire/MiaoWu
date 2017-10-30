@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
@@ -49,8 +50,10 @@ public class ContentActivity extends BaseActivity {
     @Override
     public void initView(View view) {
         setSupportActionBar(mToolbar2);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mWebviewContent.loadUrl("http://192.168.1.101:8080/Miaowu/index.jsp");
+        int noteId = getIntent().getIntExtra("noteId", 0);
+        Toast.makeText(mContext, "noteId:" + noteId, Toast.LENGTH_SHORT).show();
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        mWebviewContent.loadUrl("http://192.168.1.101:8080/Miaowu/index.jsp");
 
     }
 

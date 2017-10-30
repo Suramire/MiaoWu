@@ -2,14 +2,12 @@ package com.suramire.miaowu.base;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.suramire.miaowu.R;
 
@@ -25,11 +23,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Context mContext = this;
     private View mContextView = null;
     private boolean mDisplayHomeAsUpEnabled = true;
-
-
-    public View getContextView() {
-        return mContextView;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,19 +79,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * [沉浸状态栏]
-     */
-    public void steepStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // 透明状态栏
-            getWindow().addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 透明导航栏
-            getWindow().addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
-    }
 
     /**
      * [绑定布局]

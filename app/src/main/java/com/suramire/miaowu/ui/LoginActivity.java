@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.contract.LoginContract;
-import com.suramire.miaowu.pojo.User;
+import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.presenter.LoginPresenter;
 import com.suramire.miaowu.util.SPUtils;
 

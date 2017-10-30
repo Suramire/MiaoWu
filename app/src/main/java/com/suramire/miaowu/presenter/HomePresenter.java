@@ -5,7 +5,7 @@ import android.os.Handler;
 import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.contract.HomeContract;
 import com.suramire.miaowu.model.HomeModel;
-import com.suramire.miaowu.pojo.Note;
+import com.suramire.miaowu.bean.MultiBean;
 import com.suramire.miaowu.util.GsonUtil;
 
 import java.util.List;
@@ -36,8 +36,8 @@ public class HomePresenter implements HomeContract.Presenter {
                     @Override
                     public void run() {
                         mIHomeView.stopLoading();
-                        List<Note> notes = GsonUtil.jsonToList(object.toString(), Note.class);
-                        mIHomeView.onGetSuccess(notes);
+                        List<MultiBean> multiBeanList = GsonUtil.jsonToList(object.toString(), MultiBean.class);
+                        mIHomeView.onGetSuccess(multiBeanList);
                     }
                 });
             }
