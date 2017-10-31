@@ -46,8 +46,6 @@ dependencies {
     compile 'com.android.support:cardview-v7:26.+'
     //黄油刀
     compile 'com.jakewharton:butterknife:7.0.1'
-    //图片加载毕加索
-    compile 'com.squareup.picasso:picasso:2.5.2'
     //通用适配器
     compile 'com.classic.adapter:commonadapter:1.8.1'
 
@@ -72,4 +70,6 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     //百分比布局
     compile 'com.android.support:percent:26.+'
+    //轮播图
+    compile 'com.youth.banner:banner:1.4.9'
 }

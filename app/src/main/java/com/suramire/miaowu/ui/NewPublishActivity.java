@@ -17,9 +17,9 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonAdapter;
-import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.contract.PublishContract;
@@ -117,7 +117,7 @@ public class NewPublishActivity extends BaseActivity implements PublishContract.
                 mGridviewPicture.setAdapter(new CommonAdapter<String>(this, R.layout.item_picture, mPhotos) {
                     @Override
                     public void onUpdate(BaseAdapterHelper helper, String item, int position) {
-                        Picasso.with(mContext)
+                        Glide.with(mContext)
                                 .load(new File(item))
                                 .placeholder(R.drawable.ic_loading)
                                 .into((ImageView) helper.getView(R.id.imageView15));

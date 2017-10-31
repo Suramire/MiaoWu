@@ -48,7 +48,7 @@
 
         <activity android:name=".ui.RegisterActivity"/>
         <activity android:name=".ui.LoginActivity" android:theme="@style/AppTheme.DarkActionBar"/>
-        <activity android:name=".ui.ContentActivity"/>
+        <activity android:name=".ui.NoteDetailActivity"/>
         <activity android:name=".ui.ProfileActivity"/>
         <activity android:name=".ui.NewPublishActivity">
         </activity>

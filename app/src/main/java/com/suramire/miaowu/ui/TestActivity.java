@@ -2,7 +2,6 @@ package com.suramire.miaowu.ui;
 
 import android.view.View;
 
-import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 
 /**
@@ -20,7 +19,7 @@ public class TestActivity extends BaseActivity {
 
     @Override
     public int bindLayout() {
-        return R.layout.activity_profile_test;
+        return 0;
     }
 
     @Override

@@ -8,5 +8,7 @@ package com.suramire.miaowu.util;
 public class Constant {
     //服务器基址
     public static final String BASEURL = "http://192.168.1.100:8080/Miaowu/";
+    public static final String BASNOTEPICEURL = BASEURL+"upload/note/";
+    public static final String BASUSERPICEURL = BASEURL+"upload/user/";
 //    public static final String BASEURL = "http://leet123.x8.fjjsp.net/";
 }

@@ -4,23 +4,39 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <WebView
-        android:id="@+id/webview_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
     <include layout="@layout/toolbar"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:layout_gravity="top"/>
 
+
+
+    <ListView
+        android:id="@+id/list_notedetail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginBottom="?attr/actionBarSize">
+
+    </ListView>
+
+
+
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
 
-        <include layout="@layout/bottom_operation"/>
+        <include
+            layout="@layout/bottom_operation"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"/>
+
         <include
             layout="@layout/popup_comment"
             android:layout_width="match_parent"
