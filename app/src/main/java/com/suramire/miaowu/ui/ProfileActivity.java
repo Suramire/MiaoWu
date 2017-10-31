@@ -18,8 +18,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.M;
@@ -221,10 +221,8 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         User user = (User) object;
         mId = user.getId();
         if (user.getIcon() != null) {
-
-            Glide.with(mContext)
+            Picasso.with(mContext)
                     .load(BASEURL + "upload/user/" + user.getIcon())
-                    .dontAnimate()
                     .placeholder(R.drawable.default_icon)
                     .into(mUserImageView);
         }

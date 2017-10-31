@@ -5,6 +5,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -124,6 +126,9 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
         if (mListNotedetail.getHeaderViewsCount() == 0) {
             mListNotedetail.addHeaderView(mBanner);
         }
+        int height = mBanner.getLayoutParams().height;
+        AbsListView.LayoutParams al = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,height);
+        mBanner.setLayoutParams(al);
         mBanner.setImageLoader(new GlideImageLoader())
                 .setImages(pictures)
                 .isAutoPlay(false)

@@ -3,7 +3,7 @@ package com.suramire.miaowu.util;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 import com.youth.banner.loader.ImageLoader;
 
 /**
@@ -22,7 +22,7 @@ public class GlideImageLoader extends ImageLoader {
          切记不要胡乱强转！
          */
         //Picasso 加载图片简单用法
-        Glide.with(context).load(path).into(imageView);
+        Picasso.with(context).load((String)path).into(imageView);
 
         //用fresco加载图片简单用法，记得要写下面的createImageView方法
 //        Uri uri = Uri.parse((String) path);

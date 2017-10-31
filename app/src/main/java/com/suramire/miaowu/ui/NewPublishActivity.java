@@ -17,9 +17,9 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonAdapter;
+import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.contract.PublishContract;
@@ -34,6 +34,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
+
 
 /**
  * Created by Suramire on 2017/10/26.
@@ -97,6 +98,7 @@ public class NewPublishActivity extends BaseActivity implements PublishContract.
                         .setPhotoCount(9)
                         .setGridColumnCount(4)
                         .start(this);
+
             }
             break;
         }
@@ -117,7 +119,7 @@ public class NewPublishActivity extends BaseActivity implements PublishContract.
                 mGridviewPicture.setAdapter(new CommonAdapter<String>(this, R.layout.item_picture, mPhotos) {
                     @Override
                     public void onUpdate(BaseAdapterHelper helper, String item, int position) {
-                        Glide.with(mContext)
+                        Picasso.with(mContext)
                                 .load(new File(item))
                                 .placeholder(R.drawable.ic_loading)
                                 .into((ImageView) helper.getView(R.id.imageView15));

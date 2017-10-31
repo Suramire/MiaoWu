@@ -21,16 +21,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
-import com.suramire.miaowu.bean.MultiBean;
-import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.HomeContract;
 import com.suramire.miaowu.contract.LoginContract;
+import com.suramire.miaowu.bean.MultiBean;
+import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.presenter.HomePresenter;
 import com.suramire.miaowu.presenter.LoginPresenter;
 import com.suramire.miaowu.util.L;
@@ -138,12 +139,12 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onUpdate(BaseAdapterHelper helper, String item, int position) {
 
-                Glide.with(mContext)
+                Picasso.with(mContext)
                         .load(item)
                         .placeholder(R.drawable.ic_loading)
                         .error(R.drawable.ic_loading_error)
                         .into((ImageView) helper.getView(R.id.noteimg));
-                Glide.with(mContext)
+                Picasso.with(mContext)
                         .load(icon)
                         .placeholder(R.drawable.default_icon)
                         .into((ImageView) helper.getView(R.id.anthorimg));
@@ -261,7 +262,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                     startActivity(LoginActivity.class);
                 }
             });
-            Glide.with(this)
+            Picasso.with(this)
                     .load(R.drawable.default_icon)
                     .into(mImageView);
             Toast.makeText(mContext, "注销成功", Toast.LENGTH_SHORT).show();
@@ -272,13 +273,12 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             //头像设置
             if (!TextUtils.isEmpty(icon)) {
                 //异步加载头像
-                Glide.with(this)
+                Picasso.with(this)
                         .load(BASEURL + "upload/user/" + icon)
-                        .dontAnimate()
                         .placeholder(R.drawable.default_icon)
                         //刷新缓存
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
                         .into(mImageView);
             } else {
                 //默认头像
@@ -339,12 +339,12 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 public void onUpdate(final BaseAdapterHelper helper, final MultiBean item, int position) {
 
 
-                    Glide.with(mContext)
+                    Picasso.with(mContext)
                             .load(BASEURL + "upload/note/"+item.getName())
                             .placeholder(R.drawable.ic_loading)
                             .error(R.drawable.ic_loading_error)
                             .into((ImageView) helper.getView(R.id.noteimg));
-                    Glide.with(mContext)
+                    Picasso.with(mContext)
                             .load(BASEURL+"upload/user/"+item.getIcon())
                             .placeholder(R.drawable.default_icon)
                             .into((ImageView) helper.getView(R.id.anthorimg));
