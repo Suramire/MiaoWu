@@ -42,6 +42,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 import static com.suramire.miaowu.util.Constant.BASEURL;
+import static com.suramire.miaowu.util.Constant.BASUSERPICEURL;
 
 /**
  * Created by Suramire on 2017/10/24.
@@ -222,7 +223,7 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         mId = user.getId();
         if (user.getIcon() != null) {
             Picasso.with(mContext)
-                    .load(BASEURL + "upload/user/" + user.getIcon())
+                    .load(BASUSERPICEURL + user.getIcon())
                     .placeholder(R.drawable.default_icon)
                     .into(mUserImageView);
         }

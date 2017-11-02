@@ -1,10 +1,8 @@
 package com.suramire.miaowu.model;
 
-import android.os.SystemClock;
-
 import com.suramire.miaowu.base.OnGetResultListener;
-import com.suramire.miaowu.contract.HomeContract;
 import com.suramire.miaowu.bean.M;
+import com.suramire.miaowu.contract.HomeContract;
 import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.HTTPUtil;
 
@@ -37,7 +35,6 @@ public class HomeModel implements HomeContract.Model {
                         String result = response.body().string();
                         try{
                             M m = (M) GsonUtil.jsonToObject(result, M.class);
-                            SystemClock.sleep(3000);
                             switch (m.getCode()){
                                 case M.CODE_SUCCESS:{
                                     listener.onSuccess(m.getData());

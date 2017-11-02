@@ -3,7 +3,8 @@ package com.suramire.miaowu.util;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.suramire.miaowu.R;
 import com.youth.banner.loader.ImageLoader;
 
 /**
@@ -21,8 +22,12 @@ public class GlideImageLoader extends ImageLoader {
          传输的到的是什么格式，那么这种就使用Object接收和返回，你只需要强转成你传输的类型就行，
          切记不要胡乱强转！
          */
-        //Picasso 加载图片简单用法
-        Picasso.with(context).load((String)path).into(imageView);
+        //Glide 加载图片简单用法
+        Glide.with(context)
+                .load(path)
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_loading_error)
+                .into(imageView);
 
         //用fresco加载图片简单用法，记得要写下面的createImageView方法
 //        Uri uri = Uri.parse((String) path);

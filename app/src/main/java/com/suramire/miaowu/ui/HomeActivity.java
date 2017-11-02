@@ -28,21 +28,21 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
-import com.suramire.miaowu.contract.HomeContract;
-import com.suramire.miaowu.contract.LoginContract;
 import com.suramire.miaowu.bean.MultiBean;
 import com.suramire.miaowu.bean.User;
+import com.suramire.miaowu.contract.HomeContract;
+import com.suramire.miaowu.contract.LoginContract;
 import com.suramire.miaowu.presenter.HomePresenter;
 import com.suramire.miaowu.presenter.LoginPresenter;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.SPUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 
-import static com.suramire.miaowu.util.Constant.BASEURL;
+import static com.suramire.miaowu.util.Constant.BASNOTEPICEURL;
+import static com.suramire.miaowu.util.Constant.BASUSERPICEURL;
 
 /**
  * Created by Suramire on 2017/10/16.
@@ -125,39 +125,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
-    private void initData() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add(BASEURL + "upload/cat.jpg");
-        list.add(BASEURL + "upload/cat1.jpg");
-        list.add(BASEURL + "upload/cat2.jpg");
-        list.add(BASEURL + "upload/cat3.jpg");
-        final String icon = BASEURL + "upload/0000.png";
 
-        mRelistHome.setLayoutManager(new LinearLayoutManager(mContext));
-        mRelistHome.setAdapter(new CommonRecyclerAdapter<String>(mContext, R.layout.item_home, list) {
-
-            @Override
-            public void onUpdate(BaseAdapterHelper helper, String item, int position) {
-
-                Picasso.with(mContext)
-                        .load(item)
-                        .placeholder(R.drawable.ic_loading)
-                        .error(R.drawable.ic_loading_error)
-                        .into((ImageView) helper.getView(R.id.noteimg));
-                Picasso.with(mContext)
-                        .load(icon)
-                        .placeholder(R.drawable.default_icon)
-                        .into((ImageView) helper.getView(R.id.anthorimg));
-
-                helper.setOnClickListener(R.id.cardview_item, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(NoteDetailActivity.class);
-                    }
-                });
-            }
-        });
-    }
 
     private void doLoginout() {
         onLoginSuccess(null);
@@ -274,7 +242,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             if (!TextUtils.isEmpty(icon)) {
                 //异步加载头像
                 Picasso.with(this)
-                        .load(BASEURL + "upload/user/" + icon)
+                        .load(BASUSERPICEURL + icon)
                         .placeholder(R.drawable.default_icon)
                         //刷新缓存
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -340,12 +308,12 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
 
                     Picasso.with(mContext)
-                            .load(BASEURL + "upload/note/"+item.getName())
+                            .load(BASNOTEPICEURL+item.getName())
                             .placeholder(R.drawable.ic_loading)
                             .error(R.drawable.ic_loading_error)
                             .into((ImageView) helper.getView(R.id.noteimg));
                     Picasso.with(mContext)
-                            .load(BASEURL+"upload/user/"+item.getIcon())
+                            .load(BASUSERPICEURL+item.getIcon())
                             .placeholder(R.drawable.default_icon)
                             .into((ImageView) helper.getView(R.id.anthorimg));
 

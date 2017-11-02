@@ -1,12 +1,11 @@
 package com.suramire.miaowu.model;
 
-import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.suramire.miaowu.base.OnGetResultListener;
-import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.bean.Note;
+import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.HTTPUtil;
@@ -47,7 +46,6 @@ public class PublishModel implements PublishContract.Model {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    SystemClock.sleep(3000);
                     HTTPUtil.getPost(BASEURL + "addNote", note, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {

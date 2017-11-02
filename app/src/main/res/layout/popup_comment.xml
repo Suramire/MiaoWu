@@ -21,6 +21,8 @@
             android:layout_height="100dp"
             android:background="@drawable/shape_comment"
             android:ems="10"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="top"
             android:hint="留下你的评论吧……"
             android:inputType="textPersonName"

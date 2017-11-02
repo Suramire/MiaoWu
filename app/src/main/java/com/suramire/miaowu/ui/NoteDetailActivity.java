@@ -1,5 +1,7 @@
 package com.suramire.miaowu.ui;
 
+
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +18,7 @@ import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.contract.NoteDetailContract;
+import com.suramire.miaowu.fragment.BottomCommentDialogFragment;
 import com.suramire.miaowu.presenter.NoteDetailPresenter;
 import com.suramire.miaowu.util.GlideImageLoader;
 import com.suramire.miaowu.util.L;
@@ -26,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by Suramire on 2017/10/17.
@@ -127,7 +131,7 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
             mListNotedetail.addHeaderView(mBanner);
         }
         int height = mBanner.getLayoutParams().height;
-        AbsListView.LayoutParams al = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,height);
+        AbsListView.LayoutParams al = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
         mBanner.setLayoutParams(al);
         mBanner.setImageLoader(new GlideImageLoader())
                 .setImages(pictures)
@@ -150,4 +154,11 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
 
     }
 
+
+    @OnClick(R.id.editText3)
+    public void onViewClicked() {
+        FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
+        BottomCommentDialogFragment bottomCommentDialogFragment = BottomCommentDialogFragment.newInstance();
+        bottomCommentDialogFragment.show(mFragTransaction,"111");
+    }
 }

@@ -83,7 +83,6 @@ public class NoteDetailModel implements NoteDetailContract.Model {
                         String result = response.body().string();
                         try{
                             M m = (M) GsonUtil.jsonToObject(result, M.class);
-                            SystemClock.sleep(1000);
                             switch (m.getCode()){
                                 case M.CODE_SUCCESS:{
                                     List<String> strings = GsonUtil.jsonToList(m.getData(), String.class);
