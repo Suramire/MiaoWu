@@ -1,39 +1,60 @@
 package com.suramire.miaowu.fragment;
 
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.app.DialogFragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
+import android.widget.EditText;
 
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.contract.CommonContract;
+import com.suramire.miaowu.bean.Reply;
+import com.suramire.miaowu.contract.RepleyContract;
+import com.suramire.miaowu.presenter.ReplyPresenter;
+import com.suramire.miaowu.util.CommonUtil;
+import com.suramire.miaowu.util.SPUtils;
 
 /**
  * Created by Suramire on 2017/11/2.
  */
 
-public class BottomCommentDialogFragment extends DialogFragment implements CommonContract.View {
+public class BottomCommentDialogFragment extends DialogFragment implements RepleyContract.View {
 
     private View view;
     private Context mContext;
     private ProgressDialog mProgressDialog;
+    private EditText mEditComment;
+    private  int nid;
+    private ReplyPresenter mReplyPresenter;
+    private OnReplyListener mReplyListener;
 
+    public OnReplyListener getReplyListener() {
+        return mReplyListener;
+    }
 
+    public void setReplyListener(OnReplyListener replyListener) {
+        mReplyListener = replyListener;
+    }
+
+    public interface OnReplyListener{
+
+        void onSucess();
+
+        void onFailure(String failureMessage);
+
+        void onError(String errorMessage);
+    }
 
     public static BottomCommentDialogFragment newInstance() {
-        Bundle args = new Bundle();
         BottomCommentDialogFragment fragment = new BottomCommentDialogFragment();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -52,6 +73,8 @@ public class BottomCommentDialogFragment extends DialogFragment implements Commo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
+        mReplyPresenter = new ReplyPresenter(this);
+        nid = getArguments().getInt("nid");
     }
 
     @Nullable
@@ -64,10 +87,10 @@ public class BottomCommentDialogFragment extends DialogFragment implements Commo
         view.findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
-                showLoading();
+                mReplyPresenter.postReply();
             }
         });
+        mEditComment = view.findViewById(R.id.edittext_comment);
         mProgressDialog = new ProgressDialog(mContext);
         mProgressDialog.setMessage("请稍候……");
         return view;
@@ -85,16 +108,27 @@ public class BottomCommentDialogFragment extends DialogFragment implements Commo
 
     @Override
     public void onSuccess(Object object) {
-        Toast.makeText(mContext, "发表成功！", Toast.LENGTH_SHORT).show();
+        mReplyListener.onSucess();
     }
 
     @Override
     public void onFailure(String failureMessage) {
-        Toast.makeText(mContext, "发表失败！", Toast.LENGTH_SHORT).show();
+        mReplyListener.onFailure(failureMessage);
     }
 
     @Override
     public void onError(String errorMessage) {
-        Toast.makeText(mContext, "发表过程出现错误！", Toast.LENGTH_SHORT).show();
+        mReplyListener.onError(errorMessage);
+    }
+
+    @Override
+    public Reply getReplyInfo() {
+        Reply reply = new Reply();
+        reply.setNid(nid);
+        reply.setReplytime(CommonUtil.getTimeStamp());
+        reply.setUid((int)SPUtils.get("uid",0));
+        reply.setReplyuid(0);
+        reply.setReplycontent(mEditComment.getText().toString().trim());
+        return reply;
     }
 }

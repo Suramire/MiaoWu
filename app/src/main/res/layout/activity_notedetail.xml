@@ -10,13 +10,13 @@
              android:layout_gravity="top"/>
 
 
-
     <ListView
         android:id="@+id/list_notedetail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
         android:layout_marginTop="?attr/actionBarSize"
-        android:layout_marginBottom="?attr/actionBarSize">
+        android:padding="8dp">
 
     </ListView>
 

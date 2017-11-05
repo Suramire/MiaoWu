@@ -14,6 +14,8 @@ public interface NoteDetailContract {
         void getNoteDetail(int noteId, OnGetResultListener listener);
 
         void getPicture(int noteId, OnGetResultListener listener);
+
+        void getNoteReply(int noteId, OnGetResultListener listener);
     }
 
     interface View {
@@ -34,11 +36,19 @@ public interface NoteDetailContract {
         void onGetPictureFailure(String failureMessage);
 
         void onGetPictureError(String errorMessage);
+
+        void onGetReplySuccess(Object object);
+
+        void onGetReplyFailure(String failureMessage);
+
+        void onGetReplyError(String errorMessage);
     }
 
     interface Presenter {
         void getData();
 
         void getPicture();
+
+        void getReply();
     }
 }

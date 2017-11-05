@@ -1,16 +1,17 @@
 package com.suramire.miaowu.contract;
 
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.bean.Reply;
 
 /**
  * Created by Suramire on 2017/11/2.
  */
 
-public interface CommonContract {
+public interface RepleyContract {
     interface Model {
-        void postSomething(OnGetResultListener listener,Object... objects);
+        void postReply(Reply reply,OnGetResultListener listener);
 
-        void getSomething(OnGetResultListener listener,Object... objects);
+        void getReply(OnGetResultListener listener, Object... objects);
     }
 
     interface View {
@@ -23,11 +24,13 @@ public interface CommonContract {
         void onFailure(String failureMessage);
 
         void onError(String errorMessage);
+
+        Reply getReplyInfo();
     }
 
     interface Presenter {
-        void postSomething();
+        void postReply();
 
-        void getSomething();
+        void getReply();
     }
 }

@@ -3,6 +3,7 @@ package com.suramire.miaowu.ui;
 
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.fragment.BottomCommentDialogFragment;
 import com.suramire.miaowu.presenter.NoteDetailPresenter;
+import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.GlideImageLoader;
 import com.suramire.miaowu.util.L;
 import com.youth.banner.Banner;
@@ -139,8 +141,6 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
                 .setBannerStyle(BannerConfig.NUM_INDICATOR)
                 .setIndicatorGravity(BannerConfig.RIGHT)
                 .start();
-
-
     }
 
     @Override
@@ -154,11 +154,57 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
 
     }
 
+    @Override
+    public void onGetReplySuccess(Object object) {
+        // TODO: 2017/11/5 获取回复之后显示
+    }
+
+    @Override
+    public void onGetReplyFailure(String failureMessage) {
+        // TODO: 2017/11/5 显示失败信息
+    }
+
+    @Override
+    public void onGetReplyError(String errorMessage) {
+        // TODO: 2017/11/5 显示错误信息
+    }
+
 
     @OnClick(R.id.editText3)
     public void onViewClicked() {
-        FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
-        BottomCommentDialogFragment bottomCommentDialogFragment = BottomCommentDialogFragment.newInstance();
-        bottomCommentDialogFragment.show(mFragTransaction,"111");
+        if(!CommonUtil.isLogined()){
+            Snackbar.make(findViewById(android.R.id.content),"您还未登录",Snackbar.LENGTH_INDEFINITE)
+                    .setAction("登录", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(LoginActivity.class);
+                        }
+                    }).show();
+        }else{
+            final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
+            final BottomCommentDialogFragment bottomCommentDialogFragment = BottomCommentDialogFragment.newInstance();
+            bottomCommentDialogFragment.setReplyListener(new BottomCommentDialogFragment.OnReplyListener() {
+                @Override
+                public void onSucess() {
+                    Toast.makeText(mContext, "发表成功！", Toast.LENGTH_SHORT).show();
+                    bottomCommentDialogFragment.dismiss();
+                }
+
+                @Override
+                public void onFailure(String failureMessage) {
+                    Toast.makeText(mContext, "发表失败:"+failureMessage, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    Toast.makeText(mContext, "发表过程出现错误:"+errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+            Bundle bundle = new Bundle();
+            bundle.putInt("nid",getNoteId());
+            bottomCommentDialogFragment.setArguments(bundle);
+            bottomCommentDialogFragment.show(mFragTransaction,"111");
+        }
+
     }
 }

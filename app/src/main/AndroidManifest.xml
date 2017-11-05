@@ -42,10 +42,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.TestActivity">
-
-        </activity>
-
         <activity android:name=".ui.RegisterActivity"/>
         <activity android:name=".ui.LoginActivity" android:theme="@style/AppTheme.DarkActionBar"/>
         <activity android:name=".ui.NoteDetailActivity"/>

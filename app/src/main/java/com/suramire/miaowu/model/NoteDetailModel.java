@@ -107,4 +107,9 @@ public class NoteDetailModel implements NoteDetailContract.Model {
             }
         }).start();
     }
+
+    @Override
+    public void getNoteReply(int noteId, OnGetResultListener listener) {
+        // TODO: 2017/11/5 这里获取帖子回复
+    }
 }

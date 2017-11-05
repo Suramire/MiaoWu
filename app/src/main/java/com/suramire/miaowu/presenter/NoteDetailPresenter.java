@@ -98,4 +98,9 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void getReply() {
+        // TODO: 2017/11/5 这里执行获取回复操作
+    }
 }

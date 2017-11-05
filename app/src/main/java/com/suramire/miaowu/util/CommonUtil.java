@@ -32,6 +32,11 @@ import static com.makeramen.roundedimageview.RoundedImageView.TAG;
 public class CommonUtil {
     private static Context mContext = App.getContext();
 
+
+
+
+
+
     /**
      * 设置输入框的错误提示
      * @param textInputLayout 目标输入框的父TextInputLayout
@@ -93,10 +98,7 @@ public class CommonUtil {
     }
 
     public static boolean isLogined(){
-        if((int)SPUtils.get("uid",0)!=0 && (int)SPUtils.get("autologin",0)==1){
-            return true;
-        }
-        return false;
+        return (int)SPUtils.get("uid",0) !=0;
     }
 
     /**

@@ -38,4 +38,5 @@
     }
 }</string>
     <string name="more_note">查看所有帖子 >></string>
+    <string name="title_reply">帖子回复</string>
 </resources>
