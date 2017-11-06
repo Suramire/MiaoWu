@@ -55,9 +55,4 @@ public class ReplyModel implements RepleyContract.Model {
             }
         }).start();
     }
-
-    @Override
-    public void getReply(OnGetResultListener listener, Object... objects) {
-
-    }
 }

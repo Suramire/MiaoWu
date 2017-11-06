@@ -102,5 +102,36 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
     @Override
     public void getReply() {
         // TODO: 2017/11/5 这里执行获取回复操作
+        mNoteDetailModel.getNoteReply(mView.getNoteId(), new OnGetResultListener() {
+            @Override
+            public void onSuccess(final Object object) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mView.onGetReplySuccess(object);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(final String failureMessage) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mView.onGetReplyFailure(failureMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(final String errorMessage) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mView.onGetReplyError(errorMessage);
+                    }
+                });
+            }
+        });
     }
 }

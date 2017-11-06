@@ -5,6 +5,7 @@ import android.os.SystemClock;
 import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.bean.Note;
+import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.HTTPUtil;
@@ -109,7 +110,42 @@ public class NoteDetailModel implements NoteDetailContract.Model {
     }
 
     @Override
-    public void getNoteReply(int noteId, OnGetResultListener listener) {
+    public void getNoteReply(final int noteId, final OnGetResultListener listener) {
         // TODO: 2017/11/5 这里获取帖子回复
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Reply reply = new Reply();
+                reply.setNid(noteId);
+                HTTPUtil.getPost(BASEURL + "listReply",reply , new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        listener.onError(e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String result = response.body().string();
+                        try{
+                            M m = (M) GsonUtil.jsonToObject(result, M.class);
+                            switch (m.getCode()){
+                                case M.CODE_SUCCESS:{
+                                    List<Reply> replies = GsonUtil.jsonToList(m.getData(), Reply.class);
+                                    listener.onSuccess(replies);
+                                }break;
+                                case M.CODE_FAILURE:{
+                                    listener.onFailure(m.getMessage());
+                                }break;
+                                case M.CODE_ERROR:{
+                                    listener.onError(m.getMessage());
+                                }break;
+                            }
+                        }catch (Exception e){
+                            listener.onError(e.getMessage());
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 }

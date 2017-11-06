@@ -61,8 +61,4 @@ public class ReplyPresenter implements RepleyContract.Presenter {
         });
     }
 
-    @Override
-    public void getReply() {
-
-    }
 }

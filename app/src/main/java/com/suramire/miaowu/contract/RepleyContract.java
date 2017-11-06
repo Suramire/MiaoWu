@@ -11,7 +11,6 @@ public interface RepleyContract {
     interface Model {
         void postReply(Reply reply,OnGetResultListener listener);
 
-        void getReply(OnGetResultListener listener, Object... objects);
     }
 
     interface View {
@@ -31,6 +30,5 @@ public interface RepleyContract {
     interface Presenter {
         void postReply();
 
-        void getReply();
     }
 }

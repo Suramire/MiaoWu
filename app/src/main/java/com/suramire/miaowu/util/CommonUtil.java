@@ -19,6 +19,7 @@ import com.suramire.miaowu.base.App;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -32,7 +33,7 @@ import static com.makeramen.roundedimageview.RoundedImageView.TAG;
 public class CommonUtil {
     private static Context mContext = App.getContext();
 
-
+    private static SimpleDateFormat sSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
 
@@ -163,6 +164,10 @@ public class CommonUtil {
 
     public static Timestamp getTimeStamp(){
         return new Timestamp(new Date().getTime());
+    }
+
+    public static String timeStampToDateString(Timestamp timestamp){
+        return sSimpleDateFormat.format(timestamp);
     }
 
 }

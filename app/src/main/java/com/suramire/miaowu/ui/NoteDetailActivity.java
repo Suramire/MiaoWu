@@ -18,6 +18,7 @@ import com.classic.adapter.CommonAdapter;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Note;
+import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.fragment.BottomCommentDialogFragment;
 import com.suramire.miaowu.presenter.NoteDetailPresenter;
@@ -46,6 +47,8 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
     private ProgressDialog mProgressDialog;
     private NoteDetailPresenter mNoteDetailPresenter;
     private int mNoteId;
+    private View footerView;
+    private ListView mListReply;
 
 
     @Override
@@ -63,7 +66,9 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
         mProgressDialog.setMessage("正在读取帖子信息，请稍候……");
         mNoteDetailPresenter = new NoteDetailPresenter(this);
         mNoteDetailPresenter.getData();
-
+        footerView = LayoutInflater.from(mContext).inflate(R.layout.footer_notedetail, null);
+        mListReply = footerView.findViewById(R.id.list_reply);
+        mListNotedetail.addFooterView(footerView);
 
     }
 
@@ -90,7 +95,7 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
 
     @Override
     public void onGetSuccess(Note note) {
-        mNoteDetailPresenter.getPicture();
+
         List<Note> notes = new ArrayList<>();
         notes.add(note);
         mListNotedetail.setAdapter(new CommonAdapter<Note>(mContext, R.layout.item_notedetail, notes) {
@@ -100,6 +105,7 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
                         .setText(R.id.notedetail_title, item.getTitle());
             }
         });
+        mNoteDetailPresenter.getReply();
 
     }
 
@@ -129,9 +135,7 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
     public void onGetPictureSuccess(List<String> pictures) {
         View headerView = LayoutInflater.from(this).inflate(R.layout.header_notedetail, null, false);
         Banner mBanner = headerView.findViewById(R.id.banner);
-        if (mListNotedetail.getHeaderViewsCount() == 0) {
-            mListNotedetail.addHeaderView(mBanner);
-        }
+        mListNotedetail.addHeaderView(mBanner);
         int height = mBanner.getLayoutParams().height;
         AbsListView.LayoutParams al = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
         mBanner.setLayoutParams(al);
@@ -156,17 +160,37 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
 
     @Override
     public void onGetReplySuccess(Object object) {
+        //先获取评论再加载配图
+        mNoteDetailPresenter.getPicture();
         // TODO: 2017/11/5 获取回复之后显示
+        List<Reply> replies = (List<Reply>) object;
+        if (replies!=null){
+            CommonAdapter<Reply> adapter = new CommonAdapter<Reply>(mContext, R.layout.item_reply, replies) {
+                @Override
+                public void onUpdate(BaseAdapterHelper helper, Reply item, int position) {
+                    helper.setText(R.id.reply_date, CommonUtil.timeStampToDateString(item.getReplytime()))
+                            .setText(R.id.reply_nickname, item.getUid() + "")
+                            .setText(R.id.reply_content, item.getReplycontent());
+                }
+            };
+            mListReply.setAdapter(adapter);
+            L.e("adapter.size" + adapter.getData().size());
+//            if(mListNotedetail.getFooterViewsCount()==0){
+//                mListNotedetail.addFooterView(footerView);
+//            }
+
+
+        }
     }
 
     @Override
     public void onGetReplyFailure(String failureMessage) {
-        // TODO: 2017/11/5 显示失败信息
+        Toast.makeText(mContext, "获取评论失败，" + failureMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onGetReplyError(String errorMessage) {
-        // TODO: 2017/11/5 显示错误信息
+        Toast.makeText(mContext, "获取评论出错，" + errorMessage, Toast.LENGTH_SHORT).show();
     }
 
 
