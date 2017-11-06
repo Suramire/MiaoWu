@@ -18,7 +18,6 @@ import com.classic.adapter.CommonAdapter;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Note;
-import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.fragment.BottomCommentDialogFragment;
 import com.suramire.miaowu.presenter.NoteDetailPresenter;
@@ -60,15 +59,11 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
     public void initView(View view) {
         setSupportActionBar(mToolbar);
         mNoteId = getIntent().getIntExtra("noteId", 0);
-        Toast.makeText(mContext, "noteId:" + mNoteId, Toast.LENGTH_SHORT).show();
         //查询帖子信息
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("正在读取帖子信息，请稍候……");
         mNoteDetailPresenter = new NoteDetailPresenter(this);
         mNoteDetailPresenter.getData();
-        footerView = LayoutInflater.from(mContext).inflate(R.layout.footer_notedetail, null);
-        mListReply = footerView.findViewById(R.id.list_reply);
-        mListNotedetail.addFooterView(footerView);
 
     }
 
@@ -105,7 +100,7 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
                         .setText(R.id.notedetail_title, item.getTitle());
             }
         });
-        mNoteDetailPresenter.getReply();
+        mNoteDetailPresenter.getPicture();
 
     }
 
@@ -133,6 +128,7 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
 
     @Override
     public void onGetPictureSuccess(List<String> pictures) {
+        mNoteDetailPresenter.getReply();
         View headerView = LayoutInflater.from(this).inflate(R.layout.header_notedetail, null, false);
         Banner mBanner = headerView.findViewById(R.id.banner);
         mListNotedetail.addHeaderView(mBanner);
@@ -160,75 +156,66 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
 
     @Override
     public void onGetReplySuccess(Object object) {
-        //先获取评论再加载配图
-        mNoteDetailPresenter.getPicture();
-        // TODO: 2017/11/5 获取回复之后显示
-        List<Reply> replies = (List<Reply>) object;
-        if (replies!=null){
-            CommonAdapter<Reply> adapter = new CommonAdapter<Reply>(mContext, R.layout.item_reply, replies) {
-                @Override
-                public void onUpdate(BaseAdapterHelper helper, Reply item, int position) {
-                    helper.setText(R.id.reply_date, CommonUtil.timeStampToDateString(item.getReplytime()))
-                            .setText(R.id.reply_nickname, item.getUid() + "")
-                            .setText(R.id.reply_content, item.getReplycontent());
-                }
-            };
-            mListReply.setAdapter(adapter);
-            L.e("adapter.size" + adapter.getData().size());
-//            if(mListNotedetail.getFooterViewsCount()==0){
-//                mListNotedetail.addFooterView(footerView);
-//            }
-
-
-        }
     }
 
     @Override
     public void onGetReplyFailure(String failureMessage) {
-        Toast.makeText(mContext, "获取评论失败，" + failureMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onGetReplyError(String errorMessage) {
-        Toast.makeText(mContext, "获取评论出错，" + errorMessage, Toast.LENGTH_SHORT).show();
     }
 
 
-    @OnClick(R.id.editText3)
-    public void onViewClicked() {
-        if(!CommonUtil.isLogined()){
-            Snackbar.make(findViewById(android.R.id.content),"您还未登录",Snackbar.LENGTH_INDEFINITE)
-                    .setAction("登录", new View.OnClickListener() {
+    @OnClick({R.id.btn_comment, R.id.btn_like, R.id.btn_share,R.id.editText3})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_comment:{
+                Bundle bundle = new Bundle();
+                bundle.putInt("nid",getNoteId());
+                startActivity(ReplyListActivity.class,bundle);
+            }
+                break;
+            case R.id.btn_like:
+                break;
+            case R.id.btn_share:
+                break;
+            case R.id.editText3:{
+                if (!CommonUtil.isLogined()) {
+                    Snackbar.make(findViewById(android.R.id.content), "您还未登录", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("登录", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    startActivity(LoginActivity.class);
+                                }
+                            }).show();
+                } else {
+                    final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
+                    final BottomCommentDialogFragment bottomCommentDialogFragment = BottomCommentDialogFragment.newInstance();
+                    bottomCommentDialogFragment.setReplyListener(new BottomCommentDialogFragment.OnReplyListener() {
                         @Override
-                        public void onClick(View v) {
-                            startActivity(LoginActivity.class);
+                        public void onSucess() {
+                            Toast.makeText(mContext, "发表成功！", Toast.LENGTH_SHORT).show();
+                            bottomCommentDialogFragment.dismiss();
                         }
-                    }).show();
-        }else{
-            final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
-            final BottomCommentDialogFragment bottomCommentDialogFragment = BottomCommentDialogFragment.newInstance();
-            bottomCommentDialogFragment.setReplyListener(new BottomCommentDialogFragment.OnReplyListener() {
-                @Override
-                public void onSucess() {
-                    Toast.makeText(mContext, "发表成功！", Toast.LENGTH_SHORT).show();
-                    bottomCommentDialogFragment.dismiss();
-                }
 
-                @Override
-                public void onFailure(String failureMessage) {
-                    Toast.makeText(mContext, "发表失败:"+failureMessage, Toast.LENGTH_SHORT).show();
-                }
+                        @Override
+                        public void onFailure(String failureMessage) {
+                            Toast.makeText(mContext, "发表失败:" + failureMessage, Toast.LENGTH_SHORT).show();
+                        }
 
-                @Override
-                public void onError(String errorMessage) {
-                    Toast.makeText(mContext, "发表过程出现错误:"+errorMessage, Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onError(String errorMessage) {
+                            Toast.makeText(mContext, "发表过程出现错误:" + errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("nid", getNoteId());
+                    bottomCommentDialogFragment.setArguments(bundle);
+                    bottomCommentDialogFragment.show(mFragTransaction, "111");
                 }
-            });
-            Bundle bundle = new Bundle();
-            bundle.putInt("nid",getNoteId());
-            bottomCommentDialogFragment.setArguments(bundle);
-            bottomCommentDialogFragment.show(mFragTransaction,"111");
+            }
+                break;
         }
-
     }
 }

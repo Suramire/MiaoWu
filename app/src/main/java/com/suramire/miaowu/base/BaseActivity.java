@@ -61,9 +61,19 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /*为Activity切换提供动画效果*/
     public void startActivity(Class<?> cls){
-        startActivity(new Intent(mContext,cls));
+        startActivity(cls,null);
+    }
+
+    public void startActivity(Class<?> cls,Bundle bundle){
+        Intent intent = new Intent(mContext, cls);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
         overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
     }
+
+
     /*为Activity退出提供动画效果*/
     @Override
     public void finish() {

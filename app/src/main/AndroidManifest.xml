@@ -46,13 +46,14 @@
         <activity android:name=".ui.LoginActivity" android:theme="@style/AppTheme.DarkActionBar"/>
         <activity android:name=".ui.NoteDetailActivity"/>
         <activity android:name=".ui.ProfileActivity"/>
-        <activity android:name=".ui.NewPublishActivity">
-        </activity>
+        <activity android:name=".ui.NewPublishActivity"/>
+        <activity android:name=".ui.ReplyListActivity"/>
         <activity android:name="me.iwf.photopicker.PhotoPickerActivity"
             android:theme="@style/AppTheme"/>
 
         <activity android:name="me.iwf.photopicker.PhotoPagerActivity"
                   android:theme="@style/AppTheme"/>
+
 
     </application>
 

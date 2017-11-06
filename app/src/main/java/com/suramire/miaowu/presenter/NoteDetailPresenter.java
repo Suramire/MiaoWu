@@ -101,7 +101,6 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
 
     @Override
     public void getReply() {
-        // TODO: 2017/11/5 这里执行获取回复操作
         mNoteDetailModel.getNoteReply(mView.getNoteId(), new OnGetResultListener() {
             @Override
             public void onSuccess(final Object object) {

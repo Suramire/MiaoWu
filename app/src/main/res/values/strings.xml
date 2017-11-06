@@ -39,4 +39,5 @@
 }</string>
     <string name="more_note">查看所有帖子 >></string>
     <string name="title_reply">帖子回复</string>
+    <string name="empty_reply">暂无评论，快来抢沙发</string>
 </resources>
