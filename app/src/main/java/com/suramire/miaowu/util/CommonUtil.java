@@ -33,9 +33,6 @@ import static com.makeramen.roundedimageview.RoundedImageView.TAG;
 public class CommonUtil {
     private static Context mContext = App.getContext();
 
-    private static SimpleDateFormat sSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-
 
 
     /**
@@ -161,13 +158,49 @@ public class CommonUtil {
         return null;
     }
 
-
+    /**
+     * 得到当前时间戳
+     * @return
+     */
     public static Timestamp getTimeStamp(){
         return new Timestamp(new Date().getTime());
     }
 
+    /**
+     * 将时间戳转成日期字符串
+     * @param timestamp
+     * @return
+     */
     public static String timeStampToDateString(Timestamp timestamp){
+        SimpleDateFormat sSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sSimpleDateFormat.format(timestamp);
+    }
+
+    public static String getHowLongAgo(Timestamp timestamp){
+        long l = getTimeStamp().getTime() - timestamp.getTime();
+        long l1 = l / 1000 / 60 / 60 / 24 / 30;
+        if(l1>3){
+            return "3个月前";
+        }else if(l1>0){
+            return l1+"个月前";
+        }else {
+            long l2 = l / 1000 / 60 / 60 / 24;
+            if(l2>0){
+                return l2+"天前";
+            }else{
+                long l3 = l / 1000 / 60 / 60;
+                if(l3>0){
+                    return l3+"小时前";
+                }else{
+                    long l4 = l / 1000 / 60;
+                    if(l4>0){
+                        return l4+"分钟前";
+                    }else{
+                        return "刚刚";
+                    }
+                }
+            }
+        }
     }
 
 }

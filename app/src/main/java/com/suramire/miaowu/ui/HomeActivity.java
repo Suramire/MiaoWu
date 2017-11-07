@@ -34,6 +34,7 @@ import com.suramire.miaowu.contract.HomeContract;
 import com.suramire.miaowu.contract.LoginContract;
 import com.suramire.miaowu.presenter.HomePresenter;
 import com.suramire.miaowu.presenter.LoginPresenter;
+import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.SPUtils;
 
@@ -327,7 +328,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                     });
                     helper.setText(R.id.notetitle,item.getTitle())
                             .setText(R.id.notecontent,item.getContent())
-                            .setText(R.id.notepublishtime,item.getPublish()+"")
+                            .setText(R.id.notepublishtime, CommonUtil.getHowLongAgo(item.getPublish()))
                             .setText(R.id.authorname,item.getNickname());
                 }
             });

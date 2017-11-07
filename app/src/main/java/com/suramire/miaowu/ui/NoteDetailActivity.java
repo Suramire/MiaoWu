@@ -6,28 +6,23 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.classic.adapter.BaseAdapterHelper;
-import com.classic.adapter.CommonAdapter;
 import com.suramire.miaowu.R;
+import com.suramire.miaowu.adapter.MultiItemAdapter;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Note;
+import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.fragment.BottomCommentDialogFragment;
 import com.suramire.miaowu.presenter.NoteDetailPresenter;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.GlideImageLoader;
 import com.suramire.miaowu.util.L;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -46,8 +41,8 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
     private ProgressDialog mProgressDialog;
     private NoteDetailPresenter mNoteDetailPresenter;
     private int mNoteId;
-    private View footerView;
-    private ListView mListReply;
+    private MultiItemAdapter mAdapter;
+    private List<Object> mObjects;
 
 
     @Override
@@ -90,16 +85,11 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
 
     @Override
     public void onGetSuccess(Note note) {
-
-        List<Note> notes = new ArrayList<>();
-        notes.add(note);
-        mListNotedetail.setAdapter(new CommonAdapter<Note>(mContext, R.layout.item_notedetail, notes) {
-            @Override
-            public void onUpdate(BaseAdapterHelper helper, Note item, int position) {
-                helper.setText(R.id.notedetail_content, item.getContent())
-                        .setText(R.id.notedetail_title, item.getTitle());
-            }
-        });
+        mObjects = new ArrayList<>();
+        mObjects.add(note);
+        mAdapter = new MultiItemAdapter(this, mObjects);
+        mListNotedetail.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
         mNoteDetailPresenter.getPicture();
 
     }
@@ -128,19 +118,10 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
 
     @Override
     public void onGetPictureSuccess(List<String> pictures) {
+        mObjects.add(pictures);
+        Collections.reverse(mObjects);
+        mAdapter.notifyDataSetChanged();
         mNoteDetailPresenter.getReply();
-        View headerView = LayoutInflater.from(this).inflate(R.layout.header_notedetail, null, false);
-        Banner mBanner = headerView.findViewById(R.id.banner);
-        mListNotedetail.addHeaderView(mBanner);
-        int height = mBanner.getLayoutParams().height;
-        AbsListView.LayoutParams al = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
-        mBanner.setLayoutParams(al);
-        mBanner.setImageLoader(new GlideImageLoader())
-                .setImages(pictures)
-                .isAutoPlay(false)
-                .setBannerStyle(BannerConfig.NUM_INDICATOR)
-                .setIndicatorGravity(BannerConfig.RIGHT)
-                .start();
     }
 
     @Override
@@ -156,6 +137,13 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
 
     @Override
     public void onGetReplySuccess(Object object) {
+        List<Reply> replies = (List<Reply>) object;
+        for (Reply reply: replies
+             ) {
+            mObjects.add(reply);
+        }
+        mAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -171,9 +159,7 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_comment:{
-                Bundle bundle = new Bundle();
-                bundle.putInt("nid",getNoteId());
-                startActivity(ReplyListActivity.class,bundle);
+                // TODO: 2017/11/7 跳转到评论列表
             }
                 break;
             case R.id.btn_like:
