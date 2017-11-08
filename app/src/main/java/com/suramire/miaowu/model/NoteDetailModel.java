@@ -9,6 +9,7 @@ import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.HTTPUtil;
+import com.suramire.miaowu.util.L;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -132,6 +133,44 @@ public class NoteDetailModel implements NoteDetailContract.Model {
                                 case M.CODE_SUCCESS:{
                                     List<Reply> replies = GsonUtil.jsonToList(m.getData(), Reply.class);
                                     listener.onSuccess(replies);
+                                }break;
+                                case M.CODE_FAILURE:{
+                                    listener.onFailure(m.getMessage());
+                                }break;
+                                case M.CODE_ERROR:{
+                                    listener.onError(m.getMessage());
+                                }break;
+                            }
+                        }catch (Exception e){
+                            listener.onError(e.getMessage());
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+
+    @Override
+    public void thumb(final int noteId, final OnGetResultListener listener) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Note note = new Note();
+                note.setId(noteId);
+                HTTPUtil.getPost(BASEURL + "thumbNote", note, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        L.e("点赞失败：" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String result = response.body().string();
+                        try{
+                            M m = (M) GsonUtil.jsonToObject(result, M.class);
+                            switch (m.getCode()){
+                                case M.CODE_SUCCESS:{
+                                    listener.onSuccess(null);
                                 }break;
                                 case M.CODE_FAILURE:{
                                     listener.onFailure(m.getMessage());

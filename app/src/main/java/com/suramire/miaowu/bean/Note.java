@@ -17,6 +17,7 @@ public class Note implements java.io.Serializable {
 	private String content;
 	private Timestamp publish;
 	private Integer viewcount;
+	private Integer thumbs;
 
 	// Constructors
 
@@ -34,17 +35,18 @@ public class Note implements java.io.Serializable {
 
 	/** full constructor */
 	public Note(Integer uid, String title, String content, Timestamp publish,
-			Integer viewcount) {
+			Integer viewcount, Integer thumbs) {
 		this.uid = uid;
 		this.title = title;
 		this.content = content;
 		this.publish = publish;
 		this.viewcount = viewcount;
+		this.thumbs = thumbs;
 	}
 
 	// Property accessors
 
-	public Integer getId() {
+	public Integer getId(int noteId) {
 		return this.id;
 	}
 
@@ -90,6 +92,14 @@ public class Note implements java.io.Serializable {
 
 	public void setViewcount(Integer viewcount) {
 		this.viewcount = viewcount;
+	}
+
+	public Integer getThumbs() {
+		return this.thumbs;
+	}
+
+	public void setThumbs(Integer thumbs) {
+		this.thumbs = thumbs;
 	}
 
 }

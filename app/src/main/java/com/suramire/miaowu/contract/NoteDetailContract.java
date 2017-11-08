@@ -16,6 +16,8 @@ public interface NoteDetailContract {
         void getPicture(int noteId, OnGetResultListener listener);
 
         void getNoteReply(int noteId, OnGetResultListener listener);
+
+        void thumb(int noteId, OnGetResultListener listener);
     }
 
     interface View {
@@ -42,6 +44,8 @@ public interface NoteDetailContract {
         void onGetReplyFailure(String failureMessage);
 
         void onGetReplyError(String errorMessage);
+
+        void onThumbSuccess();
     }
 
     interface Presenter {
@@ -50,5 +54,7 @@ public interface NoteDetailContract {
         void getPicture();
 
         void getReply();
+
+        void thumb();
     }
 }

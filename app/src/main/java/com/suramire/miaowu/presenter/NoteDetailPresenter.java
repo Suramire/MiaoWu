@@ -133,4 +133,30 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void thumb() {
+        mNoteDetailModel.thumb(mView.getNoteId(), new OnGetResultListener() {
+            @Override
+            public void onSuccess(Object object) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mView.onThumbSuccess();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String failureMessage) {
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
+
+    }
 }

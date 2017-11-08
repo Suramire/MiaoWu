@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suramire.miaowu.R;
@@ -38,11 +39,17 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
     Toolbar mToolbar;
     @Bind(R.id.list_notedetail)
     ListView mListNotedetail;
+    @Bind(R.id.bar_num)
+    TextView mBarNum;
+    @Bind(R.id.bar_num2)
+    TextView mBarNum2;
     private ProgressDialog mProgressDialog;
     private NoteDetailPresenter mNoteDetailPresenter;
     private int mNoteId;
     private MultiItemAdapter mAdapter;
     private List<Object> mObjects;
+    private boolean thumbed;
+    private Integer mThumbs;
 
 
     @Override
@@ -91,7 +98,24 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
         mListNotedetail.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
         mNoteDetailPresenter.getPicture();
+        mThumbs = note.getThumbs();
+        thumb(mThumbs);
 
+    }
+
+
+
+
+    private void thumb(int count){
+        if (count < 0) {
+            mBarNum2.setVisibility(View.GONE);
+        } else {
+            if (count > 99) {
+                mBarNum2.setText("99+");
+            } else {
+                mBarNum2.setText(count + "");
+            }
+        }
     }
 
     @Override
@@ -138,8 +162,8 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
     @Override
     public void onGetReplySuccess(Object object) {
         List<Reply> replies = (List<Reply>) object;
-        for (Reply reply: replies
-             ) {
+        for (Reply reply : replies
+                ) {
             mObjects.add(reply);
         }
         mAdapter.notifyDataSetChanged();
@@ -154,19 +178,28 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
     public void onGetReplyError(String errorMessage) {
     }
 
+    @Override
+    public void onThumbSuccess() {
+        thumbed = true;
+        thumb(mThumbs+1);
+    }
 
-    @OnClick({R.id.btn_comment, R.id.btn_like, R.id.btn_share,R.id.editText3})
+
+    @OnClick({R.id.btn_comment, R.id.btn_like, R.id.btn_share, R.id.editText3})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btn_comment:{
+            case R.id.btn_comment: {
                 // TODO: 2017/11/7 跳转到评论列表
             }
-                break;
+            break;
             case R.id.btn_like:
+                if(!thumbed){
+                    mNoteDetailPresenter.thumb();
+                }
                 break;
             case R.id.btn_share:
                 break;
-            case R.id.editText3:{
+            case R.id.editText3: {
                 if (!CommonUtil.isLogined()) {
                     Snackbar.make(findViewById(android.R.id.content), "您还未登录", Snackbar.LENGTH_INDEFINITE)
                             .setAction("登录", new View.OnClickListener() {
@@ -201,7 +234,9 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
                     bottomCommentDialogFragment.show(mFragTransaction, "111");
                 }
             }
-                break;
+            break;
+
         }
     }
+
 }
