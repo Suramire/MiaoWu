@@ -50,7 +50,10 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
     private List<Object> mObjects;
     private boolean thumbed;
     private Integer mThumbs;
-
+    private  int mReplyCount;
+    private boolean isAtComment;//是否在评论页标志位
+    private int index;//上次浏览的index
+    private int top;//距离顶部距离
 
     @Override
     public int bindLayout() {
@@ -104,16 +107,26 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
     }
 
 
-
-
     private void thumb(int count){
-        if (count < 0) {
+        if (count <= 0) {
             mBarNum2.setVisibility(View.GONE);
         } else {
             if (count > 99) {
                 mBarNum2.setText("99+");
             } else {
                 mBarNum2.setText(count + "");
+            }
+        }
+    }
+
+    private void setReplyCount(int count){
+        if (count <= 0) {
+            mBarNum.setVisibility(View.GONE);
+        } else {
+            if (count > 99) {
+                mBarNum.setText("99+");
+            } else {
+                mBarNum.setText(count + "");
             }
         }
     }
@@ -165,17 +178,23 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
         for (Reply reply : replies
                 ) {
             mObjects.add(reply);
+            if(reply.getReplyuid()==0){
+                mReplyCount++;
+            }
         }
         mAdapter.notifyDataSetChanged();
+        setReplyCount(mReplyCount);
 
     }
 
     @Override
     public void onGetReplyFailure(String failureMessage) {
+        setReplyCount(0);
     }
 
     @Override
     public void onGetReplyError(String errorMessage) {
+        setReplyCount(0);
     }
 
     @Override
@@ -189,7 +208,22 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_comment: {
-                // TODO: 2017/11/7 跳转到评论列表
+                if(!isAtComment){
+                    isAtComment = true;
+                    //记录上次浏览位置
+                    index = mListNotedetail.getFirstVisiblePosition();
+                    L.e("index:" + index);
+                    View v = mListNotedetail.getChildAt(0);
+                    top = (v == null) ? 0 : v.getTop();
+                    L.e("top:"+ top);
+                    mListNotedetail.smoothScrollToPosition(2);
+                }else{
+                    isAtComment = false;
+                    L.e("index2:" + index);
+                    L.e("top2:"+ top);
+                    mListNotedetail.setSelectionFromTop(index, top);
+                }
+
             }
             break;
             case R.id.btn_like:

@@ -18,6 +18,7 @@ public interface NoteDetailContract {
         void getNoteReply(int noteId, OnGetResultListener listener);
 
         void thumb(int noteId, OnGetResultListener listener);
+
     }
 
     interface View {
