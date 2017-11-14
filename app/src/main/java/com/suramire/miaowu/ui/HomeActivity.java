@@ -28,7 +28,9 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
-import com.suramire.miaowu.bean.MultiBean;
+import com.suramire.miaowu.bean.Multi;
+import com.suramire.miaowu.bean.Note;
+import com.suramire.miaowu.bean.NotePhoto;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.HomeContract;
 import com.suramire.miaowu.contract.LoginContract;
@@ -298,23 +300,24 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void onGetSuccess(Object object) {
         // TODO: 2017/10/26 成功获取数据后执行的操作
-        final List<MultiBean> notes = (List<MultiBean>) object;
+        final List<Multi> notes = (List<Multi>) object;
         if(notes.size()>0){
 
             mRelistHome.setLayoutManager(new LinearLayoutManager(mContext));
-            mRelistHome.setAdapter(new CommonRecyclerAdapter<MultiBean>(mContext, R.layout.item_home, notes) {
+            mRelistHome.setAdapter(new CommonRecyclerAdapter<Multi>(mContext, R.layout.item_home, notes) {
 
                 @Override
-                public void onUpdate(final BaseAdapterHelper helper, final MultiBean item, int position) {
-
-
+                public void onUpdate(final BaseAdapterHelper helper, final Multi item, int position) {
+                    final Note note = item.getmNote();
+                    NotePhoto notePhoto = item.getmNotePhoto();
+                    User user = item.getmUser();
                     Picasso.with(mContext)
-                            .load(BASNOTEPICEURL+item.getName())
+                            .load(BASNOTEPICEURL+notePhoto.getName())
                             .placeholder(R.drawable.ic_loading)
                             .error(R.drawable.ic_loading_error)
                             .into((ImageView) helper.getView(R.id.noteimg));
                     Picasso.with(mContext)
-                            .load(BASUSERPICEURL+item.getIcon())
+                            .load(BASUSERPICEURL+user.getIcon())
                             .placeholder(R.drawable.default_icon)
                             .into((ImageView) helper.getView(R.id.anthorimg));
 
@@ -322,14 +325,15 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(mContext, NoteDetailActivity.class);
-                            intent.putExtra("noteId",item.getId());
+                            intent.putExtra("noteId",note.getId(0));
+                            intent.putExtra("multi",item);
                             startActivity(intent);
                         }
                     });
-                    helper.setText(R.id.notetitle,item.getTitle())
-                            .setText(R.id.notecontent,item.getContent())
-                            .setText(R.id.notepublishtime, CommonUtil.getHowLongAgo(item.getPublish()))
-                            .setText(R.id.authorname,item.getNickname());
+                    helper.setText(R.id.notetitle,note.getTitle())
+                            .setText(R.id.notecontent,note.getContent())
+                            .setText(R.id.notepublishtime, CommonUtil.getHowLongAgo(note.getPublish()))
+                            .setText(R.id.authorname,user.getNickname());
                 }
             });
             Toast.makeText(mContext, "成功获取" + notes.size() + "条数据", Toast.LENGTH_SHORT).show();

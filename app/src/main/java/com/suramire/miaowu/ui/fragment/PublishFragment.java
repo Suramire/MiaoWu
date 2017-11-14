@@ -1,4 +1,4 @@
-package com.suramire.miaowu.ui;
+package com.suramire.miaowu.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;

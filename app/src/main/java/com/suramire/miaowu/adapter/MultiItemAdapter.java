@@ -5,17 +5,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
+import com.suramire.miaowu.bean.User;
+import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.GlideImageLoader;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.suramire.miaowu.util.Constant.BASNOTEPICEURL;
+import static com.suramire.miaowu.util.Constant.BASUSERPICEURL;
 
 /**
  * Created by Suramire on 2017/11/7.
@@ -32,7 +41,7 @@ public class MultiItemAdapter extends BaseAdapter {
     public MultiItemAdapter(Context context , List list) {
         mList = list;
         mContext = context;
-        mClasses =new Class[]{Reply.class, Note.class, ArrayList.class};
+        mClasses =new Class[]{Reply.class, Note.class, ArrayList.class, User.class};
     }
 
     @Override
@@ -79,6 +88,9 @@ public class MultiItemAdapter extends BaseAdapter {
             case 2:{
                 convertView = getView2(position, convertView, parent);
             }break;
+            case 3:{
+                convertView = getView3(position, convertView, parent);
+            }break;
         }
         return convertView;
     }
@@ -90,13 +102,15 @@ public class MultiItemAdapter extends BaseAdapter {
             mVH = new VH0();
             mVH.mtvNickname = convertView.findViewById(R.id.reply_nickname);
             mVH.mtvContent = convertView.findViewById(R.id.reply_content);
-
+            mVH.mtvReplytime = convertView.findViewById(R.id.reply_date);
             convertView.setTag(mVH);
         }else{
             mVH = (VH0) convertView.getTag();
         }
-        mVH.mtvNickname.setText(((Reply) mList.get(position)).getUid() + "");
-        mVH.mtvContent.setText(((Reply) mList.get(position)).getReplycontent());
+        Reply reply = (Reply) mList.get(position);
+        mVH.mtvNickname.setText(reply.getUid() + "");
+        mVH.mtvContent.setText(reply.getReplycontent());
+        mVH.mtvReplytime.setText(CommonUtil.timeStampToDateString(reply.getReplytime()));
         if(isFirst){
             mVH.mtvTitle = convertView.findViewById(R.id.tv_title_reply);
             mVH.mtvTitle.setVisibility(View.VISIBLE);
@@ -108,16 +122,21 @@ public class MultiItemAdapter extends BaseAdapter {
     private View getView1(int position, View convertView, ViewGroup parent){
         VH1 mVH;
         if(convertView==null){
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_notedeatil, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_nt_content, parent, false);
             mVH = new VH1();
             mVH.mtvTitle = convertView.findViewById(R.id.notedetail_title);
             mVH.mtvContent = convertView.findViewById(R.id.notedetail_content);
+            mVH.mtvPublishTime = convertView.findViewById(R.id.nt_publishtime);
+            mVH.mtvViewcount = convertView.findViewById(R.id.nt_viewcount);
             convertView.setTag(mVH);
         }else{
             mVH = (VH1) convertView.getTag();
         }
-        mVH.mtvTitle.setText(((Note)mList.get(position)).getTitle());
-        mVH.mtvContent.setText(((Note)mList.get(position)).getContent());
+        Note note = (Note) mList.get(position);
+        mVH.mtvTitle.setText(note.getTitle());
+        mVH.mtvContent.setText(note.getContent());
+        mVH.mtvPublishTime.setText("发布时间："+CommonUtil.timeStampToDateString(note.getPublish()));
+        mVH.mtvViewcount.setText("浏览次数:"+note.getViewcount()+"");
         return convertView;
     }
 
@@ -126,15 +145,21 @@ public class MultiItemAdapter extends BaseAdapter {
     private View getView2(int position, View convertView, ViewGroup parent){
         VH2 mVH;
         if(convertView==null){
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_banner, null, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_nt_banner, null, false);
             mVH = new VH2();
             mVH.mBanner = convertView.findViewById(R.id.banner);
             convertView.setTag(mVH);
         }else{
             mVH = (VH2) convertView.getTag();
         }
+        List<String> items = (List<String>) getItem(position);
+        List<String> newItems = new ArrayList<>();
+        for (String s:
+             items) {
+            newItems.add(BASNOTEPICEURL+s);
+        }
         mVH.mBanner.setImageLoader(new GlideImageLoader())
-                .setImages((List<String>)getItem(position))
+                .setImages(newItems)
                 .isAutoPlay(false)
                 .setBannerStyle(BannerConfig.NUM_INDICATOR)
                 .setIndicatorGravity(BannerConfig.RIGHT)
@@ -142,18 +167,51 @@ public class MultiItemAdapter extends BaseAdapter {
         return convertView;
     }
 
+    private View getView3(int position, View convertView, ViewGroup parent){
+        VH3 mVH;
+        if(convertView==null){
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_nt_profile, null, false);
+            mVH = new VH3();
+            mVH.mButtonFollow = convertView.findViewById(R.id.btn_nt_follow);
+            mVH.mImgUser = convertView.findViewById(R.id.img_nt_profile);
+            mVH.mTvNickname = convertView.findViewById(R.id.tv_nt_nickname);
+            convertView.setTag(mVH);
+        }else{
+            mVH = (VH3) convertView.getTag();
+        }
+        User user = (User) mList.get(position);
+        mVH.mTvNickname.setText(user.getNickname());
+        mVH.mButtonFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "这里响应关注作者事件", Toast.LENGTH_SHORT).show();
+            }
+        });
+        Picasso.with(mContext)
+                .load(BASUSERPICEURL+user.getIcon())
+                .into(mVH.mImgUser);
+        return convertView;
+    }
+
 
     class VH0 {
         TextView mtvNickname,mtvContent;
-        TextView mtvTitle;
+        TextView mtvTitle,mtvReplytime;
     }
 
     class VH1 {
-        TextView mtvTitle,mtvContent;
+        TextView mtvTitle,mtvContent,
+            mtvPublishTime,mtvViewcount;
     }
 
     class VH2 {
         Banner mBanner;
+    }
+
+    class VH3{
+        ImageView mImgUser;
+        TextView mTvNickname;
+        Button mButtonFollow;
     }
 
 

@@ -1,9 +1,6 @@
 package com.suramire.miaowu.contract;
 
 import com.suramire.miaowu.base.OnGetResultListener;
-import com.suramire.miaowu.bean.Note;
-
-import java.util.List;
 
 /**
  * Created by Suramire on 2017/10/31.
@@ -28,17 +25,6 @@ public interface NoteDetailContract {
 
         int getNoteId();
 
-        void onGetSuccess(Note note);
-
-        void onGetFailure(String failureMessage);
-
-        void onGetError(String errorMessage);
-
-        void onGetPictureSuccess(List<String> pictures);
-
-        void onGetPictureFailure(String failureMessage);
-
-        void onGetPictureError(String errorMessage);
 
         void onGetReplySuccess(Object object);
 
@@ -50,9 +36,9 @@ public interface NoteDetailContract {
     }
 
     interface Presenter {
-        void getData();
+//        void getData();
 
-        void getPicture();
+//        void getPicture();
 
         void getReply();
 

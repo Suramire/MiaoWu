@@ -84,6 +84,9 @@ public class PublishModel implements PublishContract.Model {
         int nid = Integer.parseInt(object.toString());
         List<HashMap<String,String>> names = new ArrayList<>();
         for (int i =0;i<pictues.size();i++) {
+//            if(pictues.size()<2){
+//
+//            }
             File file = new File(pictues.get(i));
             HTTPUtil.getPost(BASEURL + "getPicNote", file, nid + "_" + i + ".png", new Callback() {
                 @Override

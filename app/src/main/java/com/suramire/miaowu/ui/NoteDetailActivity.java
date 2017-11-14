@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.adapter.MultiItemAdapter;
 import com.suramire.miaowu.base.BaseActivity;
-import com.suramire.miaowu.bean.Note;
+import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.fragment.BottomCommentDialogFragment;
@@ -23,7 +23,6 @@ import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -64,11 +63,26 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
     public void initView(View view) {
         setSupportActionBar(mToolbar);
         mNoteId = getIntent().getIntExtra("noteId", 0);
+        Multi multi = (Multi) getIntent().getSerializableExtra("multi");
         //查询帖子信息
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("正在读取帖子信息，请稍候……");
         mNoteDetailPresenter = new NoteDetailPresenter(this);
-        mNoteDetailPresenter.getData();
+//        mNoteDetailPresenter.getData();
+        // TODO: 2017/11/14 多图片上传完整性问题
+        // TODO: 2017/11/14 点击详情页 浏览次数+1
+        mObjects = new ArrayList<>();
+        List<String> picturesStrings = multi.getPicturesStrings();
+        mObjects.add(picturesStrings);
+        mObjects.add(multi.getmUser());
+        mObjects.add(multi.getmNote());
+        mAdapter = new MultiItemAdapter(this, mObjects);
+        mListNotedetail.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+
+        mThumbs = multi.getmNote().getThumbs();
+        thumb(mThumbs);
+        mNoteDetailPresenter.getReply();
 
     }
 
@@ -93,18 +107,6 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
         return mNoteId;
     }
 
-    @Override
-    public void onGetSuccess(Note note) {
-        mObjects = new ArrayList<>();
-        mObjects.add(note);
-        mAdapter = new MultiItemAdapter(this, mObjects);
-        mListNotedetail.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
-        mNoteDetailPresenter.getPicture();
-        mThumbs = note.getThumbs();
-        thumb(mThumbs);
-
-    }
 
 
     private void thumb(int count){
@@ -131,46 +133,8 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
         }
     }
 
-    @Override
-    public void onGetFailure(String failureMessage) {
-        Snackbar.make(findViewById(android.R.id.content), "读取帖子失败：" + failureMessage, Snackbar.LENGTH_INDEFINITE)
-                .setAction("重试", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mNoteDetailPresenter.getData();
-                    }
-                }).show();
-    }
 
-    @Override
-    public void onGetError(String errorMessage) {
-        Snackbar.make(findViewById(android.R.id.content), "读取帖子出错：" + errorMessage, Snackbar.LENGTH_INDEFINITE)
-                .setAction("返回", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                    }
-                }).show();
-    }
 
-    @Override
-    public void onGetPictureSuccess(List<String> pictures) {
-        mObjects.add(pictures);
-        Collections.reverse(mObjects);
-        mAdapter.notifyDataSetChanged();
-        mNoteDetailPresenter.getReply();
-    }
-
-    @Override
-    public void onGetPictureFailure(String failureMessage) {
-        L.e("获取帖子配图失败：" + failureMessage);
-    }
-
-    @Override
-    public void onGetPictureError(String errorMessage) {
-        L.e("获取帖子配图出错：" + errorMessage);
-
-    }
 
     @Override
     public void onGetReplySuccess(Object object) {
