@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
+import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
@@ -41,7 +42,7 @@ public class MultiItemAdapter extends BaseAdapter {
     public MultiItemAdapter(Context context , List list) {
         mList = list;
         mContext = context;
-        mClasses =new Class[]{Reply.class, Note.class, ArrayList.class, User.class};
+        mClasses =new Class[]{Multi.class, Note.class, ArrayList.class, User.class};
     }
 
     @Override
@@ -100,15 +101,25 @@ public class MultiItemAdapter extends BaseAdapter {
         if(convertView==null){
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_reply, parent, false);
             mVH = new VH0();
-            mVH.mtvNickname = convertView.findViewById(R.id.reply_nickname);
+            mVH.mtvNickname = convertView.findViewById(R.id.reply_user_nickname);
             mVH.mtvContent = convertView.findViewById(R.id.reply_content);
             mVH.mtvReplytime = convertView.findViewById(R.id.reply_date);
+            mVH.mimgUserIcon = convertView.findViewById(R.id.reply_user_icon);
+            mVH.mtvCount = convertView.findViewById(R.id.reply_count);
             convertView.setTag(mVH);
         }else{
             mVH = (VH0) convertView.getTag();
         }
-        Reply reply = (Reply) mList.get(position);
-        mVH.mtvNickname.setText(reply.getUid() + "");
+        Multi multi = (Multi) mList.get(position);
+        Reply reply = multi.getmReply();
+        User user = multi.getmUser();
+        mVH.mtvNickname.setText(user.getNickname());
+        String icon = user.getIcon();
+        if(icon!=null)
+        Picasso.with(mContext)
+                .load(BASUSERPICEURL+icon)
+                .into(mVH.mimgUserIcon);
+        mVH.mtvCount.setText(multi.getCount()+"");
         mVH.mtvContent.setText(reply.getReplycontent());
         mVH.mtvReplytime.setText(CommonUtil.timeStampToDateString(reply.getReplytime()));
         if(isFirst){
@@ -195,8 +206,9 @@ public class MultiItemAdapter extends BaseAdapter {
 
 
     class VH0 {
-        TextView mtvNickname,mtvContent;
+        TextView mtvNickname,mtvContent,mtvCount;
         TextView mtvTitle,mtvReplytime;
+        ImageView mimgUserIcon;
     }
 
     class VH1 {

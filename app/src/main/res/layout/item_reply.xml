@@ -36,14 +36,17 @@
             android:padding="8dp">
 
             <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/reply_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/reply_user_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_weight="0.1"
-                android:src="@drawable/default_icon"/>
+                android:src="@drawable/default_icon"
+                app:riv_border_color="@color/white"
+                app:riv_border_width="1dp"
+                app:riv_oval="true"/>
 
             <TextView
-                android:id="@+id/reply_nickname"
+                android:id="@+id/reply_user_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -69,6 +72,7 @@
                 android:src="@drawable/ic_chat_bubble_outline_black_24dp"/>
 
             <TextView
+                android:id="@+id/reply_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -76,21 +80,7 @@
                 android:text="100"
                 android:textAlignment="center"/>
 
-            <ImageView
-                android:id="@+id/reply_thumbup"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_gravity="center"
-                android:layout_weight="0.1"
-                android:src="@drawable/ic_thumb_up_black_24dp"/>
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.1"
-                android:text="99"/>
 
         </LinearLayout>
 

@@ -17,8 +17,17 @@ public class Multi implements Serializable {
 	private NotePhoto mNotePhoto;
 	private Reply mReply;
 	List<String> picturesStrings;
-	
-	public Reply getmReply() {
+    int mCount;
+
+    public int getCount() {
+        return mCount;
+    }
+
+    public void setCount(int count) {
+        mCount = count;
+    }
+
+    public Reply getmReply() {
 		return mReply;
 	}
 	public void setmReply(Reply mReply) {

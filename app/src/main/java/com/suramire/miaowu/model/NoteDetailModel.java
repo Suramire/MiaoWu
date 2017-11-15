@@ -4,6 +4,7 @@ import android.os.SystemClock;
 
 import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.bean.M;
+import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.contract.NoteDetailContract;
@@ -131,7 +132,7 @@ public class NoteDetailModel implements NoteDetailContract.Model {
                             M m = (M) GsonUtil.jsonToObject(result, M.class);
                             switch (m.getCode()){
                                 case M.CODE_SUCCESS:{
-                                    List<Reply> replies = GsonUtil.jsonToList(m.getData(), Reply.class);
+                                    List<Multi> replies = GsonUtil.jsonToList(m.getData(), Multi.class);
                                     listener.onSuccess(replies);
                                 }break;
                                 case M.CODE_FAILURE:{

@@ -15,7 +15,6 @@ import com.suramire.miaowu.R;
 import com.suramire.miaowu.adapter.MultiItemAdapter;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Multi;
-import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.fragment.BottomCommentDialogFragment;
 import com.suramire.miaowu.presenter.NoteDetailPresenter;
@@ -138,11 +137,12 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
 
     @Override
     public void onGetReplySuccess(Object object) {
-        List<Reply> replies = (List<Reply>) object;
-        for (Reply reply : replies
+        List<Multi> replies = (List<Multi>) object;
+        for (Multi multi : replies
                 ) {
-            mObjects.add(reply);
-            if(reply.getReplyuid()==0){
+            mObjects.add(multi);
+            //统计楼层数（非楼层回复）
+            if(multi.getmReply().getReplyuid()==0){
                 mReplyCount++;
             }
         }
