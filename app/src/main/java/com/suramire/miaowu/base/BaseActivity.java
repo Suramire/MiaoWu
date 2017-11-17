@@ -14,16 +14,13 @@ import com.suramire.miaowu.R;
 import butterknife.ButterKnife;
 
 /**
- * Created by Suramire on 2017/10/17.
- * Base 封装一些通用方法与属性
+ * Created by Suramire on 2017/11/16.
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
-
     protected Context mContext = this;
     private View mContextView = null;
     private boolean mDisplayHomeAsUpEnabled = true;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,11 +72,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     /*为Activity退出提供动画效果*/
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
-    }
+//    @Override
+//    public void finish() {
+//        super.finish();
+//        overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -104,5 +101,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param view
      */
     public abstract void initView(View view);
+
 
 }

@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.ProfileContract;
@@ -51,7 +51,7 @@ import static com.suramire.miaowu.util.Constant.BASUSERPICEURL;
  * Created by Suramire on 2017/10/24.
  */
 
-public class ProfileActivity extends BaseActivity implements ProfileContract.View {
+public class ProfileSwipeActivity extends BaseSwipeActivity implements ProfileContract.View {
     public static final int SUCCESS = 0x101;
     public static final int SELECT_PIC_BY_PICK_PHOTO = 0x102;
 

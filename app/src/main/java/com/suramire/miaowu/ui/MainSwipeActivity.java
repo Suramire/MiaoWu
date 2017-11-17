@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.util.CommonUtil;
 
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 import static com.suramire.miaowu.R.id.editTextPhoneNumber;
 
 
-public class MainActivity extends BaseActivity {
+public class MainSwipeActivity extends BaseSwipeActivity {
 
     @Bind(editTextPhoneNumber)
     TextInputEditText mEditText;
@@ -61,20 +61,20 @@ public class MainActivity extends BaseActivity {
             onekeyShare.setCallback(new PlatformActionListener() {
                 @Override
                 public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-                    Toast.makeText(MainActivity.this, "onComplete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainSwipeActivity.this, "onComplete", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onError(Platform platform, int i, Throwable throwable) {
-                    Toast.makeText(MainActivity.this, "onLoginError", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainSwipeActivity.this, "onLoginError", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onCancel(Platform platform, int i) {
-                    Toast.makeText(MainActivity.this, "onCancel", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainSwipeActivity.this, "onCancel", Toast.LENGTH_SHORT).show();
                 }
             });
-            onekeyShare.show(MainActivity.this);
+            onekeyShare.show(MainSwipeActivity.this);
         }
     }
 }

@@ -21,7 +21,7 @@ import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonAdapter;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.presenter.PublishPresenter;
 import com.suramire.miaowu.util.FileUtil;
@@ -41,7 +41,7 @@ import me.iwf.photopicker.PhotoPreview;
  */
 // TODO: 2017/10/27 字数限制
 
-public class NewPublishActivity extends BaseActivity implements PublishContract.View {
+public class NewPublishSwipeActivity extends BaseSwipeActivity implements PublishContract.View {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.gridview_picture)
@@ -90,7 +90,7 @@ public class NewPublishActivity extends BaseActivity implements PublishContract.
             }
             break;
             case R.id.imageView18: {
-                Log.d("NewPublishActivity", mEditContent.getText().toString().trim());
+                Log.d("NewPublishSwipeActivity", mEditContent.getText().toString().trim());
             }
             break;
             case R.id.imageView17: {
@@ -114,7 +114,7 @@ public class NewPublishActivity extends BaseActivity implements PublishContract.
                 mPhotos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
                 for (String s : mPhotos
                         ) {
-                    Log.d("NewPublishActivity", FileUtil.getFileMD5(new File(s)));
+                    Log.d("NewPublishSwipeActivity", FileUtil.getFileMD5(new File(s)));
                 }
                 mGridviewPicture.setAdapter(new CommonAdapter<String>(this, R.layout.item_picture, mPhotos) {
                     @Override
@@ -144,7 +144,7 @@ public class NewPublishActivity extends BaseActivity implements PublishContract.
                         .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mPublishPresenter = new PublishPresenter(NewPublishActivity.this);
+                                mPublishPresenter = new PublishPresenter(NewPublishSwipeActivity.this);
                                 mPublishPresenter.publish();
                             }
                         })

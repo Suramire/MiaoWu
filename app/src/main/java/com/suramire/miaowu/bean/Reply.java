@@ -13,6 +13,7 @@ public class Reply implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
+	private Integer floorid;
 	private Integer nid;
 	private Integer uid;
 	private String replycontent;
@@ -26,15 +27,17 @@ public class Reply implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public Reply(Integer nid, Integer uid, String replycontent) {
+	public Reply(Integer floorid, Integer nid, Integer uid, String replycontent) {
+		this.floorid = floorid;
 		this.nid = nid;
 		this.uid = uid;
 		this.replycontent = replycontent;
 	}
 
 	/** full constructor */
-	public Reply(Integer nid, Integer uid, String replycontent,
-			Timestamp replytime, Integer replyuid) {
+	public Reply(Integer floorid, Integer nid, Integer uid,
+			String replycontent, Timestamp replytime, Integer replyuid) {
+		this.floorid = floorid;
 		this.nid = nid;
 		this.uid = uid;
 		this.replycontent = replycontent;
@@ -50,6 +53,14 @@ public class Reply implements java.io.Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getFloorid() {
+		return this.floorid;
+	}
+
+	public void setFloorid(Integer floorid) {
+		this.floorid = floorid;
 	}
 
 	public Integer getNid() {

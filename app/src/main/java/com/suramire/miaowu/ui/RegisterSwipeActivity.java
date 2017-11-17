@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.contract.RegisterContract;
 import com.suramire.miaowu.presenter.RegisterPresenter;
@@ -28,7 +28,7 @@ import cn.smssdk.SMSSDK;
  * Created by Suramire on 2017/10/17.
  */
 
-public class RegisterActivity extends BaseActivity implements RegisterContract.View{
+public class RegisterSwipeActivity extends BaseSwipeActivity implements RegisterContract.View{
     @Bind(R.id.toolbar)
     Toolbar mToolbarRegister;
     @Bind(R.id.editTextPhoneNumber)
@@ -248,18 +248,18 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
 
     @Override
     public void onRegisterSuccess() {
-        Toast.makeText(RegisterActivity.this, "注册成功，请前往登录！", Toast.LENGTH_SHORT).show();
+        Toast.makeText(RegisterSwipeActivity.this, "注册成功，请前往登录！", Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
     public void onRegisterFailure(String failureMessage) {
-        Toast.makeText(RegisterActivity.this, "注册失败："+failureMessage, Toast.LENGTH_SHORT).show();
+        Toast.makeText(RegisterSwipeActivity.this, "注册失败："+failureMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRegisterError(String errorMessage) {
-        Toast.makeText(RegisterActivity.this, "注册出现错误:"+errorMessage, Toast.LENGTH_SHORT).show();
+        Toast.makeText(RegisterSwipeActivity.this, "注册出现错误:"+errorMessage, Toast.LENGTH_SHORT).show();
     }
 
 

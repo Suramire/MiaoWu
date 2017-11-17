@@ -13,4 +13,9 @@
     <style name="AppTheme.ButonTheme" parent="AppTheme">
         <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
     </style>
+
+    <style name="otherPageStyle" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
 </resources>

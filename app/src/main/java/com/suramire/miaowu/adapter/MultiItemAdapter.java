@@ -1,12 +1,14 @@
 package com.suramire.miaowu.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
+import com.suramire.miaowu.ui.ReplyDetailActivity;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.GlideImageLoader;
 import com.youth.banner.Banner;
@@ -106,11 +109,12 @@ public class MultiItemAdapter extends BaseAdapter {
             mVH.mtvReplytime = convertView.findViewById(R.id.reply_date);
             mVH.mimgUserIcon = convertView.findViewById(R.id.reply_user_icon);
             mVH.mtvCount = convertView.findViewById(R.id.reply_count);
+            mVH.mll_repleydetail = convertView.findViewById(R.id.ll_replydetail);
             convertView.setTag(mVH);
         }else{
             mVH = (VH0) convertView.getTag();
         }
-        Multi multi = (Multi) mList.get(position);
+        final Multi multi = (Multi) mList.get(position);
         Reply reply = multi.getmReply();
         User user = multi.getmUser();
         mVH.mtvNickname.setText(user.getNickname());
@@ -120,13 +124,23 @@ public class MultiItemAdapter extends BaseAdapter {
                 .load(BASUSERPICEURL+icon)
                 .into(mVH.mimgUserIcon);
         mVH.mtvCount.setText(multi.getCount()+"");
+
         mVH.mtvContent.setText(reply.getReplycontent());
         mVH.mtvReplytime.setText(CommonUtil.timeStampToDateString(reply.getReplytime()));
+        //第一项添加标头
         if(isFirst){
             mVH.mtvTitle = convertView.findViewById(R.id.tv_title_reply);
             mVH.mtvTitle.setVisibility(View.VISIBLE);
             isFirst = false;
         }
+        mVH.mll_repleydetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ReplyDetailActivity.class);
+                intent.putExtra("multi", multi);
+                mContext.startActivity(intent);
+            }
+        });
         return convertView;
     }
 
@@ -209,6 +223,7 @@ public class MultiItemAdapter extends BaseAdapter {
         TextView mtvNickname,mtvContent,mtvCount;
         TextView mtvTitle,mtvReplytime;
         ImageView mimgUserIcon;
+        LinearLayout mll_repleydetail;
     }
 
     class VH1 {

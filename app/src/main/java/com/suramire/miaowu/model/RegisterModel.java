@@ -23,14 +23,14 @@ import okhttp3.Response;
 
 public class RegisterModel implements RegisterContract.Model {
     @Override
-    public void validatePhoneNumber(final String phoneNumber, final OnGetResultListener onValidationListener) {
+    public void validatePhoneNumber(final String phoneNumber, final OnGetResultListener listener) {
         //判断手机号是否被注册
         if(CommonUtil.isMobileNumber(phoneNumber)) {
             User user = new User(phoneNumber, null, null);
             HTTPUtil.getPost(Constant.BASEURL + "checkPhoneUser", user, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    onValidationListener.onFailure(e.getMessage());
+                    listener.onFailure(e.getMessage());
                 }
 
                 @Override
@@ -40,23 +40,23 @@ public class RegisterModel implements RegisterContract.Model {
                         M m = (M) GsonUtil.jsonToObject(result, M.class);
                         switch (m.getCode()) {
                             case M.CODE_SUCCESS: {
-                                onValidationListener.onSuccess(null);
+                                listener.onSuccess(null);
                             }
                             break;
                             case M.CODE_FAILURE: {
-                                onValidationListener.onFailure(m.getMessage());
+                                listener.onFailure(m.getMessage());
                             }
                             break;
                             default:
                                 break;
                         }
                     } catch (Exception e) {
-                        onValidationListener.onError(e.getMessage());
+                        listener.onError(e.getMessage());
                     }
                 }
             });
         }else{
-            onValidationListener.onFailure("请输入正确的手机号码");
+            listener.onFailure("请输入正确的手机号码");
         }
     }
 

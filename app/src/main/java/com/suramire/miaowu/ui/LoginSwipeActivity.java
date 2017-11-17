@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.contract.LoginContract;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.presenter.LoginPresenter;
@@ -22,7 +22,7 @@ import butterknife.OnClick;
  * Created by Suramire on 2017/10/21.
  */
 
-public class LoginActivity extends BaseActivity implements LoginContract.View {
+public class LoginSwipeActivity extends BaseSwipeActivity implements LoginContract.View {
     @Bind(R.id.toolbar)
     Toolbar mToolbar3;
     @Bind(R.id.edt_name)
@@ -86,7 +86,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
                 mLoginPresenter.login(null,null);
                 break;
             case R.id.tv_reg:
-                startActivity(RegisterActivity.class);
+                startActivity(RegisterSwipeActivity.class);
                 break;
             case R.id.tv_forget:
                 break;

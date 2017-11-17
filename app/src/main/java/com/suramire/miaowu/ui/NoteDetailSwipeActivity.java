@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.adapter.MultiItemAdapter;
-import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.fragment.BottomCommentDialogFragment;
@@ -31,7 +31,7 @@ import butterknife.OnClick;
  * Created by Suramire on 2017/10/17.
  */
 
-public class NoteDetailActivity extends BaseActivity implements NoteDetailContract.View {
+public class NoteDetailSwipeActivity extends BaseSwipeActivity implements NoteDetailContract.View {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -203,7 +203,7 @@ public class NoteDetailActivity extends BaseActivity implements NoteDetailContra
                             .setAction("登录", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    startActivity(LoginActivity.class);
+                                    startActivity(LoginSwipeActivity.class);
                                 }
                             }).show();
                 } else {
