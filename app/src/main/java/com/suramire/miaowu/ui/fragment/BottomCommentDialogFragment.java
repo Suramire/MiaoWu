@@ -1,4 +1,4 @@
-package com.suramire.miaowu.fragment;
+package com.suramire.miaowu.ui.fragment;
 
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
@@ -32,9 +32,10 @@ public class BottomCommentDialogFragment extends DialogFragment implements Reple
     private Context mContext;
     private ProgressDialog mProgressDialog;
     private EditText mEditComment;
-    private  int nid;
+    private  int nid,replyuid;
     private ReplyPresenter mReplyPresenter;
     private OnReplyListener mReplyListener;
+    private int floorId;
 
     public OnReplyListener getReplyListener() {
         return mReplyListener;
@@ -75,6 +76,8 @@ public class BottomCommentDialogFragment extends DialogFragment implements Reple
         mContext = getActivity();
         mReplyPresenter = new ReplyPresenter(this);
         nid = getArguments().getInt("nid");
+        replyuid = getArguments().getInt("replyuid");
+        floorId = getArguments().getInt("floorId");
     }
 
     @Nullable
@@ -127,7 +130,8 @@ public class BottomCommentDialogFragment extends DialogFragment implements Reple
         reply.setNid(nid);
         reply.setReplytime(CommonUtil.getTimeStamp());
         reply.setUid((int)SPUtils.get("uid",0));
-        reply.setReplyuid(0);
+        reply.setReplyuid(replyuid);
+        reply.setFloorid(floorId);
         reply.setReplycontent(mEditComment.getText().toString().trim());
         return reply;
     }

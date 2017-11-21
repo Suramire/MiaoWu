@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    >
-
-    <stroke android:color="#4b9df9"
-            android:width="1dp"
-        android:dashGap="3dp"
-            android:dashWidth="6dp"
-        />
-    <size android:height="1dp"/>
-    <solid android:color="#F9FAF2"></solid>
-</shape>
+<layer-list   xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="line" >
+            <stroke
+                android:dashGap="3dp"
+                android:dashWidth="8dp"
+                android:width="1dp"
+                android:color="@color/linkblue" />
+            <size android:height="1dp" />
+        </shape>
+    </item>
+</layer-list>

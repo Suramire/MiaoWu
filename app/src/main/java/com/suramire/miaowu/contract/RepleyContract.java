@@ -9,7 +9,10 @@ import com.suramire.miaowu.bean.Reply;
 
 public interface RepleyContract {
     interface Model {
+        //发表新评论
         void postReply(Reply reply,OnGetResultListener listener);
+
+        void deleteReply(Reply reply,OnGetResultListener listener);
 
     }
 
@@ -29,6 +32,8 @@ public interface RepleyContract {
 
     interface Presenter {
         void postReply();
+
+        void deleteReply();
 
     }
 }

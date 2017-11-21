@@ -1,14 +1,18 @@
 package com.suramire.miaowu.ui;
 
+
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.classic.adapter.BaseAdapterHelper;
-import com.classic.adapter.CommonAdapter;
+import com.classic.adapter.CommonRecyclerAdapter;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
@@ -18,6 +22,8 @@ import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.ReplyDetailContract;
 import com.suramire.miaowu.presenter.ReplyDetailPresenter;
+import com.suramire.miaowu.ui.fragment.BottomCommentDialogFragment;
+import com.suramire.miaowu.ui.fragment.BottomReplyOptionsFragment;
 import com.suramire.miaowu.util.CommonUtil;
 
 import java.util.ArrayList;
@@ -41,11 +47,13 @@ public class ReplyDetailActivity extends BaseSwipeActivity implements ReplyDetai
     @Bind(R.id.reply_date)
     TextView mReplyDate;
     @Bind(R.id.list_reply_child)
-    ListView mListReplyChild;
+    RecyclerView mListReplyChild;
     @Bind(R.id.reply_content)
     TextView mReplyContent;
     private ProgressDialog mProgressDialog;
     private Integer mFloorid;
+    private Integer nId;
+    private ReplyDetailPresenter mReplyDetailPresenter;
 
     @Override
     protected String getTitleString() {
@@ -65,6 +73,7 @@ public class ReplyDetailActivity extends BaseSwipeActivity implements ReplyDetai
         Multi multi = (Multi) getIntent().getSerializableExtra("multi");
         Reply reply = multi.getmReply();
         mFloorid = reply.getFloorid();
+        nId = reply.getNid();
         User user = multi.getmUser();
         mReplyUserNickname.setText(user.getNickname());
         String icon = user.getIcon();
@@ -75,9 +84,11 @@ public class ReplyDetailActivity extends BaseSwipeActivity implements ReplyDetai
         }
         mReplyDate.setText(CommonUtil.timeStampToDateString(reply.getReplytime()));
         mReplyContent.setText(reply.getReplycontent());
-        ReplyDetailPresenter replyDetailPresenter = new ReplyDetailPresenter(this);
-        replyDetailPresenter.getReplyList();
+        mReplyDetailPresenter = new ReplyDetailPresenter(this);
+        mReplyDetailPresenter.getReplyList();
+        mListReplyChild.setLayoutManager(new LinearLayoutManager(mContext));
     }
+
 
 
     @Override
@@ -92,22 +103,108 @@ public class ReplyDetailActivity extends BaseSwipeActivity implements ReplyDetai
 
     @Override
     public void onGetReplyListSuccess(Object object) {
-        List<Reply> replyList = (List<Reply>) object;
-        List<Reply> mReplyList = new ArrayList<>();
-        for (Reply reply :
-                replyList) {
-            if(reply.getReplyuid()!=0){
-                mReplyList.add(reply);
+        final List<Multi> multiList = (List<Multi>) object;
+        List<Multi> mMultiList = new ArrayList<>();
+//        for (Reply reply :
+//                replyList) {
+//            if(reply.getReplyuid()!=0){
+//                mReplyList.add(reply);
+//            }
+//        }
+        for(Multi multi :multiList){
+            //只显示子楼层
+            //主楼层的replyUid=0
+            if(multi.getmReply().getUid()!=0){
+                mMultiList.add(multi);
             }
         }
 
         if(object!=null){
-            mListReplyChild.setAdapter(new CommonAdapter<Reply>(mContext,R.layout.item_reply_child,mReplyList) {
+
+            mListReplyChild.setAdapter(new CommonRecyclerAdapter<Multi>(mContext,R.layout.item_reply_child,mMultiList) {
+
                 @Override
-                public void onUpdate(BaseAdapterHelper helper, Reply item, int position) {
-                    helper.setText(R.id.reply_child,item.getReplycontent());
+                public void onUpdate(BaseAdapterHelper helper, final Multi multi, int position) {
+                    final Reply item = multi.getmReply();
+                    User user = multi.getmUser();
+                    User user2 = multi.getUser2();
+                    if(user2!=null){
+                        helper.setText(R.id.reply_child, user.getNickname()+"回复@"+user2.getNickname()+": "+item.getReplycontent());
+                    }else{
+                        helper.setText(R.id.reply_child, user.getNickname()+" : "+item.getReplycontent());
+                    }
+
+                    int currentUid = CommonUtil.getCurrentUid();
+                    if(currentUid!=0){
+                        if(item.getUid()==currentUid){
+                            //用户可删除自己的评论
+                            helper.setOnClickListener(R.id.ll_replydetail_content, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
+                                    BottomReplyOptionsFragment bottomReplyOptionsFragment = BottomReplyOptionsFragment.newInstance();
+                                    Bundle bundle1 = new Bundle();
+                                    bundle1.putString("content",item.getReplycontent());
+                                    bundle1.putSerializable("reply",item);
+                                    bottomReplyOptionsFragment.setArguments(bundle1);
+                                    bottomReplyOptionsFragment.show(mFragTransaction, "000");
+                                    bottomReplyOptionsFragment.setOnDeleteListener(new BottomReplyOptionsFragment.OnDeleteListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                                            remove(multi);
+                                        }
+
+                                        @Override
+                                        public void onError(String errorMessage) {
+                                            Toast.makeText(mContext, "删除时出现错误：" + errorMessage, Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+                                }
+                            });
+                        }else{
+                            helper.setOnClickListener(R.id.ll_replydetail_content, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    // TODO: 2017/11/21 登录判断 先登录才能回复
+                                    final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
+                                    final BottomCommentDialogFragment bottomCommentDialogFragment = BottomCommentDialogFragment.newInstance();
+                                    bottomCommentDialogFragment.setReplyListener(new BottomCommentDialogFragment.OnReplyListener() {
+                                        @Override
+                                        public void onSucess() {
+                                            Toast.makeText(mContext, "发表成功！", Toast.LENGTH_SHORT).show();
+                                            // TODO: 2017/11/21 自己不能回复自己
+                                            mReplyDetailPresenter.getReplyList();
+
+                                            bottomCommentDialogFragment.dismiss();
+                                        }
+
+                                        @Override
+                                        public void onFailure(String failureMessage) {
+                                            Toast.makeText(mContext, "发表失败:" + failureMessage, Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onError(String errorMessage) {
+                                            Toast.makeText(mContext, "发表过程出现错误:" + errorMessage, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    Bundle bundle = new Bundle();
+                                    bundle.putInt("nid", item.getNid());
+                                    bundle.putInt("replyuid",item.getUid());
+                                    bundle.putInt("floorId",getFloorId());
+                                    bottomCommentDialogFragment.setArguments(bundle);
+                                    bottomCommentDialogFragment.show(mFragTransaction, "111");
+                                }
+                            });
+                        }
+                    }
+
                 }
+
             });
+            Toast.makeText(mContext, "test", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(mContext, "暂无回复信息", Toast.LENGTH_SHORT).show();
         }

@@ -12,15 +12,23 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 public class Multi implements Serializable {
-	private User mUser;
+	private User mUser,mUser2;
 	private Note mNote;
 	private NotePhoto mNotePhoto;
 	private Reply mReply;
 	List<String> picturesStrings;
-    int mCount;
+    int mCount;//本层回复数
 
     public int getCount() {
         return mCount;
+    }
+
+    public User getUser2() {
+        return mUser2;
+    }
+
+    public void setUser2(User user2) {
+        mUser2 = user2;
     }
 
     public void setCount(int count) {

@@ -2,10 +2,12 @@ package com.suramire.miaowu.model;
 
 import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.bean.M;
+import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.contract.ReplyDetailContract;
 import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.HTTPUtil;
+import com.suramire.miaowu.util.L;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,15 +39,18 @@ public class ReplyDetailModel implements ReplyDetailContract.Model {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
+
                         try {
                             M m = (M) GsonUtil.jsonToObject(result, M.class);
+//                            L.e("result@replydetail: "+m.getData());
                             switch (m.getCode()) {
                                 case M.CODE_SUCCESS: {
                                     if(m.getData()==null){
                                         listener.onSuccess(null);
                                     }else{
-                                        List<Reply> replies = GsonUtil.jsonToList(m.getData(), Reply.class);
-                                        listener.onSuccess(replies);
+                                        List<Multi> multis = GsonUtil.jsonToList(m.getData(), Multi.class);
+                                        L.e("multies.size():"+multis.size());
+                                        listener.onSuccess(multis);
                                     }
                                 }
                                 break;
@@ -61,6 +66,16 @@ public class ReplyDetailModel implements ReplyDetailContract.Model {
                         }
                     }
                 });
+            }
+        }).start();
+    }
+
+    @Override
+    public void getUsersById(List<Integer> ids, OnGetResultListener listener) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+//                HTTPUtil.
             }
         }).start();
     }

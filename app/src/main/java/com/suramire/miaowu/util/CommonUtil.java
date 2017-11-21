@@ -203,4 +203,8 @@ public class CommonUtil {
         }
     }
 
+    public static int getCurrentUid(){
+        return (int) SPUtils.get("uid",0);
+    }
+
 }

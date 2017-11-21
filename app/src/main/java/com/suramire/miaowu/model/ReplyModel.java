@@ -55,4 +55,37 @@ public class ReplyModel implements RepleyContract.Model {
             }
         }).start();
     }
+
+    @Override
+    public void deleteReply(final Reply reply, final OnGetResultListener listener) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HTTPUtil.getPost(BASEURL + "deleteReply", reply, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        listener.onError(e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String result = response.body().string();
+                        try{
+                            M m = (M) GsonUtil.jsonToObject(result, M.class);
+                            switch (m.getCode()){
+                                case M.CODE_SUCCESS:{
+                                    listener.onSuccess(null);
+                                }break;
+                                case M.CODE_ERROR:{
+                                    listener.onError(m.getMessage());
+                                }break;
+                            }
+                        }catch (Exception e){
+                            listener.onError(e.getMessage());
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
 }

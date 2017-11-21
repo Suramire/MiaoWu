@@ -2,6 +2,8 @@ package com.suramire.miaowu.contract;
 
 import com.suramire.miaowu.base.OnGetResultListener;
 
+import java.util.List;
+
 /**
  * Created by Suramire on 2017/11/17.
  */
@@ -9,6 +11,8 @@ import com.suramire.miaowu.base.OnGetResultListener;
 public interface ReplyDetailContract {
     interface Model {
         void getReplyList(int floorid, OnGetResultListener listener);
+
+        void getUsersById(List<Integer> ids,OnGetResultListener listener);
     }
 
     interface View {
@@ -27,5 +31,7 @@ public interface ReplyDetailContract {
 
     interface Presenter {
         void getReplyList();
+
+        void getUsersById();
     }
 }

@@ -61,4 +61,37 @@ public class ReplyPresenter implements RepleyContract.Presenter {
         });
     }
 
+    @Override
+    public void deleteReply() {
+        mView.showLoading();
+        mReplyModel.deleteReply(mView.getReplyInfo(), new OnGetResultListener() {
+            @Override
+            public void onSuccess(Object object) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mView.cancelLoading();
+                        mView.onSuccess(null);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String failureMessage) {
+
+            }
+
+            @Override
+            public void onError(final String errorMessage) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mView.cancelLoading();
+                        mView.onError(errorMessage);
+                    }
+                });
+            }
+        });
+    }
+
 }
