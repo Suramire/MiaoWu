@@ -37,10 +37,22 @@
         return false;
     }
 }</string>
+    <string-array name="contacts">
+        <item>电话</item>
+        <item>QQ</item>
+        <item>微信</item>
+        <item>邮箱</item>
+    </string-array>
     <string name="more_note">查看所有帖子 >></string>
     <string name="title_reply">帖子回复</string>
     <string name="empty_reply">暂无评论，快来抢沙发</string>
     <string name="delete">删除</string>
     <string name="copy">复制</string>
     <string name="reply">回复</string>
+    <string name="sex">性别</string>
+    <string name="age">年龄</string>
+    <string name="neutering">是否绝育</string>
+    <string name="insecticide">是否驱虫</string>
+    <string name="otherCondition">其他领养条件：</string>
+    <string name="contact">联系方式</string>
 </resources>

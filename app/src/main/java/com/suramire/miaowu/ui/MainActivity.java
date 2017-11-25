@@ -21,7 +21,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 import static com.suramire.miaowu.R.id.editTextPhoneNumber;
 
 
-public class MainSwipeActivity extends BaseSwipeActivity {
+public class MainActivity extends BaseSwipeActivity {
 
     @Bind(editTextPhoneNumber)
     TextInputEditText mEditText;
@@ -61,20 +61,20 @@ public class MainSwipeActivity extends BaseSwipeActivity {
             onekeyShare.setCallback(new PlatformActionListener() {
                 @Override
                 public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-                    Toast.makeText(MainSwipeActivity.this, "onComplete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "onComplete", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onError(Platform platform, int i, Throwable throwable) {
-                    Toast.makeText(MainSwipeActivity.this, "onLoginError", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "onLoginError", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onCancel(Platform platform, int i) {
-                    Toast.makeText(MainSwipeActivity.this, "onCancel", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "onCancel", Toast.LENGTH_SHORT).show();
                 }
             });
-            onekeyShare.show(MainSwipeActivity.this);
+            onekeyShare.show(MainActivity.this);
         }
     }
 }

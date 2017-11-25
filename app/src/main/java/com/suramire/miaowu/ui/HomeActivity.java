@@ -51,7 +51,7 @@ import static com.suramire.miaowu.util.Constant.BASUSERPICEURL;
  * Created by Suramire on 2017/10/16.
  */
 
-public class HomeSwipeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LoginContract.View, HomeContract.View {
+public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LoginContract.View, HomeContract.View {
     private static final int REQUESTCODE = 0x100;
     Context mContext = this;
     @Bind(R.id.toolbar)
@@ -98,7 +98,7 @@ public class HomeSwipeActivity extends BaseActivity implements NavigationView.On
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(LoginSwipeActivity.class);
+                startActivity(LoginActivity.class);
             }
         });
         mImageView = inflateHeaderView.findViewById(R.id.imageView);
@@ -147,7 +147,7 @@ public class HomeSwipeActivity extends BaseActivity implements NavigationView.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUESTCODE && resultCode == ProfileSwipeActivity.SUCCESS) {
+        if (requestCode == REQUESTCODE && resultCode == ProfileActivity.SUCCESS) {
             //在个人中心点击了注销
             doLoginout();
         }
@@ -162,7 +162,7 @@ public class HomeSwipeActivity extends BaseActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.nav_sentcount) {
-            startActivity(MainSwipeActivity.class);
+            startActivity(MainActivity.class);
         }
         return true;
     }
@@ -184,13 +184,13 @@ public class HomeSwipeActivity extends BaseActivity implements NavigationView.On
             case 100: break;
             case 101:{
                 if((int)SPUtils.get("uid",0)!=0){
-                    startActivity(NewPublishSwipeActivity.class);
+                    startActivity(NewPublishActivity.class);
                 }else{
                     Snackbar.make(findViewById(android.R.id.content),"您还未登录",Snackbar.LENGTH_INDEFINITE)
                             .setAction("登录", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    startActivity(LoginSwipeActivity.class);
+                                    startActivity(LoginActivity.class);
                                 }
                             }).show();
                 }
@@ -230,7 +230,7 @@ public class HomeSwipeActivity extends BaseActivity implements NavigationView.On
             mTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(LoginSwipeActivity.class);
+                    startActivity(LoginActivity.class);
                 }
             });
             Picasso.with(this)
@@ -259,8 +259,8 @@ public class HomeSwipeActivity extends BaseActivity implements NavigationView.On
             mTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                        startActivity(ProfileSwipeActivity.class);
-                    startActivityForResult(new Intent(mContext, ProfileSwipeActivity.class), REQUESTCODE);
+//                        startActivity(ProfileActivity.class);
+                    startActivityForResult(new Intent(mContext, ProfileActivity.class), REQUESTCODE);
                 }
             });
         }
@@ -324,7 +324,7 @@ public class HomeSwipeActivity extends BaseActivity implements NavigationView.On
                     helper.setOnClickListener(R.id.cardview_item, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(mContext, NoteDetailSwipeActivity.class);
+                            Intent intent = new Intent(mContext, NoteDetailActivity.class);
                             intent.putExtra("noteId",note.getId(0));
                             intent.putExtra("multi",item);
                             startActivity(intent);

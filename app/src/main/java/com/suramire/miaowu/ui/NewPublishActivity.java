@@ -41,7 +41,7 @@ import me.iwf.photopicker.PhotoPreview;
  */
 // TODO: 2017/10/27 字数限制
 
-public class NewPublishSwipeActivity extends BaseSwipeActivity implements PublishContract.View {
+public class NewPublishActivity extends BaseSwipeActivity implements PublishContract.View {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.gridview_picture)
@@ -77,7 +77,8 @@ public class NewPublishSwipeActivity extends BaseSwipeActivity implements Publis
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, 0x12, 0, "发表").setIcon(R.drawable.ic_send_black_24dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(0, 0x11, 0, "填表").setIcon(R.drawable.ic_format_align_left_black_24dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(0, 0x12, 1, "发表").setIcon(R.drawable.ic_send_black_24dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -90,7 +91,7 @@ public class NewPublishSwipeActivity extends BaseSwipeActivity implements Publis
             }
             break;
             case R.id.imageView18: {
-                Log.d("NewPublishSwipeActivity", mEditContent.getText().toString().trim());
+                Log.d("NewPublishActivity", mEditContent.getText().toString().trim());
             }
             break;
             case R.id.imageView17: {
@@ -114,7 +115,7 @@ public class NewPublishSwipeActivity extends BaseSwipeActivity implements Publis
                 mPhotos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
                 for (String s : mPhotos
                         ) {
-                    Log.d("NewPublishSwipeActivity", FileUtil.getFileMD5(new File(s)));
+                    Log.d("NewPublishActivity", FileUtil.getFileMD5(new File(s)));
                 }
                 mGridviewPicture.setAdapter(new CommonAdapter<String>(this, R.layout.item_picture, mPhotos) {
                     @Override
@@ -131,7 +132,9 @@ public class NewPublishSwipeActivity extends BaseSwipeActivity implements Publis
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        if(item.getItemId() == 0x11){
+            startActivity(ExtendedInformationActivity.class);
+        }
         if(item.getItemId() == 0x12){
             //这里执行发帖操作
             // TODO: 2017/10/28 信息完整性判断
@@ -144,7 +147,7 @@ public class NewPublishSwipeActivity extends BaseSwipeActivity implements Publis
                         .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mPublishPresenter = new PublishPresenter(NewPublishSwipeActivity.this);
+                                mPublishPresenter = new PublishPresenter(NewPublishActivity.this);
                                 mPublishPresenter.publish();
                             }
                         })

@@ -22,7 +22,7 @@ import butterknife.OnClick;
  * Created by Suramire on 2017/10/21.
  */
 
-public class LoginSwipeActivity extends BaseSwipeActivity implements LoginContract.View {
+public class LoginActivity extends BaseSwipeActivity implements LoginContract.View {
     @Bind(R.id.toolbar)
     Toolbar mToolbar3;
     @Bind(R.id.edt_name)
@@ -86,7 +86,7 @@ public class LoginSwipeActivity extends BaseSwipeActivity implements LoginContra
                 mLoginPresenter.login(null,null);
                 break;
             case R.id.tv_reg:
-                startActivity(RegisterSwipeActivity.class);
+                startActivity(RegisterActivity.class);
                 break;
             case R.id.tv_forget:
                 break;

@@ -10,7 +10,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
 
 /**
  * Created by Suramire on 2017/10/17.
- * Base 封装一些通用方法与属性
+ * 基于BaseActivity 带手势返回选项
  */
 
 public abstract class BaseSwipeActivity extends BaseActivity implements SwipeBackActivityBase {

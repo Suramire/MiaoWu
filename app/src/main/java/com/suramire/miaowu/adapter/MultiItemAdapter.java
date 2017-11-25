@@ -32,6 +32,7 @@ import static com.suramire.miaowu.util.Constant.BASUSERPICEURL;
 
 /**
  * Created by Suramire on 2017/11/7.
+ * 多类型列表适配器
  */
 
 public class MultiItemAdapter extends BaseAdapter {
@@ -59,25 +60,7 @@ public class MultiItemAdapter extends BaseAdapter {
         return  0;
     }
 
-    @Override
-    public int getViewTypeCount() {
-        return mClasses.length;
-    }
 
-    @Override
-    public int getCount() {
-        return mList.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return mList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -100,10 +83,10 @@ public class MultiItemAdapter extends BaseAdapter {
     }
 
     private View getView0(int position, View convertView, ViewGroup parent){
-        VH0 mVH;
+        ViewHolder0 mVH;
         if(convertView==null){
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_reply, parent, false);
-            mVH = new VH0();
+            mVH = new ViewHolder0();
             mVH.mtvNickname = convertView.findViewById(R.id.reply_user_nickname);
             mVH.mtvContent = convertView.findViewById(R.id.reply_content);
             mVH.mtvReplytime = convertView.findViewById(R.id.reply_date);
@@ -112,7 +95,7 @@ public class MultiItemAdapter extends BaseAdapter {
             mVH.mll_repleydetail = convertView.findViewById(R.id.ll_replydetail);
             convertView.setTag(mVH);
         }else{
-            mVH = (VH0) convertView.getTag();
+            mVH = (ViewHolder0) convertView.getTag();
         }
         final Multi multi = (Multi) mList.get(position);
         Reply reply = multi.getmReply();
@@ -145,17 +128,17 @@ public class MultiItemAdapter extends BaseAdapter {
     }
 
     private View getView1(int position, View convertView, ViewGroup parent){
-        VH1 mVH;
+        ViewHolder1 mVH;
         if(convertView==null){
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_nt_content, parent, false);
-            mVH = new VH1();
+            mVH = new ViewHolder1();
             mVH.mtvTitle = convertView.findViewById(R.id.notedetail_title);
             mVH.mtvContent = convertView.findViewById(R.id.notedetail_content);
             mVH.mtvPublishTime = convertView.findViewById(R.id.nt_publishtime);
             mVH.mtvViewcount = convertView.findViewById(R.id.nt_viewcount);
             convertView.setTag(mVH);
         }else{
-            mVH = (VH1) convertView.getTag();
+            mVH = (ViewHolder1) convertView.getTag();
         }
         Note note = (Note) mList.get(position);
         mVH.mtvTitle.setText(note.getTitle());
@@ -168,14 +151,14 @@ public class MultiItemAdapter extends BaseAdapter {
 
 
     private View getView2(int position, View convertView, ViewGroup parent){
-        VH2 mVH;
+        ViewHolder2 mVH;
         if(convertView==null){
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_nt_banner, null, false);
-            mVH = new VH2();
+            mVH = new ViewHolder2();
             mVH.mBanner = convertView.findViewById(R.id.banner);
             convertView.setTag(mVH);
         }else{
-            mVH = (VH2) convertView.getTag();
+            mVH = (ViewHolder2) convertView.getTag();
         }
         List<String> items = (List<String>) getItem(position);
         List<String> newItems = new ArrayList<>();
@@ -193,16 +176,16 @@ public class MultiItemAdapter extends BaseAdapter {
     }
 
     private View getView3(int position, View convertView, ViewGroup parent){
-        VH3 mVH;
+        ViewHolder3 mVH;
         if(convertView==null){
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_nt_profile, null, false);
-            mVH = new VH3();
+            mVH = new ViewHolder3();
             mVH.mButtonFollow = convertView.findViewById(R.id.btn_nt_follow);
             mVH.mImgUser = convertView.findViewById(R.id.img_nt_profile);
             mVH.mTvNickname = convertView.findViewById(R.id.tv_nt_nickname);
             convertView.setTag(mVH);
         }else{
-            mVH = (VH3) convertView.getTag();
+            mVH = (ViewHolder3) convertView.getTag();
         }
         User user = (User) mList.get(position);
         mVH.mTvNickname.setText(user.getNickname());
@@ -219,26 +202,46 @@ public class MultiItemAdapter extends BaseAdapter {
     }
 
 
-    class VH0 {
+    class ViewHolder0 {
         TextView mtvNickname,mtvContent,mtvCount;
         TextView mtvTitle,mtvReplytime;
         ImageView mimgUserIcon;
         LinearLayout mll_repleydetail;
     }
 
-    class VH1 {
+    class ViewHolder1 {
         TextView mtvTitle,mtvContent,
             mtvPublishTime,mtvViewcount;
     }
 
-    class VH2 {
+    class ViewHolder2 {
         Banner mBanner;
     }
 
-    class VH3{
+    class ViewHolder3 {
         ImageView mImgUser;
         TextView mTvNickname;
         Button mButtonFollow;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return mClasses.length;
+    }
+
+    @Override
+    public int getCount() {
+        return mList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return mList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
 

@@ -31,7 +31,7 @@ import butterknife.OnClick;
  * Created by Suramire on 2017/10/17.
  */
 
-public class NoteDetailSwipeActivity extends BaseSwipeActivity implements NoteDetailContract.View {
+public class NoteDetailActivity extends BaseSwipeActivity implements NoteDetailContract.View {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -203,7 +203,7 @@ public class NoteDetailSwipeActivity extends BaseSwipeActivity implements NoteDe
                             .setAction("登录", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    startActivity(LoginSwipeActivity.class);
+                                    startActivity(LoginActivity.class);
                                 }
                             }).show();
                 } else {

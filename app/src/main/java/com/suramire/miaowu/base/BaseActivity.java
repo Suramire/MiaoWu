@@ -9,12 +9,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.suramire.miaowu.R;
-
 import butterknife.ButterKnife;
 
 /**
- * Created by Suramire on 2017/11/16.
+ * Base 封装一些通用方法与属性
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -67,7 +65,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             intent.putExtras(bundle);
         }
         startActivity(intent);
-        overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+//        overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
     }
 
 

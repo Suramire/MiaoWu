@@ -51,7 +51,7 @@ import static com.suramire.miaowu.util.Constant.BASUSERPICEURL;
  * Created by Suramire on 2017/10/24.
  */
 
-public class ProfileSwipeActivity extends BaseSwipeActivity implements ProfileContract.View {
+public class ProfileActivity extends BaseSwipeActivity implements ProfileContract.View {
     public static final int SUCCESS = 0x101;
     public static final int SELECT_PIC_BY_PICK_PHOTO = 0x102;
 
