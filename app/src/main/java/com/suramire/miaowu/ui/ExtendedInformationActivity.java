@@ -1,15 +1,19 @@
 package com.suramire.miaowu.ui;
 
+import android.content.Intent;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.bean.Catinfo;
+import com.suramire.miaowu.util.CommonUtil;
+import com.suramire.miaowu.util.Constant;
 
 import butterknife.Bind;
 
@@ -20,8 +24,22 @@ import butterknife.Bind;
 public class ExtendedInformationActivity extends BaseSwipeActivity {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.spinner)
-    Spinner mSpinner;
+    @Bind(R.id.sp_sex)
+    Spinner spSex;
+    @Bind(R.id.sp_age)
+    Spinner spAge;
+    @Bind(R.id.sp_neutering)
+    Spinner spNeutering;
+    @Bind(R.id.sp_insecticide)
+    Spinner spInsecticide;
+    @Bind(R.id.sp_contact)
+    Spinner spContact;
+    @Bind(R.id.edt_contact)
+    EditText edtContact;
+    @Bind(R.id.edt_type)
+    EditText edtType;
+    @Bind(R.id.edt_conditions)
+    EditText edtConditions;
 
     @Override
     protected String getTitleString() {
@@ -36,17 +54,6 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
     @Override
     public void initView(View view) {
         setSupportActionBar(mToolbar);
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(mContext, "position:" + 0, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -58,9 +65,48 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == 0x11) {
-            Toast.makeText(mContext, "响应完成事件", Toast.LENGTH_SHORT).show();
+//          领养要求不能为空
+            String conditions = edtConditions.getText().toString().trim();
+            String contact = edtContact.getText().toString().trim();
+            String type = edtType.getText().toString().trim();
+            if (TextUtils.isEmpty(conditions)) {
+                CommonUtil.snackBar(this, "领养条件不能为空", "去完善", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+
+            } else if (spContact.getSelectedItemPosition() == 0) {
+                CommonUtil.snackBar(this, "请选择联系方式", "去完善", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+            } else if (TextUtils.isEmpty(contact)) {
+                CommonUtil.snackBar(this, "请填写联系方式", "去完善", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+            } else {
+                Catinfo catinfo = new Catinfo();
+                catinfo.setAge(spAge.getSelectedItemPosition());
+                catinfo.setSex(spSex.getSelectedItemPosition());
+                catinfo.setContacttype(spContact.getSelectedItemPosition());
+                catinfo.setNeutering(spNeutering.getSelectedItemPosition());
+                catinfo.setInsecticide(spInsecticide.getSelectedItemPosition());
+                catinfo.setType(type);
+                catinfo.setContact(contact);
+                catinfo.setConditions(conditions);
+                Intent intent = new Intent();
+                intent.putExtra("catinfo",catinfo);
+                setResult(Constant.CODE_SUCCESS,intent);
+                finish();
+            }
+
         }
-        return true;
+
+        return super.onOptionsItemSelected(item);
     }
 
 

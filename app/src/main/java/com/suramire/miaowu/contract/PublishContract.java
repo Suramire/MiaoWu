@@ -1,6 +1,7 @@
 package com.suramire.miaowu.contract;
 
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.bean.Catinfo;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 public interface PublishContract {
     interface Model {
-        void publish(String title, String content, List<String> pictues, OnGetResultListener listener);
+        void publish(Catinfo catinfo, String title, String content, List<String> pictues, OnGetResultListener listener);
 
         void uploadPicture(Object object, List<String> pictues, final OnGetResultListener listener);
     }
@@ -29,6 +30,8 @@ public interface PublishContract {
         String getNoteTitle();
 
         String getNoteContent();
+
+        Catinfo getCatinfo();
 
         //帖子配图的路径
         List<String> getPicturePaths();

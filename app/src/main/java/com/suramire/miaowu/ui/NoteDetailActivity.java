@@ -75,6 +75,7 @@ public class NoteDetailActivity extends BaseSwipeActivity implements NoteDetailC
         mObjects.add(picturesStrings);
         mObjects.add(multi.getmUser());
         mObjects.add(multi.getmNote());
+        mObjects.add(multi.getmCatinfo());
         mAdapter = new MultiItemAdapter(this, mObjects);
         mListNotedetail.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();

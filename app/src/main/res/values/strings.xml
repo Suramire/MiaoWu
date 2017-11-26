@@ -38,10 +38,44 @@
     }
 }</string>
     <string-array name="contacts">
+        <item>请选择联系方式</item>
         <item>电话</item>
         <item>QQ</item>
         <item>微信</item>
         <item>邮箱</item>
+    </string-array>
+    <string-array name="ages">
+        <item>未知</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </string-array>
+    <string-array name="sexs">
+        <item>未知</item>
+        <item>公</item>
+        <item>母</item>
+    </string-array>
+    <string-array name="options">
+        <item>未知</item>
+        <item>是</item>
+        <item>否</item>
     </string-array>
     <string name="more_note">查看所有帖子 >></string>
     <string name="title_reply">帖子回复</string>
@@ -53,6 +87,8 @@
     <string name="age">年龄</string>
     <string name="neutering">是否绝育</string>
     <string name="insecticide">是否驱虫</string>
-    <string name="otherCondition">其他领养条件：</string>
+    <string name="otherCondition">领养条件：</string>
     <string name="contact">联系方式</string>
+    <string name="hint_conditions">请填写领养条件</string>
+    <string name="type">品种</string>
 </resources>

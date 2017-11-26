@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
+import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
@@ -46,7 +47,7 @@ public class MultiItemAdapter extends BaseAdapter {
     public MultiItemAdapter(Context context , List list) {
         mList = list;
         mContext = context;
-        mClasses =new Class[]{Multi.class, Note.class, ArrayList.class, User.class};
+        mClasses =new Class[]{Multi.class, Note.class, ArrayList.class, User.class, Catinfo.class};
     }
 
     @Override
@@ -77,6 +78,9 @@ public class MultiItemAdapter extends BaseAdapter {
             }break;
             case 3:{
                 convertView = getView3(position, convertView, parent);
+            }break;
+            case 4:{
+                convertView = getView4(position, convertView, parent);
             }break;
         }
         return convertView;
@@ -201,6 +205,59 @@ public class MultiItemAdapter extends BaseAdapter {
         return convertView;
     }
 
+    private View getView4(int position, View convertView, ViewGroup parent){
+        ViewHolder4 mVH;
+        if(convertView==null){
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_catinfo, null, false);
+            mVH = new ViewHolder4(convertView);
+            convertView.setTag(mVH);
+        }else{
+            mVH = (ViewHolder4) convertView.getTag();
+        }
+        Catinfo catinfo = (Catinfo) mList.get(position);
+
+        mVH.tvAge.setText(catinfo.getAge()==0?"未知":catinfo.getAge().toString());
+        Integer sex = catinfo.getSex();
+        if(sex==2){
+            mVH.tvSex.setText("母");
+        }else if(sex==1){
+            mVH.tvSex.setText("公");
+        }else{
+            mVH.tvSex.setText("未知");
+        }
+        mVH.tvType.setText(catinfo.getType());
+        Integer neutering = catinfo.getNeutering();
+        if(neutering==1){
+            mVH.tvNeutering.setText("是");
+        }else if(neutering ==2){
+            mVH.tvNeutering.setText("否");
+        }else{
+            mVH.tvNeutering.setText("未知");
+        }
+        Integer insecticide = catinfo.getInsecticide();
+        if(insecticide==1){
+            mVH.tvInsecticide.setText("是");
+        }else if(insecticide ==2){
+            mVH.tvInsecticide.setText("否");
+        }else{
+            mVH.tvInsecticide.setText("未知");
+        }
+
+        Integer contacttype = catinfo.getContacttype();
+        String result = null;
+        switch (contacttype){
+            case 0:result = "未知";break;
+            case 1:result = "电话";break;
+            case 2:result = "QQ";break;
+            case 3:result = "微信";break;
+            case 4:result = "邮箱";break;
+        }
+        mVH.tvContacttype.setText(result);
+        mVH.tvContact.setText(catinfo.getContact());
+        mVH.tvConditions.setText(catinfo.getConditions());
+        return convertView;
+    }
+
 
     class ViewHolder0 {
         TextView mtvNickname,mtvContent,mtvCount;
@@ -222,6 +279,29 @@ public class MultiItemAdapter extends BaseAdapter {
         ImageView mImgUser;
         TextView mTvNickname;
         Button mButtonFollow;
+    }
+
+
+    class ViewHolder4 {
+        TextView tvSex;
+        TextView tvAge;
+        TextView tvNeutering;
+        TextView tvInsecticide;
+        TextView tvType;
+        TextView tvContacttype;
+        TextView tvContact;
+        TextView tvConditions;
+
+        public ViewHolder4(View view) {
+            tvSex = (TextView) view.findViewById(R.id.tv_sex);
+            tvAge = (TextView) view.findViewById(R.id.tv_age);
+            tvNeutering = (TextView) view.findViewById(R.id.tv_neutering);
+            tvInsecticide = (TextView) view.findViewById(R.id.tv_insecticide);
+            tvType = (TextView) view.findViewById(R.id.tv_type);
+            tvContacttype = (TextView) view.findViewById(R.id.tv_contacttype);
+            tvContact = (TextView) view.findViewById(R.id.tv_contact);
+            tvConditions = (TextView) view.findViewById(R.id.tv_conditions);
+        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import java.io.Serializable;
  * 数据传送时使用的结构体
  */
 
+@SuppressWarnings("serial")
 public class M implements Serializable {
     public final static int CODE_SUCCESS = 0;
     public final static int CODE_FAILURE = -1;

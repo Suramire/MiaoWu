@@ -25,7 +25,7 @@ public class PublishPresenter implements PublishContract.Presenter {
     @Override
     public void publish() {
         mIPublishView.startPublishing();
-        mPublishModel.publish(mIPublishView.getNoteTitle(), mIPublishView.getNoteContent(),
+        mPublishModel.publish(mIPublishView.getCatinfo(),mIPublishView.getNoteTitle(), mIPublishView.getNoteContent(),
                 mIPublishView.getPicturePaths(), new OnGetResultListener() {
                     @Override
                     public void onSuccess(final Object object) {

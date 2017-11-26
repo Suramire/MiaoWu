@@ -1,5 +1,6 @@
 package com.suramire.miaowu.util;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore.Images;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +35,11 @@ import static com.makeramen.roundedimageview.RoundedImageView.TAG;
 public class CommonUtil {
     private static Context mContext = App.getContext();
 
+
+    public static void snackBar(Context context,String message,String actionMessage, View.OnClickListener listener){
+        Snackbar.make(((Activity)context).findViewById(android.R.id.content),message,Snackbar.LENGTH_INDEFINITE)
+                .setAction(actionMessage,listener).show();
+    }
 
 
     /**

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -186,13 +185,12 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 if((int)SPUtils.get("uid",0)!=0){
                     startActivity(NewPublishActivity.class);
                 }else{
-                    Snackbar.make(findViewById(android.R.id.content),"您还未登录",Snackbar.LENGTH_INDEFINITE)
-                            .setAction("登录", new View.OnClickListener() {
+                    CommonUtil.snackBar(this,"您还未登录","登录",new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     startActivity(LoginActivity.class);
                                 }
-                            }).show();
+                            });
                 }
 
             }break;
@@ -325,7 +323,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(mContext, NoteDetailActivity.class);
-                            intent.putExtra("noteId",note.getId(0));
+                            intent.putExtra("noteId",note.getId());
                             intent.putExtra("multi",item);
                             startActivity(intent);
                         }

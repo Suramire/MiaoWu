@@ -46,7 +46,7 @@ public class Note implements java.io.Serializable {
 
 	// Property accessors
 
-	public Integer getId(int noteId) {
+	public Integer getId() {
 		return this.id;
 	}
 

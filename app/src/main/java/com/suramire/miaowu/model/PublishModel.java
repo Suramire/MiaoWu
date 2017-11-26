@@ -3,7 +3,9 @@ package com.suramire.miaowu.model;
 import android.text.TextUtils;
 
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.M;
+import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.util.CommonUtil;
@@ -30,7 +32,7 @@ import static com.suramire.miaowu.util.Constant.BASEURL;
 
 public class PublishModel implements PublishContract.Model {
     @Override
-    public void publish(String title, String content, final List<String> pictues, final OnGetResultListener listener){
+    public void publish(Catinfo catinfo, String title, String content, final List<String> pictues, final OnGetResultListener listener){
         int uid = (int) SPUtils.get("uid", 0);
         if(uid==0){
             listener.onFailure("请先登录");
@@ -43,10 +45,13 @@ public class PublishModel implements PublishContract.Model {
         }else{
             Timestamp now = CommonUtil.getTimeStamp();
             final Note note = new Note(uid,title,content,now);
+            final Multi multi = new Multi();
+            multi.setmNote(note);
+            multi.setmCatinfo(catinfo);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    HTTPUtil.getPost(BASEURL + "addNote", note, new Callback() {
+                    HTTPUtil.getPost(BASEURL + "addNote", multi, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             listener.onError(e.getMessage());

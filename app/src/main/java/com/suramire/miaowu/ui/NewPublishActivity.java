@@ -22,8 +22,11 @@ import com.classic.adapter.CommonAdapter;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.presenter.PublishPresenter;
+import com.suramire.miaowu.util.CommonUtil;
+import com.suramire.miaowu.util.Constant;
 import com.suramire.miaowu.util.FileUtil;
 
 import java.io.File;
@@ -56,6 +59,8 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
     private boolean isPublish;
     private ArrayList<String> mPhotos;
     private PublishPresenter mPublishPresenter;
+    private boolean isCatInfoOk;
+    private Catinfo catInfo;
 
     @Override
     protected String getTitleString() {
@@ -128,40 +133,60 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
                 });
             }
         }
+        if(requestCode == Constant.REQUESTCODE_1 && resultCode == Constant.CODE_SUCCESS){
+           isCatInfoOk = true;
+            catInfo = (Catinfo) data.getSerializableExtra("catinfo");
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == 0x11){
-            startActivity(ExtendedInformationActivity.class);
+            Intent intent = new Intent(this, ExtendedInformationActivity.class);
+            startActivityForResult(intent, Constant.REQUESTCODE_1);
+//            startActivity(ExtendedInformationActivity.class);
         }
         if(item.getItemId() == 0x12){
             //这里执行发帖操作
             // TODO: 2017/10/28 信息完整性判断
             //发送帖子对象（文本）
             //将帖子里的图片传至服务器
-            if(!isPublish){
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("提示")
-                        .setMessage("是否发布该帖子")
-                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                mPublishPresenter = new PublishPresenter(NewPublishActivity.this);
-                                mPublishPresenter.publish();
-                            }
-                        })
-                        .setNegativeButton("取消", null)
-                        .setCancelable(true)
-                        .show();
+            if(isCatInfoOk){
+                if(!isPublish){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle("提示")
+                            .setMessage("是否发布该帖子")
+                            .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mPublishPresenter = new PublishPresenter(NewPublishActivity.this);
+                                    mPublishPresenter.publish();
+                                }
+                            })
+                            .setNegativeButton("取消", null)
+                            .setCancelable(true)
+                            .show();
+                }else{
+
+                    CommonUtil.snackBar(this,"请不要频繁发帖","确定",new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                }
             }else{
-                Snackbar.make(findViewById(android.R.id.content),"请不要频繁发帖",Snackbar.LENGTH_INDEFINITE).setAction("确定", new View.OnClickListener() {
+                CommonUtil.snackBar(this, "请先完善猫咪的信息", "去完善", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Intent intent = new Intent(NewPublishActivity.this, ExtendedInformationActivity.class);
+                        startActivityForResult(intent, Constant.REQUESTCODE_1);
                     }
-                }).show();
+                });
             }
+
+
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -206,6 +231,11 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
     @Override
     public String getNoteContent() {
         return mEditContent.getText().toString().trim();
+    }
+
+    @Override
+    public Catinfo getCatinfo() {
+        return catInfo;
     }
 
     @Override
