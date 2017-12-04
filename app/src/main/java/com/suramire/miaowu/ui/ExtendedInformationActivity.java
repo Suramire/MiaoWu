@@ -1,5 +1,6 @@
 package com.suramire.miaowu.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -13,7 +14,6 @@ import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.Constant;
 
 import butterknife.Bind;
 
@@ -41,10 +41,7 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
     @Bind(R.id.edt_conditions)
     EditText edtConditions;
 
-    @Override
-    protected String getTitleString() {
-        return "详细信息";
-    }
+
 
     @Override
     public int bindLayout() {
@@ -54,6 +51,7 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
     @Override
     public void initView(View view) {
         setSupportActionBar(mToolbar);
+        setTitle("详细信息");
     }
 
     @Override
@@ -100,7 +98,7 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
                 catinfo.setConditions(conditions);
                 Intent intent = new Intent();
                 intent.putExtra("catinfo",catinfo);
-                setResult(Constant.CODE_SUCCESS,intent);
+                setResult(Activity.RESULT_OK,intent);
                 finish();
             }
 

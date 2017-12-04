@@ -61,6 +61,7 @@ public class NoteDetailActivity extends BaseSwipeActivity implements NoteDetailC
     @Override
     public void initView(View view) {
         setSupportActionBar(mToolbar);
+        setTitle("帖子详情");
         mNoteId = getIntent().getIntExtra("noteId", 0);
         Multi multi = (Multi) getIntent().getSerializableExtra("multi");
         //查询帖子信息
@@ -68,7 +69,6 @@ public class NoteDetailActivity extends BaseSwipeActivity implements NoteDetailC
         mProgressDialog.setMessage("正在读取帖子信息，请稍候……");
         mNoteDetailPresenter = new NoteDetailPresenter(this);
 //        mNoteDetailPresenter.getData();
-        // TODO: 2017/11/14 多图片上传完整性问题
         // TODO: 2017/11/14 点击详情页 浏览次数+1
         mObjects = new ArrayList<>();
         List<String> picturesStrings = multi.getPicturesStrings();
@@ -87,10 +87,7 @@ public class NoteDetailActivity extends BaseSwipeActivity implements NoteDetailC
     }
 
 
-    @Override
-    protected String getTitleString() {
-        return "帖子详情";
-    }
+
 
     @Override
     public void showLoading() {

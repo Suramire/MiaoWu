@@ -16,7 +16,6 @@ public class PublishPresenter implements PublishContract.Presenter {
     private final PublishContract.View mIPublishView;
     private final Handler mHandler;
 
-    // TODO: 2017/10/29 资源回收？
     public PublishPresenter(PublishContract.View IPublishView) {
         mIPublishView = IPublishView;
         mPublishModel = new PublishModel();

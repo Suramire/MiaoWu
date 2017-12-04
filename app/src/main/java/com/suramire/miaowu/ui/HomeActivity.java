@@ -73,10 +73,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private HomePresenter mHomePresenter;
 
 
-    @Override
-    protected String getTitleString() {
-        return "首页";
-    }
+
 
     @Override
     protected boolean getDisplayHomeAsUpEnabled() {
@@ -91,6 +88,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void initView(View view) {
         setSupportActionBar(mToolbarHome);
+        setTitle("首页");
         mLoginPresenter = new LoginPresenter(this);
         View inflateHeaderView = mNavView.inflateHeaderView(R.layout.nav_header_main);
         mTextView = inflateHeaderView.findViewById(R.id.textView_profile_username);
@@ -297,7 +295,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void onGetSuccess(Object object) {
-        // TODO: 2017/10/26 成功获取数据后执行的操作
         final List<Multi> notes = (List<Multi>) object;
         if(notes.size()>0){
 

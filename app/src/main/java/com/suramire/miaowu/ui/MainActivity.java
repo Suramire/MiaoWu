@@ -29,10 +29,7 @@ public class MainActivity extends BaseSwipeActivity {
     TextInputLayout mTlUrl;
 
 
-    @Override
-    protected String getTitleString() {
-        return "测试";
-    }
+
 
     @Override
     public int bindLayout() {
@@ -41,7 +38,7 @@ public class MainActivity extends BaseSwipeActivity {
 
     @Override
     public void initView(View view) {
-
+//        setTitle("测试");
     }
 
 

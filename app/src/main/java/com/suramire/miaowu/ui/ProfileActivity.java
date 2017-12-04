@@ -74,10 +74,6 @@ public class ProfileActivity extends BaseSwipeActivity implements ProfileContrac
     private ProfilePresenter mProfilePresenter;
     private int mId;
 
-    @Override
-    protected String getTitleString() {
-        return "个人中心";
-    }
 
     @Override
     public int bindLayout() {
@@ -89,6 +85,7 @@ public class ProfileActivity extends BaseSwipeActivity implements ProfileContrac
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("请稍候……");
         setSupportActionBar(mToolbar4);
+        setTitle("个人中心");
 //        View emptyView = findViewById(R.id.rl_empty_profile);
 //        mListProfile.setEmptyView(emptyView);
         registerForContextMenu(mUserImageView);

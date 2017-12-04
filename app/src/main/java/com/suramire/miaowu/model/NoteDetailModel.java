@@ -113,7 +113,6 @@ public class NoteDetailModel implements NoteDetailContract.Model {
 
     @Override
     public void getNoteReply(final int noteId, final OnGetResultListener listener) {
-        // TODO: 2017/11/5 这里获取帖子回复
         new Thread(new Runnable() {
             @Override
             public void run() {

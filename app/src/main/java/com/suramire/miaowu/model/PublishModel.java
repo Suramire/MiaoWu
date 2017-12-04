@@ -45,6 +45,8 @@ public class PublishModel implements PublishContract.Model {
         }else{
             Timestamp now = CommonUtil.getTimeStamp();
             final Note note = new Note(uid,title,content,now);
+            note.setThumbs(0);
+            note.setViewcount(0);
             final Multi multi = new Multi();
             multi.setmNote(note);
             multi.setmCatinfo(catinfo);
@@ -85,48 +87,19 @@ public class PublishModel implements PublishContract.Model {
     }
 
     @Override
-    public void uploadPicture(Object object, List<String> pictues, final OnGetResultListener listener){
-        int nid = Integer.parseInt(object.toString());
+    public void uploadPicture(Object object, final List<String> pictues, final OnGetResultListener listener){
+        final int nid = Integer.parseInt(object.toString());
         List<HashMap<String,String>> names = new ArrayList<>();
-        for (int i =0;i<pictues.size();i++) {
-//            if(pictues.size()<2){
-//
-//            }
-            File file = new File(pictues.get(i));
-            HTTPUtil.getPost(BASEURL + "getPicNote", file, nid + "_" + i + ".png", new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    listener.onError(e.getMessage());
-                }
+        final int size = pictues.size();
 
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String result = response.body().string();
-                    try {
-                        M m = (M) GsonUtil.jsonToObject(result, M.class);
-                        switch (m.getCode()){
-                            case M.CODE_SUCCESS:{
-                                listener.onSuccess(null);
-                            }break;
-                            case M.CODE_FAILURE:{
-                                listener.onFailure(m.getMessage());
-                            }break;
-                            case M.CODE_ERROR:{
-                                listener.onError(m.getMessage());
-                            }
-                        }
-                    } catch (Exception e) {
-                        listener.onError(e.getMessage());
-                    }
-                }
-            });
+        for (int i =0;i<pictues.size();i++) {
+
             HashMap<String,String> map = new HashMap<>();
             map.put("nid",nid+"");
             map.put("picname",nid+"_"+i+".png");
             names.add(map);
         }
-        //上传图片
-        // TODO: 2017/10/29 对要上传的图片进行压缩处理
+        //上传图片文件名
         HTTPUtil.getPost(BASEURL + "picToDBNote", names, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -135,7 +108,44 @@ public class PublishModel implements PublishContract.Model {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                if (response.code()==200) {
+                    upload(pictues, 0,size,nid);
+                }else{
+                    listener.onFailure("无法连接服务器");
+                }
+            }
+        });
+    }
 
+    private void upload(final List<String> pictues, final int index, final int max, final int nid){
+        File file = new File(pictues.get(index));
+        HTTPUtil.getPost(BASEURL + "getPicNote", file, nid + "_" + index + ".png", new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String result = response.body().string();
+                try {
+                    M m = (M) GsonUtil.jsonToObject(result, M.class);
+                    switch (m.getCode()){
+                        case M.CODE_SUCCESS:{
+
+                        }
+                        case M.CODE_FAILURE:{
+
+                        }
+                        case M.CODE_ERROR:{
+                            if(index<max-1){
+                                upload(pictues, index+1,max,nid);
+                            }
+                        }break;
+                    }
+                } catch (Exception e) {
+
+                }
             }
         });
     }

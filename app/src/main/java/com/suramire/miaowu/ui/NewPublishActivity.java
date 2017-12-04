@@ -62,10 +62,7 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
     private boolean isCatInfoOk;
     private Catinfo catInfo;
 
-    @Override
-    protected String getTitleString() {
-        return "发表帖子";
-    }
+
 
     @Override
     public int bindLayout() {
@@ -75,6 +72,7 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
     @Override
     public void initView(View view) {
         setSupportActionBar(mToolbar);
+        setTitle("发表帖子");
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("发布中，请稍候……");
@@ -133,8 +131,9 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
                 });
             }
         }
-        if(requestCode == Constant.REQUESTCODE_1 && resultCode == Constant.CODE_SUCCESS){
+        if(requestCode == Constant.REQUESTCODE && resultCode == Activity.RESULT_OK){
            isCatInfoOk = true;
+            //为帖子设置猫咪信息
             catInfo = (Catinfo) data.getSerializableExtra("catinfo");
         }
     }
@@ -143,12 +142,11 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == 0x11){
             Intent intent = new Intent(this, ExtendedInformationActivity.class);
-            startActivityForResult(intent, Constant.REQUESTCODE_1);
+            startActivityForResult(intent, Constant.REQUESTCODE);
 //            startActivity(ExtendedInformationActivity.class);
         }
         if(item.getItemId() == 0x12){
             //这里执行发帖操作
-            // TODO: 2017/10/28 信息完整性判断
             //发送帖子对象（文本）
             //将帖子里的图片传至服务器
             if(isCatInfoOk){
@@ -180,7 +178,7 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(NewPublishActivity.this, ExtendedInformationActivity.class);
-                        startActivityForResult(intent, Constant.REQUESTCODE_1);
+                        startActivityForResult(intent, Constant.REQUESTCODE);
                     }
                 });
             }

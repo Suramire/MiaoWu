@@ -55,10 +55,6 @@ public class ReplyDetailActivity extends BaseSwipeActivity implements ReplyDetai
     private Integer nId;
     private ReplyDetailPresenter mReplyDetailPresenter;
 
-    @Override
-    protected String getTitleString() {
-        return "评论详情";
-    }
 
     @Override
     public int bindLayout() {
@@ -68,6 +64,7 @@ public class ReplyDetailActivity extends BaseSwipeActivity implements ReplyDetai
     @Override
     public void initView(View view) {
         setSupportActionBar(mToolbar);
+        setTitle("评论详情");
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("请稍候……");
         Multi multi = (Multi) getIntent().getSerializableExtra("multi");

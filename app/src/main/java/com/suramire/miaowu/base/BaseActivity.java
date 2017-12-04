@@ -36,13 +36,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void setActionBarTitle() {
         ActionBar actionBar = getSupportActionBar();
         if(actionBar !=null){
-            actionBar.setTitle(getTitleString());
             actionBar.setDisplayHomeAsUpEnabled(getDisplayHomeAsUpEnabled());
-
         }
     }
 
-    protected abstract String getTitleString();
+    protected void setTitle(String title){
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar !=null){
+            actionBar.setTitle(title);
+        }
+    }
 
     protected boolean getDisplayHomeAsUpEnabled(){
         return mDisplayHomeAsUpEnabled;

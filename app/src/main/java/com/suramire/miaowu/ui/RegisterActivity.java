@@ -83,6 +83,7 @@ public class RegisterActivity extends BaseSwipeActivity implements RegisterContr
     @Override
     public void initView(View view) {
         setSupportActionBar(mToolbarRegister);
+        setTitle("注册");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mViews = new ViewGroup[]{mLlPhone, mLlValidation, mLlNamed};
         mProgressDialog = new ProgressDialog(this);
@@ -206,10 +207,7 @@ public class RegisterActivity extends BaseSwipeActivity implements RegisterContr
         }
     }
 
-    @Override
-    protected String getTitleString() {
-        return "注册";
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

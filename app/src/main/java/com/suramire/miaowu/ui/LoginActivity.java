@@ -57,10 +57,6 @@ public class LoginActivity extends BaseSwipeActivity implements LoginContract.Vi
         mPasswordString = passwordString;
     }
 
-    @Override
-    protected String getTitleString() {
-        return "登录" + getResources().getString(R.string.app_name);
-    }
 
     @Override
     public int bindLayout() {
@@ -70,6 +66,7 @@ public class LoginActivity extends BaseSwipeActivity implements LoginContract.Vi
     @Override
     public void initView(View view) {
         setSupportActionBar(mToolbar3);
+        setTitle("登录" + getResources().getString(R.string.app_name));
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("请稍候……");
         mLoginPresenter = new LoginPresenter(this);
