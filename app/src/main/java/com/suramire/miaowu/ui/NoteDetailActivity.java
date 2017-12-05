@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.adapter.MultiItemAdapter;
 import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.ui.fragment.BottomCommentDialogFragment;
@@ -75,7 +76,11 @@ public class NoteDetailActivity extends BaseSwipeActivity implements NoteDetailC
         mObjects.add(picturesStrings);
         mObjects.add(multi.getmUser());
         mObjects.add(multi.getmNote());
-        mObjects.add(multi.getmCatinfo());
+        Catinfo catinfo = multi.getmCatinfo();
+        if(catinfo !=null){
+            mObjects.add(catinfo);
+        }
+
         mAdapter = new MultiItemAdapter(this, mObjects);
         mListNotedetail.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();

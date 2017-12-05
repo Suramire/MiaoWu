@@ -49,7 +49,9 @@ public class PublishModel implements PublishContract.Model {
             note.setViewcount(0);
             final Multi multi = new Multi();
             multi.setmNote(note);
-            multi.setmCatinfo(catinfo);
+            if(catinfo!=null){
+                multi.setmCatinfo(catinfo);
+            }
             new Thread(new Runnable() {
                 @Override
                 public void run() {

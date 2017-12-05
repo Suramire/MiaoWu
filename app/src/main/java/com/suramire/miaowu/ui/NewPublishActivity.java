@@ -61,7 +61,7 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
     private PublishPresenter mPublishPresenter;
     private boolean isCatInfoOk;
     private Catinfo catInfo;
-
+    private boolean needcat;
 
 
     @Override
@@ -72,6 +72,8 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
     @Override
     public void initView(View view) {
         setSupportActionBar(mToolbar);
+        //根据帖子类型判断是否需要填写猫咪信息
+        needcat = getIntent().getBooleanExtra("needcat",false);
         setTitle("发表帖子");
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
         mProgressDialog = new ProgressDialog(this);
@@ -80,7 +82,9 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, 0x11, 0, "填表").setIcon(R.drawable.ic_format_align_left_black_24dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        if(needcat){
+            menu.add(0, 0x11, 0, "填表").setIcon(R.drawable.ic_format_align_left_black_24dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
         menu.add(0, 0x12, 1, "发表").setIcon(R.drawable.ic_send_black_24dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return super.onCreateOptionsMenu(menu);
     }
@@ -149,7 +153,42 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
             //这里执行发帖操作
             //发送帖子对象（文本）
             //将帖子里的图片传至服务器
-            if(isCatInfoOk){
+            if(needcat){
+                if(isCatInfoOk){
+                    if(!isPublish){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        builder.setTitle("提示")
+                                .setMessage("是否发布该帖子")
+                                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        mPublishPresenter = new PublishPresenter(NewPublishActivity.this);
+                                        mPublishPresenter.publish();
+                                    }
+                                })
+                                .setNegativeButton("取消", null)
+                                .setCancelable(true)
+                                .show();
+                    }else{
+
+                        CommonUtil.snackBar(this,"请不要频繁发帖","确定",new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        });
+                    }
+                }else{
+                    CommonUtil.snackBar(this, "请先完善猫咪的信息", "去完善", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(NewPublishActivity.this, ExtendedInformationActivity.class);
+                            startActivityForResult(intent, Constant.REQUESTCODE);
+                        }
+                    });
+                }
+
+            }else{
                 if(!isPublish){
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setTitle("提示")
@@ -173,16 +212,7 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
                         }
                     });
                 }
-            }else{
-                CommonUtil.snackBar(this, "请先完善猫咪的信息", "去完善", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(NewPublishActivity.this, ExtendedInformationActivity.class);
-                        startActivityForResult(intent, Constant.REQUESTCODE);
-                    }
-                });
             }
-
 
 
         }
