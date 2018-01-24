@@ -1,31 +1,25 @@
 package com.suramire.miaowu.contract;
 
-import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.base.BasePresenter;
+import com.suramire.miaowu.base.BaseView;
+
+import rx.Observable;
 
 /**
  * Created by Suramire on 2017/10/29.
  */
 
 public interface ProfileContract {
-    interface Model {
-        void getProfile(int id, OnGetResultListener listener);
+    interface Model<T> {
+        Observable<T> getProfile(int id);
     }
 
-    interface View {
-        void showLoading();
-
-        void cancelLoading();
-
-        void onGetProfileSuccess(Object object);
-
-        void onGetProfileFaiure(String failureMessage);
-
-        void onGetProfileError(String errorMessage);
+    interface View extends BaseView {
 
         int getUid();
     }
 
-    interface Presenter {
+    interface Presenter extends BasePresenter<View> {
         void getProfile();
     }
 }

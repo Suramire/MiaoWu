@@ -9,15 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.contract.RegisterContract;
 import com.suramire.miaowu.presenter.RegisterPresenter;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
+import com.suramire.miaowu.util.ToastUtil;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -28,7 +28,7 @@ import cn.smssdk.SMSSDK;
  * Created by Suramire on 2017/10/17.
  */
 
-public class RegisterActivity extends BaseSwipeActivity implements RegisterContract.View{
+public class RegisterActivity extends BaseActivity<RegisterPresenter> implements RegisterContract.View{
     @Bind(R.id.toolbar)
     Toolbar mToolbarRegister;
     @Bind(R.id.editTextPhoneNumber)
@@ -71,7 +71,6 @@ public class RegisterActivity extends BaseSwipeActivity implements RegisterContr
     private int step;
     private ViewGroup[] mViews;
     private ProgressDialog mProgressDialog;
-    private RegisterPresenter mRegisterPresenter;
     private EventHandler mEventHandler;
 
 
@@ -81,14 +80,18 @@ public class RegisterActivity extends BaseSwipeActivity implements RegisterContr
     }
 
     @Override
-    public void initView(View view) {
+    public void createPresenter() {
+        mPresenter = new RegisterPresenter();
+    }
+
+    @Override
+    public void initView() {
         setSupportActionBar(mToolbarRegister);
         setTitle("注册");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mViews = new ViewGroup[]{mLlPhone, mLlValidation, mLlNamed};
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("请稍候……");
-        mRegisterPresenter = new RegisterPresenter(this);
         mEventHandler = new EventHandler() {
             public void afterEvent(int event, int result, Object data) {
                 if (data instanceof Throwable) {
@@ -97,7 +100,7 @@ public class RegisterActivity extends BaseSwipeActivity implements RegisterContr
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            onRegisterError(msg);
+                            ToastUtil.showShortToastCenter(msg);
                         }
                     });
                     // {"status":468,"detail":"需要校验的验证码错误"}
@@ -139,7 +142,7 @@ public class RegisterActivity extends BaseSwipeActivity implements RegisterContr
         switch (view.getId()) {
 // step0
             case R.id.btn_register_next:{
-                mRegisterPresenter.validatePhoneNumber(new OnGetResultListener() {
+                mPresenter.validatePhoneNumber(new OnGetResultListener() {
                     @Override
                     public void onSuccess(Object object) {
                         runOnUiThread(new Runnable() {
@@ -155,7 +158,7 @@ public class RegisterActivity extends BaseSwipeActivity implements RegisterContr
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                onRegisterFailure(failtureMessage);
+                                ToastUtil.showShortToastCenter(failtureMessage);
                             }
                         });
                     }
@@ -165,7 +168,7 @@ public class RegisterActivity extends BaseSwipeActivity implements RegisterContr
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                onRegisterError(errorMessage);
+                                ToastUtil.showShortToastCenter(errorMessage);
                             }
                         });
                     }
@@ -182,7 +185,7 @@ public class RegisterActivity extends BaseSwipeActivity implements RegisterContr
 
 //step2
             case R.id.btn_register_confirm:{
-                mRegisterPresenter.validateInformation();
+                mPresenter.validateInformation();
             }break;
 
             case R.id.editText_name:{
@@ -245,21 +248,16 @@ public class RegisterActivity extends BaseSwipeActivity implements RegisterContr
     }
 
     @Override
-    public void onRegisterSuccess() {
-        Toast.makeText(RegisterActivity.this, "注册成功，请前往登录！", Toast.LENGTH_SHORT).show();
+    public void onSuccess(Object data) {
+        ToastUtil.showShortToastCenter("注册成功，请前往登录！");
         finish();
     }
 
-    @Override
-    public void onRegisterFailure(String failureMessage) {
-        Toast.makeText(RegisterActivity.this, "注册失败："+failureMessage, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
-    public void onRegisterError(String errorMessage) {
-        Toast.makeText(RegisterActivity.this, "注册出现错误:"+errorMessage, Toast.LENGTH_SHORT).show();
+    public void onPhoneSuccess() {
+        // TODO: 2018/1/24 手机验证成功后的处理
     }
-
 
     @Override
     public String getPhoneNumber() {

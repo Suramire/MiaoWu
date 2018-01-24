@@ -13,12 +13,12 @@ import android.widget.Toast;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.adapter.MultiItemAdapter;
-import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.contract.NoteDetailContract;
-import com.suramire.miaowu.ui.fragment.BottomCommentDialogFragment;
 import com.suramire.miaowu.presenter.NoteDetailPresenter;
+import com.suramire.miaowu.ui.fragment.BottomCommentDialogFragment;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
 
@@ -32,7 +32,7 @@ import butterknife.OnClick;
  * Created by Suramire on 2017/10/17.
  */
 
-public class NoteDetailActivity extends BaseSwipeActivity implements NoteDetailContract.View {
+public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implements NoteDetailContract.View {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -43,7 +43,6 @@ public class NoteDetailActivity extends BaseSwipeActivity implements NoteDetailC
     @Bind(R.id.bar_num2)
     TextView mBarNum2;
     private ProgressDialog mProgressDialog;
-    private NoteDetailPresenter mNoteDetailPresenter;
     private int mNoteId;
     private MultiItemAdapter mAdapter;
     private List<Object> mObjects;
@@ -60,7 +59,12 @@ public class NoteDetailActivity extends BaseSwipeActivity implements NoteDetailC
     }
 
     @Override
-    public void initView(View view) {
+    public void createPresenter() {
+        mPresenter = new NoteDetailPresenter();
+    }
+
+    @Override
+    public void initView() {
         setSupportActionBar(mToolbar);
         setTitle("帖子详情");
         mNoteId = getIntent().getIntExtra("noteId", 0);
@@ -68,7 +72,7 @@ public class NoteDetailActivity extends BaseSwipeActivity implements NoteDetailC
         //查询帖子信息
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("正在读取帖子信息，请稍候……");
-        mNoteDetailPresenter = new NoteDetailPresenter(this);
+
 //        mNoteDetailPresenter.getData();
         // TODO: 2017/11/14 点击详情页 浏览次数+1
         mObjects = new ArrayList<>();
@@ -87,7 +91,7 @@ public class NoteDetailActivity extends BaseSwipeActivity implements NoteDetailC
 
         mThumbs = multi.getmNote().getThumbs();
         thumb(mThumbs);
-        mNoteDetailPresenter.getReply();
+        mPresenter.getReply();
 
     }
 
@@ -102,6 +106,22 @@ public class NoteDetailActivity extends BaseSwipeActivity implements NoteDetailC
     @Override
     public void cancelLoading() {
         mProgressDialog.cancel();
+    }
+
+    @Override
+    public void onSuccess(Object object) {
+        List<Multi> replies = (List<Multi>) object;
+        for (Multi multi : replies
+                ) {
+            mObjects.add(multi);
+            //统计楼层数（非楼层回复）
+            if(multi.getmReply().getReplyuid()==0){
+                mReplyCount++;
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+        setReplyCount(mReplyCount);
+
     }
 
     @Override
@@ -138,31 +158,7 @@ public class NoteDetailActivity extends BaseSwipeActivity implements NoteDetailC
 
 
 
-    @Override
-    public void onGetReplySuccess(Object object) {
-        List<Multi> replies = (List<Multi>) object;
-        for (Multi multi : replies
-                ) {
-            mObjects.add(multi);
-            //统计楼层数（非楼层回复）
-            if(multi.getmReply().getReplyuid()==0){
-                mReplyCount++;
-            }
-        }
-        mAdapter.notifyDataSetChanged();
-        setReplyCount(mReplyCount);
 
-    }
-
-    @Override
-    public void onGetReplyFailure(String failureMessage) {
-        setReplyCount(0);
-    }
-
-    @Override
-    public void onGetReplyError(String errorMessage) {
-        setReplyCount(0);
-    }
 
     @Override
     public void onThumbSuccess() {
@@ -195,7 +191,7 @@ public class NoteDetailActivity extends BaseSwipeActivity implements NoteDetailC
             break;
             case R.id.btn_like:
                 if(!thumbed){
-                    mNoteDetailPresenter.thumb();
+                    mPresenter.thumb();
                 }
                 break;
             case R.id.btn_share:

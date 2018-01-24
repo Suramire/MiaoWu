@@ -18,7 +18,7 @@ public class SPUtils
     /**
      * 保存在手机里面的文件名
      */
-    private static Context mContext = App.getContext();
+    private static Context mContext = App.getInstance();
     
     public static final String FILE_NAME = "common_data";
 

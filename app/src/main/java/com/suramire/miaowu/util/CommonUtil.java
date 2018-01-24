@@ -33,11 +33,21 @@ import static com.makeramen.roundedimageview.RoundedImageView.TAG;
  */
 
 public class CommonUtil {
-    private static Context mContext = App.getContext();
+    private static Context mContext = App.getInstance();
+
+
+    public static void snackBar(Context context,String message){
+        snackBar(context, message, "确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
 
 
     public static void snackBar(Context context,String message,String actionMessage, View.OnClickListener listener){
-        Snackbar.make(((Activity)context).findViewById(android.R.id.content),message,Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(((Activity)context).findViewById(android.R.id.content),message,Snackbar.LENGTH_LONG)
                 .setAction(actionMessage,listener).show();
     }
 

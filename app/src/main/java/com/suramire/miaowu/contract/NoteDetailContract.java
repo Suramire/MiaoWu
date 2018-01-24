@@ -1,41 +1,34 @@
 package com.suramire.miaowu.contract;
 
-import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.base.BasePresenter;
+import com.suramire.miaowu.base.BaseView;
+
+import rx.Observable;
 
 /**
  * Created by Suramire on 2017/10/31.
  */
 
 public interface NoteDetailContract {
-    interface Model {
-        void getNoteDetail(int noteId, OnGetResultListener listener);
+    interface Model<T> {
+        Observable<T> getNoteDetail(int noteId);
 
-        void getPicture(int noteId, OnGetResultListener listener);
+        Observable<T> getPicture(int noteId);
 
-        void getNoteReply(int noteId, OnGetResultListener listener);
+        Observable<T> getNoteReply(int noteId);
 
-        void thumb(int noteId, OnGetResultListener listener);
+        Observable<T> thumb(int noteId);
 
     }
 
-    interface View {
-        void showLoading();
-
-        void cancelLoading();
+    interface View extends BaseView {
 
         int getNoteId();
-
-
-        void onGetReplySuccess(Object object);
-
-        void onGetReplyFailure(String failureMessage);
-
-        void onGetReplyError(String errorMessage);
 
         void onThumbSuccess();
     }
 
-    interface Presenter {
+    interface Presenter extends BasePresenter<View> {
 //        void getData();
 
 //        void getPicture();

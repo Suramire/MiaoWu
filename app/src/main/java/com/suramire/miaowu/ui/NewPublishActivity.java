@@ -15,18 +15,17 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonAdapter;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.presenter.PublishPresenter;
+import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.Constant;
 import com.suramire.miaowu.util.FileUtil;
 
 import java.io.File;
@@ -44,7 +43,7 @@ import me.iwf.photopicker.PhotoPreview;
  */
 // TODO: 2017/10/27 字数限制
 
-public class NewPublishActivity extends BaseSwipeActivity implements PublishContract.View {
+public class NewPublishActivity extends BaseActivity<PublishPresenter> implements PublishContract.View {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.gridview_picture)
@@ -58,7 +57,6 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
     private ProgressDialog mProgressDialog;
     private boolean isPublish;
     private ArrayList<String> mPhotos;
-    private PublishPresenter mPublishPresenter;
     private boolean isCatInfoOk;
     private Catinfo catInfo;
     private boolean needcat;
@@ -70,7 +68,12 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
     }
 
     @Override
-    public void initView(View view) {
+    public void createPresenter() {
+        mPresenter = new PublishPresenter();
+    }
+
+    @Override
+    public void initView() {
         setSupportActionBar(mToolbar);
         //根据帖子类型判断是否需要填写猫咪信息
         needcat = getIntent().getBooleanExtra("needcat",false);
@@ -135,7 +138,7 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
                 });
             }
         }
-        if(requestCode == Constant.REQUESTCODE && resultCode == Activity.RESULT_OK){
+        if(requestCode == ApiConfig.REQUESTCODE && resultCode == Activity.RESULT_OK){
            isCatInfoOk = true;
             //为帖子设置猫咪信息
             catInfo = (Catinfo) data.getSerializableExtra("catinfo");
@@ -146,7 +149,7 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == 0x11){
             Intent intent = new Intent(this, ExtendedInformationActivity.class);
-            startActivityForResult(intent, Constant.REQUESTCODE);
+            startActivityForResult(intent, ApiConfig.REQUESTCODE);
 //            startActivity(ExtendedInformationActivity.class);
         }
         if(item.getItemId() == 0x12){
@@ -156,14 +159,13 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
             if(needcat){
                 if(isCatInfoOk){
                     if(!isPublish){
-                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("提示")
                                 .setMessage("是否发布该帖子")
                                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        mPublishPresenter = new PublishPresenter(NewPublishActivity.this);
-                                        mPublishPresenter.publish();
+                                        mPresenter.publish();
                                     }
                                 })
                                 .setNegativeButton("取消", null)
@@ -183,21 +185,20 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(NewPublishActivity.this, ExtendedInformationActivity.class);
-                            startActivityForResult(intent, Constant.REQUESTCODE);
+                            startActivityForResult(intent, ApiConfig.REQUESTCODE);
                         }
                     });
                 }
 
             }else{
                 if(!isPublish){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("提示")
                             .setMessage("是否发布该帖子")
                             .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    mPublishPresenter = new PublishPresenter(NewPublishActivity.this);
-                                    mPublishPresenter.publish();
+                                    mPresenter.publish();
                                 }
                             })
                             .setNegativeButton("取消", null)
@@ -219,37 +220,8 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void startPublishing() {
-        mProgressDialog.show();
-    }
 
-    @Override
-    public void stopPublishing() {
-        mProgressDialog.dismiss();
-    }
 
-    @Override
-    public void onPublishSuccess() {
-        isPublish = true;
-        Snackbar.make(findViewById(android.R.id.content),"帖子发布成功，请等待审核",Snackbar.LENGTH_INDEFINITE)
-                .setAction("确定", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                    }
-                }).show();
-    }
-
-    @Override
-    public void onPublishFailure(String failureMessage) {
-        Toast.makeText(mContext, "发布失败：" + failureMessage, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onPublishError(String errorMessage) {
-        Toast.makeText(mContext, "发布帖子出错：" + errorMessage, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public String getNoteTitle() {
@@ -269,5 +241,27 @@ public class NewPublishActivity extends BaseSwipeActivity implements PublishCont
     @Override
     public List<String> getPicturePaths() {
         return mPhotos;
+    }
+
+    @Override
+    public void showLoading() {
+        mProgressDialog.show();
+    }
+
+    @Override
+    public void cancelLoading() {
+        mProgressDialog.dismiss();
+    }
+
+    @Override
+    public void onSuccess(Object data) {
+        isPublish = true;
+        Snackbar.make(findViewById(android.R.id.content),"帖子发布成功，请等待审核",Snackbar.LENGTH_INDEFINITE)
+                .setAction("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                }).show();
     }
 }

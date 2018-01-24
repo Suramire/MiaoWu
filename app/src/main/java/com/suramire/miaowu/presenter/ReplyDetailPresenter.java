@@ -1,10 +1,12 @@
 package com.suramire.miaowu.presenter;
 
-import android.os.Handler;
-
-import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.contract.ReplyDetailContract;
+import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.ReplyDetailModel;
+import com.suramire.miaowu.util.ToastUtil;
+
+import java.util.List;
 
 /**
  * Created by Suramire on 2017/11/17.
@@ -13,56 +15,43 @@ import com.suramire.miaowu.model.ReplyDetailModel;
 public class ReplyDetailPresenter implements ReplyDetailContract.Presenter {
 
     private final ReplyDetailModel mReplyDetailModel;
-    private final Handler mHandler;
     private ReplyDetailContract.View mView;
 
-    public ReplyDetailPresenter(ReplyDetailContract.View view) {
-        mView = view;
+    public ReplyDetailPresenter() {
         mReplyDetailModel = new ReplyDetailModel();
-        mHandler = new Handler();
     }
 
     @Override
     public void getReplyList() {
         mView.showLoading();
-        mReplyDetailModel.getReplyList(mView.getFloorId(), new OnGetResultListener() {
-            @Override
-            public void onSuccess(final Object object) {
-                mHandler.post(new Runnable() {
+        mReplyDetailModel.getReplyList(mView.getFloorId())
+                .subscribe(new ResponseSubscriber<List<Multi>>() {
                     @Override
-                    public void run() {
+                    public void onError(Throwable throwable) {
                         mView.cancelLoading();
-                        mView.onGetReplyListSuccess(object);
+                        ToastUtil.showShortToastCenter(throwable.getMessage());
                     }
-                });
-            }
 
-            @Override
-            public void onFailure(final String failureMessage) {
-                mHandler.post(new Runnable() {
                     @Override
-                    public void run() {
+                    public void onNext(List<Multi> multis) {
                         mView.cancelLoading();
-                        mView.onGetReplyListFaiure(failureMessage);
+                        mView.onSuccess(multis);
                     }
                 });
-            }
-
-            @Override
-            public void onError(final String errorMessage) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mView.cancelLoading();
-                        mView.onGetReplyListError(errorMessage);
-                    }
-                });
-            }
-        });
     }
 
     @Override
     public void getUsersById() {
 
+    }
+
+    @Override
+    public void attachView(ReplyDetailContract.View view) {
+        mView = view;
+    }
+
+    @Override
+    public void detachView() {
+        mView = null;
     }
 }

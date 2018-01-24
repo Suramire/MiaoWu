@@ -2,20 +2,12 @@ package com.suramire.miaowu.model;
 
 import android.text.TextUtils;
 
-import com.suramire.miaowu.base.OnGetResultListener;
-import com.suramire.miaowu.contract.LoginContract;
-import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.bean.User;
-import com.suramire.miaowu.util.GsonUtil;
-import com.suramire.miaowu.util.HTTPUtil;
+import com.suramire.miaowu.contract.LoginContract;
+import com.suramire.miaowu.http.ApiLoader;
+import com.suramire.miaowu.http.base.ResponseFunc;
 
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
-
-import static com.suramire.miaowu.util.Constant.BASEURL;
+import rx.Observable;
 
 /**
  * Created by Suramire on 2017/10/29.
@@ -23,46 +15,17 @@ import static com.suramire.miaowu.util.Constant.BASEURL;
 
 public class LoginModel implements LoginContract.Model {
     @Override
-    public void doLogin(final String username, final String password, final OnGetResultListener onLoginListener) {
+    public Observable<User> doLogin(final String username, final String password) {
         //信息完整性验证
         if(TextUtils.isEmpty(username)|| TextUtils.isEmpty(password)){
-            onLoginListener.onFailure("请将帐号信息补充完整");
+//            onLoginListener.onFailure("请将帐号信息补充完整");
+            return null;
         }else{
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    User user = new User(null, username, password);
-                    HTTPUtil.getPost(BASEURL + "loginUser", user , new Callback() {
-                        @Override
-                        public void onFailure(Call call, IOException e) {
-                            onLoginListener.onError(e.getMessage());
-                        }
-
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-                            String result = response.body().string();
-                            try {
-                                M m = (M) GsonUtil.jsonToObject(result, M.class);
-                                switch (m.getCode()){
-                                    case M.CODE_SUCCESS:{
-                                        User user = (User) GsonUtil.jsonToObject(m.getData(), User.class);
-                                        onLoginListener.onSuccess(user);
-                                    }break;
-                                    case M.CODE_FAILURE:{
-                                        onLoginListener.onFailure(m.getMessage());
-                                    }break;
-                                    case M.CODE_ERROR:{
-                                        onLoginListener.onError(m.getMessage());
-                                    }break;
-                                }
-                            } catch (Exception e) {
-                                //捕获json字符串转成对象时可能发生的异常
-                                onLoginListener.onError(e.getMessage());
-                            }
-                        }
-                    });
-                }
-            }).start();
+            User user = new User();
+            user.setNickname(username);
+            user.setPassword(password);
+            return ApiLoader.login(user)
+                    .map(new ResponseFunc<User>());
         }
     }
 }

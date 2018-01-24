@@ -1,10 +1,14 @@
 package com.suramire.miaowu.presenter;
 
-import android.os.Handler;
-
-import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.contract.NoteDetailContract;
+import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.NoteDetailModel;
+import com.suramire.miaowu.util.ToastUtil;
+
+import java.util.List;
+
+import rx.functions.Action1;
 
 /**
  * Created by Suramire on 2017/10/31.
@@ -12,148 +16,52 @@ import com.suramire.miaowu.model.NoteDetailModel;
 
 public class NoteDetailPresenter implements NoteDetailContract.Presenter {
     private final NoteDetailModel mNoteDetailModel;
-    private final NoteDetailContract.View mView;
-    private final Handler mHandler;
+    private NoteDetailContract.View mView;
 
-    public NoteDetailPresenter(NoteDetailContract.View view) {
-        mView = view;
+    public NoteDetailPresenter() {
         mNoteDetailModel = new NoteDetailModel();
-        mHandler = new Handler();
     }
 
-//    @Override
-//    public void getData() {
-//        mView.showLoading();
-//        mNoteDetailModel.getNoteDetail(mView.getNoteId(), new OnGetResultListener() {
-//            @Override
-//            public void onSuccess(final Object object) {
-//                mHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mView.cancelLoading();
-//                        mView.onGetSuccess((Note)object);
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onFailure(final String failureMessage) {
-//                mHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mView.cancelLoading();
-//                        mView.onGetFailure(failureMessage);
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onError(final String errorMessage) {
-//                mHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mView.cancelLoading();
-//                        mView.onGetError(errorMessage);
-//                    }
-//                });
-//            }
-//        });
-//
-//    }
-
-//    @Override
-//    public void getPicture() {
-//        mNoteDetailModel.getPicture(mView.getNoteId(), new OnGetResultListener() {
-//            @Override
-//            public void onSuccess(final Object object) {
-//                mHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mView.onGetPictureSuccess((List<String>) object);
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onFailure(final String failureMessage) {
-//                mHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mView.onGetPictureFailure(failureMessage);
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onError(final String errorMessage) {
-//                mHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mView.onGetPictureError(errorMessage);
-//                    }
-//                });
-//            }
-//        });
-//    }
 
     @Override
     public void getReply() {
-        mNoteDetailModel.getNoteReply(mView.getNoteId(), new OnGetResultListener() {
-            @Override
-            public void onSuccess(final Object object) {
-                mHandler.post(new Runnable() {
+        mView.showLoading();
+        mNoteDetailModel.getNoteReply(mView.getNoteId())
+                .subscribe(new ResponseSubscriber<List<Multi>>() {
                     @Override
-                    public void run() {
-                        mView.onGetReplySuccess(object);
+                    public void onError(Throwable throwable) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter(throwable.getMessage());
                     }
-                });
-            }
 
-            @Override
-            public void onFailure(final String failureMessage) {
-                mHandler.post(new Runnable() {
                     @Override
-                    public void run() {
-                        mView.onGetReplyFailure(failureMessage);
+                    public void onNext(List<Multi> multis) {
+                        mView.cancelLoading();
+                        mView.onSuccess(multis);
                     }
-                });
-            }
 
-            @Override
-            public void onError(final String errorMessage) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mView.onGetReplyError(errorMessage);
-                    }
                 });
-            }
-        });
     }
 
     @Override
     public void thumb() {
-        mNoteDetailModel.thumb(mView.getNoteId(), new OnGetResultListener() {
-            @Override
-            public void onSuccess(Object object) {
-                mHandler.post(new Runnable() {
+        mNoteDetailModel.thumb(mView.getNoteId())
+                .subscribe(new Action1<Object>() {
                     @Override
-                    public void run() {
+                    public void call(Object o) {
                         mView.onThumbSuccess();
                     }
                 });
-            }
 
-            @Override
-            public void onFailure(String failureMessage) {
+    }
 
-            }
+    @Override
+    public void attachView(NoteDetailContract.View view) {
+        mView = view;
+    }
 
-            @Override
-            public void onError(String errorMessage) {
-
-            }
-        });
-
+    @Override
+    public void detachView() {
+        mView = null;
     }
 }

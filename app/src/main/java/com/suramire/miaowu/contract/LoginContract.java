@@ -1,20 +1,20 @@
 package com.suramire.miaowu.contract;
 
-import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.base.BasePresenter;
+import com.suramire.miaowu.base.BaseView;
+
+import rx.Observable;
 
 /**
  * Created by Suramire on 2017/10/29.
  */
 
 public interface LoginContract {
-    interface Model {
-        void doLogin(String username, String password, OnGetResultListener listener);
+    interface Model<T> {
+        Observable<T> doLogin(String username, String password);
     }
 
-    interface View {
-        void showLoading();
-
-        void cancelLoading();
+    interface View extends BaseView {
 
         String getUserName();
 
@@ -22,12 +22,9 @@ public interface LoginContract {
 
         void onLoginSuccess(Object resultObject);
 
-        void onLoginFailure(String fialureMessage);
-
-        void onLoginError(String errorMessage);
     }
 
-    interface Presenter {
+    interface Presenter extends BasePresenter<View> {
         void login(String name,String password);
     }
 }

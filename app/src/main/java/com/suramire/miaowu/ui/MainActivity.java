@@ -3,7 +3,6 @@ package com.suramire.miaowu.ui;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Toast;
 
 import com.suramire.miaowu.R;
@@ -37,7 +36,12 @@ public class MainActivity extends BaseSwipeActivity {
     }
 
     @Override
-    public void initView(View view) {
+    public void createPresenter() {
+
+    }
+
+    @Override
+    public void initView() {
 //        setTitle("测试");
     }
 
@@ -73,5 +77,20 @@ public class MainActivity extends BaseSwipeActivity {
             });
             onekeyShare.show(MainActivity.this);
         }
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void cancelLoading() {
+
+    }
+
+    @Override
+    public void onSuccess(Object data) {
+
     }
 }

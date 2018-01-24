@@ -16,7 +16,7 @@ import com.classic.adapter.CommonRecyclerAdapter;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
@@ -31,13 +31,13 @@ import java.util.List;
 
 import butterknife.Bind;
 
-import static com.suramire.miaowu.util.Constant.BASUSERPICEURL;
+import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
 
 /**
  * Created by Suramire on 2017/11/17.
  */
 
-public class ReplyDetailActivity extends BaseSwipeActivity implements ReplyDetailContract.View {
+public class ReplyDetailActivity extends BaseActivity<ReplyDetailPresenter> implements ReplyDetailContract.View {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.reply_user_icon)
@@ -53,7 +53,6 @@ public class ReplyDetailActivity extends BaseSwipeActivity implements ReplyDetai
     private ProgressDialog mProgressDialog;
     private Integer mFloorid;
     private Integer nId;
-    private ReplyDetailPresenter mReplyDetailPresenter;
 
 
     @Override
@@ -62,7 +61,13 @@ public class ReplyDetailActivity extends BaseSwipeActivity implements ReplyDetai
     }
 
     @Override
-    public void initView(View view) {
+    public void createPresenter() {
+        mPresenter = new ReplyDetailPresenter();
+    }
+
+
+    @Override
+    public void initView() {
         setSupportActionBar(mToolbar);
         setTitle("评论详情");
         mProgressDialog = new ProgressDialog(this);
@@ -81,8 +86,7 @@ public class ReplyDetailActivity extends BaseSwipeActivity implements ReplyDetai
         }
         mReplyDate.setText(CommonUtil.timeStampToDateString(reply.getReplytime()));
         mReplyContent.setText(reply.getReplycontent());
-        mReplyDetailPresenter = new ReplyDetailPresenter(this);
-        mReplyDetailPresenter.getReplyList();
+        mPresenter.getReplyList();
         mListReplyChild.setLayoutManager(new LinearLayoutManager(mContext));
     }
 
@@ -99,7 +103,7 @@ public class ReplyDetailActivity extends BaseSwipeActivity implements ReplyDetai
     }
 
     @Override
-    public void onGetReplyListSuccess(Object object) {
+    public void onSuccess(Object object) {
         final List<Multi> multiList = (List<Multi>) object;
         List<Multi> mMultiList = new ArrayList<>();
 //        for (Reply reply :
@@ -172,7 +176,7 @@ public class ReplyDetailActivity extends BaseSwipeActivity implements ReplyDetai
                                         public void onSucess() {
                                             Toast.makeText(mContext, "发表成功！", Toast.LENGTH_SHORT).show();
                                             // TODO: 2017/11/21 自己不能回复自己
-                                            mReplyDetailPresenter.getReplyList();
+                                            mPresenter.getReplyList();
 
                                             bottomCommentDialogFragment.dismiss();
                                         }
@@ -205,17 +209,10 @@ public class ReplyDetailActivity extends BaseSwipeActivity implements ReplyDetai
         }else{
             Toast.makeText(mContext, "暂无回复信息", Toast.LENGTH_SHORT).show();
         }
+
     }
 
-    @Override
-    public void onGetReplyListFaiure(String failureMessage) {
-        Toast.makeText(mContext, "获取回复列表失败：" + failureMessage, Toast.LENGTH_SHORT).show();
-    }
 
-    @Override
-    public void onGetReplyListError(String errorMessage) {
-        Toast.makeText(mContext, "获取回复列表出错：" + errorMessage, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public int getFloorId() {

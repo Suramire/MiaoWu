@@ -1,10 +1,10 @@
 package com.suramire.miaowu.presenter;
 
-import android.os.Handler;
-
-import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.ProfileContract;
+import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.ProfileModel;
+import com.suramire.miaowu.util.ToastUtil;
 
 /**
  * Created by Suramire on 2017/10/25.
@@ -12,41 +12,38 @@ import com.suramire.miaowu.model.ProfileModel;
 
 public class ProfilePresenter implements ProfileContract.Presenter {
     private final ProfileModel mProfileModel;
-    private final Handler mHandler;
-    private final ProfileContract.View mIProfileView;
+    private ProfileContract.View mView;
 
-    public ProfilePresenter(ProfileContract.View IProfileView) {
-        mIProfileView = IProfileView;
+    public ProfilePresenter() {
         mProfileModel = new ProfileModel();
-        mHandler = new Handler();
     }
 
     @Override
     public void getProfile(){
-        mIProfileView.showLoading();
-        mProfileModel.getProfile(mIProfileView.getUid(), new OnGetResultListener() {
-            @Override
-            public void onSuccess(final Object object) {
-                mHandler.post(new Runnable() {
+        mView.showLoading();
+        mProfileModel.getProfile(mView.getUid())
+                .subscribe(new ResponseSubscriber<User>() {
                     @Override
-                    public void run() {
-                        mIProfileView.cancelLoading();
-                        mIProfileView.onGetProfileSuccess(object);
+                    public void onError(Throwable throwable) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter(throwable.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(User user) {
+                        mView.cancelLoading();
+                        mView.onSuccess(user);
                     }
                 });
-            }
+    }
 
-            @Override
-            public void onFailure(String failureMessage) {
-                mIProfileView.cancelLoading();
-                mIProfileView.onGetProfileFaiure(failureMessage);
-            }
+    @Override
+    public void attachView(ProfileContract.View view) {
+        mView = view;
+    }
 
-            @Override
-            public void onError(String errorMessage) {
-                mIProfileView.cancelLoading();
-                mIProfileView.onGetProfileError(errorMessage);
-            }
-        });
+    @Override
+    public void detachView() {
+        mView = null;
     }
 }

@@ -1,14 +1,13 @@
 package com.suramire.miaowu.presenter;
 
-import android.os.Handler;
-
-import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.contract.HomeContract;
 import com.suramire.miaowu.model.HomeModel;
-import com.suramire.miaowu.util.GsonUtil;
+import com.suramire.miaowu.util.ToastUtil;
 
 import java.util.List;
+
+import rx.functions.Action1;
 
 /**
  * Created by Suramire on 2017/10/29.
@@ -16,53 +15,38 @@ import java.util.List;
 
 public class HomePresenter implements HomeContract.Presenter {
     private final HomeModel mHomeModel;
-    private final Handler mHandler;
-    private final HomeContract.View mIHomeView;
+    private HomeContract.View mView;
 
-    public HomePresenter(HomeContract.View IHomeView) {
-        mIHomeView = IHomeView;
+    public HomePresenter() {
         mHomeModel = new HomeModel();
-        mHandler = new Handler();
     }
 
     @Override
     public void getData(){
-        mIHomeView.clearData();
-        mIHomeView.startLoading();
-        mHomeModel.getData(new OnGetResultListener() {
-            @Override
-            public void onSuccess(final Object object) {
-                mHandler.post(new Runnable() {
+        mView.clearData();
+        mView.showLoading();
+        mHomeModel.getData(0,0)
+                .subscribe(new Action1<List<Multi>>() {
                     @Override
-                    public void run() {
-                        mIHomeView.stopLoading();
-                        List<Multi> multiBeanList = GsonUtil.jsonToList(object.toString(), Multi.class);
-                        mIHomeView.onGetSuccess(multiBeanList);
+                    public void call(List<Multi> multis) {
+                        mView.cancelLoading();
+                        mView.onSuccess(multis);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        ToastUtil.showShortToastCenter(throwable.getMessage());
                     }
                 });
-            }
+    }
 
-            @Override
-            public void onFailure(final String failureMessage) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mIHomeView.stopLoading();
-                        mIHomeView.onGetFailure(failureMessage);
-                    }
-                });
-            }
+    @Override
+    public void attachView(HomeContract.View view) {
+        mView = view;
+    }
 
-            @Override
-            public void onError(final String errorMessage) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mIHomeView.stopLoading();
-                        mIHomeView.onGetError(errorMessage);
-                    }
-                });
-            }
-        });
+    @Override
+    public void detachView() {
+        mView = null;
     }
 }

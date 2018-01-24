@@ -5,13 +5,11 @@ package com.suramire.miaowu.util;
  * 存放常量
  */
 
-public class Constant {
+public class ApiConfig {
     //服务器基址
-    public static final String BASEURL = "http://192.168.1.100:8080/Miaowu/";
-//    public static final String BASEURL = "http://miaowu1000.java.cdnjsp.wang/";
+    public static final String BASEURL = "http://10.0.2.2:8080/Miaowu/";
     public static final String BASNOTEPICEURL = BASEURL+"upload/note/";
     public static final String BASUSERPICEURL = BASEURL+"upload/user/";
     public static final int REQUESTCODE = 998;
-
 
 }

@@ -1,31 +1,26 @@
 package com.suramire.miaowu.contract;
 
-import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.base.BasePresenter;
+import com.suramire.miaowu.base.BaseView;
 import com.suramire.miaowu.bean.Catinfo;
 
 import java.util.List;
+
+import rx.Observable;
 
 /**
  * Created by Suramire on 2017/10/29.
  */
 
 public interface PublishContract {
-    interface Model {
-        void publish(Catinfo catinfo, String title, String content, List<String> pictues, OnGetResultListener listener);
+    interface Model<T> {
+        Observable<T> publish(Catinfo catinfo, String title, String content, List<String> pictues);
 
-        void uploadPicture(Object object, List<String> pictues, final OnGetResultListener listener);
+        Observable<T> uploadPicturePath(Object object, List<String> pictues);
     }
 
-    interface View {
-        void startPublishing();
+    interface View extends BaseView {
 
-        void stopPublishing();
-
-        void onPublishSuccess();
-
-        void onPublishFailure(String failureMessage);
-
-        void onPublishError(String errorMessage);
 
         String getNoteTitle();
 
@@ -37,7 +32,7 @@ public interface PublishContract {
         List<String> getPicturePaths();
     }
 
-    interface Presenter {
+    interface Presenter extends BasePresenter<View> {
         void publish();
     }
 }

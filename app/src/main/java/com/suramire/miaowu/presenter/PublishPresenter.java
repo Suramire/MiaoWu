@@ -1,11 +1,12 @@
 package com.suramire.miaowu.presenter;
 
-import android.os.Handler;
-
-import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.contract.PublishContract;
+import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.PublishModel;
 import com.suramire.miaowu.util.L;
+import com.suramire.miaowu.util.ToastUtil;
+
+import rx.functions.Action1;
 
 /**
  * Created by Suramire on 2017/10/29.
@@ -13,71 +14,53 @@ import com.suramire.miaowu.util.L;
 
 public class PublishPresenter implements PublishContract.Presenter {
     private final PublishModel mPublishModel;
-    private final PublishContract.View mIPublishView;
-    private final Handler mHandler;
+    private PublishContract.View mView;
 
-    public PublishPresenter(PublishContract.View IPublishView) {
-        mIPublishView = IPublishView;
+    public PublishPresenter() {
         mPublishModel = new PublishModel();
-        mHandler = new Handler();
     }
     @Override
     public void publish() {
-        mIPublishView.startPublishing();
-        mPublishModel.publish(mIPublishView.getCatinfo(),mIPublishView.getNoteTitle(), mIPublishView.getNoteContent(),
-                mIPublishView.getPicturePaths(), new OnGetResultListener() {
+        //先发送帖子信息（标题、内容、发帖者编号）
+        mView.showLoading();
+        mPublishModel.publish(mView.getCatinfo(), mView.getNoteTitle(), mView.getNoteContent(),
+                mView.getPicturePaths())
+                .subscribe(new ResponseSubscriber<Object>() {
                     @Override
-                    public void onSuccess(final Object object) {
-                        L.e("新增id："+object);
-                        mPublishModel.uploadPicture(object, mIPublishView.getPicturePaths(), new OnGetResultListener() {
-                            @Override
-                            public void onSuccess(Object object) {
-
-                            }
-
-                            @Override
-                            public void onFailure(final String failureMessage) {
-
-                            }
-
-                            @Override
-                            public void onError(final String errorMessage) {
-
-                            }
-                        });
-
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mIPublishView.stopPublishing();
-                                mIPublishView.onPublishSuccess();
-
-                            }
-                        });
+                    public void onError(Throwable throwable) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter(throwable.getMessage());
                     }
 
                     @Override
-                    public void onFailure(final String failureMessage) {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mIPublishView.stopPublishing();
-                                mIPublishView.onPublishFailure(failureMessage);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onError(final String errorMessage) {
-
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mIPublishView.stopPublishing();
-                                mIPublishView.onPublishError(errorMessage);
-                            }
-                        });
+                    public void onNext(final Object id) {
+                        mView.cancelLoading();
+                        mView.onSuccess(null);
+                        //再发送帖子图片路径
+                        mPublishModel.uploadPicturePath(id, mView.getPicturePaths())
+                                .subscribe(new Action1<Object>() {
+                                    @Override
+                                    public void call(Object o) {
+                                        //最后上传图片文件
+                                        mPublishModel.uploadPicture(mView.getPicturePaths(),0,mView.getPicturePaths().size(), Integer.parseInt(id.toString()));
+                                    }
+                                }, new Action1<Throwable>() {
+                                    @Override
+                                    public void call(Throwable throwable) {
+                                        L.e("发送图片路径出错:" + throwable.getMessage());
+                                    }
+                                });
                     }
                 });
+    }
+
+    @Override
+    public void attachView(PublishContract.View view) {
+        mView = view;
+    }
+
+    @Override
+    public void detachView() {
+        mView = null;
     }
 }

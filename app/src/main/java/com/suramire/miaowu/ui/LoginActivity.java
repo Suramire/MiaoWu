@@ -9,9 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseSwipeActivity;
-import com.suramire.miaowu.contract.LoginContract;
+import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.User;
+import com.suramire.miaowu.contract.LoginContract;
 import com.suramire.miaowu.presenter.LoginPresenter;
 import com.suramire.miaowu.util.SPUtils;
 
@@ -22,7 +22,7 @@ import butterknife.OnClick;
  * Created by Suramire on 2017/10/21.
  */
 
-public class LoginActivity extends BaseSwipeActivity implements LoginContract.View {
+public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.View {
     @Bind(R.id.toolbar)
     Toolbar mToolbar3;
     @Bind(R.id.edt_name)
@@ -36,7 +36,6 @@ public class LoginActivity extends BaseSwipeActivity implements LoginContract.Vi
     @Bind(R.id.ll_login)
     LinearLayout mLlLogin;
     private ProgressDialog mProgressDialog;
-    private LoginPresenter mLoginPresenter;
 
     public String getNameString() {
         return mNameString;
@@ -64,12 +63,16 @@ public class LoginActivity extends BaseSwipeActivity implements LoginContract.Vi
     }
 
     @Override
-    public void initView(View view) {
+    public void createPresenter() {
+        mPresenter =new LoginPresenter();
+    }
+
+    @Override
+    public void initView() {
         setSupportActionBar(mToolbar3);
         setTitle("登录" + getResources().getString(R.string.app_name));
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("请稍候……");
-        mLoginPresenter = new LoginPresenter(this);
     }
 
     @OnClick({R.id.edt_name, R.id.edt_password, R.id.btn_login, R.id.tv_reg, R.id.tv_forget})
@@ -80,7 +83,7 @@ public class LoginActivity extends BaseSwipeActivity implements LoginContract.Vi
             case R.id.edt_password:
                 break;
             case R.id.btn_login:
-                mLoginPresenter.login(null,null);
+                mPresenter.login(null,null);
                 break;
             case R.id.tv_reg:
                 startActivity(RegisterActivity.class);
@@ -98,6 +101,11 @@ public class LoginActivity extends BaseSwipeActivity implements LoginContract.Vi
     @Override
     public void cancelLoading() {
         mProgressDialog.dismiss();
+    }
+
+    @Override
+    public void onSuccess(Object data) {
+
     }
 
     @Override
@@ -124,14 +132,5 @@ public class LoginActivity extends BaseSwipeActivity implements LoginContract.Vi
         finish();
     }
 
-    @Override
-    public void onLoginFailure(String failureMessage) {
-        Toast.makeText(this, "登录失败:"+failureMessage, Toast.LENGTH_SHORT).show();
 
-    }
-
-    @Override
-    public void onLoginError(String errorMessage) {
-        Toast.makeText(this, "登录出现错误:"+errorMessage, Toast.LENGTH_SHORT).show();
-    }
 }

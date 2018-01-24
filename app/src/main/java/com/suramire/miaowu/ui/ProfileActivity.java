@@ -16,42 +16,40 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseSwipeActivity;
-import com.suramire.miaowu.bean.M;
+import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.ProfileContract;
+import com.suramire.miaowu.http.ApiLoader;
+import com.suramire.miaowu.http.base.ResponseFunc;
 import com.suramire.miaowu.presenter.ProfilePresenter;
 import com.suramire.miaowu.ui.fragment.IntroductionFragment;
 import com.suramire.miaowu.ui.fragment.PublishFragment;
 import com.suramire.miaowu.ui.fragment.TopicFragment;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.GsonUtil;
-import com.suramire.miaowu.util.HTTPUtil;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.SPUtils;
+import com.suramire.miaowu.util.ToastUtil;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import rx.functions.Action1;
 
-import static com.suramire.miaowu.util.Constant.BASEURL;
-import static com.suramire.miaowu.util.Constant.BASUSERPICEURL;
+import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
 
 /**
  * Created by Suramire on 2017/10/24.
  */
 
-public class ProfileActivity extends BaseSwipeActivity implements ProfileContract.View {
+public class ProfileActivity extends BaseActivity<ProfilePresenter> implements ProfileContract.View {
     public static final int SUCCESS = 0x101;
     public static final int SELECT_PIC_BY_PICK_PHOTO = 0x102;
 
@@ -69,9 +67,6 @@ public class ProfileActivity extends BaseSwipeActivity implements ProfileContrac
     TabLayout mTlProfile;
     private ProgressDialog mProgressDialog;
 
-    //    private ImageView mUserImageView;
-//    private TextView mUserNameLabel;
-    private ProfilePresenter mProfilePresenter;
     private int mId;
 
 
@@ -81,7 +76,12 @@ public class ProfileActivity extends BaseSwipeActivity implements ProfileContrac
     }
 
     @Override
-    public void initView(View view) {
+    public void createPresenter() {
+        mPresenter = new ProfilePresenter();
+    }
+
+    @Override
+    public void initView() {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("请稍候……");
         setSupportActionBar(mToolbar4);
@@ -89,8 +89,7 @@ public class ProfileActivity extends BaseSwipeActivity implements ProfileContrac
 //        View emptyView = findViewById(R.id.rl_empty_profile);
 //        mListProfile.setEmptyView(emptyView);
         registerForContextMenu(mUserImageView);
-        mProfilePresenter = new ProfilePresenter(this);
-        mProfilePresenter.getProfile();
+        mPresenter.getProfile();
         final ArrayList<Fragment> fragments = new ArrayList<>();
         IntroductionFragment e = new IntroductionFragment();
         PublishFragment e1 = new PublishFragment();
@@ -132,7 +131,7 @@ public class ProfileActivity extends BaseSwipeActivity implements ProfileContrac
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 10: {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("提示")
                         .setMessage("是否注销登录")
                         .setPositiveButton("确认", new DialogInterface.OnClickListener() {
@@ -168,34 +167,30 @@ public class ProfileActivity extends BaseSwipeActivity implements ProfileContrac
             Uri photoUri = data.getData();
             File file = CommonUtil.getFileByUri(photoUri);
             L.e("图片选择成功：" + file.getName());
-            HTTPUtil.getPost(BASEURL + "getPicUser", file, mId + ".png", new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    L.e("图片上传失败：" + e.getMessage());
-                }
+            RequestBody requestFile =
+                    RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            MultipartBody.Part body =
+                    MultipartBody.Part.createFormData("picture", mId + ".png", requestFile);
+            String descriptionString = "hello, 这是文件描述";
+            RequestBody description =
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"), descriptionString);
+            ApiLoader.uploadUserIcon(description, body)
+                    .map(new ResponseFunc<Object>())
+                    .subscribe(new Action1<Object>() {
+                        @Override
+                        public void call(Object o) {
+                            ToastUtil.showShortToastCenter("修改头像成功");
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            ToastUtil.showShortToastCenter("修改头像失败:"+throwable.getMessage());
+                        }
+                    });
 
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String result = response.body().string();
-                    M m = (M) GsonUtil.jsonToObject(result, M.class);
-                    switch (m.getCode()) {
-                        case M.CODE_SUCCESS: {
-                            L.e("图片上传成功");
-                            // TODO: 2017/10/25 更新数据用户头像字段
-                            // todo 显示头像
-                        }
-                        break;
-                        case M.CODE_FAILURE: {
-                            L.e("图片上传失败：" + m.getMessage());
-                        }
-                        break;
-                        case M.CODE_ERROR: {
-                            L.e("图片上传出错：" + m.getMessage());
-                        }
-                        break;
-                    }
-                }
-            });
+//                            // TODO: 2017/10/25 更新数据用户头像字段
+//                            // todo 显示头像
         }
     }
 
@@ -217,8 +212,7 @@ public class ProfileActivity extends BaseSwipeActivity implements ProfileContrac
     }
 
     @Override
-    public void onGetProfileSuccess(Object object) {
-
+    public void onSuccess(Object object) {
         User user = (User) object;
         mId = user.getId();
         if (user.getIcon() != null) {
@@ -229,20 +223,10 @@ public class ProfileActivity extends BaseSwipeActivity implements ProfileContrac
         }
         String mNickname = user.getNickname();
         mUserNameLabel.setText(mNickname);
-
     }
 
-    @Override
-    public void onGetProfileFaiure(String failureMessage) {
-        Toast.makeText(mContext, "错误用户信息失败：", Toast.LENGTH_SHORT).show();
-        finish();
-    }
 
-    @Override
-    public void onGetProfileError(String errorMessage) {
-        Toast.makeText(mContext, "获取用户信息出现错误：", Toast.LENGTH_SHORT).show();
-        finish();
-    }
+
 
 
     @Override

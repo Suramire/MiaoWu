@@ -1,29 +1,26 @@
 package com.suramire.miaowu.contract;
 
+import com.suramire.miaowu.base.BasePresenter;
+import com.suramire.miaowu.base.BaseView;
 import com.suramire.miaowu.base.OnGetResultListener;
+
+import rx.Observable;
 
 /**
  * Created by Suramire on 2017/10/29.
  */
 
 public interface RegisterContract {
-    interface Model {
-        void validatePhoneNumber(String phoneNumber, OnGetResultListener listener);
+    interface Model<T> {
+        Observable<T> validatePhoneNumber(String phoneNumber);
 
-        void validateRegisterInformation(String phoneNumber,String userName, String password,
-                                         String rePassword, OnGetResultListener listener);
+        Observable<T> validateRegisterInformation(String phoneNumber,String userName, String password,
+                                         String rePassword);
     }
 
-    interface View {
-        void showLoading();
+    interface View extends BaseView {
 
-        void cancelLoading();
-
-        void onRegisterSuccess();
-
-        void onRegisterFailure(String failureMessage);
-
-        void onRegisterError(String errorMessage);
+        void onPhoneSuccess();
 
         String getPhoneNumber();
 
@@ -40,7 +37,7 @@ public interface RegisterContract {
         void goStep2();
     }
 
-    interface Presenter {
+    interface Presenter extends BasePresenter<View> {
         void validatePhoneNumber(final OnGetResultListener onPhoneValidListener);
 
         void validateInformation();

@@ -1,6 +1,5 @@
 package com.suramire.miaowu.ui.fragment;
 
-import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -16,24 +15,25 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.suramire.miaowu.R;
+import com.suramire.miaowu.base.BaseDialogFragment;
 import com.suramire.miaowu.bean.Reply;
-import com.suramire.miaowu.contract.RepleyContract;
+import com.suramire.miaowu.contract.ReplyContract;
 import com.suramire.miaowu.presenter.ReplyPresenter;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.SPUtils;
+import com.suramire.miaowu.util.ToastUtil;
 
 /**
  * Created by Suramire on 2017/11/2.
  */
 
-public class BottomCommentDialogFragment extends DialogFragment implements RepleyContract.View {
+public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresenter> implements ReplyContract.View {
 
     private View view;
     private Context mContext;
     private ProgressDialog mProgressDialog;
     private EditText mEditComment;
     private  int nid,replyuid;
-    private ReplyPresenter mReplyPresenter;
     private OnReplyListener mReplyListener;
     private int floorId;
 
@@ -74,10 +74,21 @@ public class BottomCommentDialogFragment extends DialogFragment implements Reple
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
-        mReplyPresenter = new ReplyPresenter(this);
         nid = getArguments().getInt("nid");
         replyuid = getArguments().getInt("replyuid");
         floorId = getArguments().getInt("floorId");
+    }
+
+
+
+    @Override
+    public void createPresenter() {
+        mPresenter = new ReplyPresenter();
+    }
+
+    @Override
+    public void initView() {
+
     }
 
     @Nullable
@@ -90,7 +101,7 @@ public class BottomCommentDialogFragment extends DialogFragment implements Reple
         view.findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mReplyPresenter.postReply();
+                mPresenter.postReply();
             }
         });
         mEditComment = view.findViewById(R.id.edittext_comment);
@@ -111,17 +122,18 @@ public class BottomCommentDialogFragment extends DialogFragment implements Reple
 
     @Override
     public void onSuccess(Object object) {
-        mReplyListener.onSucess();
+//        mReplyListener.onSucess();
+    }
+
+
+    @Override
+    public void onDeleteSuccess() {
+        ToastUtil.showShortToastCenter("删除评论成功");
     }
 
     @Override
-    public void onFailure(String failureMessage) {
-        mReplyListener.onFailure(failureMessage);
-    }
-
-    @Override
-    public void onError(String errorMessage) {
-        mReplyListener.onError(errorMessage);
+    public void onAddSuccess() {
+        ToastUtil.showShortToastCenter("发布评论成功");
     }
 
     @Override

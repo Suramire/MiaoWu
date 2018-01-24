@@ -29,23 +29,7 @@ public class PublishFragment extends Fragment {
             View emptyView = mContentView.findViewById(R.id.rl_empty_profile);
             View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.footer_note_more, null);
 //            ArrayList<String> list = new ArrayList<>();
-//            list.add(BASEURL+"upload/cat.jpg");
-//            list.add(BASEURL+"upload/cat1.jpg");
-//            list.add(BASEURL+"upload/cat2.jpg");
-//            list.add(BASEURL+"upload/cat3.jpg");
-//            list.add(BASEURL+"upload/cat4.jpg");
 //
-//            list.add(BASEURL+"upload/cat.jpg");
-//            list.add(BASEURL+"upload/cat1.jpg");
-//            list.add(BASEURL+"upload/cat2.jpg");
-//            list.add(BASEURL+"upload/cat3.jpg");
-//            list.add(BASEURL+"upload/cat4.jpg");
-////
-////            list.add(BASEURL+"upload/cat.jpg");
-////            list.add(BASEURL+"upload/cat1.jpg");
-////            list.add(BASEURL+"upload/cat2.jpg");
-////            list.add(BASEURL+"upload/cat3.jpg");
-////            list.add(BASEURL+"upload/cat4.jpg");
 
 //            mListView.setAdapter(new CommonAdapter<String>(getActivity(),R.layout.item_notelist,list) {
 //                @Override

@@ -1,13 +1,11 @@
 package com.suramire.miaowu.base;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import butterknife.ButterKnife;
 
@@ -15,28 +13,28 @@ import butterknife.ButterKnife;
  * Base 封装一些通用方法与属性
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
-    protected Context mContext = this;
-    private View mContextView = null;
-    private boolean mDisplayHomeAsUpEnabled = true;
+public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements BaseView {
+
+    protected T mPresenter;
+    protected Activity mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            mContextView = LayoutInflater.from(this).inflate(bindLayout(), null);
-            setContentView(mContextView);
+            setContentView(bindLayout());
             ButterKnife.bind(this);
-            initView(mContextView);
-            setActionBarTitle();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            mContext = this;
+            createPresenter();
+            if(mPresenter!=null){
+                mPresenter.attachView(this);
+            }
+            App.getInstance().addActivity(this);
+            initView();
     }
 
-    private void setActionBarTitle() {
+    private void showBackArror(Boolean show) {
         ActionBar actionBar = getSupportActionBar();
         if(actionBar !=null){
-            actionBar.setDisplayHomeAsUpEnabled(getDisplayHomeAsUpEnabled());
+            actionBar.setDisplayHomeAsUpEnabled(show);
         }
     }
 
@@ -47,15 +45,48 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected boolean getDisplayHomeAsUpEnabled(){
-        return mDisplayHomeAsUpEnabled;
-    }
 
     @Override
     protected void onDestroy() {
         ButterKnife.unbind(this);
         super.onDestroy();
+        if(mPresenter!=null){
+            mPresenter.detachView();
+        }
+        App.getInstance().removeActivity(this);
     }
+
+    /**
+     * [绑定布局]
+     * @return 布局ID
+     */
+    public abstract int bindLayout();
+
+    /**
+     * [创建控制器]
+     */
+    public abstract void createPresenter();
+
+    /**
+     * [初始化控件]
+     */
+    public abstract void initView();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /*为Activity切换提供动画效果*/
     public void startActivity(Class<?> cls){
@@ -86,22 +117,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         return true;
     }
-
-
-    /**
-     * [绑定布局]
-     *
-     * @return 布局ID
-     */
-    public abstract int bindLayout();
-
-
-    /**
-     * [初始化控件]
-     *
-     * @param view
-     */
-    public abstract void initView(View view);
 
 
 }

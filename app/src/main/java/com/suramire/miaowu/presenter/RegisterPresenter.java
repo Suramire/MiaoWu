@@ -1,10 +1,11 @@
 package com.suramire.miaowu.presenter;
 
-import android.os.Handler;
-
 import com.suramire.miaowu.base.OnGetResultListener;
+import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.RegisterContract;
+import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.RegisterModel;
+import com.suramire.miaowu.util.ToastUtil;
 
 /**
  * Created by Suramire on 2017/10/22.
@@ -12,13 +13,10 @@ import com.suramire.miaowu.model.RegisterModel;
 
 public class RegisterPresenter implements RegisterContract.Presenter {
     private final RegisterModel mRegisterModel;
-    private final Handler mHandler;
-    private final RegisterContract.View mIRegisterView;
+    private RegisterContract.View mView;
 
-    public RegisterPresenter(RegisterContract.View IRegisterView) {
-        mIRegisterView = IRegisterView;
+    public RegisterPresenter() {
         mRegisterModel = new RegisterModel();
-        mHandler = new Handler();
 
     }
 
@@ -27,35 +25,21 @@ public class RegisterPresenter implements RegisterContract.Presenter {
      */
     @Override
     public void validatePhoneNumber(final OnGetResultListener onPhoneValidListener){
-        mIRegisterView.showLoading();
-        mRegisterModel.validatePhoneNumber(mIRegisterView.getPhoneNumber(), new OnGetResultListener() {
-            @Override
-            public void onSuccess(Object object) {
-                cancelLoading();
-                onPhoneValidListener.onSuccess(null);
-            }
+        mView.showLoading();
+        mRegisterModel.validatePhoneNumber(mView.getPhoneNumber())
+                .subscribe(new ResponseSubscriber<User>() {
+                    @Override
+                    public void onError(Throwable throwable) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter(throwable.getMessage());
+                    }
 
-            @Override
-            public void onFailure(final String failtureMessage) {
-                cancelLoading();
-                onPhoneValidListener.onFailure(failtureMessage);
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                cancelLoading();
-                onPhoneValidListener.onError(errorMessage);
-            }
-        });
-    }
-
-    private void cancelLoading() {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                mIRegisterView.cancelLoading();
-            }
-        });
+                    @Override
+                    public void onNext(User user) {
+                        mView.cancelLoading();
+                        mView.onPhoneSuccess();
+                    }
+                });
     }
 
 
@@ -64,45 +48,31 @@ public class RegisterPresenter implements RegisterContract.Presenter {
      */
     @Override
     public void validateInformation(){
-        mIRegisterView.showLoading();
-        mRegisterModel.validateRegisterInformation(mIRegisterView.getPhoneNumber(),mIRegisterView.getUserName(), mIRegisterView.getPassword(), mIRegisterView.getRePassword(), new OnGetResultListener() {
-            @Override
-            public void onSuccess(Object object) {
-                mHandler.post(new Runnable() {
+        mView.showLoading();
+        mRegisterModel.validateRegisterInformation(mView.getPhoneNumber(), mView.getUserName(), mView.getPassword(), mView.getRePassword())
+                .subscribe(new ResponseSubscriber<User>() {
                     @Override
-                    public void run() {
-                        mIRegisterView.cancelLoading();
-                        mIRegisterView.onRegisterSuccess();
+                    public void onError(Throwable throwable) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter(throwable.getMessage());
+                    }
 
+                    @Override
+                    public void onNext(User user) {
+                        mView.cancelLoading();
+                        mView.onSuccess(user);
                     }
                 });
-            }
-
-            @Override
-            public void onFailure(final String failtureMessage) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mIRegisterView.cancelLoading();
-                        mIRegisterView.onRegisterFailure(failtureMessage);
-                    }
-                });
-            }
-
-            @Override
-            public void onError(final String errorMessage) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mIRegisterView.cancelLoading();
-                        mIRegisterView.onRegisterError(errorMessage);
-                    }
-                });
-            }
-        });
     }
 
 
+    @Override
+    public void attachView(RegisterContract.View view) {
+        mView = view;
+    }
 
-
+    @Override
+    public void detachView() {
+        mView = null;
+    }
 }

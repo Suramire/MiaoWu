@@ -49,10 +49,17 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
     }
 
     @Override
-    public void initView(View view) {
+    public void createPresenter() {
+
+    }
+
+    @Override
+    public void initView() {
         setSupportActionBar(mToolbar);
         setTitle("详细信息");
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -108,4 +115,18 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
     }
 
 
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void cancelLoading() {
+
+    }
+
+    @Override
+    public void onSuccess(Object data) {
+
+    }
 }

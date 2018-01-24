@@ -1,18 +1,13 @@
 package com.suramire.miaowu.model;
 
-import com.suramire.miaowu.base.OnGetResultListener;
-import com.suramire.miaowu.bean.M;
+import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.contract.HomeContract;
-import com.suramire.miaowu.util.GsonUtil;
-import com.suramire.miaowu.util.HTTPUtil;
+import com.suramire.miaowu.http.ApiLoader;
+import com.suramire.miaowu.http.base.ResponseFunc;
 
-import java.io.IOException;
+import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
-
-import static com.suramire.miaowu.util.Constant.BASEURL;
+import rx.Observable;
 
 /**
  * Created by Suramire on 2017/10/29.
@@ -20,38 +15,8 @@ import static com.suramire.miaowu.util.Constant.BASEURL;
 
 public class HomeModel implements HomeContract.Model {
     @Override
-    public void getData(final OnGetResultListener listener) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HTTPUtil.getPost(BASEURL + "listMultiNote",null, new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-
-                        listener.onError(e.getMessage());
-                    }
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String result = response.body().string();
-                        try{
-                            M m = (M) GsonUtil.jsonToObject(result, M.class);
-                            switch (m.getCode()){
-                                case M.CODE_SUCCESS:{
-                                    listener.onSuccess(m.getData());
-                                }break;
-                                case M.CODE_FAILURE:{
-                                    listener.onFailure(m.getMessage());
-                                }break;
-                                case M.CODE_ERROR:{
-                                    listener.onError(m.getMessage());
-                                }break;
-                            }
-                        }catch (Exception e){
-                            listener.onError(e.getMessage());
-                        }
-                    }
-                });
-            }
-        }).start();
+    public Observable<List<Multi>> getData(int start,int end) {
+        return ApiLoader.getMultiNotes()
+                .map(new ResponseFunc<List<Multi>>());
     }
 }

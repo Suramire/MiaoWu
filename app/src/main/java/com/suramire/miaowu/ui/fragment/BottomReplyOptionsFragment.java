@@ -1,6 +1,5 @@
 package com.suramire.miaowu.ui.fragment;
 
-import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -18,15 +17,17 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.suramire.miaowu.R;
+import com.suramire.miaowu.base.BaseDialogFragment;
 import com.suramire.miaowu.bean.Reply;
-import com.suramire.miaowu.contract.RepleyContract;
+import com.suramire.miaowu.contract.ReplyContract;
 import com.suramire.miaowu.presenter.ReplyPresenter;
+import com.suramire.miaowu.util.ToastUtil;
 
 /**
  * Created by Suramire on 2017/11/21.
  */
 
-public class BottomReplyOptionsFragment extends DialogFragment implements View.OnClickListener,RepleyContract.View {
+public class BottomReplyOptionsFragment extends BaseDialogFragment<ReplyPresenter> implements View.OnClickListener,ReplyContract.View {
     private View view;
     private Context mContext;
     private String mContent;
@@ -62,6 +63,16 @@ public class BottomReplyOptionsFragment extends DialogFragment implements View.O
         mReply = (Reply) arguments.getSerializable("reply");
         mProgressDialog = new ProgressDialog(mContext);
         mProgressDialog.setMessage("请稍候……");
+    }
+
+    @Override
+    public void createPresenter() {
+        mPresenter = new ReplyPresenter();
+    }
+
+    @Override
+    public void initView() {
+
     }
 
     @Nullable
@@ -100,7 +111,7 @@ public class BottomReplyOptionsFragment extends DialogFragment implements View.O
             }break;
             case R.id.rp_delete:{
                 Toast.makeText(mContext, "响应删除操作", Toast.LENGTH_SHORT).show();
-                new ReplyPresenter(this).deleteReply();
+                mPresenter.deleteReply();
                 dismiss();
             }break;
 
@@ -119,19 +130,18 @@ public class BottomReplyOptionsFragment extends DialogFragment implements View.O
 
     @Override
     public void onSuccess(Object object) {
-        mOnDeleteListener.onSuccess();
+//        mOnDeleteListener.onSuccess();
     }
 
     @Override
-    public void onFailure(String failureMessage) {
-
+    public void onDeleteSuccess() {
+        ToastUtil.showShortToastCenter("删除评论成功");
     }
 
     @Override
-    public void onError(String errorMessage) {
-        mOnDeleteListener.onError(errorMessage);
+    public void onAddSuccess() {
+        ToastUtil.showShortToastCenter("发布评论成功");
     }
-
     @Override
     public Reply getReplyInfo() {
         return mReply;

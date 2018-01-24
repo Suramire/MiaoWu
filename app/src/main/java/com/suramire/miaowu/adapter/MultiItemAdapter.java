@@ -28,8 +28,8 @@ import com.youth.banner.BannerConfig;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.suramire.miaowu.util.Constant.BASNOTEPICEURL;
-import static com.suramire.miaowu.util.Constant.BASUSERPICEURL;
+import static com.suramire.miaowu.util.ApiConfig.BASNOTEPICEURL;
+import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
 
 /**
  * Created by Suramire on 2017/11/7.

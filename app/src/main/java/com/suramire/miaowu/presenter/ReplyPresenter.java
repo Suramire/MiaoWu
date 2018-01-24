@@ -1,97 +1,68 @@
 package com.suramire.miaowu.presenter;
 
-import android.os.Handler;
-
-import com.suramire.miaowu.base.OnGetResultListener;
-import com.suramire.miaowu.contract.RepleyContract;
+import com.suramire.miaowu.contract.ReplyContract;
+import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.ReplyModel;
+import com.suramire.miaowu.util.ToastUtil;
 
 /**
  * Created by Suramire on 2017/11/2.
  */
 
-public class ReplyPresenter implements RepleyContract.Presenter {
+public class ReplyPresenter implements ReplyContract.Presenter {
 
     private final ReplyModel mReplyModel;
-    private final Handler mHandler;
-    private RepleyContract.View mView;
+    private ReplyContract.View mView;
 
-    public ReplyPresenter(RepleyContract.View view) {
-        mView = view;
+    public ReplyPresenter() {
         mReplyModel = new ReplyModel();
-        mHandler = new Handler();
     }
 
     @Override
     public void postReply() {
         mView.showLoading();
-        mReplyModel.postReply(mView.getReplyInfo(),new OnGetResultListener() {
-            @Override
-            public void onSuccess(Object object) {
-                mHandler.post(new Runnable() {
+        mReplyModel.postReply(mView.getReplyInfo())
+                .subscribe(new ResponseSubscriber() {
                     @Override
-                    public void run() {
+                    public void onError(Throwable throwable) {
                         mView.cancelLoading();
-                        mView.onSuccess(null);
+                        ToastUtil.showShortToastCenter(throwable.getMessage());
                     }
-                });
-            }
 
-            @Override
-            public void onFailure(final String failureMessage) {
-                mHandler.post(new Runnable() {
                     @Override
-                    public void run() {
+                    public void onNext(Object o) {
                         mView.cancelLoading();
-                        mView.onFailure(failureMessage);
+                        mView.onAddSuccess();
                     }
                 });
-            }
-
-            @Override
-            public void onError(final String errorMessage) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mView.cancelLoading();
-                        mView.onError(errorMessage);
-                    }
-                });
-            }
-        });
+//
     }
 
     @Override
     public void deleteReply() {
         mView.showLoading();
-        mReplyModel.deleteReply(mView.getReplyInfo(), new OnGetResultListener() {
-            @Override
-            public void onSuccess(Object object) {
-                mHandler.post(new Runnable() {
+        mReplyModel.deleteReply(mView.getReplyInfo())
+                .subscribe(new ResponseSubscriber() {
                     @Override
-                    public void run() {
+                    public void onError(Throwable throwable) {
                         mView.cancelLoading();
-                        mView.onSuccess(null);
+                        ToastUtil.showShortToastCenter(throwable.getMessage());
+                    }
+                    @Override
+                    public void onNext(Object o) {
+                        mView.cancelLoading();
+                        mView.onDeleteSuccess();
                     }
                 });
-            }
-
-            @Override
-            public void onFailure(String failureMessage) {
-
-            }
-
-            @Override
-            public void onError(final String errorMessage) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mView.cancelLoading();
-                        mView.onError(errorMessage);
-                    }
-                });
-            }
-        });
     }
 
+    @Override
+    public void attachView(ReplyContract.View view) {
+        mView = view;
+    }
+
+    @Override
+    public void detachView() {
+        mView = null;
+    }
 }
