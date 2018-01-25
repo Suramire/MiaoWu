@@ -6,14 +6,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.LoginContract;
 import com.suramire.miaowu.presenter.LoginPresenter;
+import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.SPUtils;
+import com.suramire.miaowu.util.ToastUtil;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -70,7 +71,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     public void initView() {
         setSupportActionBar(mToolbar3);
-        setTitle("登录" + getResources().getString(R.string.app_name));
+        getSupportActionBar().setTitle("登录" + getResources().getString(R.string.app_name));
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("请稍候……");
     }
@@ -105,6 +106,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void onSuccess(Object data) {
+        ToastUtil.showShortToastCenter("登录成功");
+        User user = (User) data;
+        //保存用户登录信息
+        SPUtils.put("uid", user.getId());
+        SPUtils.put("nickname", user.getNickname());
+        SPUtils.put("password", user.getPassword());
+        SPUtils.put("autologin",1);
+        setResult(ApiConfig.RESULTCODE);
+        finish();
 
     }
 
@@ -121,16 +131,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
-    public void onLoginSuccess(Object resultObject) {
-        Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-        User user = (User) resultObject;
-        //保存用户登录信息
-        SPUtils.put("uid", user.getId());
-        SPUtils.put("nickname", user.getNickname());
-        SPUtils.put("password", user.getPassword());
-        SPUtils.put("autologin",1);
-        finish();
-    }
+    public void onGetInfoSuccess(User userinfo) {
 
+    }
 
 }

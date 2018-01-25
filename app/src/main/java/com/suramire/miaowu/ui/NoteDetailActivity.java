@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,9 +17,10 @@ import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.presenter.NoteDetailPresenter;
-import com.suramire.miaowu.ui.fragment.BottomCommentDialogFragment;
+import com.suramire.miaowu.ui.dialog.BottomCommentDialogFragment;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
+import com.suramire.miaowu.wiget.MyToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ import butterknife.OnClick;
 public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implements NoteDetailContract.View {
 
     @Bind(R.id.toolbar)
-    Toolbar mToolbar;
+    MyToolbar mToolbar;
     @Bind(R.id.list_notedetail)
     ListView mListNotedetail;
     @Bind(R.id.bar_num)
@@ -65,8 +65,15 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
 
     @Override
     public void initView() {
-        setSupportActionBar(mToolbar);
-        setTitle("帖子详情");
+        mToolbar.setTitle("帖子详情");
+        mToolbar.setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
+        mToolbar.setLeftImage(R.drawable.ic_arrow_back_black);
+        mToolbar.setLeftOnclickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mNoteId = getIntent().getIntExtra("noteId", 0);
         Multi multi = (Multi) getIntent().getSerializableExtra("multi");
         //查询帖子信息

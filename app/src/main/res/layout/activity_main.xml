@@ -1,52 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.suramire.miaowu.ui.MainActivity">
+    android:layout_height="match_parent">
 
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/tl_url"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/editTextPhoneNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="请输入要分享的链接"
-            android:inputType="textPersonName"/>
-    </android.support.design.widget.TextInputLayout>
+        <include layout="@layout/toolbar"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways"/>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/tl_url2"
+    </android.support.design.widget.AppBarLayout>
+
+
+
+
+    <com.suramire.miaowu.wiget.MyViewPager
+        android:id="@+id/viewpager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/editText2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="输入内容"
-            android:inputType="textPersonName"/>
-    </android.support.design.widget.TextInputLayout>
+        android:layout_height="match_parent"/>
 
 
-    <Button
-        android:id="@+id/button"
+    <com.ashokvarma.bottomnavigation.BottomNavigationBar
+        android:id="@+id/bottom_navigation_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@color/background"
-        android:elevation="2dp"
-        android:text="一键分享"/>
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:theme="@style/AppTheme.Black"
+        app:layout_behavior=".util.BottomNavigationViewBehavior"/>
 
-    <include layout="@layout/bottom_operation"/>
 
-</LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
+
+

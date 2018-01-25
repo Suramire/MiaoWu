@@ -28,4 +28,12 @@ public class LoginModel implements LoginContract.Model {
                     .map(new ResponseFunc<User>());
         }
     }
+
+    @Override
+    public Observable<User> getUserInfo(int uid) {
+        User user = new User();
+        user.setId(uid);
+        return ApiLoader.getUser(user)
+                .map(new ResponseFunc<User>());
+    }
 }

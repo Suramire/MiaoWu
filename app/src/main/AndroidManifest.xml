@@ -33,8 +33,8 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <!--本程序-->
-        <activity android:name=".ui.MainActivity"/>
-        <activity android:name=".ui.HomeActivity">
+        <activity android:name=".ui.TestActivity"/>
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -52,7 +52,6 @@
         <activity android:name=".ui.RegisterActivity"/>
         <activity android:name=".ui.LoginActivity" android:theme="@style/AppTheme.DarkActionBar"/>
         <activity android:name=".ui.NoteDetailActivity"/>
-        <activity android:name=".ui.ProfileActivity"/>
         <activity android:name=".ui.NewPublishActivity"/>
         <activity android:name=".ui.ReplyDetailActivity"/>
         <activity android:name=".ui.ExtendedInformationActivity"/>

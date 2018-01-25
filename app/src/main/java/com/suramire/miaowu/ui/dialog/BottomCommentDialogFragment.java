@@ -1,18 +1,17 @@
-package com.suramire.miaowu.ui.fragment;
+package com.suramire.miaowu.ui.dialog;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseDialogFragment;
@@ -23,17 +22,28 @@ import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.util.ToastUtil;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * Created by Suramire on 2017/11/2.
  */
 
 public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresenter> implements ReplyContract.View {
 
+    @Bind(R.id.edittext_comment)
+    EditText edittextComment;
+    @Bind(R.id.imageView9)
+    ImageView imageView9;
+    @Bind(R.id.imageView13)
+    ImageView imageView13;
+    @Bind(R.id.button2)
+    Button button2;
+    @Bind(R.id.ll_popup)
+    LinearLayout llPopup;
     private View view;
-    private Context mContext;
     private ProgressDialog mProgressDialog;
-    private EditText mEditComment;
-    private  int nid,replyuid;
+    private int nid, replyuid;
     private OnReplyListener mReplyListener;
     private int floorId;
 
@@ -45,7 +55,13 @@ public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresent
         mReplyListener = replyListener;
     }
 
-    public interface OnReplyListener{
+
+    @OnClick(R.id.button2)
+    public void onViewClicked() {
+        mPresenter.postReply();
+    }
+
+    public interface OnReplyListener {
 
         void onSucess();
 
@@ -80,7 +96,6 @@ public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresent
     }
 
 
-
     @Override
     public void createPresenter() {
         mPresenter = new ReplyPresenter();
@@ -88,27 +103,16 @@ public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresent
 
     @Override
     public void initView() {
-
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if(view==null){
-            view = inflater.inflate(R.layout.popup_comment, container, false);
-        }
-        view.findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.postReply();
-            }
-        });
-        mEditComment = view.findViewById(R.id.edittext_comment);
         mProgressDialog = new ProgressDialog(mContext);
         mProgressDialog.setMessage("请稍候……");
-        return view;
     }
+
+    @Override
+    public int bindLayout() {
+        return R.layout.popup_comment;
+    }
+
 
     @Override
     public void showLoading() {
@@ -134,6 +138,7 @@ public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresent
     @Override
     public void onAddSuccess() {
         ToastUtil.showShortToastCenter("发布评论成功");
+        mReplyListener.onSucess();
     }
 
     @Override
@@ -141,10 +146,10 @@ public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresent
         Reply reply = new Reply();
         reply.setNid(nid);
         reply.setReplytime(CommonUtil.getTimeStamp());
-        reply.setUid((int)SPUtils.get("uid",0));
+        reply.setUid((int) SPUtils.get("uid", 0));
         reply.setReplyuid(replyuid);
         reply.setFloorid(floorId);
-        reply.setReplycontent(mEditComment.getText().toString().trim());
+        reply.setReplycontent(edittextComment.getText().toString().trim());
         return reply;
     }
 }

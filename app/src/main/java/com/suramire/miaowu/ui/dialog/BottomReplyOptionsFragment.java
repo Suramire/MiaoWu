@@ -1,4 +1,4 @@
-package com.suramire.miaowu.ui.fragment;
+package com.suramire.miaowu.ui.dialog;
 
 import android.app.ProgressDialog;
 import android.content.ClipData;
@@ -7,13 +7,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.suramire.miaowu.R;
@@ -23,14 +23,20 @@ import com.suramire.miaowu.contract.ReplyContract;
 import com.suramire.miaowu.presenter.ReplyPresenter;
 import com.suramire.miaowu.util.ToastUtil;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Created by Suramire on 2017/11/21.
  */
 
-public class BottomReplyOptionsFragment extends BaseDialogFragment<ReplyPresenter> implements View.OnClickListener,ReplyContract.View {
-    private View view;
-    private Context mContext;
-    private String mContent;
+public class BottomReplyOptionsFragment extends BaseDialogFragment<ReplyPresenter> implements ReplyContract.View {
+    @Bind(R.id.rp_delete)
+    Button rpDelete;
+    @Bind(R.id.rp_copy)
+    Button rpCopy;
+    private String mContent;//选中复制的内容
     private Reply mReply;
     private ProgressDialog mProgressDialog;
     private OnDeleteListener mOnDeleteListener;
@@ -39,14 +45,45 @@ public class BottomReplyOptionsFragment extends BaseDialogFragment<ReplyPresente
         mOnDeleteListener = onDeleteListener;
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    @OnClick({R.id.rp_delete, R.id.rp_copy})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rp_delete:{
+                Toast.makeText(mContext, "响应删除操作", Toast.LENGTH_SHORT).show();
+                mPresenter.deleteReply();
+                dismiss();
+            }break;
+            case R.id.rp_copy:{
+                ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData mClipData = ClipData.newPlainText("content", mContent);
+                // 将ClipData内容放到系统剪贴板里。
+                cm.setPrimaryClip(mClipData);
+                Toast.makeText(mContext, "复制成功！", Toast.LENGTH_SHORT).show();
+                dismiss();
+            }break;
+        }
+    }
 
 
-    public interface OnDeleteListener{
+    public interface OnDeleteListener {
         void onSuccess();
 
         void onError(String errorMessage);
     }
-
 
 
     public static BottomReplyOptionsFragment newInstance() {
@@ -54,16 +91,6 @@ public class BottomReplyOptionsFragment extends BaseDialogFragment<ReplyPresente
         return fragment;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mContext = getActivity();
-        Bundle arguments = getArguments();
-        mContent = arguments.getString("content");
-        mReply = (Reply) arguments.getSerializable("reply");
-        mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setMessage("请稍候……");
-    }
 
     @Override
     public void createPresenter() {
@@ -72,19 +99,11 @@ public class BottomReplyOptionsFragment extends BaseDialogFragment<ReplyPresente
 
     @Override
     public void initView() {
-
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if(view==null){
-            view = inflater.inflate(R.layout.popup_replyoptions, container, false);
-        }
-        view.findViewById(R.id.rp_copy).setOnClickListener(this);
-        view.findViewById(R.id.rp_delete).setOnClickListener(this);
-        return  view;
+        Bundle arguments = getArguments();
+        mContent = arguments.getString("content");
+        mReply = (Reply) arguments.getSerializable("reply");
+        mProgressDialog = new ProgressDialog(mContext);
+        mProgressDialog.setMessage("请稍候……");
     }
 
     @Override
@@ -99,24 +118,11 @@ public class BottomReplyOptionsFragment extends BaseDialogFragment<ReplyPresente
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.rp_copy:{
-                ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData mClipData = ClipData.newPlainText("content", mContent);
-                // 将ClipData内容放到系统剪贴板里。
-                cm.setPrimaryClip(mClipData);
-                Toast.makeText(mContext, "复制成功！", Toast.LENGTH_SHORT).show();
-                dismiss();
-            }break;
-            case R.id.rp_delete:{
-                Toast.makeText(mContext, "响应删除操作", Toast.LENGTH_SHORT).show();
-                mPresenter.deleteReply();
-                dismiss();
-            }break;
-
-        }
+    public int bindLayout() {
+        return R.layout.popup_replyoptions;
     }
+
+
 
     @Override
     public void showLoading() {
@@ -142,6 +148,7 @@ public class BottomReplyOptionsFragment extends BaseDialogFragment<ReplyPresente
     public void onAddSuccess() {
         ToastUtil.showShortToastCenter("发布评论成功");
     }
+
     @Override
     public Reply getReplyInfo() {
         return mReply;

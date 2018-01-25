@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.LoginContract;
+import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.LoginModel;
 import com.suramire.miaowu.util.ToastUtil;
 
@@ -35,22 +36,46 @@ public class LoginPresenter implements LoginContract.Presenter {
             sName = mView.getUserName();
             sPassword = mView.getPassword();
         }
+        if(!TextUtils.isEmpty(sName) && !TextUtils.isEmpty(sPassword)){
+            Subscription subscribe = mLoginModel.doLogin(sName, sPassword)
+                    .subscribe(new Action1<User>() {
+                                   @Override
+                                   public void call(User user) {
+                                       mView.cancelLoading();
+                                       mView.onSuccess(user);
+                                   }
+                               }, new Action1<Throwable>() {
+                                   @Override
+                                   public void call(Throwable throwable) {
+                                       mView.cancelLoading();
+                                       ToastUtil.showShortToastCenter(throwable.getMessage());
+                                   }
+                               }
+                    );
+            compositeSubscription.add(subscribe);
+        }else{
+            ToastUtil.showShortToastCenter("用户名和密码不能为空！");
+        }
+    }
 
-        Subscription subscribe = mLoginModel.doLogin(sName, sPassword)
-                .subscribe(new Action1<User>() {
-                               @Override
-                               public void call(User user) {
-                                   mView.cancelLoading();
-                                   mView.onLoginSuccess(user);
-                               }
-                           }, new Action1<Throwable>() {
-                               @Override
-                               public void call(Throwable throwable) {
-                                   mView.cancelLoading();
-                                   ToastUtil.showShortToastCenter(throwable.getMessage());
-                               }
-                           }
-                );
+    @Override
+    public void getUserInfo(int uid) {
+        mView.showLoading();
+        Subscription subscribe = mLoginModel.getUserInfo(uid)
+                .subscribe(new ResponseSubscriber<User>() {
+                    @Override
+                    public void onError(Throwable throwable) {
+                        mView.cancelLoading();
+
+                        ToastUtil.showShortToastCenter("获取用户信息失败:" + throwable.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(User user) {
+                        mView.cancelLoading();
+                        mView.onGetInfoSuccess(user);
+                    }
+                });
         compositeSubscription.add(subscribe);
 
     }

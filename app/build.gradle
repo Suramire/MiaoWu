@@ -64,7 +64,6 @@ dependencies {
     //短信验证码相关
     compile name: 'SMSSDK-3.0.0', ext: 'aar'
     //JSON
-//    compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.squareup.okhttp3:okhttp:3.3.0'
     //圆形头像
     compile 'com.makeramen:roundedimageview:2.2.1'
@@ -86,5 +85,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'//转换器，请求结果转换成Model
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'//配合Rxjava 使用 。
-    compile 'me.imid.swipebacklayout.lib:library:1.0.0'
+    compile 'me.imid.swipebacklayout.lib:library:1.0.0'//右滑返回
+
+    compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'//底部导航
 }

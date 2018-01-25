@@ -113,7 +113,7 @@ public class CommonUtil {
     }
 
     public static boolean isLogined(){
-        return (int)SPUtils.get("uid",0) !=0;
+        return  getCurrentUid()!=0;
     }
 
     /**

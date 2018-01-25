@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,9 +21,10 @@ import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.ReplyDetailContract;
 import com.suramire.miaowu.presenter.ReplyDetailPresenter;
-import com.suramire.miaowu.ui.fragment.BottomCommentDialogFragment;
-import com.suramire.miaowu.ui.fragment.BottomReplyOptionsFragment;
+import com.suramire.miaowu.ui.dialog.BottomCommentDialogFragment;
+import com.suramire.miaowu.ui.dialog.BottomReplyOptionsFragment;
 import com.suramire.miaowu.util.CommonUtil;
+import com.suramire.miaowu.wiget.MyToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
 
 public class ReplyDetailActivity extends BaseActivity<ReplyDetailPresenter> implements ReplyDetailContract.View {
     @Bind(R.id.toolbar)
-    Toolbar mToolbar;
+    MyToolbar mToolbar;
     @Bind(R.id.reply_user_icon)
     RoundedImageView mReplyUserIcon;
     @Bind(R.id.reply_user_nickname)
@@ -68,8 +68,16 @@ public class ReplyDetailActivity extends BaseActivity<ReplyDetailPresenter> impl
 
     @Override
     public void initView() {
-        setSupportActionBar(mToolbar);
-        setTitle("评论详情");
+        mToolbar.setTitle("评论详情");
+        mToolbar.setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
+        mToolbar.setLeftImage(R.drawable.ic_arrow_back_black);
+        mToolbar.setLeftOnclickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("请稍候……");
         Multi multi = (Multi) getIntent().getSerializableExtra("multi");

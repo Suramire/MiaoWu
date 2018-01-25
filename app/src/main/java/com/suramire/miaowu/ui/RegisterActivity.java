@@ -3,7 +3,6 @@ package com.suramire.miaowu.ui;
 import android.app.ProgressDialog;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import com.suramire.miaowu.presenter.RegisterPresenter;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.ToastUtil;
+import com.suramire.miaowu.wiget.MyToolbar;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -30,7 +30,7 @@ import cn.smssdk.SMSSDK;
 
 public class RegisterActivity extends BaseActivity<RegisterPresenter> implements RegisterContract.View{
     @Bind(R.id.toolbar)
-    Toolbar mToolbarRegister;
+    MyToolbar mToolbarRegister;
     @Bind(R.id.editTextPhoneNumber)
     TextInputEditText mEditTextPhone;
     @Bind(R.id.tl_phone)
@@ -86,9 +86,15 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
 
     @Override
     public void initView() {
-        setSupportActionBar(mToolbarRegister);
-        setTitle("注册");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbarRegister.setTitle("注册");
+        mToolbarRegister.setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
+        mToolbarRegister.setLeftImage(R.drawable.ic_arrow_back_black);
+        mToolbarRegister.setLeftOnclickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mViews = new ViewGroup[]{mLlPhone, mLlValidation, mLlNamed};
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("请稍候……");

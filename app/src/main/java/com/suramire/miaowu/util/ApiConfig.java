@@ -11,5 +11,8 @@ public class ApiConfig {
     public static final String BASNOTEPICEURL = BASEURL+"upload/note/";
     public static final String BASUSERPICEURL = BASEURL+"upload/user/";
     public static final int REQUESTCODE = 998;
+    public static final int LOGINREQUESTCODE = 666;
+    public static final int RESULTCODE = 888;
+
 
 }

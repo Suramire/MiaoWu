@@ -2,6 +2,7 @@ package com.suramire.miaowu.contract;
 
 import com.suramire.miaowu.base.BasePresenter;
 import com.suramire.miaowu.base.BaseView;
+import com.suramire.miaowu.bean.User;
 
 import rx.Observable;
 
@@ -12,6 +13,8 @@ import rx.Observable;
 public interface LoginContract {
     interface Model<T> {
         Observable<T> doLogin(String username, String password);
+
+        Observable<T> getUserInfo(int uid);
     }
 
     interface View extends BaseView {
@@ -20,11 +23,13 @@ public interface LoginContract {
 
         String getPassword();
 
-        void onLoginSuccess(Object resultObject);
+        void onGetInfoSuccess(User userinfo);
 
     }
 
     interface Presenter extends BasePresenter<View> {
         void login(String name,String password);
+
+        void getUserInfo(int uid);
     }
 }

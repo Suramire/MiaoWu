@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +26,7 @@ import com.suramire.miaowu.presenter.PublishPresenter;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.FileUtil;
+import com.suramire.miaowu.wiget.MyToolbar;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ import me.iwf.photopicker.PhotoPreview;
 
 public class NewPublishActivity extends BaseActivity<PublishPresenter> implements PublishContract.View {
     @Bind(R.id.toolbar)
-    Toolbar mToolbar;
+    MyToolbar mToolbar;
     @Bind(R.id.gridview_picture)
     GridView mGridviewPicture;
     @Bind(R.id.edit_title)
@@ -74,13 +74,20 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
 
     @Override
     public void initView() {
-        setSupportActionBar(mToolbar);
         //根据帖子类型判断是否需要填写猫咪信息
         needcat = getIntent().getBooleanExtra("needcat",false);
-        setTitle("发表帖子");
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
+        mToolbar.setTitle("发表帖子");
+        mToolbar.setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
+        mToolbar.setLeftImage(R.drawable.ic_close_black_24dp);
+        mToolbar.setLeftOnclickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("发布中，请稍候……");
+
     }
 
     @Override
