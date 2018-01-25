@@ -8,6 +8,9 @@ import com.suramire.miaowu.util.ToastUtil;
 
 import java.util.List;
 
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
+
 /**
  * Created by Suramire on 2017/11/17.
  */
@@ -16,6 +19,7 @@ public class ReplyDetailPresenter implements ReplyDetailContract.Presenter {
 
     private final ReplyDetailModel mReplyDetailModel;
     private ReplyDetailContract.View mView;
+    private CompositeSubscription compositeSubscription;
 
     public ReplyDetailPresenter() {
         mReplyDetailModel = new ReplyDetailModel();
@@ -24,7 +28,7 @@ public class ReplyDetailPresenter implements ReplyDetailContract.Presenter {
     @Override
     public void getReplyList() {
         mView.showLoading();
-        mReplyDetailModel.getReplyList(mView.getFloorId())
+        Subscription subscribe = mReplyDetailModel.getReplyList(mView.getFloorId())
                 .subscribe(new ResponseSubscriber<List<Multi>>() {
                     @Override
                     public void onError(Throwable throwable) {
@@ -38,6 +42,8 @@ public class ReplyDetailPresenter implements ReplyDetailContract.Presenter {
                         mView.onSuccess(multis);
                     }
                 });
+        compositeSubscription.add(subscribe);
+
     }
 
     @Override
@@ -48,10 +54,13 @@ public class ReplyDetailPresenter implements ReplyDetailContract.Presenter {
     @Override
     public void attachView(ReplyDetailContract.View view) {
         mView = view;
+        compositeSubscription = new CompositeSubscription();
     }
 
     @Override
     public void detachView() {
         mView = null;
+        compositeSubscription.unsubscribe();
+
     }
 }

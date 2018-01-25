@@ -6,7 +6,9 @@ import com.suramire.miaowu.model.PublishModel;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.ToastUtil;
 
+import rx.Subscription;
 import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Suramire on 2017/10/29.
@@ -15,6 +17,7 @@ import rx.functions.Action1;
 public class PublishPresenter implements PublishContract.Presenter {
     private final PublishModel mPublishModel;
     private PublishContract.View mView;
+    private CompositeSubscription compositeSubscription;
 
     public PublishPresenter() {
         mPublishModel = new PublishModel();
@@ -23,7 +26,7 @@ public class PublishPresenter implements PublishContract.Presenter {
     public void publish() {
         //先发送帖子信息（标题、内容、发帖者编号）
         mView.showLoading();
-        mPublishModel.publish(mView.getCatinfo(), mView.getNoteTitle(), mView.getNoteContent(),
+        Subscription subscribe = mPublishModel.publish(mView.getCatinfo(), mView.getNoteTitle(), mView.getNoteContent(),
                 mView.getPicturePaths())
                 .subscribe(new ResponseSubscriber<Object>() {
                     @Override
@@ -42,7 +45,7 @@ public class PublishPresenter implements PublishContract.Presenter {
                                     @Override
                                     public void call(Object o) {
                                         //最后上传图片文件
-                                        mPublishModel.uploadPicture(mView.getPicturePaths(),0,mView.getPicturePaths().size(), Integer.parseInt(id.toString()));
+                                        mPublishModel.uploadPicture(mView.getPicturePaths(), 0, mView.getPicturePaths().size(), Integer.parseInt(id.toString()));
                                     }
                                 }, new Action1<Throwable>() {
                                     @Override
@@ -52,15 +55,20 @@ public class PublishPresenter implements PublishContract.Presenter {
                                 });
                     }
                 });
+        compositeSubscription.add(subscribe);
+
     }
 
     @Override
     public void attachView(PublishContract.View view) {
         mView = view;
+        compositeSubscription = new CompositeSubscription();
     }
 
     @Override
     public void detachView() {
         mView = null;
+        compositeSubscription.unsubscribe();
+
     }
 }

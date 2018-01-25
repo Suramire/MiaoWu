@@ -7,6 +7,9 @@ import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.RegisterModel;
 import com.suramire.miaowu.util.ToastUtil;
 
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
+
 /**
  * Created by Suramire on 2017/10/22.
  */
@@ -14,6 +17,7 @@ import com.suramire.miaowu.util.ToastUtil;
 public class RegisterPresenter implements RegisterContract.Presenter {
     private final RegisterModel mRegisterModel;
     private RegisterContract.View mView;
+    private CompositeSubscription compositeSubscription;
 
     public RegisterPresenter() {
         mRegisterModel = new RegisterModel();
@@ -26,7 +30,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
     @Override
     public void validatePhoneNumber(final OnGetResultListener onPhoneValidListener){
         mView.showLoading();
-        mRegisterModel.validatePhoneNumber(mView.getPhoneNumber())
+        Subscription subscribe = mRegisterModel.validatePhoneNumber(mView.getPhoneNumber())
                 .subscribe(new ResponseSubscriber<User>() {
                     @Override
                     public void onError(Throwable throwable) {
@@ -40,6 +44,8 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                         mView.onPhoneSuccess();
                     }
                 });
+        compositeSubscription.add(subscribe);
+
     }
 
 
@@ -49,7 +55,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
     @Override
     public void validateInformation(){
         mView.showLoading();
-        mRegisterModel.validateRegisterInformation(mView.getPhoneNumber(), mView.getUserName(), mView.getPassword(), mView.getRePassword())
+        Subscription subscribe = mRegisterModel.validateRegisterInformation(mView.getPhoneNumber(), mView.getUserName(), mView.getPassword(), mView.getRePassword())
                 .subscribe(new ResponseSubscriber<User>() {
                     @Override
                     public void onError(Throwable throwable) {
@@ -63,16 +69,22 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                         mView.onSuccess(user);
                     }
                 });
+        compositeSubscription.add(subscribe);
+
     }
 
 
     @Override
     public void attachView(RegisterContract.View view) {
         mView = view;
+        compositeSubscription = new CompositeSubscription();
+
     }
 
     @Override
     public void detachView() {
         mView = null;
+        compositeSubscription.unsubscribe();
+
     }
 }

@@ -6,6 +6,9 @@ import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.ProfileModel;
 import com.suramire.miaowu.util.ToastUtil;
 
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
+
 /**
  * Created by Suramire on 2017/10/25.
  */
@@ -13,6 +16,7 @@ import com.suramire.miaowu.util.ToastUtil;
 public class ProfilePresenter implements ProfileContract.Presenter {
     private final ProfileModel mProfileModel;
     private ProfileContract.View mView;
+    private CompositeSubscription compositeSubscription;
 
     public ProfilePresenter() {
         mProfileModel = new ProfileModel();
@@ -21,7 +25,7 @@ public class ProfilePresenter implements ProfileContract.Presenter {
     @Override
     public void getProfile(){
         mView.showLoading();
-        mProfileModel.getProfile(mView.getUid())
+        Subscription subscribe = mProfileModel.getProfile(mView.getUid())
                 .subscribe(new ResponseSubscriber<User>() {
                     @Override
                     public void onError(Throwable throwable) {
@@ -35,15 +39,20 @@ public class ProfilePresenter implements ProfileContract.Presenter {
                         mView.onSuccess(user);
                     }
                 });
+        compositeSubscription.add(subscribe);
+
     }
 
     @Override
     public void attachView(ProfileContract.View view) {
         mView = view;
+        compositeSubscription = new CompositeSubscription();
     }
 
     @Override
     public void detachView() {
         mView = null;
+        compositeSubscription.unsubscribe();
+
     }
 }

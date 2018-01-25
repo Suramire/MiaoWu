@@ -242,7 +242,6 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements Navigat
                     final Note note = item.getmNote();
                     NotePhoto notePhoto = item.getmNotePhoto();
                     User user = item.getmUser();
-                    L.e("帖子预览图：" + BASNOTEPICEURL + notePhoto.getName());
                     Picasso.with(mContext)
                             .load(BASNOTEPICEURL+notePhoto.getName())
                             .placeholder(R.drawable.ic_loading)
