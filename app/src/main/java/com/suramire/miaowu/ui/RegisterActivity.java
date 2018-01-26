@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.contract.RegisterContract;
 import com.suramire.miaowu.presenter.RegisterPresenter;
@@ -28,7 +28,7 @@ import cn.smssdk.SMSSDK;
  * Created by Suramire on 2017/10/17.
  */
 
-public class RegisterActivity extends BaseActivity<RegisterPresenter> implements RegisterContract.View{
+public class RegisterActivity extends BaseSwipeActivity<RegisterPresenter> implements RegisterContract.View{
     @Bind(R.id.toolbar)
     MyToolbar mToolbarRegister;
     @Bind(R.id.editTextPhoneNumber)

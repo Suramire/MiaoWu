@@ -3,7 +3,7 @@
               android:id="@+id/ll_login"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@drawable/bg_blur"
+              android:background="@drawable/bg_login"
               android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -33,7 +33,9 @@
             android:id="@+id/edt_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
             android:ems="10"
             android:hint="用户名/手机号"
             android:inputType="textPersonName"/>
@@ -49,7 +51,9 @@
             android:id="@+id/edt_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
             android:ems="10"
             android:hint="密码"
             android:inputType="textPassword"/>
@@ -61,12 +65,16 @@
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="登录"/>
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:background="@drawable/btn_blue"
+        android:text="登录"
+        android:textColor="@color/white"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:orientation="horizontal"
         android:padding="8dp">
 

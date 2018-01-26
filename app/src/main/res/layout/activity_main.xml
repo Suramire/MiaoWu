@@ -16,6 +16,10 @@
              android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways"/>
 
+
+
+
+
     </android.support.design.widget.AppBarLayout>
 
 
@@ -34,7 +38,7 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_gravity="bottom"
         android:background="@color/white"
-        android:theme="@style/AppTheme.Black"
+        android:minHeight="?attr/actionBarSize"
         app:layout_behavior=".util.BottomNavigationViewBehavior"/>
 
 

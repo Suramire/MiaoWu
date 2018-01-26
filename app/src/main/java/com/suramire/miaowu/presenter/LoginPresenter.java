@@ -6,6 +6,7 @@ import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.LoginContract;
 import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.LoginModel;
+import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.util.ToastUtil;
 
 import rx.Subscription;
@@ -66,7 +67,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     @Override
                     public void onError(Throwable throwable) {
                         mView.cancelLoading();
-
+                        SPUtils.put("uid", 0);
                         ToastUtil.showShortToastCenter("获取用户信息失败:" + throwable.getMessage());
                     }
 

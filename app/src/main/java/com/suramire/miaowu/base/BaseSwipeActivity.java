@@ -13,7 +13,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
  * 基于BaseActivity 带手势返回选项
  */
 
-public abstract class BaseSwipeActivity extends BaseActivity implements SwipeBackActivityBase {
+public abstract class BaseSwipeActivity<T extends BasePresenter> extends BaseActivity<T> implements SwipeBackActivityBase {
 
 
     private SwipeBackActivityHelper mHelper;

@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 
 /**
- * Created by Suramire on 2018/1/24.
+ * Fragment基类
  */
 
 public abstract class BaseFragment<T extends BasePresenter>  extends Fragment implements BaseView {

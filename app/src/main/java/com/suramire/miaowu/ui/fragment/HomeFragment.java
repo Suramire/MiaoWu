@@ -3,7 +3,6 @@ package com.suramire.miaowu.ui.fragment;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -12,7 +11,7 @@ import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseFragment;
+import com.suramire.miaowu.base.BaseListFragment;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.NotePhoto;
@@ -24,8 +23,6 @@ import com.suramire.miaowu.util.CommonUtil;
 
 import java.util.List;
 
-import butterknife.Bind;
-
 import static com.suramire.miaowu.util.ApiConfig.BASNOTEPICEURL;
 import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
 
@@ -33,16 +30,11 @@ import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
  * Created by Suramire on 2018/1/25.
  */
 
-public class HomeFragment extends BaseFragment<HomePresenter> implements HomeContract.View {
-
-    @Bind(R.id.relist_home)
-    RecyclerView relistHome;
-    @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
+public class HomeFragment extends BaseListFragment<HomePresenter> implements HomeContract.View {
 
     @Override
     public int bindLayout() {
-        return R.layout.fragment_home;
+        return R.layout.activity_list;
     }
 
     @Override
@@ -57,11 +49,12 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
     @Override
     public void onSuccess(Object data) {
+        showList();
         final List<Multi> notes = (List<Multi>) data;
         if (notes.size() > 0) {
 
-            relistHome.setLayoutManager(new LinearLayoutManager(mContext));
-            relistHome.setAdapter(new CommonRecyclerAdapter<Multi>(mContext, R.layout.item_home, notes) {
+            listview.setLayoutManager(new LinearLayoutManager(mContext));
+            listview.setAdapter(new CommonRecyclerAdapter<Multi>(mContext, R.layout.item_home, notes) {
 
                 @Override
                 public void onUpdate(final BaseAdapterHelper helper, final Multi item, int position) {
@@ -106,6 +99,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
     @Override
     public void initView() {
+        showEmpty(null);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -117,7 +111,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
     @Override
     public void clearData() {
-        relistHome.setAdapter(null);
+        listview.setAdapter(null);
     }
 
 }

@@ -9,7 +9,9 @@ import android.view.MenuItem;
 import butterknife.ButterKnife;
 
 /**
- * Base 封装一些通用方法与属性
+ * Activity基类
+ * 封装一些通用方法与属性
+ *
  */
 
 public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements BaseView {
@@ -58,15 +60,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
      * [初始化控件]
      */
     public abstract void initView();
-
-
-
-
-
-
-
-
-
 
 
 

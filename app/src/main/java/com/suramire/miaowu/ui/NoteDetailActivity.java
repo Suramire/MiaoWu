@@ -6,13 +6,17 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.adapter.MultiItemAdapter;
-import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.contract.NoteDetailContract;
@@ -20,6 +24,7 @@ import com.suramire.miaowu.presenter.NoteDetailPresenter;
 import com.suramire.miaowu.ui.dialog.BottomCommentDialogFragment;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
+import com.suramire.miaowu.util.ToastUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 
 import java.util.ArrayList;
@@ -32,7 +37,7 @@ import butterknife.OnClick;
  * Created by Suramire on 2017/10/17.
  */
 
-public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implements NoteDetailContract.View {
+public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> implements NoteDetailContract.View {
 
     @Bind(R.id.toolbar)
     MyToolbar mToolbar;
@@ -42,13 +47,25 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
     TextView mBarNum;
     @Bind(R.id.bar_num2)
     TextView mBarNum2;
+    @Bind(R.id.ll_bottom)
+    LinearLayout llBottom;
+    @Bind(R.id.edittext_comment)
+    EditText edittextComment;
+    @Bind(R.id.imageView9)
+    ImageView imageView9;
+    @Bind(R.id.imageView13)
+    ImageView imageView13;
+    @Bind(R.id.button2)
+    Button button2;
+    @Bind(R.id.ll_popup)
+    LinearLayout llPopup;
     private ProgressDialog mProgressDialog;
     private int mNoteId;
     private MultiItemAdapter mAdapter;
     private List<Object> mObjects;
     private boolean thumbed;
     private Integer mThumbs;
-    private  int mReplyCount;
+    private int mReplyCount;
     private boolean isAtComment;//是否在评论页标志位
     private int index;//上次浏览的index
     private int top;//距离顶部距离
@@ -88,7 +105,7 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
         mObjects.add(multi.getmUser());
         mObjects.add(multi.getmNote());
         Catinfo catinfo = multi.getmCatinfo();
-        if(catinfo !=null){
+        if (catinfo != null) {
             mObjects.add(catinfo);
         }
 
@@ -101,8 +118,6 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
         mPresenter.getReply();
 
     }
-
-
 
 
     @Override
@@ -122,7 +137,7 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
                 ) {
             mObjects.add(multi);
             //统计楼层数（非楼层回复）
-            if(multi.getmReply().getReplyuid()==0){
+            if (multi.getmReply().getReplyuid() == 0) {
                 mReplyCount++;
             }
         }
@@ -137,8 +152,7 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
     }
 
 
-
-    private void thumb(int count){
+    private void thumb(int count) {
         if (count <= 0) {
             mBarNum2.setVisibility(View.GONE);
         } else {
@@ -150,7 +164,7 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
         }
     }
 
-    private void setReplyCount(int count){
+    private void setReplyCount(int count) {
         if (count <= 0) {
             mBarNum.setVisibility(View.GONE);
         } else {
@@ -163,14 +177,11 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
     }
 
 
-
-
-
-
     @Override
     public void onThumbSuccess() {
         thumbed = true;
-        thumb(mThumbs+1);
+        ToastUtil.showShortToastCenter("点赞成功！");
+        thumb(mThumbs + 1);
     }
 
 
@@ -178,30 +189,31 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_comment: {
-                if(!isAtComment){
+                if (!isAtComment) {
                     isAtComment = true;
                     //记录上次浏览位置
                     index = mListNotedetail.getFirstVisiblePosition();
                     L.e("index:" + index);
                     View v = mListNotedetail.getChildAt(0);
                     top = (v == null) ? 0 : v.getTop();
-                    L.e("top:"+ top);
+                    L.e("top:" + top);
                     mListNotedetail.smoothScrollToPosition(2);
-                }else{
+                } else {
                     isAtComment = false;
                     L.e("index2:" + index);
-                    L.e("top2:"+ top);
+                    L.e("top2:" + top);
                     mListNotedetail.setSelectionFromTop(index, top);
                 }
 
             }
             break;
             case R.id.btn_like:
-                if(!thumbed){
+                if (!thumbed) {
                     mPresenter.thumb();
                 }
                 break;
             case R.id.btn_share:
+                ToastUtil.showShortToastCenter("响应分享操作");
                 break;
             case R.id.editText3: {
                 if (!CommonUtil.isLogined()) {
@@ -242,5 +254,6 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
 
         }
     }
+
 
 }

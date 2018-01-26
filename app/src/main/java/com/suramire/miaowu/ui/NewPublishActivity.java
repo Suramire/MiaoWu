@@ -19,7 +19,7 @@ import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonAdapter;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.presenter.PublishPresenter;
@@ -43,7 +43,7 @@ import me.iwf.photopicker.PhotoPreview;
  */
 // TODO: 2017/10/27 字数限制
 
-public class NewPublishActivity extends BaseActivity<PublishPresenter> implements PublishContract.View {
+public class NewPublishActivity extends BaseSwipeActivity<PublishPresenter> implements PublishContract.View {
     @Bind(R.id.toolbar)
     MyToolbar mToolbar;
     @Bind(R.id.gridview_picture)

@@ -15,7 +15,7 @@ import com.classic.adapter.CommonRecyclerAdapter;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
@@ -37,7 +37,7 @@ import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
  * Created by Suramire on 2017/11/17.
  */
 
-public class ReplyDetailActivity extends BaseActivity<ReplyDetailPresenter> implements ReplyDetailContract.View {
+public class ReplyDetailActivity extends BaseSwipeActivity<ReplyDetailPresenter> implements ReplyDetailContract.View {
     @Bind(R.id.toolbar)
     MyToolbar mToolbar;
     @Bind(R.id.reply_user_icon)

@@ -39,7 +39,8 @@ public class HomePresenter implements HomeContract.Presenter {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        ToastUtil.showShortToastCenter(throwable.getMessage());
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("获取帖子数据失败:"+throwable.getMessage());
                     }
                 });
         compositeSubscription.add(subscribe);

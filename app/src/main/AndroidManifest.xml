@@ -34,23 +34,15 @@
 
         <!--本程序-->
         <activity android:name=".ui.TestActivity"/>
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity" android:theme="@style/mainPageStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!--<activity android:name=".test.TestActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
-
         <activity android:name=".ui.RegisterActivity"/>
-        <activity android:name=".ui.LoginActivity" android:theme="@style/AppTheme.DarkActionBar"/>
+        <activity android:name=".ui.LoginActivity"/>
         <activity android:name=".ui.NoteDetailActivity"/>
         <activity android:name=".ui.NewPublishActivity"/>
         <activity android:name=".ui.ReplyDetailActivity"/>
@@ -60,6 +52,7 @@
 
         <activity android:name="me.iwf.photopicker.PhotoPagerActivity"
                   android:theme="@style/AppTheme"/>
+        <activity android:name=".ui.SearchActivity"/>
 
 
     </application>
