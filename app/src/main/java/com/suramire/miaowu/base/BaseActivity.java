@@ -65,9 +65,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
 
 
-
-
-
     /*为Activity切换提供动画效果*/
     public void startActivity(Class<?> cls){
         startActivity(cls,null);

@@ -18,6 +18,7 @@ public class Note implements java.io.Serializable {
 	private Timestamp publish;
 	private Integer viewcount;
 	private Integer thumbs;
+	private Integer type;//1=寻找猫进行收养 2=捡到猫等待别人收养
 
 	// Constructors
 
@@ -26,22 +27,25 @@ public class Note implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public Note(Integer uid, String title, String content, Timestamp publish) {
+	public Note(Integer uid, String title, String content, Timestamp publish,
+			Integer type) {
 		this.uid = uid;
 		this.title = title;
 		this.content = content;
 		this.publish = publish;
+		this.type = type;
 	}
 
 	/** full constructor */
 	public Note(Integer uid, String title, String content, Timestamp publish,
-			Integer viewcount, Integer thumbs) {
+			Integer viewcount, Integer thumbs, Integer type) {
 		this.uid = uid;
 		this.title = title;
 		this.content = content;
 		this.publish = publish;
 		this.viewcount = viewcount;
 		this.thumbs = thumbs;
+		this.type = type;
 	}
 
 	// Property accessors
@@ -100,6 +104,14 @@ public class Note implements java.io.Serializable {
 
 	public void setThumbs(Integer thumbs) {
 		this.thumbs = thumbs;
+	}
+
+	public Integer getType() {
+		return this.type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 }

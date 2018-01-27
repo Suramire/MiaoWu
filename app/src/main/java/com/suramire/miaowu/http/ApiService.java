@@ -1,5 +1,6 @@
 package com.suramire.miaowu.http;
 
+import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
@@ -42,6 +43,12 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("addUser")
     Observable<BaseResponse<User>> addUser(@Field(JSON) String s);
+    //获取用户关注数
+    @GET("getFollowCountUser")
+    Observable<BaseResponse<Integer>> getUserFollowCount(@Query(JSON) String s);
+    //获取用户粉丝数
+    @GET("getFollowerCountUser")
+    Observable<BaseResponse<Integer>> getUserFollowerCount(@Query(JSON) String s);
 
 
     @Multipart
@@ -55,6 +62,14 @@ public interface ApiService {
     @POST("listMultiNote")
     Observable<BaseResponse<List<Multi>>> getMultiNotes(@Field(JSON) String string);
 
+    //获取某用户发表的所有帖子信息
+    @GET("getByUserNote")
+    Observable<BaseResponse<List<Note>>> getNoteByUser(@Query(JSON) String string);
+
+    //获取用户发帖数
+    @GET("getuCountNote")
+    Observable<BaseResponse<Integer>> getUserNoteCount(@Query(JSON) String string);
+
     //获取单个帖子的详情
     @GET("getDetailNote")
     Observable<BaseResponse<Note>> getDetailNote(@Query(JSON) String string);
@@ -65,6 +80,10 @@ public interface ApiService {
     //获取帖子所有配图
     @GET("getAllPictureNote")
     Observable<BaseResponse<List<String>>> getAllPictureNote(@Query(JSON) String string);
+
+    @GET("getCatNote")
+    Observable<BaseResponse<Catinfo>> getCatNote(@Query(JSON) String string);
+
 
     //点赞操作
     @GET("thumbNote")

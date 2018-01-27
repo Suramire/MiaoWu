@@ -34,7 +34,7 @@ public class PublishModel implements PublishContract.Model {
         int uid = (int) SPUtils.get("uid", 0);
 
         Timestamp now = CommonUtil.getTimeStamp();
-        final Note note = new Note(uid,title,content,now);
+        final Note note = new Note(uid,title,content,now,1);
         note.setThumbs(0);
         note.setViewcount(0);
         final Multi multi = new Multi();

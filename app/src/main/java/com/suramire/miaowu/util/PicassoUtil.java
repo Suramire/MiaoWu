@@ -1,7 +1,8 @@
 package com.suramire.miaowu.util;
 
+import android.widget.ImageView;
+
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
 import com.suramire.miaowu.base.App;
 
 /**
@@ -10,9 +11,9 @@ import com.suramire.miaowu.base.App;
 
 public class PicassoUtil {
 
-    public static RequestCreator load(String path) {
-        return Picasso.with(App.getInstance())
-        .load(path);
+    public static void show(String path, ImageView target){
+        Picasso.with(App.getInstance())
+                .load(path)
+                .into(target);
     }
-
 }

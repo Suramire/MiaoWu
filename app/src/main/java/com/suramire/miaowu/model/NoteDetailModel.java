@@ -1,5 +1,6 @@
 package com.suramire.miaowu.model;
 
+import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
@@ -18,10 +19,11 @@ import rx.Observable;
 public class NoteDetailModel implements NoteDetailContract.Model {
 
     @Override
-    public Observable getNoteDetail(int noteId) {
+    public Observable<Note> getNoteDetail(int noteId) {
         Note note = new Note();
         note.setId(noteId);
-        return ApiLoader.getDetailNote(note);
+        return ApiLoader.getDetailNote(note)
+                .map(new ResponseFunc<Note>());
     }
 
     @Override
@@ -49,5 +51,13 @@ public class NoteDetailModel implements NoteDetailContract.Model {
         return  ApiLoader.thumbNote(note)
                 .map(new ResponseFunc<Object>());
 
+    }
+
+    @Override
+    public Observable<Catinfo> getCatInfo(int noteId) {
+        Note note = new Note();
+        note.setId(noteId);
+        return ApiLoader.getCat(note)
+                .map(new ResponseFunc<Catinfo>());
     }
 }

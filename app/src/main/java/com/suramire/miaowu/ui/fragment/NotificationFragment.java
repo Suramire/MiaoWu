@@ -8,7 +8,8 @@ import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseListFragment;
-import com.suramire.miaowu.util.FileUtil;
+import com.suramire.miaowu.bean.Notification;
+import com.suramire.miaowu.util.A;
 import com.suramire.miaowu.util.ToastUtil;
 
 import butterknife.Bind;
@@ -50,13 +51,15 @@ public class NotificationFragment extends BaseListFragment {
     public void initView() {
         showList();
         listview.setLayoutManager(new LinearLayoutManager(mContext));
-        listview.setAdapter(new CommonRecyclerAdapter<String>(mContext,R.layout.item_notification, FileUtil.getStrings(5)) {
+        listview.setAdapter(new CommonRecyclerAdapter<Notification>(mContext,R.layout.item_notification, A.getNotifications(5)) {
             @Override
-            public void onUpdate(BaseAdapterHelper helper, String item, final int position) {
+            public void onUpdate(BaseAdapterHelper helper, final Notification item, final int position) {
+                helper.setText(R.id.tv_notification_time, A.timeStampToDateTimeString(item.getTime()))
+                        .setText(R.id.tv_notification_content, item.getContent());
                 helper.setOnClickListener(R.id.tv_notification_content, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ToastUtil.showShortToastCenter("点击通知内容"+position);
+                        ToastUtil.showShortToastCenter("点击通知内容:类型"+item.getType());
                     }
                 });
             }

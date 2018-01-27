@@ -62,6 +62,16 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
     }
 
     @Override
+    public void getPictue() {
+
+    }
+
+    @Override
+    public void getCatInfo() {
+
+    }
+
+    @Override
     public void attachView(NoteDetailContract.View view) {
         mView = view;
         compositeSubscription = new CompositeSubscription();

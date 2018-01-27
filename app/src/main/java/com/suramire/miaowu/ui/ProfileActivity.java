@@ -1,7 +1,6 @@
-package com.suramire.miaowu.ui.fragment;
+package com.suramire.miaowu.ui;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,28 +9,22 @@ import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseFragment;
+import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.presenter.UserPresenter;
-import com.suramire.miaowu.ui.LoginActivity;
-import com.suramire.miaowu.ui.NoteListActivity;
 import com.suramire.miaowu.util.ApiConfig;
-import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
-import com.suramire.miaowu.util.SPUtils;
 
 import butterknife.Bind;
-import butterknife.OnClick;
+
 
 /**
- * Created by Suramire on 2018/1/25.
+ * Created by Suramire on 2018/1/27.
  */
 
-public class PersonFragment extends BaseFragment<UserPresenter> implements UserContract.View {
-
-
+public class ProfileActivity extends BaseActivity<UserPresenter> implements UserContract.View {
     @Bind(R.id.btn_login)
     Button btnLogin;
     @Bind(R.id.ll_notlogin)
@@ -54,28 +47,39 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
     TextView tvNoteCount;
     @Bind(R.id.ll_followerlist)
     LinearLayout llFollowerlist;
+    @Bind(R.id.textView7)
+    TextView textView7;
     @Bind(R.id.linearLayout)
     LinearLayout linearLayout;
     @Bind(R.id.ll_mynote)
     LinearLayout llMycourse;
     @Bind(R.id.ll_login)
     LinearLayout llLogin;
-    private ProgressDialog mProgressDialog;
+    @Bind(R.id.tv_title_note)
+    TextView tvTitleNote;
+    @Bind(R.id.tv_title_reply)
+    TextView tvTitleReply;
+
+    private ProgressDialog progressDialog;
+    private int uid;
 
     @Override
     public void showLoading() {
-        mProgressDialog.show();
+        progressDialog.show();
     }
 
     @Override
     public void cancelLoading() {
-        mProgressDialog.dismiss();
-
+        progressDialog.dismiss();
     }
 
     @Override
     public void onSuccess(Object data) {
+    }
 
+    @Override
+    public int bindLayout() {
+        return R.layout.fragment_person;
     }
 
     @Override
@@ -85,60 +89,34 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
 
     @Override
     public void initView() {
-        setRequireFresh(true);
-        mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setMessage("请稍候……");
-        if(CommonUtil.isLogined()){
+        progressDialog = new ProgressDialog(mContext);
+        progressDialog.setMessage("请稍候……");
+        //获取其他用户编号
+        uid = getIntent().getIntExtra("uid", 0);
+        if(uid !=0){
+            mPresenter.getUserInfo();
             llLogin.setVisibility(View.VISIBLE);
             llNotlogin.setVisibility(View.GONE);
-            mPresenter.getUserInfo();
         }else{
             llLogin.setVisibility(View.GONE);
             llNotlogin.setVisibility(View.VISIBLE);
         }
     }
 
-    @Override
-    public int bindLayout() {
-        return R.layout.fragment_person;
-    }
-
-
-    @OnClick({R.id.btn_login, R.id.img_settings, R.id.img_icon, R.id.ll_followlist, R.id.ll_followerlist, R.id.ll_mynote})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn_login:
-//                startActivityForResult(LoginActivity.class,ApiConfig.LOGINREQUESTCODE);
-                getActivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class),ApiConfig.LOGINREQUESTCODE);
-                break;
-            case R.id.img_settings:
-                SPUtils.put("uid",0);
-                break;
-            case R.id.img_icon:
-                break;
-            case R.id.ll_followlist:
-                break;
-            case R.id.ll_followerlist:
-                break;
-            case R.id.ll_mynote:
-                Intent intent = new Intent(mContext, NoteListActivity.class);
-                intent.putExtra("uid", getUid());
-                startActivity(intent);
-                break;
-        }
-    }
-
 
     @Override
     public int getUid() {
-        return CommonUtil.getCurrentUid();
+        return uid;
     }
 
     @Override
     public void onGetInfoSuccess(User userinfo) {
-        L.e("成功获取用户信息:" + userinfo);
+        L.e("成功获取其他用户信息:" + userinfo);
         PicassoUtil.show(ApiConfig.BASUSERPICEURL + userinfo.getIcon(), imgIcon);
         tvUsername.setText(userinfo.getNickname());
+        tvTitleNote.setText(userinfo.getNickname()+"的帖子");
+        tvTitleReply.setText(userinfo.getNickname()+"的回复");
+
     }
 
     @Override
@@ -156,6 +134,5 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
     public void onGetUserNoteCountSuccess(int count) {
         tvNoteCount.setText(String.valueOf(count));
     }
-
 
 }

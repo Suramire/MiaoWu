@@ -19,6 +19,8 @@ public interface NoteDetailContract {
 
         Observable<T> thumb(int noteId);
 
+        Observable<T> getCatInfo(int noteId);
+
     }
 
     interface View extends BaseView {
@@ -26,15 +28,20 @@ public interface NoteDetailContract {
         int getNoteId();
 
         void onThumbSuccess();
+
+        void onOnGetPictureSuccess();
+
+        void onGetCatInfoSuccess();
     }
 
     interface Presenter extends BasePresenter<View> {
-//        void getData();
-
-//        void getPicture();
 
         void getReply();
-
+        //点赞操作
         void thumb();
+        //获取帖子配图路径
+        void getPictue();
+        //获取猫咪信息
+        void getCatInfo();
     }
 }

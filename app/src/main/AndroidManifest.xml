@@ -53,6 +53,7 @@
         <activity android:name="me.iwf.photopicker.PhotoPagerActivity"
                   android:theme="@style/AppTheme"/>
         <activity android:name=".ui.SearchActivity"/>
+        <activity android:name=".ui.NoteListActivity"/>
 
 
     </application>

@@ -171,4 +171,5 @@
     <string name="hint_my_note">我的帖子</string>
     <string name="hint_my_reply">我的回复</string>
     <string name="hint_empty">什么都没有</string>
+    <string name="my_notecount">帖子</string>
 </resources>

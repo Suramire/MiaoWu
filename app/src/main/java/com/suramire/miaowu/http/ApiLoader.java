@@ -1,5 +1,6 @@
 package com.suramire.miaowu.http;
 
+import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
@@ -59,6 +60,14 @@ public class ApiLoader {
         return observer(getApiService().uploadUserIcon(description,body));
     }
 
+    public static Observable<BaseResponse<Integer>> getUserFollowCount(User user){
+        return observer(getApiService().getUserFollowCount(GsonUtil.objectToJson(user)));
+    }
+
+    public static Observable<BaseResponse<Integer>> getUserFollowerCount(User user){
+        return observer(getApiService().getUserFollowerCount(GsonUtil.objectToJson(user)));
+    }
+
     /*帖子相关*/
 
     public static Observable<BaseResponse<List<Multi>>> getMultiNotes(){
@@ -66,6 +75,9 @@ public class ApiLoader {
         note.setId(23);
         note.setTitle("this is title");
         return observer(getApiService().getMultiNotes(GsonUtil.objectToJson(note)));
+    }
+    public static Observable<BaseResponse<List<Note>>> getNoteByUser(User user){
+        return observer(getApiService().getNoteByUser(GsonUtil.objectToJson(user)));
     }
 
     public static Observable<BaseResponse<Note>> getDetailNote(Note note){
@@ -80,6 +92,10 @@ public class ApiLoader {
         return observer(getApiService().getAllPictureNote(GsonUtil.objectToJson(note)));
     }
 
+    public static Observable<BaseResponse<Catinfo>> getCat(Note note){
+        return observer(getApiService().getCatNote(GsonUtil.objectToJson(note)));
+    }
+
     public static Observable<BaseResponse<Object>> thumbNote(Note note){
         return observer(getApiService().thumbNote(GsonUtil.objectToJson(note)));
     }
@@ -92,8 +108,9 @@ public class ApiLoader {
         return observer(getApiService().picToDBNote(GsonUtil.objectToJson(maps)));
     }
 
-
-
+    public static Observable<BaseResponse<Integer>> getUserNoteCount(User user){
+        return observer(getApiService().getUserNoteCount(GsonUtil.objectToJson(user)));
+    }
 
 
 

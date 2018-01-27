@@ -15,6 +15,7 @@ public interface LoginContract {
         Observable<T> doLogin(String username, String password);
 
         Observable<T> getUserInfo(int uid);
+
     }
 
     interface View extends BaseView {
@@ -25,11 +26,14 @@ public interface LoginContract {
 
         void onGetInfoSuccess(User userinfo);
 
+
+
     }
 
     interface Presenter extends BasePresenter<View> {
         void login(String name,String password);
 
         void getUserInfo(int uid);
+
     }
 }

@@ -17,6 +17,7 @@ public class Notification implements java.io.Serializable {
 	private String content;
 	private Timestamp time;
 	private Integer isread;
+	private Integer type; //1=关注通知  2=帖子通知  3=审核通知
 
 	// Constructors
 
@@ -25,20 +26,22 @@ public class Notification implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public Notification(Integer uid1, Integer uid2, String content) {
+	public Notification(Integer uid1, Integer uid2, String content, Integer type) {
 		this.uid1 = uid1;
 		this.uid2 = uid2;
 		this.content = content;
+		this.type = type;
 	}
 
 	/** full constructor */
 	public Notification(Integer uid1, Integer uid2, String content,
-			Timestamp time, Integer isread) {
+			Timestamp time, Integer isread, Integer type) {
 		this.uid1 = uid1;
 		this.uid2 = uid2;
 		this.content = content;
 		this.time = time;
 		this.isread = isread;
+		this.type = type;
 	}
 
 	// Property accessors
@@ -89,6 +92,14 @@ public class Notification implements java.io.Serializable {
 
 	public void setIsread(Integer isread) {
 		this.isread = isread;
+	}
+
+	public Integer getType() {
+		return this.type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 }

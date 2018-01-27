@@ -36,4 +36,5 @@ public class LoginModel implements LoginContract.Model {
         return ApiLoader.getUser(user)
                 .map(new ResponseFunc<User>());
     }
+
 }

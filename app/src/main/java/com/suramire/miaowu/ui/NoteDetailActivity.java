@@ -184,6 +184,16 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
         thumb(mThumbs + 1);
     }
 
+    @Override
+    public void onOnGetPictureSuccess() {
+        L.e("响应获取帖子图片成功的事件");
+    }
+
+    @Override
+    public void onGetCatInfoSuccess() {
+        L.e("响应获取帖子内猫咪信息成功后的事件");
+    }
+
 
     @OnClick({R.id.btn_comment, R.id.btn_like, R.id.btn_share, R.id.editText3})
     public void onViewClicked(View view) {
