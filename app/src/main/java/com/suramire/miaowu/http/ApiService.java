@@ -73,17 +73,21 @@ public interface ApiService {
     //获取单个帖子的详情
     @GET("getDetailNote")
     Observable<BaseResponse<Note>> getDetailNote(@Query(JSON) String string);
-    //发布新帖子
+    //发布新帖子 返回新帖子id
     @FormUrlEncoded
     @POST("addNote")
-    Observable<BaseResponse<Object>> addNote(@Field(JSON) String string);
+    Observable<BaseResponse<Integer>> addNote(@Field(JSON) String string);
     //获取帖子所有配图
     @GET("getAllPictureNote")
     Observable<BaseResponse<List<String>>> getAllPictureNote(@Query(JSON) String string);
-
+    //获取帖子里的猫咪信息
     @GET("getCatNote")
     Observable<BaseResponse<Catinfo>> getCatNote(@Query(JSON) String string);
 
+    //发布猫咪信息 返回 猫咪编号
+    @FormUrlEncoded
+    @POST("addCatNote")
+    Observable<BaseResponse<Integer>> addCatNote(@Field(JSON) String string);
 
     //点赞操作
     @GET("thumbNote")

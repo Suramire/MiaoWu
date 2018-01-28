@@ -34,7 +34,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_weight="0.1"
-                android:src="@drawable/default_icon"/>
+                android:src="@mipmap/ic_cat_icon_round"/>
 
             <TextView
                 android:id="@+id/reply_user_nickname"

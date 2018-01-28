@@ -84,8 +84,12 @@ public class ApiLoader {
         return observer(getApiService().getDetailNote(GsonUtil.objectToJson(note)));
     }
 
-    public static Observable<BaseResponse<Object>> addNote(Multi multi){
-        return observer(getApiService().addNote(GsonUtil.objectToJson(multi)));
+    public static Observable<BaseResponse<Integer>> addCat(Catinfo catinfo){
+        return observer(getApiService().addCatNote(GsonUtil.objectToJson(catinfo)));
+    }
+
+    public static Observable<BaseResponse<Integer>> addNote(Note note){
+        return observer(getApiService().addNote(GsonUtil.objectToJson(note)));
     }
 
     public static Observable<BaseResponse<List<String>>> getAllPictureNote(Note note){

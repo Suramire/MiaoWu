@@ -12,6 +12,7 @@ public class Note implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
+	private Integer cid;
 	private Integer uid;
 	private String title;
 	private String content;
@@ -37,8 +38,9 @@ public class Note implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Note(Integer uid, String title, String content, Timestamp publish,
-			Integer viewcount, Integer thumbs, Integer type) {
+	public Note(Integer cid, Integer uid, String title, String content,
+			Timestamp publish, Integer viewcount, Integer thumbs, Integer type) {
+		this.cid = cid;
 		this.uid = uid;
 		this.title = title;
 		this.content = content;
@@ -56,6 +58,14 @@ public class Note implements java.io.Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getCid() {
+		return this.cid;
+	}
+
+	public void setCid(Integer cid) {
+		this.cid = cid;
 	}
 
 	public Integer getUid() {

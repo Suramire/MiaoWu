@@ -19,6 +19,8 @@ import com.suramire.miaowu.adapter.MultiItemAdapter;
 import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
+import com.suramire.miaowu.bean.Note;
+import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.presenter.NoteDetailPresenter;
 import com.suramire.miaowu.ui.dialog.BottomCommentDialogFragment;
@@ -60,7 +62,7 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     @Bind(R.id.ll_popup)
     LinearLayout llPopup;
     private ProgressDialog mProgressDialog;
-    private int mNoteId;
+    private int noteId;
     private MultiItemAdapter mAdapter;
     private List<Object> mObjects;
     private boolean thumbed;
@@ -69,6 +71,7 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     private boolean isAtComment;//是否在评论页标志位
     private int index;//上次浏览的index
     private int top;//距离顶部距离
+    private int userId;
 
     @Override
     public int bindLayout() {
@@ -91,31 +94,22 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
                 finish();
             }
         });
-        mNoteId = getIntent().getIntExtra("noteId", 0);
+        noteId = getIntent().getIntExtra("noteId", 0);
+        userId = getIntent().getIntExtra("userId", 0);
         Multi multi = (Multi) getIntent().getSerializableExtra("multi");
         //查询帖子信息
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("正在读取帖子信息，请稍候……");
 
-//        mNoteDetailPresenter.getData();
         // TODO: 2017/11/14 点击详情页 浏览次数+1
         mObjects = new ArrayList<>();
-        List<String> picturesStrings = multi.getPicturesStrings();
-        mObjects.add(picturesStrings);
-        mObjects.add(multi.getmUser());
-        mObjects.add(multi.getmNote());
-        Catinfo catinfo = multi.getmCatinfo();
-        if (catinfo != null) {
-            mObjects.add(catinfo);
-        }
 
         mAdapter = new MultiItemAdapter(this, mObjects);
         mListNotedetail.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
 
-        mThumbs = multi.getmNote().getThumbs();
-        thumb(mThumbs);
-        mPresenter.getReply();
+
+
+        mPresenter.getPictue();
 
     }
 
@@ -141,14 +135,20 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
                 mReplyCount++;
             }
         }
+
         mAdapter.notifyDataSetChanged();
         setReplyCount(mReplyCount);
 
     }
 
     @Override
+    public int getUserId() {
+        return userId;
+    }
+
+    @Override
     public int getNoteId() {
-        return mNoteId;
+        return noteId;
     }
 
 
@@ -185,13 +185,35 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     }
 
     @Override
-    public void onOnGetPictureSuccess() {
-        L.e("响应获取帖子图片成功的事件");
+    public void onGetNoteInfoSuccess(Note note) {
+        mObjects.add(note);
+        mAdapter.notifyDataSetChanged();
+        mThumbs = note.getThumbs();
+        thumb(mThumbs);
+
+
     }
 
     @Override
-    public void onGetCatInfoSuccess() {
+    public void onGetUserInfoSuccess(User user) {
+        mObjects.add(user);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onOnGetPictureSuccess(List<String> paths) {
+        L.e("响应获取帖子图片成功的事件");
+        mObjects.add(paths);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onGetCatInfoSuccess(Catinfo catinfo) {
         L.e("响应获取帖子内猫咪信息成功后的事件");
+        if(catinfo!=null){
+            mObjects.add(catinfo);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
 

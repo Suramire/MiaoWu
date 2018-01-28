@@ -17,7 +17,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginLeft="8dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/default_icon"
+        android:src="@mipmap/ic_cat_icon_round"
         app:riv_border_width="2dp"
         app:riv_border_color="@color/white"
         app:riv_oval="true"/>

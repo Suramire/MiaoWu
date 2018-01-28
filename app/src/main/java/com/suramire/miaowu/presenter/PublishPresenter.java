@@ -3,11 +3,9 @@ package com.suramire.miaowu.presenter;
 import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.PublishModel;
-import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.ToastUtil;
 
 import rx.Subscription;
-import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -22,37 +20,68 @@ public class PublishPresenter implements PublishContract.Presenter {
     public PublishPresenter() {
         mPublishModel = new PublishModel();
     }
+
+
     @Override
-    public void publish() {
-        //先发送帖子信息（标题、内容、发帖者编号）
+    public void publishNote(final int type, int catId) {
+        Subscription subscribe = mPublishModel.publicNoteInfo(mView.getNoteInfo(), type, catId)
+                .subscribe(new ResponseSubscriber<Integer>() {
+                    @Override
+                    public void onError(Throwable throwable) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("发布帖子信息失败:"+throwable.getMessage());
+
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        if(mView.getPicturePaths()!=null && mView.getPicturePaths().size()>0 ){
+                            publishPicturePaths(integer);
+                        }else {
+                            mView.onSuccess(null);
+                        }
+                    }
+                });
+
+        compositeSubscription.add(subscribe);
+    }
+
+    @Override
+    public void publishCat() {
         mView.showLoading();
-        Subscription subscribe = mPublishModel.publish(mView.getCatinfo(), mView.getNoteTitle(), mView.getNoteContent(),
-                mView.getPicturePaths())
+        Subscription subscribe = mPublishModel.publishCatInfo(mView.getCatinfo())
+                .subscribe(new ResponseSubscriber<Integer>() {
+                    @Override
+                    public void onError(Throwable throwable) {
+                        ToastUtil.showShortToastCenter("发布猫咪信息失败:" + throwable.getMessage());
+                        publishNote(2, 0);
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        publishNote(2, integer);
+                    }
+                });
+        compositeSubscription.add(subscribe);
+
+    }
+
+    @Override
+    public void publishPicturePaths(final int nid) {
+        Subscription subscribe = mPublishModel.uploadPicturePath(nid, mView.getPicturePaths())
                 .subscribe(new ResponseSubscriber<Object>() {
                     @Override
                     public void onError(Throwable throwable) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter(throwable.getMessage());
+                        ToastUtil.showShortToastCenter("上传图片路径失败:" + throwable.getMessage());
                     }
 
                     @Override
-                    public void onNext(final Object id) {
+                    public void onNext(Object object) {
                         mView.cancelLoading();
                         mView.onSuccess(null);
-                        //再发送帖子图片路径
-                        mPublishModel.uploadPicturePath(id, mView.getPicturePaths())
-                                .subscribe(new Action1<Object>() {
-                                    @Override
-                                    public void call(Object o) {
-                                        //最后上传图片文件
-                                        mPublishModel.uploadPicture(mView.getPicturePaths(), 0, mView.getPicturePaths().size(), Integer.parseInt(id.toString()));
-                                    }
-                                }, new Action1<Throwable>() {
-                                    @Override
-                                    public void call(Throwable throwable) {
-                                        L.e("发送图片路径出错:" + throwable.getMessage());
-                                    }
-                                });
+                        //上传图片
+                        mPublishModel.uploadPicture(mView.getPicturePaths(), 0, mView.getPicturePaths().size(), nid);
                     }
                 });
         compositeSubscription.add(subscribe);

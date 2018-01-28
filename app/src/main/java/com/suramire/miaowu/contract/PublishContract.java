@@ -3,6 +3,7 @@ package com.suramire.miaowu.contract;
 import com.suramire.miaowu.base.BasePresenter;
 import com.suramire.miaowu.base.BaseView;
 import com.suramire.miaowu.bean.Catinfo;
+import com.suramire.miaowu.bean.Note;
 
 import java.util.List;
 
@@ -14,17 +15,38 @@ import rx.Observable;
 
 public interface PublishContract {
     interface Model<T> {
-        Observable<T> publish(Catinfo catinfo, String title, String content, List<String> pictues);
+
+        /**
+         * 发送猫咪信息
+         * @param catinfo
+         * @return 猫咪编号
+         */
+        Observable<T> publishCatInfo(Catinfo catinfo);
+
+        /**
+         * 发布帖子信息
+         * @param note 帖子信息
+         * @param type 帖子类型
+         * @param catId 猫咪编号
+         * @return
+         */
+        Observable<T> publicNoteInfo(Note note,int type,int catId);
+
+        /**
+         * 上传帖子图片文件名
+         * @param object 帖子编号 需强转int
+         * @param pictues 图片名数组
+         * @return
+         */
 
         Observable<T> uploadPicturePath(Object object, List<String> pictues);
+
     }
 
     interface View extends BaseView {
 
 
-        String getNoteTitle();
-
-        String getNoteContent();
+        Note getNoteInfo();
 
         Catinfo getCatinfo();
 
@@ -33,6 +55,11 @@ public interface PublishContract {
     }
 
     interface Presenter extends BasePresenter<View> {
-        void publish();
+
+        void publishNote(int type,int catId);
+
+        void publishCat();
+
+        void publishPicturePaths(int nid);
     }
 }

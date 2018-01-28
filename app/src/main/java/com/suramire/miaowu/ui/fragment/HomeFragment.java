@@ -68,7 +68,7 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
                             .into((ImageView) helper.getView(R.id.noteimg));
                     Picasso.with(mContext)
                             .load(BASUSERPICEURL + user.getIcon())
-                            .placeholder(R.drawable.default_icon)
+                            .placeholder(R.mipmap.ic_cat_icon_round)
                             .into((ImageView) helper.getView(R.id.anthorimg));
 
                     helper.setOnClickListener(R.id.cardview_item, new View.OnClickListener() {
@@ -76,7 +76,7 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
                         public void onClick(View v) {
                             Intent intent = new Intent(mContext, NoteDetailActivity.class);
                             intent.putExtra("noteId", note.getId());
-                            intent.putExtra("multi", item);
+                            intent.putExtra("userId", note.getUid());
                             startActivity(intent);
                         }
                     });

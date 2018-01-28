@@ -38,6 +38,7 @@ public class ToastUtil {
                 toast.setText(msg);
             }
             toast.show();
+            L.e("Toast msg:" + msg);
         }
     }
 

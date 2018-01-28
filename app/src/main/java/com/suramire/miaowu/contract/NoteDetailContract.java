@@ -2,6 +2,11 @@ package com.suramire.miaowu.contract;
 
 import com.suramire.miaowu.base.BasePresenter;
 import com.suramire.miaowu.base.BaseView;
+import com.suramire.miaowu.bean.Catinfo;
+import com.suramire.miaowu.bean.Note;
+import com.suramire.miaowu.bean.User;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -21,20 +26,30 @@ public interface NoteDetailContract {
 
         Observable<T> getCatInfo(int noteId);
 
+        Observable<T> getUserInfo(int noteId);
+
     }
 
     interface View extends BaseView {
+
+        int getUserId();
 
         int getNoteId();
 
         void onThumbSuccess();
 
-        void onOnGetPictureSuccess();
+        void onGetNoteInfoSuccess(Note note);
 
-        void onGetCatInfoSuccess();
+        void onGetUserInfoSuccess(User user);
+
+        void onOnGetPictureSuccess(List<String> paths);
+
+        void onGetCatInfoSuccess(Catinfo catinfo);
     }
 
     interface Presenter extends BasePresenter<View> {
+
+        void getNoteInfo();
 
         void getReply();
         //点赞操作
@@ -43,5 +58,7 @@ public interface NoteDetailContract {
         void getPictue();
         //获取猫咪信息
         void getCatInfo();
+
+        void getUserInfo();
     }
 }

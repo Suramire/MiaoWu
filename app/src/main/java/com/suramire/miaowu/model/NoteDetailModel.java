@@ -4,6 +4,7 @@ import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
+import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.http.ApiLoader;
 import com.suramire.miaowu.http.base.ResponseFunc;
@@ -59,5 +60,12 @@ public class NoteDetailModel implements NoteDetailContract.Model {
         note.setId(noteId);
         return ApiLoader.getCat(note)
                 .map(new ResponseFunc<Catinfo>());
+    }
+
+    @Override
+    public Observable<User> getUserInfo(int userId) {
+        User user = new User();
+        user.setId(userId);
+        return ApiLoader.getUser(user).map(new ResponseFunc<User>());
     }
 }
