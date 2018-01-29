@@ -1,7 +1,7 @@
 package com.suramire.miaowu.model;
 
 import com.suramire.miaowu.bean.Catinfo;
-import com.suramire.miaowu.bean.Multi;
+import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
@@ -37,11 +37,11 @@ public class NoteDetailModel implements NoteDetailContract.Model {
     }
 
     @Override
-    public Observable<List<Multi>> getNoteReply(final int noteId) {
+    public Observable<List<Multi0>> getNoteReply(final int noteId) {
         Reply reply = new Reply();
         reply.setNid(noteId);
         return ApiLoader.listReplys(reply)
-                .map(new ResponseFunc<List<Multi>>());
+                .map(new ResponseFunc<List<Multi0>>());
 
     }
 

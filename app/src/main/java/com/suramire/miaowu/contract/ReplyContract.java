@@ -17,6 +17,7 @@ public interface ReplyContract {
         //删除评论
         Observable<T> deleteReply(Reply reply);
 
+
     }
 
     interface View extends BaseView {
@@ -31,6 +32,7 @@ public interface ReplyContract {
         void postReply();
 
         void deleteReply();
+
 
     }
 }

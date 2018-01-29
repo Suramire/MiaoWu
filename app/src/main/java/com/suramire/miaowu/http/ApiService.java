@@ -2,6 +2,7 @@ package com.suramire.miaowu.http;
 
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
+import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
@@ -113,13 +114,15 @@ public interface ApiService {
     @GET("deleteReply")
     Observable<BaseResponse<Reply>> deleteReply(@Query(JSON) String string);
 
-    //列出回复
-    @GET("listReply")
-    Observable<BaseResponse<List<Multi>>> listReply(@Query(JSON) String string);
+    //列出帖子页回复
+    @GET("listmReply")
+    Observable<BaseResponse<List<Multi0>>> listReply(@Query(JSON) String string);
 
-    //获取楼中楼回复
-    @GET("getFloorReply")
-    Observable<BaseResponse<List<Multi>>> getFloorReply(@Query(JSON) String string);
+    //列出回复详情
+    @GET("listdetailReply")
+    Observable<BaseResponse<List<Multi0>>> listReplyDetail(@Query(JSON) String string);
+
+
 
 
 }

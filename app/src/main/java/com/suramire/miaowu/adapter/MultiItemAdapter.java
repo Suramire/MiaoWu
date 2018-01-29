@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.bean.Catinfo;
-import com.suramire.miaowu.bean.Multi;
+import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
@@ -47,7 +47,7 @@ public class MultiItemAdapter extends BaseAdapter {
     public MultiItemAdapter(Context context , List list) {
         mList = list;
         mContext = context;
-        mClasses =new Class[]{Multi.class, Note.class, ArrayList.class, User.class, Catinfo.class};
+        mClasses =new Class[]{Multi0.class, Note.class, ArrayList.class, User.class, Catinfo.class};
     }
 
     @Override
@@ -101,16 +101,17 @@ public class MultiItemAdapter extends BaseAdapter {
         }else{
             mVH = (ViewHolder0) convertView.getTag();
         }
-        final Multi multi = (Multi) mList.get(position);
-        Reply reply = multi.getmReply();
-        User user = multi.getmUser();
+        final Multi0 multi0 = (Multi0) mList.get(position);
+        Reply reply = multi0.getReply();
+        User user = multi0.getUser();
         mVH.mtvNickname.setText(user.getNickname());
         String icon = user.getIcon();
         if(icon!=null)
         Picasso.with(mContext)
                 .load(BASUSERPICEURL+icon)
                 .into(mVH.mimgUserIcon);
-        mVH.mtvCount.setText(multi.getCount()+"");
+//        int count = multi.getCount()-1;
+        mVH.mtvCount.setText("");
 
         mVH.mtvContent.setText(reply.getReplycontent());
         mVH.mtvReplytime.setText(CommonUtil.timeStampToDateString(reply.getReplytime()));
@@ -124,7 +125,8 @@ public class MultiItemAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ReplyDetailActivity.class);
-                intent.putExtra("multi", multi);
+                intent.putExtra("multi",  multi0);
+
                 mContext.startActivity(intent);
             }
         });

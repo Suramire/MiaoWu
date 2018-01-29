@@ -18,7 +18,7 @@ import com.suramire.miaowu.R;
 import com.suramire.miaowu.adapter.MultiItemAdapter;
 import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.bean.Catinfo;
-import com.suramire.miaowu.bean.Multi;
+import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.NoteDetailContract;
@@ -96,7 +96,6 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
         });
         noteId = getIntent().getIntExtra("noteId", 0);
         userId = getIntent().getIntExtra("userId", 0);
-        Multi multi = (Multi) getIntent().getSerializableExtra("multi");
         //查询帖子信息
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("正在读取帖子信息，请稍候……");
@@ -126,12 +125,12 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
 
     @Override
     public void onSuccess(Object object) {
-        List<Multi> replies = (List<Multi>) object;
-        for (Multi multi : replies
+        List<Multi0> replies = (List<Multi0>) object;
+        for (Multi0 multi : replies
                 ) {
             mObjects.add(multi);
             //统计楼层数（非楼层回复）
-            if (multi.getmReply().getReplyuid() == 0) {
+            if (multi.getReply().getReplyuid() == 0) {
                 mReplyCount++;
             }
         }

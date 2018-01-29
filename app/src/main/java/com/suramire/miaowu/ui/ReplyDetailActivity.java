@@ -16,7 +16,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseSwipeActivity;
-import com.suramire.miaowu.bean.Multi;
+import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.ReplyDetailContract;
@@ -26,7 +26,6 @@ import com.suramire.miaowu.ui.dialog.BottomReplyOptionsFragment;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -80,11 +79,11 @@ public class ReplyDetailActivity extends BaseSwipeActivity<ReplyDetailPresenter>
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("请稍候……");
-        Multi multi = (Multi) getIntent().getSerializableExtra("multi");
-        Reply reply = multi.getmReply();
+        Multi0 multi = (Multi0) getIntent().getSerializableExtra("multi");
+        Reply reply = multi.getReply();
         mFloorid = reply.getFloorid();
         nId = reply.getNid();
-        User user = multi.getmUser();
+        User user = multi.getUser();
         mReplyUserNickname.setText(user.getNickname());
         String icon = user.getIcon();
         if (icon != null) {
@@ -94,8 +93,9 @@ public class ReplyDetailActivity extends BaseSwipeActivity<ReplyDetailPresenter>
         }
         mReplyDate.setText(CommonUtil.timeStampToDateString(reply.getReplytime()));
         mReplyContent.setText(reply.getReplycontent());
-        mPresenter.getReplyList();
+//        mPresenter.getReplyList();
         mListReplyChild.setLayoutManager(new LinearLayoutManager(mContext));
+        mPresenter.listReplyDetail();
     }
 
 
@@ -112,33 +112,21 @@ public class ReplyDetailActivity extends BaseSwipeActivity<ReplyDetailPresenter>
 
     @Override
     public void onSuccess(Object object) {
-        final List<Multi> multiList = (List<Multi>) object;
-        List<Multi> mMultiList = new ArrayList<>();
-//        for (Reply reply :
-//                replyList) {
-//            if(reply.getReplyuid()!=0){
-//                mReplyList.add(reply);
-//            }
-//        }
-        for(Multi multi :multiList){
-            //只显示子楼层
-            //主楼层的replyUid=0
-            if(multi.getmReply().getUid()!=0){
-                mMultiList.add(multi);
-            }
-        }
+        final List<Multi0> multiList = (List<Multi0>) object;
+        multiList.remove(0);//移除回复主题
+
 
         if(object!=null){
 
-            mListReplyChild.setAdapter(new CommonRecyclerAdapter<Multi>(mContext,R.layout.item_reply_child,mMultiList) {
+            mListReplyChild.setAdapter(new CommonRecyclerAdapter<Multi0>(mContext,R.layout.item_reply_child,multiList) {
 
                 @Override
-                public void onUpdate(BaseAdapterHelper helper, final Multi multi, int position) {
-                    final Reply item = multi.getmReply();
-                    User user = multi.getmUser();
-                    User user2 = multi.getUser2();
-                    if(user2!=null){
-                        helper.setText(R.id.reply_child, user.getNickname()+"回复@"+user2.getNickname()+": "+item.getReplycontent());
+                public void onUpdate(BaseAdapterHelper helper, final Multi0 multi, int position) {
+                    final Reply item = multi.getReply();
+                    User user = multi.getUser();
+                    User rUser = multi.getUser2();
+                    if(rUser!=null){
+                        helper.setText(R.id.reply_child, user.getNickname()+"回复@"+rUser.getNickname()+": "+item.getReplycontent());
                     }else{
                         helper.setText(R.id.reply_child, user.getNickname()+" : "+item.getReplycontent());
                     }
@@ -184,7 +172,7 @@ public class ReplyDetailActivity extends BaseSwipeActivity<ReplyDetailPresenter>
                                         public void onSucess() {
                                             Toast.makeText(mContext, "发表成功！", Toast.LENGTH_SHORT).show();
                                             // TODO: 2017/11/21 自己不能回复自己
-                                            mPresenter.getReplyList();
+                                            mPresenter.listReplyDetail();//刷新评论
 
                                             bottomCommentDialogFragment.dismiss();
                                         }
@@ -213,7 +201,6 @@ public class ReplyDetailActivity extends BaseSwipeActivity<ReplyDetailPresenter>
                 }
 
             });
-            Toast.makeText(mContext, "test", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(mContext, "暂无回复信息", Toast.LENGTH_SHORT).show();
         }

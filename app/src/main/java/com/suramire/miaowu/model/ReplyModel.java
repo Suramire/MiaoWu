@@ -1,9 +1,12 @@
 package com.suramire.miaowu.model;
 
+import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.contract.ReplyContract;
 import com.suramire.miaowu.http.ApiLoader;
 import com.suramire.miaowu.http.base.ResponseFunc;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -21,4 +24,6 @@ public class ReplyModel implements ReplyContract.Model {
     public Observable<Reply> deleteReply(Reply reply) {
         return ApiLoader.deleteReply(reply).map(new ResponseFunc<Reply>());
     }
+
+
 }

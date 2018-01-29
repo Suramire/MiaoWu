@@ -14,9 +14,11 @@ import rx.Observable;
 
 public interface ReplyDetailContract {
     interface Model<T> {
-        Observable<T> getReplyList(int floorid);
 
         void getUsersById(List<Integer> ids,OnGetResultListener listener);
+
+        Observable<T> listReplyDetail(int floorId);
+
     }
 
     interface View  extends BaseView{
@@ -25,8 +27,10 @@ public interface ReplyDetailContract {
     }
 
     interface Presenter extends BasePresenter<View> {
-        void getReplyList();
 
         void getUsersById();
+
+        void listReplyDetail();
+
     }
 }

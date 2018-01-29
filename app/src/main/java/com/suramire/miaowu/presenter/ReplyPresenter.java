@@ -65,6 +65,7 @@ public class ReplyPresenter implements ReplyContract.Presenter {
 
     }
 
+
     @Override
     public void attachView(ReplyContract.View view) {
         mView = view;

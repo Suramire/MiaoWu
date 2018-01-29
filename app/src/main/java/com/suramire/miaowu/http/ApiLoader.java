@@ -2,6 +2,7 @@ package com.suramire.miaowu.http;
 
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
+import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
@@ -128,12 +129,12 @@ public class ApiLoader {
         return observer(getApiService().deleteReply(GsonUtil.objectToJson(reply)));
     }
 
-    public static Observable<BaseResponse<List<Multi>>> listReplys(Reply reply){
+    public static Observable<BaseResponse<List<Multi0>>> listReplys(Reply reply){
         return observer(getApiService().listReply(GsonUtil.objectToJson(reply)));
     }
 
-    public static Observable<BaseResponse<List<Multi>>> getFloorReplys(Reply reply){
-        return observer(getApiService().getFloorReply(GsonUtil.objectToJson(reply)));
+    public static Observable<BaseResponse<List<Multi0>>> listReplyDetail(Reply reply){
+        return observer(getApiService().listReplyDetail(GsonUtil.objectToJson(reply)));
     }
 
 

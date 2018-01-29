@@ -1,7 +1,7 @@
 package com.suramire.miaowu.presenter;
 
 import com.suramire.miaowu.bean.Catinfo;
-import com.suramire.miaowu.bean.Multi;
+import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.NoteDetailContract;
@@ -60,7 +60,7 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
     public void getReply() {
         mView.showLoading();
         Subscription subscribe = noteDetailModel.getNoteReply(mView.getNoteId())
-                .subscribe(new ResponseSubscriber<List<Multi>>() {
+                .subscribe(new ResponseSubscriber<List<Multi0>>() {
                     @Override
                     public void onError(Throwable throwable) {
                         mView.cancelLoading();
@@ -68,7 +68,7 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(List<Multi> multis) {
+                    public void onNext(List<Multi0> multis) {
                         mView.cancelLoading();
                         mView.onSuccess(multis);
                     }

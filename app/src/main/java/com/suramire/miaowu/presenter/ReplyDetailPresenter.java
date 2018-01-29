@@ -1,6 +1,6 @@
 package com.suramire.miaowu.presenter;
 
-import com.suramire.miaowu.bean.Multi;
+import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.contract.ReplyDetailContract;
 import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.ReplyDetailModel;
@@ -25,26 +25,6 @@ public class ReplyDetailPresenter implements ReplyDetailContract.Presenter {
         mReplyDetailModel = new ReplyDetailModel();
     }
 
-    @Override
-    public void getReplyList() {
-        mView.showLoading();
-        Subscription subscribe = mReplyDetailModel.getReplyList(mView.getFloorId())
-                .subscribe(new ResponseSubscriber<List<Multi>>() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        mView.cancelLoading();
-                        ToastUtil.showShortToastCenter(throwable.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(List<Multi> multis) {
-                        mView.cancelLoading();
-                        mView.onSuccess(multis);
-                    }
-                });
-        compositeSubscription.add(subscribe);
-
-    }
 
     @Override
     public void getUsersById() {
@@ -61,6 +41,28 @@ public class ReplyDetailPresenter implements ReplyDetailContract.Presenter {
     public void detachView() {
         mView = null;
         compositeSubscription.unsubscribe();
+
+    }
+
+
+    @Override
+    public void listReplyDetail() {
+        mView.showLoading();
+        Subscription subscribe = mReplyDetailModel.listReplyDetail(mView.getFloorId())
+                .subscribe(new ResponseSubscriber<List<Multi0>>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showLongToast("获取评论详情失败:"+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<Multi0> multi0s) {
+                        mView.cancelLoading();
+                        mView.onSuccess(multi0s);
+                    }
+                });
+        compositeSubscription.add(subscribe);
 
     }
 }
