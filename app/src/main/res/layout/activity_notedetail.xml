@@ -1,24 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_gravity="top"/>
+
+
+
 
 
     <ListView
         android:id="@+id/list_notedetail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize"
-        android:layout_marginTop="?attr/actionBarSize"
-        >
+        android:layout_marginBottom="?attr/actionBarSize"/>
+    <com.suramire.miaowu.wiget.MyToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:layout_gravity="top"
+        app:contentInsetStart="0dp">
 
-    </ListView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/toolbar_image_left"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_search_black_24dp"/>
+
+
+            <TextView
+                android:id="@+id/toolbar_text_right"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:textAlignment="textEnd"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+
+    </com.suramire.miaowu.wiget.MyToolbar>
 
 
 

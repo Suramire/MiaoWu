@@ -69,6 +69,15 @@ public class ApiLoader {
         return observer(getApiService().getUserFollowerCount(GsonUtil.objectToJson(user)));
     }
 
+    public static Observable<BaseResponse<List<User>>> getUserFollow(User user){
+        return observer(getApiService().getUserFollow(GsonUtil.objectToJson(user)));
+    }
+
+    public static Observable<BaseResponse<List<User>>> getUserFollower(User user){
+        return observer(getApiService().getUserFollower(GsonUtil.objectToJson(user)));
+    }
+
+
     /*帖子相关*/
 
     public static Observable<BaseResponse<List<Multi>>> getMultiNotes(){

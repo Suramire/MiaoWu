@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.bean.Catinfo;
@@ -19,11 +20,15 @@ import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
+import com.suramire.miaowu.ui.HDPictureActivity;
 import com.suramire.miaowu.ui.ReplyDetailActivity;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.GlideImageLoader;
+import com.suramire.miaowu.util.L;
+import com.suramire.miaowu.util.PicassoUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
+import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +48,19 @@ public class MultiItemAdapter extends BaseAdapter {
     private Context mContext;
     private boolean isFirst = true;
 
+    class GlideImageLoader extends ImageLoader {
+        @Override
+        public void displayImage(Context context, Object path, ImageView imageView) {
+            Glide.with(context)
+                    .load(path)
+                    .placeholder(R.drawable.ic_loading)
+                    .error(R.drawable.ic_loading_error)
+                    .into(imageView);
+        }
+    }
 
-    public MultiItemAdapter(Context context , List list) {
+
+        public MultiItemAdapter(Context context , List list) {
         mList = list;
         mContext = context;
         mClasses =new Class[]{Multi0.class, Note.class, ArrayList.class, User.class, Catinfo.class};
@@ -106,10 +122,9 @@ public class MultiItemAdapter extends BaseAdapter {
         User user = multi0.getUser();
         mVH.mtvNickname.setText(user.getNickname());
         String icon = user.getIcon();
-        if(icon!=null)
-        Picasso.with(mContext)
-                .load(BASUSERPICEURL+icon)
-                .into(mVH.mimgUserIcon);
+        if(icon!=null){
+            PicassoUtil.show(BASUSERPICEURL+icon,mVH.mimgUserIcon);
+        }
 //        int count = multi.getCount()-1;
         mVH.mtvCount.setText("");
 
@@ -167,7 +182,7 @@ public class MultiItemAdapter extends BaseAdapter {
             mVH = (ViewHolder2) convertView.getTag();
         }
         List<String> items = (List<String>) getItem(position);
-        List<String> newItems = new ArrayList<>();
+        final List<String> newItems = new ArrayList<>();
         for (String s:
              items) {
             newItems.add(BASNOTEPICEURL+s);
@@ -177,6 +192,15 @@ public class MultiItemAdapter extends BaseAdapter {
                 .isAutoPlay(false)
                 .setBannerStyle(BannerConfig.NUM_INDICATOR)
                 .setIndicatorGravity(BannerConfig.RIGHT)
+                .setOnBannerListener(new OnBannerListener() {
+
+                    @Override
+                    public void OnBannerClick(int position) {
+                        Intent intent = new Intent(mContext, HDPictureActivity.class);
+                        intent.putExtra("path", newItems.get(position));
+                        mContext.startActivity(intent);
+                    }
+                })
                 .start();
         return convertView;
     }

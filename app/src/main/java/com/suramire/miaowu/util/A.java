@@ -2,6 +2,7 @@ package com.suramire.miaowu.util;
 
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Notification;
+import com.suramire.miaowu.bean.User;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -63,6 +64,18 @@ public class A {
             notes.add(note);
         }
         return notes;
+    }
+
+    public static List<User> getUsers(int count){
+        List<User> users = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            User user = new User();
+            user.setId(i + 1);
+            user.setNickname("用户"+(i+1));
+            user.setIcon((i+1)+".png");
+            users.add(user);
+        }
+        return users;
     }
 
 

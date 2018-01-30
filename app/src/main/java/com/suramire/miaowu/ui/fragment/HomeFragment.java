@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
-import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseListFragment;
 import com.suramire.miaowu.bean.Multi;
@@ -20,6 +19,7 @@ import com.suramire.miaowu.contract.HomeContract;
 import com.suramire.miaowu.presenter.HomePresenter;
 import com.suramire.miaowu.ui.NoteDetailActivity;
 import com.suramire.miaowu.util.CommonUtil;
+import com.suramire.miaowu.util.PicassoUtil;
 
 import java.util.List;
 
@@ -61,16 +61,9 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
                     final Note note = item.getmNote();
                     NotePhoto notePhoto = item.getmNotePhoto();
                     User user = item.getmUser();
-                    Picasso.with(mContext)
-                            .load(BASNOTEPICEURL + notePhoto.getName())
-                            .placeholder(R.drawable.ic_loading)
-                            .error(R.drawable.ic_loading_error)
-                            .into((ImageView) helper.getView(R.id.noteimg));
-                    Picasso.with(mContext)
-                            .load(BASUSERPICEURL + user.getIcon())
-                            .placeholder(R.mipmap.ic_cat_icon_round)
-                            .into((ImageView) helper.getView(R.id.anthorimg));
-
+                    PicassoUtil.show(BASNOTEPICEURL + notePhoto.getName(),(ImageView) helper.getView(R.id.noteimg),
+                            R.drawable.ic_loading,R.drawable.ic_loading_error);
+                    PicassoUtil.show(BASUSERPICEURL + user.getIcon(),(ImageView) helper.getView(R.id.anthorimg));
                     helper.setOnClickListener(R.id.cardview_item, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

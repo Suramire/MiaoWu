@@ -19,6 +19,7 @@ import com.suramire.miaowu.ui.fragment.NotificationFragment;
 import com.suramire.miaowu.ui.fragment.PersonFragment;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
+import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.util.ToastUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 import com.suramire.miaowu.wiget.MyViewPager;
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity {
     private boolean requireFresh;
     private HomeFragment homeFragment;
     private NotificationFragment notificationFragment;
+    private int currentPosition;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -74,44 +76,7 @@ public class MainActivity extends BaseActivity {
     public void initView() {
         toolbar.setTitle("首页");
         toolbar.setStyle(MyToolbar.STYLE_RIGHT_AND_TITLE);
-        toolbar.setRightOnclickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (CommonUtil.isLogined()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setTitle("请选择帖子类型");
-                    final String[] items = {"我要领养小猫","寻找好心人领养"};
-                    builder.setItems(items, new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(MainActivity.this, NewPublishActivity.class);
-                            switch (which) {
-                                case 0: {
-                                    //寻领养不需填写猫咪信息
-                                    intent.putExtra("needcat", false);
-                                }
-                                break;
-                                case 1: {
-                                    intent.putExtra("needcat", true);
-                                }
-                                break;
-                            }
-                            startActivity(intent);
-
-                        }
-                    });
-                    builder.setCancelable(false).show();
-                } else {
-                    CommonUtil.snackBar(MainActivity.this, "您还未登录", "登录", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startActivity(LoginActivity.class);
-                        }
-                    });
-                }
-            }
-        });
+        toolbar.setLeftImage(R.drawable.ic_search_black_24dp);
 
 
         TextBadgeItem textBadgeItem = new TextBadgeItem().setText("5");
@@ -156,6 +121,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onTabSelected(int i) {
                 viewpager.setCurrentItem(i);
+                currentPosition = i;
                 switch (i) {
                     case 0:
                         toolbar.setTitle("首页");
@@ -171,7 +137,8 @@ public class MainActivity extends BaseActivity {
                         break;
                     case 2:
                         toolbar.setTitle("个人中心");
-                        toolbarTextRight.setVisibility(View.GONE);
+                        toolbarTextRight.setVisibility(View.VISIBLE);
+                        toolbarTextRight.setText("设置");
                         toolbarImageLeft.setVisibility(View.GONE);
                         break;
                 }
@@ -220,6 +187,46 @@ public class MainActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.toolbar_text_right:
                 ToastUtil.showShortToastCenter("响应发帖操作");
+                switch (currentPosition){
+                    case 2:ToastUtil.showLongToast("这里进入个人详情页");
+                        SPUtils.put("uid",0);break;
+                    case 0:{
+                        if (CommonUtil.isLogined()) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            builder.setTitle("请选择帖子类型");
+                            final String[] items = {"我要领养小猫","寻找好心人领养"};
+                            builder.setItems(items, new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(MainActivity.this, NewPublishActivity.class);
+                                    switch (which) {
+                                        case 0: {
+                                            //寻领养不需填写猫咪信息
+                                            intent.putExtra("needcat", false);
+                                        }
+                                        break;
+                                        case 1: {
+                                            intent.putExtra("needcat", true);
+                                        }
+                                        break;
+                                    }
+                                    startActivity(intent);
+
+                                }
+                            });
+                            builder.setCancelable(false).show();
+                        } else {
+                            CommonUtil.snackBar(MainActivity.this, "您还未登录", "登录", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    startActivity(LoginActivity.class);
+                                }
+                            });
+                        }
+                    }
+                    break;
+                }
                 break;
             case R.id.toolbar_image_left:
                 startActivity(SearchActivity.class);

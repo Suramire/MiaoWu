@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,13 +13,13 @@ import com.suramire.miaowu.base.BaseFragment;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.presenter.UserPresenter;
+import com.suramire.miaowu.ui.FansListActivity;
 import com.suramire.miaowu.ui.LoginActivity;
 import com.suramire.miaowu.ui.NoteListActivity;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
-import com.suramire.miaowu.util.SPUtils;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -36,8 +35,6 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
     Button btnLogin;
     @Bind(R.id.ll_notlogin)
     LinearLayout llNotlogin;
-    @Bind(R.id.img_settings)
-    ImageView imgSettings;
     @Bind(R.id.img_icon)
     RoundedImageView imgIcon;
     @Bind(R.id.tv_username)
@@ -61,6 +58,7 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
     @Bind(R.id.ll_login)
     LinearLayout llLogin;
     private ProgressDialog mProgressDialog;
+    private Integer uid;
 
     @Override
     public void showLoading() {
@@ -104,22 +102,30 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
     }
 
 
-    @OnClick({R.id.btn_login, R.id.img_settings, R.id.img_icon, R.id.ll_followlist, R.id.ll_followerlist, R.id.ll_mynote})
+    @OnClick({R.id.btn_login, R.id.img_icon, R.id.ll_followlist, R.id.ll_followerlist, R.id.ll_mynote,R.id.ll_note2})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
 //                startActivityForResult(LoginActivity.class,ApiConfig.LOGINREQUESTCODE);
                 getActivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class),ApiConfig.LOGINREQUESTCODE);
                 break;
-            case R.id.img_settings:
-                SPUtils.put("uid",0);
-                break;
             case R.id.img_icon:
                 break;
             case R.id.ll_followlist:
+                // TODO: 2018/1/30 跳转到关注列表
+                Intent intent1 = new Intent(mContext, FansListActivity.class);
+                intent1.putExtra("index",0);
+                intent1.putExtra("uid",uid);
+                startActivity(intent1);
                 break;
             case R.id.ll_followerlist:
+                // TODO: 2018/1/30 跳转到粉丝列表
+                Intent intent2 = new Intent(mContext, FansListActivity.class);
+                intent2.putExtra("index",1);
+                intent2.putExtra("uid",uid);
+                startActivity(intent2);
                 break;
+            case R.id.ll_note2:
             case R.id.ll_mynote:
                 Intent intent = new Intent(mContext, NoteListActivity.class);
                 intent.putExtra("uid", getUid());
@@ -139,6 +145,7 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
         L.e("成功获取用户信息:" + userinfo);
         PicassoUtil.show(ApiConfig.BASUSERPICEURL + userinfo.getIcon(), imgIcon);
         tvUsername.setText(userinfo.getNickname());
+        uid = userinfo.getId();
     }
 
     @Override

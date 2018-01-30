@@ -73,6 +73,8 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     private int top;//距离顶部距离
     private int userId;
 
+
+
     @Override
     public int bindLayout() {
         return R.layout.activity_notedetail;
@@ -85,9 +87,8 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
 
     @Override
     public void initView() {
-        mToolbar.setTitle("帖子详情");
         mToolbar.setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
-        mToolbar.setLeftImage(R.drawable.ic_arrow_back_black);
+        mToolbar.setLeftImage(R.drawable.ic_arrow_back_white);
         mToolbar.setLeftOnclickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

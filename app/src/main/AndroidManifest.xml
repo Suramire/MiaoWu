@@ -54,6 +54,9 @@
                   android:theme="@style/AppTheme"/>
         <activity android:name=".ui.SearchActivity"/>
         <activity android:name=".ui.NoteListActivity"/>
+        <activity android:name=".ui.HDPictureActivity"/>
+        <activity android:name=".ui.FansListActivity"/>
+        <activity android:name=".ui.ProfileActivity"/>
 
 
     </application>

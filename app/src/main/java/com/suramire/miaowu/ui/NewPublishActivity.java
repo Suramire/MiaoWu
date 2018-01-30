@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonAdapter;
-import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.bean.Catinfo;
@@ -29,6 +28,7 @@ import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.FileUtil;
 import com.suramire.miaowu.util.L;
+import com.suramire.miaowu.util.PicassoUtil;
 import com.suramire.miaowu.util.ToastUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 
@@ -120,10 +120,7 @@ public class NewPublishActivity extends BaseSwipeActivity<PublishPresenter> impl
                 mGridviewPicture.setAdapter(new CommonAdapter<String>(this, R.layout.item_picture, mPhotos) {
                     @Override
                     public void onUpdate(BaseAdapterHelper helper, String item, int position) {
-                        Picasso.with(mContext)
-                                .load(new File(item))
-                                .placeholder(R.drawable.ic_loading)
-                                .into((ImageView) helper.getView(R.id.imageView15));
+                        PicassoUtil.show(new File(item),(ImageView) helper.getView(R.id.imageView15));
                     }
                 });
             }

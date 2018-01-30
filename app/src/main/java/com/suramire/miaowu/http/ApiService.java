@@ -47,11 +47,16 @@ public interface ApiService {
     //获取用户关注数
     @GET("getFollowCountUser")
     Observable<BaseResponse<Integer>> getUserFollowCount(@Query(JSON) String s);
+    //获取用户关注用户信息
+    @GET("getFollowUser")
+    Observable<BaseResponse<List<User>>> getUserFollow(@Query(JSON) String s);
     //获取用户粉丝数
     @GET("getFollowerCountUser")
     Observable<BaseResponse<Integer>> getUserFollowerCount(@Query(JSON) String s);
-
-
+    //获取用户粉丝用户信息
+    @GET("getFollowerUser")
+    Observable<BaseResponse<List<User>>> getUserFollower(@Query(JSON) String s);
+    //修改用户头像
     @Multipart
     @POST("getPicUser")
     Observable<BaseResponse<Object>> uploadUserIcon(@Part("description") RequestBody description,

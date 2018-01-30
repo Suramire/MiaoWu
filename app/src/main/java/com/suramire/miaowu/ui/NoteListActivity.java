@@ -53,27 +53,32 @@ public class NoteListActivity extends BaseListActivity<NotePresenter> implements
         // TODO: 2018/1/27 这里显示帖子列表
         if(data!=null){
             List<Note> notes = (List<Note>) data;
-            showList();
-            listview.setLayoutManager(new LinearLayoutManager(mContext));
-            listview.setAdapter(new CommonRecyclerAdapter<Note>(mContext,R.layout.item_note, notes) {
+            if(notes.size()>0){
+                showList();
+                listview.setLayoutManager(new LinearLayoutManager(mContext));
+                listview.setAdapter(new CommonRecyclerAdapter<Note>(mContext,R.layout.item_note, notes) {
 
-                @Override
-                public void onUpdate(BaseAdapterHelper helper, final Note item, int position) {
-                    helper.setText(R.id.note_title,item.getTitle())
-                            .setText(R.id.note_content,item.getContent())
-                            .setOnClickListener(R.id.ll_note, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent intent = new Intent(mContext, NoteDetailActivity.class);
-                                    intent.putExtra("noteId",item.getId());
-                                    intent.putExtra("userId",item.getUid());
-                                    startActivity(intent);
-                                }
-                            });
-                }
-            });
-        }else{
-            showEmpty("该用户还没发帖子");
+                    @Override
+                    public void onUpdate(BaseAdapterHelper helper, final Note item, int position) {
+                        helper.setText(R.id.note_title,item.getTitle())
+                                .setText(R.id.note_content,item.getContent())
+                                .setOnClickListener(R.id.ll_note, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(mContext, NoteDetailActivity.class);
+                                        intent.putExtra("noteId",item.getId());
+                                        intent.putExtra("userId",item.getUid());
+                                        startActivity(intent);
+                                    }
+                                });
+                    }
+                });
+            }else{
+
+                    showEmpty("该用户还没发帖子");
+
+            }
+
         }
 
     }

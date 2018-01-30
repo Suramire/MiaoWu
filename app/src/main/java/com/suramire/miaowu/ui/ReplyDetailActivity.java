@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.bean.Multi0;
@@ -24,6 +23,7 @@ import com.suramire.miaowu.presenter.ReplyDetailPresenter;
 import com.suramire.miaowu.ui.dialog.BottomCommentDialogFragment;
 import com.suramire.miaowu.ui.dialog.BottomReplyOptionsFragment;
 import com.suramire.miaowu.util.CommonUtil;
+import com.suramire.miaowu.util.PicassoUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 
 import java.util.List;
@@ -87,9 +87,7 @@ public class ReplyDetailActivity extends BaseSwipeActivity<ReplyDetailPresenter>
         mReplyUserNickname.setText(user.getNickname());
         String icon = user.getIcon();
         if (icon != null) {
-            Picasso.with(mContext)
-                    .load(BASUSERPICEURL + icon)
-                    .into(mReplyUserIcon);
+            PicassoUtil.show(BASUSERPICEURL + icon,mReplyUserIcon);
         }
         mReplyDate.setText(CommonUtil.timeStampToDateString(reply.getReplytime()));
         mReplyContent.setText(reply.getReplycontent());
@@ -131,72 +129,86 @@ public class ReplyDetailActivity extends BaseSwipeActivity<ReplyDetailPresenter>
                         helper.setText(R.id.reply_child, user.getNickname()+" : "+item.getReplycontent());
                     }
 
-                    int currentUid = CommonUtil.getCurrentUid();
-                    if(currentUid!=0){
-                        if(item.getUid()==currentUid){
-                            //用户可删除自己的评论
-                            helper.setOnClickListener(R.id.ll_replydetail_content, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
-                                    BottomReplyOptionsFragment bottomReplyOptionsFragment = BottomReplyOptionsFragment.newInstance();
-                                    Bundle bundle1 = new Bundle();
-                                    bundle1.putString("content",item.getReplycontent());
-                                    bundle1.putSerializable("reply",item);
-                                    bottomReplyOptionsFragment.setArguments(bundle1);
-                                    bottomReplyOptionsFragment.show(mFragTransaction, "000");
-                                    bottomReplyOptionsFragment.setOnDeleteListener(new BottomReplyOptionsFragment.OnDeleteListener() {
-                                        @Override
-                                        public void onSuccess() {
-                                            Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
-                                            remove(multi);
+                        int currentUid = CommonUtil.getCurrentUid();
+                        if(currentUid!=0){
+                            if(item.getUid()==currentUid){
+                                //用户可删除自己的评论
+                                helper.setOnClickListener(R.id.ll_replydetail_content, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
+                                        BottomReplyOptionsFragment bottomReplyOptionsFragment = BottomReplyOptionsFragment.newInstance();
+                                        Bundle bundle1 = new Bundle();
+                                        bundle1.putString("content",item.getReplycontent());
+                                        bundle1.putSerializable("reply",item);
+                                        bottomReplyOptionsFragment.setArguments(bundle1);
+                                        bottomReplyOptionsFragment.show(mFragTransaction, "000");
+                                        bottomReplyOptionsFragment.setOnDeleteListener(new BottomReplyOptionsFragment.OnDeleteListener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                                                remove(multi);
+                                            }
+
+                                            @Override
+                                            public void onError(String errorMessage) {
+                                                Toast.makeText(mContext, "删除时出现错误：" + errorMessage, Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        });
+                                    }
+                                });
+                            }else{
+                                helper.setOnClickListener(R.id.ll_replydetail_content, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        // TODO: 2017/11/21 登录判断 先登录才能回复
+                                        if(CommonUtil.isLogined()){
+                                            final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
+                                            final BottomCommentDialogFragment bottomCommentDialogFragment = BottomCommentDialogFragment.newInstance();
+                                            bottomCommentDialogFragment.setReplyListener(new BottomCommentDialogFragment.OnReplyListener() {
+                                                @Override
+                                                public void onSucess() {
+                                                    Toast.makeText(mContext, "发表成功！", Toast.LENGTH_SHORT).show();
+                                                    // TODO: 2017/11/21 自己不能回复自己
+                                                    mPresenter.listReplyDetail();//刷新评论
+
+                                                    bottomCommentDialogFragment.dismiss();
+                                                }
+
+                                                @Override
+                                                public void onFailure(String failureMessage) {
+                                                    Toast.makeText(mContext, "发表失败:" + failureMessage, Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                @Override
+                                                public void onError(String errorMessage) {
+                                                    Toast.makeText(mContext, "发表过程出现错误:" + errorMessage, Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                            Bundle bundle = new Bundle();
+                                            bundle.putInt("nid", item.getNid());
+                                            bundle.putInt("replyuid",item.getUid());
+                                            bundle.putInt("floorId",getFloorId());
+                                            bottomCommentDialogFragment.setArguments(bundle);
+                                            bottomCommentDialogFragment.show(mFragTransaction, "111");
+                                        }else{
+                                            CommonUtil.snackBar(mContext, "请先登录", "登录", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    startActivity(LoginActivity.class);
+                                                }
+                                            });
                                         }
 
-                                        @Override
-                                        public void onError(String errorMessage) {
-                                            Toast.makeText(mContext, "删除时出现错误：" + errorMessage, Toast.LENGTH_SHORT).show();
 
-                                        }
-                                    });
-                                }
-                            });
-                        }else{
-                            helper.setOnClickListener(R.id.ll_replydetail_content, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    // TODO: 2017/11/21 登录判断 先登录才能回复
-                                    final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
-                                    final BottomCommentDialogFragment bottomCommentDialogFragment = BottomCommentDialogFragment.newInstance();
-                                    bottomCommentDialogFragment.setReplyListener(new BottomCommentDialogFragment.OnReplyListener() {
-                                        @Override
-                                        public void onSucess() {
-                                            Toast.makeText(mContext, "发表成功！", Toast.LENGTH_SHORT).show();
-                                            // TODO: 2017/11/21 自己不能回复自己
-                                            mPresenter.listReplyDetail();//刷新评论
 
-                                            bottomCommentDialogFragment.dismiss();
-                                        }
-
-                                        @Override
-                                        public void onFailure(String failureMessage) {
-                                            Toast.makeText(mContext, "发表失败:" + failureMessage, Toast.LENGTH_SHORT).show();
-                                        }
-
-                                        @Override
-                                        public void onError(String errorMessage) {
-                                            Toast.makeText(mContext, "发表过程出现错误:" + errorMessage, Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                    Bundle bundle = new Bundle();
-                                    bundle.putInt("nid", item.getNid());
-                                    bundle.putInt("replyuid",item.getUid());
-                                    bundle.putInt("floorId",getFloorId());
-                                    bottomCommentDialogFragment.setArguments(bundle);
-                                    bottomCommentDialogFragment.show(mFragTransaction, "111");
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
-                    }
+
+
 
                 }
 
