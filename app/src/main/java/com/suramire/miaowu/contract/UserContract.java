@@ -20,10 +20,17 @@ public interface UserContract {
         Observable<T> getUserFollowCount(int uid);
 
         Observable<T> getUserFollowerCount(int uid);
+
+        Observable<T> follow(int uid1,int uid2);
+
+        Observable<T> unfollow(int uid1, int uid2);
+
+        Observable<T> getRelationship(int uid,int uid2);
     }
 
     interface View extends BaseView {
 
+        //获取当前页的用户id
         int getUid();
 
         void onGetInfoSuccess(User userinfo);
@@ -33,6 +40,8 @@ public interface UserContract {
         void onGetUserFollowerCountSuccess(int count);
 
         void onGetUserNoteCountSuccess(int count);
+
+        void onGetRelationshipSuccess(int type);
 
 
     }
@@ -48,6 +57,13 @@ public interface UserContract {
         void getUserFollowerCount();
         //用户发帖数
         void getUserNoteCount();
+
+        //获取当前页面的用户与登录用户的关系
+        void getRelationship();
+        //关注用户
+        void follow();
+        //取消关注
+        void unfollow();
 
 
     }

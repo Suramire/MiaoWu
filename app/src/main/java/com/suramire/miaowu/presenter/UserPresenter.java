@@ -1,9 +1,11 @@
 package com.suramire.miaowu.presenter;
 
+import com.suramire.miaowu.bean.Follow;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.UserModel;
+import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.ToastUtil;
 
 import rx.Subscription;
@@ -87,13 +89,71 @@ public class UserPresenter implements UserContract.Presenter {
     @Override
     public void getUserNoteCount() {
         Subscription subscribe = userModel.getUserNoteCount(mView.getUid())
-                .subscribe(new Action1<Integer>() {
+                .subscribe(new ResponseSubscriber<Integer>() {
+                               @Override
+                               public void onError(Throwable e) {
+                                   ToastUtil.showShortToastCenter("获取帖子数失败:"+e.getMessage());
+                               }
+
+                               @Override
+                               public void onNext(Integer integer) {
+                                   mView.onGetUserNoteCountSuccess(integer);
+                               }
+                           });
+        compositeSubscription.add(subscribe);
+
+    }
+
+    @Override
+    public void getRelationship() {
+        Subscription subscribe = userModel.getRelationship(CommonUtil.getCurrentUid(), mView.getUid())
+                .subscribe(new ResponseSubscriber<Integer>() {
                     @Override
-                    public void call(Integer integer) {
-                        mView.onGetUserNoteCountSuccess(integer);
+                    public void onError(Throwable e) {
+                        ToastUtil.showShortToastCenter("获取用户关系失败:"+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Integer type) {
+                        mView.onGetRelationshipSuccess(type);
                     }
                 });
         compositeSubscription.add(subscribe);
+    }
 
+    @Override
+    public void follow() {
+        Subscription subscribe = userModel.follow(CommonUtil.getCurrentUid(), mView.getUid())
+                .subscribe(new ResponseSubscriber<Object>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtil.showShortToastCenter("关注用户失败:"+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        mView.onSuccess("follow");
+                        getRelationship();
+                    }
+                });
+        compositeSubscription.add(subscribe);
+    }
+
+    @Override
+    public void unfollow() {
+        Subscription subscribe = userModel.unfollow(CommonUtil.getCurrentUid(), mView.getUid())
+                .subscribe(new ResponseSubscriber<Object>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtil.showShortToastCenter("取消关注用户失败:"+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        mView.onSuccess("unfollow");
+                        getRelationship();
+                    }
+                });
+        compositeSubscription.add(subscribe);
     }
 }

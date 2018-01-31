@@ -14,6 +14,8 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.contract.MainContract;
+import com.suramire.miaowu.presenter.MainPresenter;
 import com.suramire.miaowu.ui.fragment.HomeFragment;
 import com.suramire.miaowu.ui.fragment.NotificationFragment;
 import com.suramire.miaowu.ui.fragment.PersonFragment;
@@ -33,7 +35,7 @@ import butterknife.OnClick;
  * Created by Suramire on 2017/10/16.
  */
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View {
     private static final int REQUESTCODE = 0x100;
     @Bind(R.id.toolbar_image_left)
     ImageView toolbarImageLeft;
@@ -50,7 +52,6 @@ public class MainActivity extends BaseActivity {
 
     private boolean requireFresh;
     private HomeFragment homeFragment;
-    private NotificationFragment notificationFragment;
     private int currentPosition;
 
     @Override
@@ -69,25 +70,26 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void createPresenter() {
-
+        mPresenter = new MainPresenter();
     }
 
     @Override
     public void initView() {
+
         toolbar.setTitle("首页");
         toolbar.setStyle(MyToolbar.STYLE_RIGHT_AND_TITLE);
         toolbar.setLeftImage(R.drawable.ic_search_black_24dp);
+        if(CommonUtil.isLogined()){
+            mPresenter.getNotificationCount(CommonUtil.getCurrentUid());
+        }else{
+            bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_black_24dp, "主页"))
+                    .addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知"))
+                    .addItem(new BottomNavigationItem(R.drawable.ic_person_black, "我的"))
+                    .setMode(BottomNavigationBar.MODE_FIXED)
+                    .initialise();
+            initData();
+        }
 
-
-        TextBadgeItem textBadgeItem = new TextBadgeItem().setText("5");
-
-        bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_black_24dp, "主页"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知").setBadgeItem(textBadgeItem))
-                .addItem(new BottomNavigationItem(R.drawable.ic_person_black, "我的"))
-                .setMode(BottomNavigationBar.MODE_FIXED)
-                .initialise();
-
-        initData();
 
     }
 
@@ -96,9 +98,7 @@ public class MainActivity extends BaseActivity {
         if (homeFragment == null) {
             homeFragment = new HomeFragment();
         }
-        if (notificationFragment == null) {
-            notificationFragment = new NotificationFragment();
-        }
+        NotificationFragment notificationFragment = new NotificationFragment();
         PersonFragment personFragment2 = new PersonFragment();
         fragments.add(homeFragment);
         fragments.add(notificationFragment);
@@ -188,7 +188,7 @@ public class MainActivity extends BaseActivity {
             case R.id.toolbar_text_right:
                 ToastUtil.showShortToastCenter("响应发帖操作");
                 switch (currentPosition){
-                    case 2:ToastUtil.showLongToast("这里进入个人详情页");
+                    case 2:ToastUtil.showShortToastCenter("这里进入个人详情页");
                         SPUtils.put("uid",0);break;
                     case 0:{
                         if (CommonUtil.isLogined()) {
@@ -232,6 +232,28 @@ public class MainActivity extends BaseActivity {
                 startActivity(SearchActivity.class);
                 break;
         }
+    }
+
+    @Override
+    public void onGetNotificationCountSuccess(int count) {
+        bottomNavigationBar.clearAll();
+        if(count>0){
+
+            TextBadgeItem textBadgeItem = new TextBadgeItem().setText(count+"");
+            bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_black_24dp, "主页"))
+                    .addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知").setBadgeItem(textBadgeItem))
+                    .addItem(new BottomNavigationItem(R.drawable.ic_person_black, "我的"))
+                    .setMode(BottomNavigationBar.MODE_FIXED)
+                    .initialise();
+        }else{
+            bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_black_24dp, "主页"))
+                    .addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知"))
+                    .addItem(new BottomNavigationItem(R.drawable.ic_person_black, "我的"))
+                    .setMode(BottomNavigationBar.MODE_FIXED)
+                    .initialise();
+        }
+        initData();
+
     }
 
 

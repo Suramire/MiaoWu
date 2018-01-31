@@ -164,5 +164,10 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
         tvNoteCount.setText(String.valueOf(count));
     }
 
+    @Override
+    public void onGetRelationshipSuccess(int type) {
+
+    }
+
 
 }

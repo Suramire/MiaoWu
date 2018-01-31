@@ -1,6 +1,7 @@
 package com.suramire.miaowu.model;
 
 
+import com.suramire.miaowu.bean.Follow;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.http.ApiLoader;
@@ -42,6 +43,33 @@ public class UserModel implements UserContract.Model {
         User user = new User();
         user.setId(uid);
         return ApiLoader.getUserFollowerCount(user)
+                .map(new ResponseFunc<Integer>());
+    }
+
+    @Override
+    public Observable<Object> follow(int uid1, int uid2) {
+        Follow follow = new Follow();
+        follow.setUid1(uid1);
+        follow.setUid2(uid2);
+        return ApiLoader.followUser(follow)
+                .map(new ResponseFunc<Object>());
+    }
+
+    @Override
+    public Observable<Object> unfollow(int uid1, int uid2) {
+        Follow follow = new Follow();
+        follow.setUid1(uid1);
+        follow.setUid2(uid2);
+        return ApiLoader.unfollowUser(follow)
+                .map(new ResponseFunc<Object>());
+    }
+
+    @Override
+    public Observable<Integer> getRelationship(int uid, int uid2) {
+        Follow follow = new Follow();
+        follow.setUid1(uid);
+        follow.setUid2(uid2);
+        return ApiLoader.getRelationship(follow)
                 .map(new ResponseFunc<Integer>());
     }
 }

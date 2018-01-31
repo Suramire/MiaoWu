@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginStart="8dp"
@@ -32,14 +33,30 @@
                 android:orientation="horizontal">
 
 
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/img_icon"
+                <LinearLayout
                     android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:elevation="4dp"
-                    android:src="@mipmap/ic_cat_icon"
-                    app:riv_oval="true"/>
+                    android:orientation="vertical">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/img_icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="4dp"
+                        android:src="@mipmap/ic_cat_icon"
+                        app:riv_oval="true"/>
+
+                    <TextView
+                        android:id="@+id/tv_isread"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TextView"
+                        android:textAlignment="center"
+                        android:textColor="@color/orange"
+                        tools:text="未读"/>
+
+                </LinearLayout>
 
 
                 <TextView

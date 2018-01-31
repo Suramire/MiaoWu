@@ -107,4 +107,6 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
         listview.setAdapter(null);
     }
 
+
+
 }

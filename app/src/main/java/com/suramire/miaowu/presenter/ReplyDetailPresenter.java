@@ -53,7 +53,7 @@ public class ReplyDetailPresenter implements ReplyDetailContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showLongToast("获取评论详情失败:"+e.getMessage());
+                        ToastUtil.showShortToastCenter("获取评论详情失败:"+e.getMessage());
                     }
 
                     @Override

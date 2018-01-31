@@ -19,4 +19,6 @@ public class HomeModel implements HomeContract.Model {
         return ApiLoader.getMultiNotes()
                 .map(new ResponseFunc<List<Multi>>());
     }
+
+
 }

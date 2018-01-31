@@ -1,9 +1,11 @@
 package com.suramire.miaowu.http;
 
 import com.suramire.miaowu.bean.Catinfo;
+import com.suramire.miaowu.bean.Follow;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
+import com.suramire.miaowu.bean.Notification;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.http.base.BaseResponse;
@@ -72,6 +74,23 @@ public class ApiLoader {
     public static Observable<BaseResponse<List<User>>> getUserFollow(User user){
         return observer(getApiService().getUserFollow(GsonUtil.objectToJson(user)));
     }
+
+    public static Observable<BaseResponse<Object>> followUser(Follow follow){
+        return observer(getApiService().followUser(GsonUtil.objectToJson(follow)));
+    }
+
+
+    public static Observable<BaseResponse<Object>> unfollowUser(Follow follow){
+        return observer(getApiService().unfollowUser(GsonUtil.objectToJson(follow)));
+    }
+
+    public static Observable<BaseResponse<Integer>> getRelationship(Follow follow){
+        return observer(getApiService().getRelationship(GsonUtil.objectToJson(follow)));
+    }
+
+
+
+
 
     public static Observable<BaseResponse<List<User>>> getUserFollower(User user){
         return observer(getApiService().getUserFollower(GsonUtil.objectToJson(user)));
@@ -144,6 +163,20 @@ public class ApiLoader {
 
     public static Observable<BaseResponse<List<Multi0>>> listReplyDetail(Reply reply){
         return observer(getApiService().listReplyDetail(GsonUtil.objectToJson(reply)));
+    }
+
+    /*通知相关*/
+
+    public static Observable<BaseResponse<List<Notification>>> listNotifications(User user){
+        return observer(getApiService().listNotifications(GsonUtil.objectToJson(user)));
+    }
+
+    public static Observable<BaseResponse<Integer>> readNotification(Notification notification){
+        return observer(getApiService().readNotification(GsonUtil.objectToJson(notification)));
+    }
+
+    public static Observable<BaseResponse<Integer>> getunreadCount(User user){
+        return observer(getApiService().getunreadCount(GsonUtil.objectToJson(user)));
     }
 
 

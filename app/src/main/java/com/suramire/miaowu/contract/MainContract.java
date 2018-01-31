@@ -6,22 +6,22 @@ import com.suramire.miaowu.base.BaseView;
 import rx.Observable;
 
 /**
- * Created by Suramire on 2017/10/29.
+ * Created by Suramire on 2018/1/31.
  */
 
-public interface HomeContract {
+public interface MainContract {
     interface Model<T> {
-        Observable<T> getData(int start, int end);
 
+        Observable<T> getNoticationCount(int uid);
     }
 
     interface View extends BaseView {
-        void clearData();
 
+        void onGetNotificationCountSuccess(int count);
     }
 
     interface Presenter extends BasePresenter<View> {
-        void getData();
 
+        void getNotificationCount(int uid);
     }
 }

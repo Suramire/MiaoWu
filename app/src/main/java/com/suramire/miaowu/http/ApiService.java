@@ -4,6 +4,7 @@ import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
+import com.suramire.miaowu.bean.Notification;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.http.base.BaseResponse;
@@ -56,6 +57,13 @@ public interface ApiService {
     //获取用户粉丝用户信息
     @GET("getFollowerUser")
     Observable<BaseResponse<List<User>>> getUserFollower(@Query(JSON) String s);
+    @GET("followUser")
+    Observable<BaseResponse<Object>> followUser(@Query(JSON) String s);
+    @GET("unfollowUser")
+    Observable<BaseResponse<Object>> unfollowUser(@Query(JSON) String s);
+    @GET("relationshipUser")
+    Observable<BaseResponse<Integer>> getRelationship(@Query(JSON) String s);
+
     //修改用户头像
     @Multipart
     @POST("getPicUser")
@@ -127,7 +135,19 @@ public interface ApiService {
     @GET("listdetailReply")
     Observable<BaseResponse<List<Multi0>>> listReplyDetail(@Query(JSON) String string);
 
+    /*通知相关*/
 
+    //获取所有未读通知
+    @GET("listunreadNotification")
+    Observable<BaseResponse<List<Notification>>> listNotifications(@Query(JSON) String string);
+
+    //阅读一条通知
+    //返回已读的通知id
+    @GET("readNotification")
+    Observable<BaseResponse<Integer>> readNotification(@Query(JSON) String string);
+    //获取已登录用户的未读通知数
+    @GET("getunreadCountNotification")
+    Observable<BaseResponse<Integer>> getunreadCount(@Query(JSON) String string);
 
 
 }
