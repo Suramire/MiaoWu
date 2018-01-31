@@ -57,6 +57,8 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
     LinearLayout llMycourse;
     @Bind(R.id.ll_login)
     LinearLayout llLogin;
+    @Bind(R.id.ll_verify)
+    LinearLayout llVerify;
     private ProgressDialog mProgressDialog;
     private Integer uid;
 
@@ -86,11 +88,11 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
         setRequireFresh(true);
         mProgressDialog = new ProgressDialog(mContext);
         mProgressDialog.setMessage("请稍候……");
-        if(CommonUtil.isLogined()){
+        if (CommonUtil.isLogined()) {
             llLogin.setVisibility(View.VISIBLE);
             llNotlogin.setVisibility(View.GONE);
             mPresenter.getUserInfo();
-        }else{
+        } else {
             llLogin.setVisibility(View.GONE);
             llNotlogin.setVisibility(View.VISIBLE);
         }
@@ -102,27 +104,27 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
     }
 
 
-    @OnClick({R.id.btn_login, R.id.img_icon, R.id.ll_followlist, R.id.ll_followerlist, R.id.ll_mynote,R.id.ll_note2})
+    @OnClick({R.id.btn_login, R.id.img_icon, R.id.ll_followlist, R.id.ll_followerlist, R.id.ll_mynote, R.id.ll_note2,R.id.ll_verify})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
 //                startActivityForResult(LoginActivity.class,ApiConfig.LOGINREQUESTCODE);
-                getActivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class),ApiConfig.LOGINREQUESTCODE);
+                getActivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class), ApiConfig.LOGINREQUESTCODE);
                 break;
             case R.id.img_icon:
                 break;
             case R.id.ll_followlist:
-                // TODO: 2018/1/30 跳转到关注列表
+                //跳转到关注列表
                 Intent intent1 = new Intent(mContext, FansListActivity.class);
-                intent1.putExtra("index",0);
-                intent1.putExtra("uid",uid);
+                intent1.putExtra("index", 0);
+                intent1.putExtra("uid", uid);
                 startActivity(intent1);
                 break;
             case R.id.ll_followerlist:
-                // TODO: 2018/1/30 跳转到粉丝列表
+                //跳转到粉丝列表
                 Intent intent2 = new Intent(mContext, FansListActivity.class);
-                intent2.putExtra("index",1);
-                intent2.putExtra("uid",uid);
+                intent2.putExtra("index", 1);
+                intent2.putExtra("uid", uid);
                 startActivity(intent2);
                 break;
             case R.id.ll_note2:
@@ -130,6 +132,12 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
                 Intent intent = new Intent(mContext, NoteListActivity.class);
                 intent.putExtra("uid", getUid());
                 startActivity(intent);
+                break;
+            case R.id.ll_verify:
+                // 帖子审核页面
+                Intent intent0 = new Intent(mContext, NoteListActivity.class);
+                intent0.putExtra("uid", -1);
+                startActivity(intent0);
                 break;
         }
     }
@@ -146,6 +154,9 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
         PicassoUtil.show(ApiConfig.BASUSERPICEURL + userinfo.getIcon(), imgIcon);
         tvUsername.setText(userinfo.getNickname());
         uid = userinfo.getId();
+        //登录用户为管理员时显示审核帖子选项
+        llVerify.setVisibility(userinfo.getRole()==1?View.VISIBLE:View.GONE);
+
     }
 
     @Override

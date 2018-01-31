@@ -22,4 +22,10 @@ public class NoteModel implements NoteContract.Model {
         return ApiLoader.getNoteByUser(user)
                 .map(new ResponseFunc<List<Note>>());
     }
+
+    @Override
+    public Observable<List<Note>> getUnverifyNotes() {
+        return ApiLoader.listUnverifyNotes()
+                .map(new ResponseFunc<List<Note>>());
+    }
 }

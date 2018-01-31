@@ -2,6 +2,7 @@ package com.suramire.miaowu.contract;
 
 import com.suramire.miaowu.base.BasePresenter;
 import com.suramire.miaowu.base.BaseView;
+import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 
 import rx.Observable;
@@ -17,6 +18,8 @@ public interface ReplyContract {
         //删除评论
         Observable<T> deleteReply(Reply reply);
 
+        Observable<T> unPassNote(Note note);
+
 
     }
 
@@ -26,12 +29,20 @@ public interface ReplyContract {
         void onAddSuccess();
 
         Reply getReplyInfo();
+        //获取驳回的帖子编号以及驳回理由
+        Note getUnPassInfo();
+
+        void onUnpassSuccess();
+
     }
 
     interface Presenter extends BasePresenter<View> {
         void postReply();
 
         void deleteReply();
+
+        //驳回帖子
+        void unPassNote();
 
 
     }

@@ -13,6 +13,8 @@ public interface NoteContract {
     interface Model<T> {
         Observable<T> getNotesByUser(int uid);
 
+        Observable<T> getUnverifyNotes();
+
     }
 
     interface View extends BaseView {
@@ -23,5 +25,7 @@ public interface NoteContract {
     interface Presenter extends BasePresenter<View> {
 
         void getNotesByUser(int uid);
+
+        void getUnverifyNotes();
     }
 }

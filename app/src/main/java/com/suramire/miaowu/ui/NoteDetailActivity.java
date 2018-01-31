@@ -3,8 +3,10 @@ package com.suramire.miaowu.ui;
 
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,6 +63,8 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     Button button2;
     @Bind(R.id.ll_popup)
     LinearLayout llPopup;
+    @Bind(R.id.ll_bottomadmin)
+    LinearLayout llBottomadmin;
     private ProgressDialog mProgressDialog;
     private int noteId;
     private MultiItemAdapter mAdapter;
@@ -72,7 +76,7 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     private int index;//上次浏览的index
     private int top;//距离顶部距离
     private int userId;
-
+    private int verify;
 
 
     @Override
@@ -88,7 +92,7 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     @Override
     public void initView() {
         mToolbar.setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
-        mToolbar.setLeftImage(R.drawable.ic_arrow_back_white);
+        mToolbar.setLeftImage(R.drawable.ic_arrow_back_blue);
         mToolbar.setLeftOnclickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +101,14 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
         });
         noteId = getIntent().getIntExtra("noteId", 0);
         userId = getIntent().getIntExtra("userId", 0);
+        verify = getIntent().getIntExtra("verify", 0);
+        if (verify == 0) {
+            //显示审核按钮
+            llBottomadmin.setVisibility(View.VISIBLE);
+            llBottom.setVisibility(View.GONE);
+        }
+
+
         //查询帖子信息
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("正在读取帖子信息，请稍候……");
@@ -106,7 +118,6 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
 
         mAdapter = new MultiItemAdapter(this, mObjects);
         mListNotedetail.setAdapter(mAdapter);
-
 
 
         mPresenter.getPictue();
@@ -210,14 +221,21 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     @Override
     public void onGetCatInfoSuccess(Catinfo catinfo) {
         L.e("响应获取帖子内猫咪信息成功后的事件");
-        if(catinfo!=null){
+        if (catinfo != null) {
             mObjects.add(catinfo);
             mAdapter.notifyDataSetChanged();
         }
     }
 
 
-    @OnClick({R.id.btn_comment, R.id.btn_like, R.id.btn_share, R.id.editText3})
+
+    @Override
+    public void onPassSuccess() {
+        ToastUtil.showShortToastCenter("审核通过！");
+    }
+
+
+    @OnClick({R.id.btn_comment, R.id.btn_like, R.id.btn_share, R.id.editText3,R.id.btn_pass, R.id.btn_nopass})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_comment: {
@@ -283,8 +301,56 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
                 }
             }
             break;
+            case R.id.btn_pass:{
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("提示")
+                        .setMessage("确认审核通过该帖子？")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO: 2018/1/31 这里响应审核操作
+                                mPresenter.passNote();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .setCancelable(false)
+                        .show();
+            }
+                break;
+            case R.id.btn_nopass:{
+                // TODO: 2018/1/31 这里响应驳回帖子操作
+                final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
+                final BottomCommentDialogFragment bottomCommentDialogFragment = BottomCommentDialogFragment.newInstance();
+                bottomCommentDialogFragment.setReplyListener(new BottomCommentDialogFragment.OnReplyListener() {
+                    @Override
+                    public void onSucess() {
+                        ToastUtil.showShortToastCenter("驳回操作成功!");
+                        bottomCommentDialogFragment.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(String failureMessage) {
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                    }
+                });
+                Bundle bundle = new Bundle();
+                bundle.putInt("nid", getNoteId());
+                bundle.putInt("unpass",1);
+                bottomCommentDialogFragment.setArguments(bundle);
+                bottomCommentDialogFragment.show(mFragTransaction, "111");
+            }
+                break;
 
         }
+
     }
 
 

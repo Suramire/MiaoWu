@@ -52,14 +52,6 @@
                     android:layout_height="360dp"
                     android:background="@drawable/bg_person">
 
-                    <!--<ImageView-->
-                        <!--android:id="@+id/img_settings"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_alignParentRight="true"-->
-                        <!--android:layout_marginEnd="16dp"-->
-                        <!--android:layout_marginTop="16dp"-->
-                        <!--android:src="@drawable/ic_setting"/>-->
 
 
                     <com.makeramen.roundedimageview.RoundedImageView
@@ -269,24 +261,26 @@
 
                         </LinearLayout>
 
-                        <!--<LinearLayout-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_margin="8dp"-->
-                            <!--android:orientation="horizontal">-->
+                        <LinearLayout
+                            android:id="@+id/ll_verify"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:visibility="gone"
+                            android:orientation="horizontal">
 
-                            <!--<ImageView-->
-                                <!--android:layout_width="48dp"-->
-                                <!--android:layout_height="48dp"-->
-                                <!--app:srcCompat="@drawable/sort1"/>-->
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                app:srcCompat="@mipmap/ic_cat_icon"/>
 
-                            <!--<TextView-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--android:text="@string/my_note"/>-->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/note_verify"/>
 
-                        <!--</LinearLayout>-->
+                        </LinearLayout>
 
                     </LinearLayout>
                 </ScrollView>

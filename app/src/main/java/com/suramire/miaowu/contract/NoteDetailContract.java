@@ -28,6 +28,9 @@ public interface NoteDetailContract {
 
         Observable<T> getUserInfo(int noteId);
 
+        Observable<T> passNote(int noteId);
+
+
     }
 
     interface View extends BaseView {
@@ -45,6 +48,10 @@ public interface NoteDetailContract {
         void onOnGetPictureSuccess(List<String> paths);
 
         void onGetCatInfoSuccess(Catinfo catinfo);
+
+
+        void onPassSuccess();
+
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -60,5 +67,9 @@ public interface NoteDetailContract {
         void getCatInfo();
 
         void getUserInfo();
+
+        //审核通过
+        void passNote();
+
     }
 }

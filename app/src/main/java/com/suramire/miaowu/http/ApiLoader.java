@@ -109,6 +109,19 @@ public class ApiLoader {
         return observer(getApiService().getNoteByUser(GsonUtil.objectToJson(user)));
     }
 
+    public static Observable<BaseResponse<List<Note>>> listUnverifyNotes(){
+        return observer(getApiService().listUnverifyNotes());
+    }
+
+    public static Observable<BaseResponse<Void>> passNote(Note note){
+        return observer(getApiService().passNote(GsonUtil.objectToJson(note)));
+    }
+
+    public static Observable<BaseResponse<Void>> unPassNote(Note note){
+        return observer(getApiService().unPassNote(GsonUtil.objectToJson(note)));
+    }
+
+
     public static Observable<BaseResponse<Note>> getDetailNote(Note note){
         return observer(getApiService().getDetailNote(GsonUtil.objectToJson(note)));
     }

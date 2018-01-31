@@ -12,14 +12,15 @@ public class Note implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
-	private Integer cid;
 	private Integer uid;
 	private String title;
 	private String content;
 	private Timestamp publish;
 	private Integer viewcount;
 	private Integer thumbs;
-	private Integer type;//1=寻找猫进行收养 2=捡到猫等待别人收养
+	private Integer type;
+	private Integer verified;
+	private Integer cid;
 
 	// Constructors
 
@@ -29,18 +30,19 @@ public class Note implements java.io.Serializable {
 
 	/** minimal constructor */
 	public Note(Integer uid, String title, String content, Timestamp publish,
-			Integer type) {
+			Integer type, Integer verified) {
 		this.uid = uid;
 		this.title = title;
 		this.content = content;
 		this.publish = publish;
 		this.type = type;
+		this.verified = verified;
 	}
 
 	/** full constructor */
-	public Note(Integer cid, Integer uid, String title, String content,
-			Timestamp publish, Integer viewcount, Integer thumbs, Integer type) {
-		this.cid = cid;
+	public Note(Integer uid, String title, String content, Timestamp publish,
+			Integer viewcount, Integer thumbs, Integer type, Integer verified,
+			Integer cid) {
 		this.uid = uid;
 		this.title = title;
 		this.content = content;
@@ -48,6 +50,8 @@ public class Note implements java.io.Serializable {
 		this.viewcount = viewcount;
 		this.thumbs = thumbs;
 		this.type = type;
+		this.verified = verified;
+		this.cid = cid;
 	}
 
 	// Property accessors
@@ -58,14 +62,6 @@ public class Note implements java.io.Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Integer getCid() {
-		return this.cid;
-	}
-
-	public void setCid(Integer cid) {
-		this.cid = cid;
 	}
 
 	public Integer getUid() {
@@ -122,6 +118,22 @@ public class Note implements java.io.Serializable {
 
 	public void setType(Integer type) {
 		this.type = type;
+	}
+
+	public Integer getVerified() {
+		return this.verified;
+	}
+
+	public void setVerified(Integer verified) {
+		this.verified = verified;
+	}
+
+	public Integer getCid() {
+		return this.cid;
+	}
+
+	public void setCid(Integer cid) {
+		this.cid = cid;
 	}
 
 }

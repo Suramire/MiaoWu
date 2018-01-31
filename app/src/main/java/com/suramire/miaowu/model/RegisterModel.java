@@ -34,7 +34,7 @@ public class RegisterModel implements RegisterContract.Model {
 //            onValidationListener.onFailure("不能使用手机号格式的用户名，请重新输入");
 //        }else if(rePassword.equals(password)){
             //转成json传送
-            User user = new User(phoneNumber, userName, password);
+            User user = new User(phoneNumber, userName, password,0);
         return ApiLoader.addUser(user)
                 .map(new ResponseFunc<User>());
 

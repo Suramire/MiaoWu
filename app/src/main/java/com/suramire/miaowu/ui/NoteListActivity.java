@@ -67,6 +67,7 @@ public class NoteListActivity extends BaseListActivity<NotePresenter> implements
                                     public void onClick(View v) {
                                         Intent intent = new Intent(mContext, NoteDetailActivity.class);
                                         intent.putExtra("noteId",item.getId());
+                                        intent.putExtra("verify", item.getVerified());
                                         intent.putExtra("userId",item.getUid());
                                         startActivity(intent);
                                     }
@@ -100,7 +101,11 @@ public class NoteListActivity extends BaseListActivity<NotePresenter> implements
         toolbarImageLeft.setImageResource(R.drawable.ic_arrow_back_black);
         toolbarTextCenter.setText("帖子列表");
         int uid = getIntent().getIntExtra("uid", 0);
-        if(uid!=0){
+        if(uid==-1){
+            //管理员显示待审核帖子
+            toolbarTextCenter.setText("待审核帖子列表");
+            mPresenter.getUnverifyNotes();
+        }else if(uid!=0){
             // TODO: 2018/1/27 这里根据用户id获取其发表的帖子
             mPresenter.getNotesByUser(uid);
         }else{

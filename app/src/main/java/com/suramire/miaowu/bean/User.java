@@ -17,6 +17,7 @@ public class User implements java.io.Serializable {
 	private String password;
 	private String icon;
 	private Date birthday;
+	private Integer role;
 
 	// Constructors
 
@@ -25,20 +26,23 @@ public class User implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public User(String phonenumber, String nickname, String password) {
+	public User(String phonenumber, String nickname, String password,
+			Integer role) {
 		this.phonenumber = phonenumber;
 		this.nickname = nickname;
 		this.password = password;
+		this.role = role;
 	}
 
 	/** full constructor */
 	public User(String phonenumber, String nickname, String password,
-			String icon, Date birthday) {
+			String icon, Date birthday, Integer role) {
 		this.phonenumber = phonenumber;
 		this.nickname = nickname;
 		this.password = password;
 		this.icon = icon;
 		this.birthday = birthday;
+		this.role = role;
 	}
 
 	// Property accessors
@@ -89,6 +93,14 @@ public class User implements java.io.Serializable {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+
+	public Integer getRole() {
+		return this.role;
+	}
+
+	public void setRole(Integer role) {
+		this.role = role;
 	}
 
 }

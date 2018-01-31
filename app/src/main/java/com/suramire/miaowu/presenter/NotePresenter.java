@@ -57,4 +57,24 @@ public class NotePresenter implements NoteContract.Presenter {
                 });
         compositeSubscription.add(subscribe);
     }
+
+    @Override
+    public void getUnverifyNotes() {
+        mView.showLoading();
+        Subscription subscribe = noteModel.getUnverifyNotes()
+                .subscribe(new ResponseSubscriber<List<Note>>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("获取帖子列表失败:" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<Note> notes) {
+                        mView.cancelLoading();
+                        mView.onSuccess(notes);
+                    }
+                });
+        compositeSubscription.add(subscribe);
+    }
 }

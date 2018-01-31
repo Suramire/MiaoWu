@@ -152,6 +152,29 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
     }
 
     @Override
+    public void passNote() {
+        mView.showLoading();
+        Subscription subscribe = noteDetailModel.passNote(mView.getNoteId())
+                .subscribe(new ResponseSubscriber<Void>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("发送审核过程出错:"+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        mView.cancelLoading();
+                        mView.onPassSuccess();
+                    }
+                });
+        compositeSubscription.add(subscribe);
+
+    }
+
+
+
+    @Override
     public void attachView(NoteDetailContract.View view) {
         mView = view;
         compositeSubscription = new CompositeSubscription();

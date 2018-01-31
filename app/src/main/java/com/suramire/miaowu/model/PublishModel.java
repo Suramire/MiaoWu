@@ -55,6 +55,7 @@ public class PublishModel implements PublishContract.Model {
         note.setViewcount(0);
         note.setType(type);
         note.setCid(catId);
+        note.setVerified(0);
         return ApiLoader.addNote(note).map(new ResponseFunc<Integer>());
     }
 

@@ -75,6 +75,18 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("listMultiNote")
     Observable<BaseResponse<List<Multi>>> getMultiNotes(@Field(JSON) String string);
+    //列出所有未审核的帖子
+    @GET("listunverifyNote")
+    Observable<BaseResponse<List<Note>>> listUnverifyNotes();
+
+    //审核帖子
+    @GET("passNote")
+    Observable<BaseResponse<Void>> passNote(@Query(JSON) String string);
+    @FormUrlEncoded
+    @POST("unPassNote")
+    Observable<BaseResponse<Void>> unPassNote(@Field(JSON) String string);
+
+
 
     //获取某用户发表的所有帖子信息
     @GET("getByUserNote")
@@ -148,6 +160,7 @@ public interface ApiService {
     //获取已登录用户的未读通知数
     @GET("getunreadCountNotification")
     Observable<BaseResponse<Integer>> getunreadCount(@Query(JSON) String string);
+
 
 
 }

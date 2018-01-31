@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseDialogFragment;
+import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.contract.ReplyContract;
 import com.suramire.miaowu.presenter.ReplyPresenter;
@@ -46,6 +47,7 @@ public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresent
     private int nid, replyuid;
     private OnReplyListener mReplyListener;
     private int floorId;
+    private int unpass;
 
     public OnReplyListener getReplyListener() {
         return mReplyListener;
@@ -58,7 +60,13 @@ public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresent
 
     @OnClick(R.id.button2)
     public void onViewClicked() {
-        mPresenter.postReply();
+        if(unpass==1){
+            // TODO: 2018/1/31 这里生成驳回帖子的通知消息
+            mPresenter.unPassNote();
+        }else{
+            mPresenter.postReply();
+
+        }
     }
 
     public interface OnReplyListener {
@@ -91,6 +99,8 @@ public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresent
         super.onCreate(savedInstanceState);
         mContext = getActivity();
         nid = getArguments().getInt("nid");
+        //是否是驳回帖子操作的标志位
+        unpass = getArguments().getInt("unpass");
         replyuid = getArguments().getInt("replyuid");
         floorId = getArguments().getInt("floorId");
     }
@@ -106,6 +116,10 @@ public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresent
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         mProgressDialog = new ProgressDialog(mContext);
         mProgressDialog.setMessage("请稍候……");
+        if(unpass==1){
+            edittextComment.setHint("请输入驳回帖子的理由");
+            button2.setText("驳回");
+        }
     }
 
     @Override
@@ -151,5 +165,18 @@ public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresent
         reply.setFloorid(floorId);
         reply.setReplycontent(edittextComment.getText().toString().trim());
         return reply;
+    }
+
+    @Override
+    public Note getUnPassInfo() {
+        Note note = new Note();
+        note.setId(nid);
+        note.setContent(edittextComment.getText().toString().trim());
+        return note;
+    }
+
+    @Override
+    public void onUnpassSuccess() {
+        mReplyListener.onSucess();
     }
 }

@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseDialogFragment;
+import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.contract.ReplyContract;
 import com.suramire.miaowu.presenter.ReplyPresenter;
@@ -152,5 +153,15 @@ public class BottomReplyOptionsFragment extends BaseDialogFragment<ReplyPresente
     @Override
     public Reply getReplyInfo() {
         return mReply;
+    }
+
+    @Override
+    public Note getUnPassInfo() {
+        return null;
+    }
+
+    @Override
+    public void onUnpassSuccess() {
+
     }
 }

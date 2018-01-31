@@ -68,4 +68,14 @@ public class NoteDetailModel implements NoteDetailContract.Model {
         user.setId(userId);
         return ApiLoader.getUser(user).map(new ResponseFunc<User>());
     }
+
+    @Override
+    public Observable<Void> passNote(int noteId) {
+        Note note = new Note();
+        note.setId(noteId);
+        return ApiLoader.passNote(note)
+                .map(new ResponseFunc<Void>());
+    }
+
+
 }

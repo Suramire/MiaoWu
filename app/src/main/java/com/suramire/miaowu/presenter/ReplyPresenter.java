@@ -65,6 +65,26 @@ public class ReplyPresenter implements ReplyContract.Presenter {
 
     }
 
+    @Override
+    public void unPassNote() {
+        mView.showLoading();
+        Subscription subscribe = mReplyModel.unPassNote(mView.getUnPassInfo())
+                .subscribe(new ResponseSubscriber<Void>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("发送驳回过程出错:"+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        mView.cancelLoading();
+                        mView.onUnpassSuccess();
+                    }
+                });
+        compositeSubscription.add(subscribe);
+    }
+
 
     @Override
     public void attachView(ReplyContract.View view) {
