@@ -75,9 +75,7 @@ public class NoteListActivity extends BaseListActivity<NotePresenter> implements
                     }
                 });
             }else{
-
                     showEmpty("该用户还没发帖子");
-
             }
 
         }

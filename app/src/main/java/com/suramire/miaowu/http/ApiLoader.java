@@ -88,7 +88,9 @@ public class ApiLoader {
         return observer(getApiService().getRelationship(GsonUtil.objectToJson(follow)));
     }
 
-
+    public static Observable<BaseResponse<User>> updateProfile(User user){
+        return observer(getApiService().updateProfile(GsonUtil.objectToJson(user)));
+    }
 
 
 

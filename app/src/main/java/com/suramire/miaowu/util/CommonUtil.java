@@ -193,6 +193,16 @@ public class CommonUtil {
         return sSimpleDateFormat.format(timestamp);
     }
 
+    /**
+     * 将日期对象转成字符串
+     * @param date
+     * @return
+     */
+    public static String dateToString(Date date){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return simpleDateFormat.format(date);
+    }
+
     public static String getHowLongAgo(Timestamp timestamp){
         long l = getTimeStamp().getTime() - timestamp.getTime();
         long l1 = l / 1000 / 60 / 60 / 24 / 30;

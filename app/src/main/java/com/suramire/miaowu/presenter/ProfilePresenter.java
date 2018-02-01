@@ -22,25 +22,45 @@ public class ProfilePresenter implements ProfileContract.Presenter {
         mProfileModel = new ProfileModel();
     }
 
+//    @Override
+//    public void getProfile(){
+//        mView.showLoading();
+//        Subscription subscribe = mProfileModel.getProfile(mView.getUid())
+//                .subscribe(new ResponseSubscriber<User>() {
+//                    @Override
+//                    public void onError(Throwable throwable) {
+//                        mView.cancelLoading();
+//                        ToastUtil.showShortToastCenter(throwable.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onNext(User user) {
+//                        mView.cancelLoading();
+//                        mView.onSuccess(user);
+//                    }
+//                });
+//        compositeSubscription.add(subscribe);
+//
+//    }
+
     @Override
-    public void getProfile(){
+    public void updateProfile() {
         mView.showLoading();
-        Subscription subscribe = mProfileModel.getProfile(mView.getUid())
+        Subscription subscribe = mProfileModel.updateProfile(mView.getUser())
                 .subscribe(new ResponseSubscriber<User>() {
                     @Override
-                    public void onError(Throwable throwable) {
+                    public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter(throwable.getMessage());
+                        ToastUtil.showShortToastCenter("修改用户信息失败:"+e.getMessage());
                     }
 
                     @Override
                     public void onNext(User user) {
                         mView.cancelLoading();
-                        mView.onSuccess(user);
+                        mView.onUpdateSuccess(user);
                     }
                 });
         compositeSubscription.add(subscribe);
-
     }
 
     @Override

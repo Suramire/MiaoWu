@@ -42,7 +42,7 @@
     <string name="attestation_roll">学籍认证</string>
     <string name="attestation">实名认证</string>
     <string name="modify_password">修改密码</string>
-    <string name="email">绑定邮箱</string>
+    <string name="email">联系方式</string>
     <string name="phone">手机</string>
     <string name="address">地区</string>
     <string name="nickname">昵称</string>
@@ -79,29 +79,6 @@
     <string name="open">打开</string>
     <string name="close">关闭</string>
     <string name="longtext">public class BottomNavigationViewBehavior extends CoordinatorLayout.Behavior {
-
-    public BottomNavigationViewBehavior() {
-
-    }
-
-    public BottomNavigationViewBehavior(Context context, AttributeSet attrs) {
-
-        super(context, attrs);
-    }
-
-    @Override
-    public boolean onLayoutChild(CoordinatorLayout parent, View child, int layoutDirection) {
-
-        ((CoordinatorLayout.LayoutParams) child.getLayoutParams()).topMargin = parent.getMeasuredHeight() - child.getMeasuredHeight();
-        return super.onLayoutChild(parent, child, layoutDirection);
-    }
-
-    @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
-
-        //因为Behavior只对CoordinatorLayout的直接子View生效，因此将依赖关系转移到AppBarLayout
-        return dependency instanceof AppBarLayout;
-    }
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
@@ -173,4 +150,5 @@
     <string name="hint_empty">什么都没有</string>
     <string name="my_notecount">帖子</string>
     <string name="note_verify">帖子审核</string>
+    <string name="hint_login">请先登录</string>
 </resources>

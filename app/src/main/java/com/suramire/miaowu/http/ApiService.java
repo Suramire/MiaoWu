@@ -63,6 +63,10 @@ public interface ApiService {
     Observable<BaseResponse<Object>> unfollowUser(@Query(JSON) String s);
     @GET("relationshipUser")
     Observable<BaseResponse<Integer>> getRelationship(@Query(JSON) String s);
+    //更新用户信息
+    @FormUrlEncoded
+    @POST("updateUser")
+    Observable<BaseResponse<User>> updateProfile(@Field(JSON) String string);
 
     //修改用户头像
     @Multipart

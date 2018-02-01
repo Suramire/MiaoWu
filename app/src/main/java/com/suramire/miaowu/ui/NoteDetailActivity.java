@@ -102,11 +102,7 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
         noteId = getIntent().getIntExtra("noteId", 0);
         userId = getIntent().getIntExtra("userId", 0);
         verify = getIntent().getIntExtra("verify", 0);
-        if (verify == 0) {
-            //显示审核按钮
-            llBottomadmin.setVisibility(View.VISIBLE);
-            llBottom.setVisibility(View.GONE);
-        }
+
 
 
         //查询帖子信息
@@ -201,6 +197,11 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
         mAdapter.notifyDataSetChanged();
         mThumbs = note.getThumbs();
         thumb(mThumbs);
+        if (note.getVerified() == 0) {
+            //显示审核按钮
+            llBottomadmin.setVisibility(View.VISIBLE);
+            llBottom.setVisibility(View.GONE);
+        }
 
 
     }
@@ -213,14 +214,12 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
 
     @Override
     public void onOnGetPictureSuccess(List<String> paths) {
-        L.e("响应获取帖子图片成功的事件");
         mObjects.add(paths);
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onGetCatInfoSuccess(Catinfo catinfo) {
-        L.e("响应获取帖子内猫咪信息成功后的事件");
         if (catinfo != null) {
             mObjects.add(catinfo);
             mAdapter.notifyDataSetChanged();
@@ -243,15 +242,11 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
                     isAtComment = true;
                     //记录上次浏览位置
                     index = mListNotedetail.getFirstVisiblePosition();
-                    L.e("index:" + index);
                     View v = mListNotedetail.getChildAt(0);
                     top = (v == null) ? 0 : v.getTop();
-                    L.e("top:" + top);
                     mListNotedetail.smoothScrollToPosition(2);
                 } else {
                     isAtComment = false;
-                    L.e("index2:" + index);
-                    L.e("top2:" + top);
                     mListNotedetail.setSelectionFromTop(index, top);
                 }
 

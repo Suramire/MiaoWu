@@ -14,6 +14,7 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.MainContract;
 import com.suramire.miaowu.presenter.MainPresenter;
 import com.suramire.miaowu.ui.fragment.HomeFragment;
@@ -23,8 +24,8 @@ import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.util.ToastUtil;
+import com.suramire.miaowu.wiget.LazyViewPager;
 import com.suramire.miaowu.wiget.MyToolbar;
-import com.suramire.miaowu.wiget.MyViewPager;
 
 import java.util.ArrayList;
 
@@ -46,13 +47,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     @Bind(R.id.toolbar)
     MyToolbar toolbar;
     @Bind(R.id.viewpager)
-    MyViewPager viewpager;
+    LazyViewPager viewpager;
     @Bind(R.id.bottom_navigation_bar)
     BottomNavigationBar bottomNavigationBar;
 
     private boolean requireFresh;
     private HomeFragment homeFragment;
     private int currentPosition;
+    private User mUser;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -75,7 +77,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @Override
     public void initView() {
-
+        viewpager.setOffscreenPageLimit(0);
         toolbar.setTitle("首页");
         toolbar.setStyle(MyToolbar.STYLE_RIGHT_AND_TITLE);
         toolbar.setLeftImage(R.drawable.ic_search_black_24dp);
@@ -94,12 +96,40 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     private void initData() {
+        mUser = null;
         final ArrayList<Fragment> fragments = new ArrayList<>();
         if (homeFragment == null) {
             homeFragment = new HomeFragment();
         }
         NotificationFragment notificationFragment = new NotificationFragment();
+        notificationFragment.setListener(new NotificationFragment.onNotificationListener() {
+            @Override
+            public void onChange(int count) {
+                bottomNavigationBar.clearAll();
+                if(count>0){
+                    TextBadgeItem textBadgeItem = new TextBadgeItem().setText(count+"");
+                    bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_black_24dp, "主页"))
+                            .addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知").setBadgeItem(textBadgeItem))
+                            .addItem(new BottomNavigationItem(R.drawable.ic_person_black, "我的"))
+                            .setMode(BottomNavigationBar.MODE_FIXED)
+                            .initialise();
+                }else{
+                    bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_black_24dp, "主页"))
+                            .addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知"))
+                            .addItem(new BottomNavigationItem(R.drawable.ic_person_black, "我的"))
+                            .setMode(BottomNavigationBar.MODE_FIXED)
+                            .initialise();
+                }
+                bottomNavigationBar.selectTab(currentPosition);
+            }
+        });
         PersonFragment personFragment2 = new PersonFragment();
+        personFragment2.setListener(new PersonFragment.OnUserListener() {
+            @Override
+            public void onGetUserSuccess(User user) {
+                mUser = user;
+            }
+        });
         fragments.add(homeFragment);
         fragments.add(notificationFragment);
         fragments.add(personFragment2);
@@ -186,10 +216,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.toolbar_text_right:
-                ToastUtil.showShortToastCenter("响应发帖操作");
+//                ToastUtil.showShortToastCenter("响应发帖操作");
                 switch (currentPosition){
-                    case 2:ToastUtil.showShortToastCenter("这里进入个人详情页");
-                        SPUtils.put("uid",0);break;
+                    case 2:
+//                        ToastUtil.showShortToastCenter("这里进入个人详情页");
+//                        SPUtils.put("uid",0);break;
+                        if(mUser!=null){
+                            Intent intent = new Intent(mContext, ProfileDetailActivity.class);
+                            intent.putExtra("user", mUser);
+                            startActivity(intent);
+                        }
                     case 0:{
                         if (CommonUtil.isLogined()) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);

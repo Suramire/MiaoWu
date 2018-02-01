@@ -18,6 +18,8 @@ public class User implements java.io.Serializable {
 	private String icon;
 	private Date birthday;
 	private Integer role;
+	private Integer contacttype;
+	private String contact;
 
 	// Constructors
 
@@ -27,22 +29,26 @@ public class User implements java.io.Serializable {
 
 	/** minimal constructor */
 	public User(String phonenumber, String nickname, String password,
-			Integer role) {
+			Integer role, Integer contacttype) {
 		this.phonenumber = phonenumber;
 		this.nickname = nickname;
 		this.password = password;
 		this.role = role;
+		this.contacttype = contacttype;
 	}
 
 	/** full constructor */
 	public User(String phonenumber, String nickname, String password,
-			String icon, Date birthday, Integer role) {
+			String icon, Date birthday, Integer role, Integer contacttype,
+			String contact) {
 		this.phonenumber = phonenumber;
 		this.nickname = nickname;
 		this.password = password;
 		this.icon = icon;
 		this.birthday = birthday;
 		this.role = role;
+		this.contacttype = contacttype;
+		this.contact = contact;
 	}
 
 	// Property accessors
@@ -101,6 +107,22 @@ public class User implements java.io.Serializable {
 
 	public void setRole(Integer role) {
 		this.role = role;
+	}
+
+	public Integer getContacttype() {
+		return this.contacttype;
+	}
+
+	public void setContacttype(Integer contacttype) {
+		this.contacttype = contacttype;
+	}
+
+	public String getContact() {
+		return this.contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
 	}
 
 }

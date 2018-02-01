@@ -62,6 +62,15 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
     private ProgressDialog mProgressDialog;
     private Integer uid;
 
+    public interface OnUserListener{
+        void onGetUserSuccess(User user);
+    }
+    private OnUserListener listener;
+
+    public void setListener(OnUserListener listener) {
+        this.listener = listener;
+    }
+
     @Override
     public void showLoading() {
         mProgressDialog.show();
@@ -151,6 +160,9 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
     @Override
     public void onGetInfoSuccess(User userinfo) {
         L.e("成功获取用户信息:" + userinfo);
+        if(listener!=null){
+            listener.onGetUserSuccess(userinfo);
+        }
         PicassoUtil.show(ApiConfig.BASUSERPICEURL + userinfo.getIcon(), imgIcon);
         tvUsername.setText(userinfo.getNickname());
         uid = userinfo.getId();
