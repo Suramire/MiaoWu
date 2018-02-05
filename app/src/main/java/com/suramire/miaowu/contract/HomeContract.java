@@ -11,7 +11,7 @@ import rx.Observable;
 
 public interface HomeContract {
     interface Model<T> {
-        Observable<T> getData(int start, int end);
+        Observable<T> getData(int type,int start, int end);
 
     }
 
@@ -21,7 +21,7 @@ public interface HomeContract {
     }
 
     interface Presenter extends BasePresenter<View> {
-        void getData();
+        void getData(int type);
 
     }
 }

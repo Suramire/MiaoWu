@@ -6,7 +6,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -65,6 +67,8 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     LinearLayout llPopup;
     @Bind(R.id.ll_bottomadmin)
     LinearLayout llBottomadmin;
+    @Bind(R.id.toolbar_text_right)
+    TextView toolbarTextRight;
     private ProgressDialog mProgressDialog;
     private int noteId;
     private MultiItemAdapter mAdapter;
@@ -77,6 +81,7 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     private int top;//距离顶部距离
     private int userId;
     private int verify;
+    private Integer verified;
 
 
     @Override
@@ -93,6 +98,8 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     public void initView() {
         mToolbar.setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
         mToolbar.setLeftImage(R.drawable.ic_arrow_back_blue);
+        mToolbar.setRightText("帖子选项(长按)");
+        registerForContextMenu(toolbarTextRight);
         mToolbar.setLeftOnclickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,7 +109,6 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
         noteId = getIntent().getIntExtra("noteId", 0);
         userId = getIntent().getIntExtra("userId", 0);
         verify = getIntent().getIntExtra("verify", 0);
-
 
 
         //查询帖子信息
@@ -193,6 +199,7 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
 
     @Override
     public void onGetNoteInfoSuccess(Note note) {
+        verified = note.getVerified();
         mObjects.add(note);
         mAdapter.notifyDataSetChanged();
         mThumbs = note.getThumbs();
@@ -210,6 +217,10 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     public void onGetUserInfoSuccess(User user) {
         mObjects.add(user);
         mAdapter.notifyDataSetChanged();
+        //帖子是登录用户所发表时，显示发帖者特有的功能
+        if (user.getId() == CommonUtil.getCurrentUid()) {
+            toolbarTextRight.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -227,14 +238,31 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     }
 
 
-
     @Override
     public void onPassSuccess() {
         ToastUtil.showShortToastCenter("审核通过！");
     }
 
+    @Override
+    public void onLockSuccess() {
+        ToastUtil.showShortToastCenter("锁定成功");
+        finish();
+    }
 
-    @OnClick({R.id.btn_comment, R.id.btn_like, R.id.btn_share, R.id.editText3,R.id.btn_pass, R.id.btn_nopass})
+    @Override
+    public void onUnlockSuccess() {
+        ToastUtil.showShortToastCenter("解锁成功");
+    }
+
+    @Override
+    public void onDeleteSuccess() {
+        ToastUtil.showShortToastCenter("删除成功");
+        finish();
+    }
+
+
+    @OnClick({R.id.btn_comment, R.id.btn_like, R.id.btn_share, R.id.editText3, R.id.btn_pass,
+            R.id.btn_nopass,R.id.toolbar_text_right})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_comment: {
@@ -296,29 +324,18 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
                 }
             }
             break;
-            case R.id.btn_pass:{
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("提示")
-                        .setMessage("确认审核通过该帖子？")
-                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // TODO: 2018/1/31 这里响应审核操作
-                                mPresenter.passNote();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        })
-                        .setCancelable(false)
-                        .show();
+            case R.id.btn_pass: {
+                CommonUtil.showDialog(mContext, "提示", "确认审核通过该帖子？", "确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //响应审核操作
+                        mPresenter.passNote();
+                    }
+                }, "取消", null);
             }
-                break;
-            case R.id.btn_nopass:{
-                // TODO: 2018/1/31 这里响应驳回帖子操作
+            break;
+            case R.id.btn_nopass: {
+                //响应驳回帖子操作
                 final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
                 final BottomCommentDialogFragment bottomCommentDialogFragment = BottomCommentDialogFragment.newInstance();
                 bottomCommentDialogFragment.setReplyListener(new BottomCommentDialogFragment.OnReplyListener() {
@@ -338,15 +355,46 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
                 });
                 Bundle bundle = new Bundle();
                 bundle.putInt("nid", getNoteId());
-                bundle.putInt("unpass",1);
+                bundle.putInt("unpass", 1);
                 bottomCommentDialogFragment.setArguments(bundle);
                 bottomCommentDialogFragment.show(mFragTransaction, "111");
             }
-                break;
+            break;
+            case R.id.toolbar_text_right:{
 
+            }break;
         }
 
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        menu.setHeaderTitle("帖子操作");
+        menu.add(0,1,1,"编辑帖子");
+        if(verified==3){
+            menu.add(0,2,2,"解锁帖子");
 
+        }else{
+            menu.add(0,2,2,"锁定帖子");
+
+        }
+        menu.add(0,3,3,"删除帖子");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case 1:ToastUtil.showShortToastCenter("响应编辑帖子操作");break;
+            case 2:{
+                if(verified==3){
+                    mPresenter.unlockNote();
+                }else{
+                    mPresenter.lockNote();
+                }
+            }break;
+
+            case 3:mPresenter.deleteNote();break;
+        }
+        return true;
+    }
 }

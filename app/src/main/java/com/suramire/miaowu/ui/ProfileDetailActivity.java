@@ -17,6 +17,7 @@ import com.suramire.miaowu.presenter.ProfilePresenter;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.PicassoUtil;
+import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.util.ToastUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 
@@ -55,6 +56,7 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
     EditText edtContact;
     private User mUser;
     private ProgressDialog progressDialog;
+    private int uid;
 
     @Override
     public void showLoading() {
@@ -83,6 +85,7 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
         spinner.setSelection(user.getContacttype());
         edtContact.setText(user.getContact());
         mUser = user;
+        SPUtils.put("hascontact",user.getContacttype());
 
     }
 
@@ -104,12 +107,15 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
         toolbarTextRight.setText("保存");
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setMessage("请稍候……");
-        User user = (User) getIntent().getSerializableExtra("user");
-        if (user != null) {
-            showData(user);
-        }
+        uid = getIntent().getIntExtra("uid", 0);
+        mPresenter.getProfile();
     }
 
+
+    @Override
+    public int getUid() {
+        return uid;
+    }
 
     @Override
     public User getUser() {
@@ -143,7 +149,11 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
                 // TODO: 2018/2/1 日期选择
                 break;
             case R.id.btn_loginout:
-                // TODO: 2018/2/1 注销 上一个页面刷新
+                CommonUtil.loginOut();
+                ToastUtil.showShortToastCenter("注销成功");
+                setResult(ApiConfig.RESULTCODE);
+                finish();
+                // TODO: 2018/2/1 上一个页面刷新
                 break;
             case R.id.tv_modify_password:
                 // TODO: 2018/2/1 修改密码

@@ -8,6 +8,7 @@
                                     app:cardElevation="2dp">
 
     <LinearLayout
+        android:id="@+id/ll_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -40,7 +41,7 @@
             android:layout_margin="16dp"
             android:background="@drawable/btn_blue"
             android:padding="0dp"
-            android:text="关   注"
+            android:text="联系TA"
             android:textColor="@color/white"/>
 
     </LinearLayout>

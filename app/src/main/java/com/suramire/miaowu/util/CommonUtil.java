@@ -3,6 +3,7 @@ package com.suramire.miaowu.util;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.provider.MediaStore.Images;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -232,6 +234,36 @@ public class CommonUtil {
 
     public static int getCurrentUid(){
         return (int) SPUtils.get("uid",0);
+    }
+
+    public static boolean hasContact(){
+        return ((int)SPUtils.get("hascontact",0))!=0;
+    }
+
+    public static void loginOut(){
+        SPUtils.remove("uid");
+        SPUtils.remove("hascontact");
+    }
+
+    /**
+     * 显示对话框
+     * @param context 上下文对象
+     * @param title 标题
+     * @param message 提示文字
+     * @param positiveText 确认项
+     * @param positiveListener 点击监听
+     * @param negativeText 取消项
+     * @param negativeListener 点击监听
+     */
+    public static void showDialog(Context context,String title, String message, String positiveText, DialogInterface.OnClickListener positiveListener,
+                           String negativeText , DialogInterface.OnClickListener negativeListener){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(positiveText, positiveListener)
+                .setNegativeButton(negativeText, negativeListener)
+                .setCancelable(false)
+                .show();
     }
 
 }

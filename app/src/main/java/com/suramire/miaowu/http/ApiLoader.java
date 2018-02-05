@@ -101,10 +101,7 @@ public class ApiLoader {
 
     /*帖子相关*/
 
-    public static Observable<BaseResponse<List<Multi>>> getMultiNotes(){
-        Note note = new Note();
-        note.setId(23);
-        note.setTitle("this is title");
+    public static Observable<BaseResponse<List<Multi>>> getMultiNotes(Note note){
         return observer(getApiService().getMultiNotes(GsonUtil.objectToJson(note)));
     }
     public static Observable<BaseResponse<List<Note>>> getNoteByUser(User user){
@@ -122,6 +119,23 @@ public class ApiLoader {
     public static Observable<BaseResponse<Void>> unPassNote(Note note){
         return observer(getApiService().unPassNote(GsonUtil.objectToJson(note)));
     }
+
+    public static Observable<BaseResponse<Void>> lockNote(Note note){
+        return observer(getApiService().lockNote(GsonUtil.objectToJson(note)));
+    }
+
+    public static Observable<BaseResponse<Void>> unlockNote(Note note){
+        return observer(getApiService().unlockNote(GsonUtil.objectToJson(note)));
+    }
+
+    public static Observable<BaseResponse<Void>> deleteNote(Note note){
+        return observer(getApiService().deleteNote(GsonUtil.objectToJson(note)));
+    }
+
+    public static Observable<BaseResponse<Void>> updateNote(Note note){
+        return observer(getApiService().updateNote(GsonUtil.objectToJson(note)));
+    }
+
 
 
     public static Observable<BaseResponse<Note>> getDetailNote(Note note){

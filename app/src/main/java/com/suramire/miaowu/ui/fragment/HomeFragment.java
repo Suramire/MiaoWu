@@ -1,16 +1,24 @@
 package com.suramire.miaowu.ui.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.classic.adapter.BaseAdapterHelper;
+import com.classic.adapter.CommonAdapter;
 import com.classic.adapter.CommonRecyclerAdapter;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseListFragment;
+import com.suramire.miaowu.base.BaseFragment;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.NotePhoto;
@@ -23,6 +31,9 @@ import com.suramire.miaowu.util.PicassoUtil;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 import static com.suramire.miaowu.util.ApiConfig.BASNOTEPICEURL;
 import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
 
@@ -30,11 +41,22 @@ import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
  * Created by Suramire on 2018/1/25.
  */
 
-public class HomeFragment extends BaseListFragment<HomePresenter> implements HomeContract.View {
+public class HomeFragment extends BaseFragment<HomePresenter> implements HomeContract.View {
+
+    @Bind(R.id.tablayout)
+    TabLayout tablayout;
+    @Bind(R.id.listview)
+    ListView listview;
+    @Bind(R.id.tv_empty)
+    TextView tvEmpty;
+    @Bind(R.id.ll_empty)
+    LinearLayout llEmpty;
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public int bindLayout() {
-        return R.layout.activity_list;
+        return R.layout.activity_list2;
     }
 
     @Override
@@ -49,21 +71,19 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
 
     @Override
     public void onSuccess(Object data) {
-        showList();
         final List<Multi> notes = (List<Multi>) data;
         if (notes.size() > 0) {
 
-            listview.setLayoutManager(new LinearLayoutManager(mContext));
-            listview.setAdapter(new CommonRecyclerAdapter<Multi>(mContext, R.layout.item_home, notes) {
+            listview.setAdapter(new CommonAdapter<Multi>(mContext, R.layout.item_home2, notes) {
 
                 @Override
                 public void onUpdate(final BaseAdapterHelper helper, final Multi item, int position) {
                     final Note note = item.getmNote();
                     NotePhoto notePhoto = item.getmNotePhoto();
                     User user = item.getmUser();
-                    PicassoUtil.show(BASNOTEPICEURL + notePhoto.getName(),(ImageView) helper.getView(R.id.noteimg),
-                            R.drawable.ic_loading,R.drawable.ic_loading_error);
-                    PicassoUtil.show(BASUSERPICEURL + user.getIcon(),(ImageView) helper.getView(R.id.anthorimg));
+                    PicassoUtil.show(BASNOTEPICEURL + notePhoto.getName(), (ImageView) helper.getView(R.id.noteimg),
+                            R.drawable.ic_loading, R.drawable.ic_loading_error);
+                    PicassoUtil.show(BASUSERPICEURL + user.getIcon(), (ImageView) helper.getView(R.id.anthorimg));
                     helper.setOnClickListener(R.id.cardview_item, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -87,16 +107,33 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
 
     @Override
     public void createPresenter() {
-        mPresenter =new HomePresenter();
+        mPresenter = new HomePresenter();
     }
 
     @Override
     public void initView() {
-        showEmpty(null);
+        tvEmpty.setText("没有帖子数据，下拉刷新");
+        listview.setEmptyView(llEmpty);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.getData();
+                mPresenter.getData(tablayout.getSelectedTabPosition()+1);
+            }
+        });
+        tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mPresenter.getData(tab.getPosition()+1);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
 

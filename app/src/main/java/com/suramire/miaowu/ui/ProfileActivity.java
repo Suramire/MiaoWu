@@ -2,8 +2,10 @@ package com.suramire.miaowu.ui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,11 +16,14 @@ import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.presenter.UserPresenter;
 import com.suramire.miaowu.util.ApiConfig;
+import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
 import com.suramire.miaowu.util.ToastUtil;
+import com.suramire.miaowu.wiget.MyToolbar;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -57,9 +62,18 @@ public class ProfileActivity extends BaseActivity<UserPresenter> implements User
     TextView tvTitleReply;
     @Bind(R.id.ll_login)
     LinearLayout llLogin;
+    @Bind(R.id.toolbar_image_left)
+    ImageView toolbarImageLeft;
+    @Bind(R.id.toolbar_text_center)
+    TextView toolbarTextCenter;
+    @Bind(R.id.toolbar_text_right)
+    TextView toolbarTextRight;
+    @Bind(R.id.toolbar)
+    MyToolbar toolbar;
     private ProgressDialog progressDialog;
     private int uid;
     private int type;
+    private Integer userId;
 
     @Override
     public void showLoading() {
@@ -96,6 +110,9 @@ public class ProfileActivity extends BaseActivity<UserPresenter> implements User
 
     @Override
     public void initView() {
+        toolbar.setTitle("个人中心");
+        toolbar.setLeftImage(R.drawable.ic_arrow_back_black);
+        toolbarTextRight.setText("详细设置");
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setMessage("请稍候……");
         //获取其他用户编号
@@ -112,10 +129,19 @@ public class ProfileActivity extends BaseActivity<UserPresenter> implements User
     @Override
     public void onGetInfoSuccess(User userinfo) {
         L.e("成功获取其他用户信息:" + userinfo);
+        userId = userinfo.getId();
         PicassoUtil.show(ApiConfig.BASUSERPICEURL + userinfo.getIcon(), imgIcon);
         tvUsername.setText(userinfo.getNickname());
-        tvTitleNote.setText(userinfo.getNickname() + "的帖子");
-        tvTitleReply.setText(userinfo.getNickname() + "的回复");
+        if (userId == CommonUtil.getCurrentUid()) {
+            tvTitleNote.setText("我的帖子");
+            tvTitleReply.setText("我的回复");
+            toolbarTextRight.setVisibility(View.VISIBLE);
+        } else {
+            tvTitleNote.setText(userinfo.getNickname() + "的帖子");
+            tvTitleReply.setText(userinfo.getNickname() + "的回复");
+            toolbarTextRight.setVisibility(View.GONE);
+        }
+
 
     }
 
@@ -133,22 +159,37 @@ public class ProfileActivity extends BaseActivity<UserPresenter> implements User
     @Override
     public void onGetUserNoteCountSuccess(int count) {
         tvNoteCount.setText(String.valueOf(count));
-        mPresenter.getRelationship();
+        //非自身对象查询好友关系
+        if (userId != CommonUtil.getCurrentUid()) {
+            mPresenter.getRelationship();
+        }
+
     }
 
     @Override
     public void onGetRelationshipSuccess(int type) {
+        imageButton.setVisibility(View.VISIBLE);
         this.type = type;
-        switch (type){
-            case 0:imageButton.setVisibility(View.GONE);break;//未登录用户
-            case 1:imageButton.setImageResource(R.drawable.btn_unfollow);break;//登录用户关注页面用户
-            case 2:imageButton.setImageResource(R.drawable.btn_follow);break;//用户未关注页面用户
-            case 3:imageButton.setImageResource(R.drawable.btn_follow_eachother);;break;//互相关注
+        switch (type) {
+            case 0:
+                imageButton.setVisibility(View.GONE);
+                break;//未登录用户
+            case 1:
+                imageButton.setImageResource(R.drawable.btn_unfollow);
+                break;//登录用户关注页面用户
+            case 2:
+                imageButton.setImageResource(R.drawable.btn_follow);
+                break;//用户未关注页面用户
+            case 3:
+                imageButton.setImageResource(R.drawable.btn_follow_eachother);
+                ;
+                break;//互相关注
         }
     }
 
 
-    @OnClick({R.id.ll_followlist, R.id.ll_followerlist, R.id.ll_note2, R.id.ll_mynote,R.id.imageButton})
+    @OnClick({R.id.ll_followlist, R.id.ll_followerlist, R.id.ll_note2, R.id.ll_mynote,
+            R.id.imageButton, R.id.toolbar_image_left, R.id.toolbar_text_right})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_followlist:
@@ -171,16 +212,30 @@ public class ProfileActivity extends BaseActivity<UserPresenter> implements User
                 intent.putExtra("uid", getUid());
                 startActivity(intent);
                 break;
-            case R.id.imageButton:{
+            case R.id.imageButton: {
                 // TODO: 2018/1/30 这里根据情况进行关注/取消关注操作
-                switch (type){
-                    case 2:mPresenter.follow();break;//关注
+                switch (type) {
+                    case 2:
+                        mPresenter.follow();
+                        break;//关注
                     case 1:
-                    case 3:mPresenter.unfollow();break;//取消关注
+                    case 3:
+                        mPresenter.unfollow();
+                        break;//取消关注
                 }
-            }break;
+            }
+            break;
+            case R.id.toolbar_image_left:
+                finish();
+                break;
+            case R.id.toolbar_text_right:
+                Intent intent3 = new Intent(mContext, ProfileDetailActivity.class);
+                intent3.putExtra("uid", CommonUtil.getCurrentUid());
+                startActivityForResult(intent3,ApiConfig.LOGINREQUESTCODE);
+                break;
         }
     }
+
 
 
 }

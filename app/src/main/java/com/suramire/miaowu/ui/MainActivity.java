@@ -216,42 +216,54 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.toolbar_text_right:
-//                ToastUtil.showShortToastCenter("响应发帖操作");
                 switch (currentPosition){
+                    //个人设置
                     case 2:
-//                        ToastUtil.showShortToastCenter("这里进入个人详情页");
-//                        SPUtils.put("uid",0);break;
-                        if(mUser!=null){
+                        if(mUser!=null) {
                             Intent intent = new Intent(mContext, ProfileDetailActivity.class);
-                            intent.putExtra("user", mUser);
-                            startActivity(intent);
+                            intent.putExtra("uid", CommonUtil.getCurrentUid());
+                            startActivityForResult(intent,ApiConfig.LOGINREQUESTCODE);
                         }
+                        break;
+                    //首页发帖
                     case 0:{
                         if (CommonUtil.isLogined()) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setTitle("请选择帖子类型");
-                            final String[] items = {"我要领养小猫","寻找好心人领养"};
-                            builder.setItems(items, new DialogInterface.OnClickListener() {
+                            if(CommonUtil.hasContact()){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                builder.setTitle("请选择帖子类型");
+                                final String[] items = {"我要领养小猫","寻找好心人领养"};
+                                builder.setItems(items, new DialogInterface.OnClickListener() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(MainActivity.this, NewPublishActivity.class);
-                                    switch (which) {
-                                        case 0: {
-                                            //寻领养不需填写猫咪信息
-                                            intent.putExtra("needcat", false);
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(MainActivity.this, NewPublishActivity.class);
+                                        switch (which) {
+                                            case 0: {
+                                                //寻领养不需填写猫咪信息
+                                                intent.putExtra("needcat", false);
+                                            }
+                                            break;
+                                            case 1: {
+                                                intent.putExtra("needcat", true);
+                                            }
+                                            break;
                                         }
-                                        break;
-                                        case 1: {
-                                            intent.putExtra("needcat", true);
-                                        }
-                                        break;
+                                        startActivity(intent);
+
                                     }
-                                    startActivity(intent);
+                                });
+                                builder.setCancelable(false).show();
+                            }else{
+                                CommonUtil.snackBar(MainActivity.this, "请先填写联系方式", "填写", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(mContext, ProfileDetailActivity.class);
+                                        intent.putExtra("uid", CommonUtil.getCurrentUid());
+                                        startActivityForResult(intent,ApiConfig.LOGINREQUESTCODE);
+                                    }
+                                });
+                            }
 
-                                }
-                            });
-                            builder.setCancelable(false).show();
                         } else {
                             CommonUtil.snackBar(MainActivity.this, "您还未登录", "登录", new View.OnClickListener() {
                                 @Override
@@ -294,6 +306,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
 
 //
-// TODO: 2017/10/29 内存泄漏处理 activity已销毁应停止后台耗时操作
+// TODO: 2017/10/29 内存泄漏处理
 //
 }

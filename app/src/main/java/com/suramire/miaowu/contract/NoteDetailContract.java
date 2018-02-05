@@ -30,6 +30,11 @@ public interface NoteDetailContract {
 
         Observable<T> passNote(int noteId);
 
+        Observable<T> lockNote(int noteId);
+
+        Observable<T> unlockNote(int noteId);
+
+        Observable<T> deleteNote(int noteId);
 
     }
 
@@ -49,8 +54,13 @@ public interface NoteDetailContract {
 
         void onGetCatInfoSuccess(Catinfo catinfo);
 
-
         void onPassSuccess();
+
+        void onLockSuccess();
+
+        void onUnlockSuccess();
+
+        void onDeleteSuccess();
 
     }
 
@@ -70,6 +80,14 @@ public interface NoteDetailContract {
 
         //审核通过
         void passNote();
+        //锁定帖子
+        void lockNote();
+
+        void unlockNote();
+
+        void updateNote();
+
+        void deleteNote();
 
     }
 }

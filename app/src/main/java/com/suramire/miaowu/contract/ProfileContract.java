@@ -12,14 +12,14 @@ import rx.Observable;
 
 public interface ProfileContract {
     interface Model<T> {
-//        Observable<T> getProfile(int id);
+        Observable<T> getProfile(int id);
 
         Observable<T> updateProfile(User user);
     }
 
     interface View extends BaseView {
 
-//        int getUid();
+        int getUid();
 
         User getUser();
 
@@ -30,7 +30,7 @@ public interface ProfileContract {
 
     interface Presenter extends BasePresenter<View> {
         //获取用户信息
-//        void getProfile();
+        void getProfile();
         //更新用户信息
         void updateProfile();
     }

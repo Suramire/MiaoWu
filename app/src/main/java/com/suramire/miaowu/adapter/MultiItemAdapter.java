@@ -1,6 +1,9 @@
 package com.suramire.miaowu.adapter;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,7 @@ import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.ui.HDPictureActivity;
+import com.suramire.miaowu.ui.ProfileActivity;
 import com.suramire.miaowu.ui.ReplyDetailActivity;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
@@ -213,21 +217,53 @@ public class MultiItemAdapter extends BaseAdapter {
             mVH.mButtonFollow = convertView.findViewById(R.id.btn_nt_follow);
             mVH.mImgUser = convertView.findViewById(R.id.img_nt_profile);
             mVH.mTvNickname = convertView.findViewById(R.id.tv_nt_nickname);
+            mVH.llProfile = convertView.findViewById(R.id.ll_profile);
             convertView.setTag(mVH);
         }else{
             mVH = (ViewHolder3) convertView.getTag();
         }
-        User user = (User) mList.get(position);
+        final User user = (User) mList.get(position);
         mVH.mTvNickname.setText(user.getNickname());
+        if(user.getId()==CommonUtil.getCurrentUid()){
+            mVH.mButtonFollow.setVisibility(View.GONE);
+        }else{
+            mVH.mButtonFollow.setVisibility(View.VISIBLE);
+        }
         mVH.mButtonFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "这里响应关注作者事件", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "这里响应查看作者联系方式事件", Toast.LENGTH_SHORT).show();
+                String contacttype = "";
+                switch (user.getContacttype()){
+                    case 1:contacttype="电话";break;
+                    case 2:contacttype="QQ";break;
+                    case 3:contacttype="微信";break;
+                    case 4:contacttype="邮箱";break;
+                }
+                CommonUtil.showDialog(mContext,"联系方式", "联系方式:" + contacttype + " " + user.getContact(), "复制",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                                ClipData mClipData = ClipData.newPlainText("contact", user.getContact());
+                                // 将ClipData内容放到系统剪贴板里。
+                                cm.setPrimaryClip(mClipData);
+                                Toast.makeText(mContext, "复制成功！", Toast.LENGTH_SHORT).show();
+                            }
+                        },"关闭",null);
             }
         });
-        Picasso.with(mContext)
-                .load(BASUSERPICEURL+user.getIcon())
-                .into(mVH.mImgUser);
+        mVH.llProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 进入个人详情页
+                Intent intent = new Intent(mContext, ProfileActivity.class);
+                intent.putExtra("uid",user.getId());
+                mContext.startActivity(intent);
+            }
+        });
+        PicassoUtil.show(BASUSERPICEURL+user.getIcon(),mVH.mImgUser);
+
         return convertView;
     }
 
@@ -302,6 +338,7 @@ public class MultiItemAdapter extends BaseAdapter {
     }
 
     class ViewHolder3 {
+        LinearLayout llProfile;
         ImageView mImgUser;
         TextView mTvNickname;
         Button mButtonFollow;

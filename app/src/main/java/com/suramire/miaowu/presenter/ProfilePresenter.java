@@ -22,26 +22,26 @@ public class ProfilePresenter implements ProfileContract.Presenter {
         mProfileModel = new ProfileModel();
     }
 
-//    @Override
-//    public void getProfile(){
-//        mView.showLoading();
-//        Subscription subscribe = mProfileModel.getProfile(mView.getUid())
-//                .subscribe(new ResponseSubscriber<User>() {
-//                    @Override
-//                    public void onError(Throwable throwable) {
-//                        mView.cancelLoading();
-//                        ToastUtil.showShortToastCenter(throwable.getMessage());
-//                    }
-//
-//                    @Override
-//                    public void onNext(User user) {
-//                        mView.cancelLoading();
-//                        mView.onSuccess(user);
-//                    }
-//                });
-//        compositeSubscription.add(subscribe);
-//
-//    }
+    @Override
+    public void getProfile(){
+        mView.showLoading();
+        Subscription subscribe = mProfileModel.getProfile(mView.getUid())
+                .subscribe(new ResponseSubscriber<User>() {
+                    @Override
+                    public void onError(Throwable throwable) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter(throwable.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(User user) {
+                        mView.cancelLoading();
+                        mView.onSuccess(user);
+                    }
+                });
+        compositeSubscription.add(subscribe);
+
+    }
 
     @Override
     public void updateProfile() {

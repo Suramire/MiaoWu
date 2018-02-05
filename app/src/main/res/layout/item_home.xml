@@ -51,14 +51,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="18sp"/>
 
-            <TextView
-                android:id="@+id/notepublishtime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:text="xx day ago"
-                android:textAlignment="textEnd"/>
+
 
         </LinearLayout>
 
@@ -100,6 +93,14 @@
             android:gravity="end"
             android:orientation="horizontal"
             android:padding="8dp">
+            <TextView
+                android:id="@+id/notepublishtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="xx day ago"
+                android:textAlignment="textStart"/>
 
             <ImageView
                 android:id="@+id/imageView5"

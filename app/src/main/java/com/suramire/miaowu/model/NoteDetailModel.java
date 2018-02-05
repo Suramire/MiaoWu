@@ -77,5 +77,29 @@ public class NoteDetailModel implements NoteDetailContract.Model {
                 .map(new ResponseFunc<Void>());
     }
 
+    @Override
+    public Observable<Void> lockNote(int noteId) {
+        Note note = new Note();
+        note.setId(noteId);
+        return ApiLoader.lockNote(note)
+                .map(new ResponseFunc<Void>());
+    }
+
+    @Override
+    public Observable<Void> unlockNote(int noteId) {
+        Note note = new Note();
+        note.setId(noteId);
+        return ApiLoader.unlockNote(note)
+                .map(new ResponseFunc<Void>());
+    }
+
+    @Override
+    public Observable<Void> deleteNote(int noteId) {
+        Note note = new Note();
+        note.setId(noteId);
+        return ApiLoader.deleteNote(note)
+                .map(new ResponseFunc<Void>());
+    }
+
 
 }

@@ -26,10 +26,10 @@ public class HomePresenter implements HomeContract.Presenter {
     }
 
     @Override
-    public void getData(){
+    public void getData(int type){
         mView.clearData();
         mView.showLoading();
-        Subscription subscribe = mHomeModel.getData(0, 0)
+        Subscription subscribe = mHomeModel.getData(type,0, 0)
                 .subscribe(new Action1<List<Multi>>() {
                     @Override
                     public void call(List<Multi> multis) {

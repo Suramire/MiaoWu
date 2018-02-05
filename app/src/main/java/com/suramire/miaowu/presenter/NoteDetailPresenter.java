@@ -172,6 +172,71 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
 
     }
 
+    @Override
+    public void lockNote() {
+        mView.showLoading();
+        Subscription subscribe = noteDetailModel.lockNote(mView.getNoteId())
+                .subscribe(new ResponseSubscriber<Void>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("锁定帖子时出错:"+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        mView.cancelLoading();
+                        mView.onLockSuccess();
+                    }
+                });
+        compositeSubscription.add(subscribe);
+
+    }
+
+    @Override
+    public void unlockNote() {
+        mView.showLoading();
+        Subscription subscribe = noteDetailModel.unlockNote(mView.getNoteId())
+                .subscribe(new ResponseSubscriber<Void>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("解锁帖子失败:"+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        mView.cancelLoading();
+                        mView.onUnlockSuccess();
+                    }
+                });
+        compositeSubscription.add(subscribe);
+    }
+
+    @Override
+    public void updateNote() {
+
+    }
+
+    @Override
+    public void deleteNote() {
+        mView.showLoading();
+        Subscription subscribe = noteDetailModel.deleteNote(mView.getNoteId())
+                .subscribe(new ResponseSubscriber<Void>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("删除帖子失败:"+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        mView.cancelLoading();
+                        mView.onDeleteSuccess();
+                    }
+                });
+        compositeSubscription.add(subscribe);
+    }
 
 
     @Override

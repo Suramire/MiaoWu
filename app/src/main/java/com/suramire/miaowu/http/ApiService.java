@@ -89,8 +89,19 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("unPassNote")
     Observable<BaseResponse<Void>> unPassNote(@Field(JSON) String string);
-
-
+    //锁定帖子
+    @GET("lockNote")
+    Observable<BaseResponse<Void>> lockNote(@Query(JSON) String s);
+    //解锁帖子
+    @GET("unlockNote")
+    Observable<BaseResponse<Void>> unlockNote(@Query(JSON) String s);
+    //删除帖子
+    @GET("deleteNote")
+    Observable<BaseResponse<Void>> deleteNote(@Query(JSON) String string);
+    //更新帖子
+    @FormUrlEncoded
+    @POST("updateNote")
+    Observable<BaseResponse<Void>> updateNote(@Field(JSON) String string);
 
     //获取某用户发表的所有帖子信息
     @GET("getByUserNote")

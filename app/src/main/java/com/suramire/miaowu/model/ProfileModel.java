@@ -13,14 +13,14 @@ import rx.Observable;
  */
 
 public class ProfileModel implements ProfileContract.Model {
-//    @Override
-//    public Observable<User> getProfile(int id) {
-//        int uid = (int) SPUtils.get("uid", 0);
-//        User tUser = new User();
-//        tUser.setId(uid);
-//        return ApiLoader.getUser(tUser)
-//                .map(new ResponseFunc<User>());
-//    }
+    @Override
+    public Observable<User> getProfile(int id) {
+        int uid = (int) SPUtils.get("uid", 0);
+        User tUser = new User();
+        tUser.setId(uid);
+        return ApiLoader.getUser(tUser)
+                .map(new ResponseFunc<User>());
+    }
 
     @Override
     public Observable<User> updateProfile(User user) {

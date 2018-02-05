@@ -110,6 +110,7 @@ public class LoginActivity extends BaseSwipeActivity<LoginPresenter> implements 
         User user = (User) data;
         //保存用户登录信息
         SPUtils.put("uid", user.getId());
+        SPUtils.put("hascontact",user.getContacttype());
         SPUtils.put("nickname", user.getNickname());
         SPUtils.put("password", user.getPassword());
         SPUtils.put("autologin",1);
