@@ -49,7 +49,8 @@ public class LoginPresenter implements LoginContract.Presenter {
                                    @Override
                                    public void call(Throwable throwable) {
                                        mView.cancelLoading();
-                                       ToastUtil.showShortToastCenter(throwable.getMessage());
+                                       ToastUtil.
+                                       showShortToastCenter(throwable.getMessage());
                                    }
                                }
                     );

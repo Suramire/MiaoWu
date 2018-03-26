@@ -305,17 +305,6 @@ public class MultiItemAdapter extends BaseAdapter {
             mVH.tvInsecticide.setText("未知");
         }
 
-        Integer contacttype = catinfo.getContacttype();
-        String result = null;
-        switch (contacttype){
-            case 0:result = "未知";break;
-            case 1:result = "电话";break;
-            case 2:result = "QQ";break;
-            case 3:result = "微信";break;
-            case 4:result = "邮箱";break;
-        }
-        mVH.tvContacttype.setText(result);
-        mVH.tvContact.setText(catinfo.getContact());
         mVH.tvConditions.setText(catinfo.getConditions());
         return convertView;
     }
@@ -361,8 +350,6 @@ public class MultiItemAdapter extends BaseAdapter {
             tvNeutering = (TextView) view.findViewById(R.id.tv_neutering);
             tvInsecticide = (TextView) view.findViewById(R.id.tv_insecticide);
             tvType = (TextView) view.findViewById(R.id.tv_type);
-            tvContacttype = (TextView) view.findViewById(R.id.tv_contacttype);
-            tvContact = (TextView) view.findViewById(R.id.tv_contact);
             tvConditions = (TextView) view.findViewById(R.id.tv_conditions);
         }
     }

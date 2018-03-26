@@ -288,6 +288,7 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
             case R.id.btn_share:
                 ToastUtil.showShortToastCenter("响应分享操作");
                 break;
+                //底部评论框
             case R.id.editText3: {
                 if (!CommonUtil.isLogined()) {
                     Snackbar.make(findViewById(android.R.id.content), "您还未登录", Snackbar.LENGTH_INDEFINITE)
@@ -303,8 +304,11 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
                     bottomCommentDialogFragment.setReplyListener(new BottomCommentDialogFragment.OnReplyListener() {
                         @Override
                         public void onSucess() {
-                            Toast.makeText(mContext, "发表成功！", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(mContext, "发表成功！", Toast.LENGTH_SHORT).show();
                             bottomCommentDialogFragment.dismiss();
+                            mObjects.clear();//清除旧数据
+                            mPresenter.getPictue();//从新获取帖子数据
+
                         }
 
                         @Override

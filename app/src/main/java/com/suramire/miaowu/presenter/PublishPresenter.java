@@ -24,26 +24,34 @@ public class PublishPresenter implements PublishContract.Presenter {
 
     @Override
     public void publishNote(final int type, int catId) {
-        Subscription subscribe = mPublishModel.publicNoteInfo(mView.getNoteInfo(), type, catId)
+        mView.showLoading();//开始操作前 显示界面的加载动画
+        //subcribe 被观察者 ResponseSubscriber匿名内部类 观察者
+        Subscription subscribe = mPublishModel.
+                publishNoteInfo(mView.getNoteInfo(), type, catId)
                 .subscribe(new ResponseSubscriber<Integer>() {
                     @Override
                     public void onError(Throwable throwable) {
-                        mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("发布帖子信息失败:"+throwable.getMessage());
-
+                        //回调 出现异常时
+                        mView.cancelLoading();//结束界面里的加载动画
+                        ToastUtil.
+                        showShortToastCenter("发布帖子信息失败:"+
+                                throwable.getMessage());
                     }
-
                     @Override
                     public void onNext(Integer integer) {
-                        if(mView.getPicturePaths()!=null && mView.getPicturePaths().size()>0 ){
+                        //回调 正常执行时
+                        //帖子有配图的情况 发送配图文件至服务器
+                        if(mView.getPicturePaths()!=null
+                                && mView.getPicturePaths().size()>0 ){
                             publishPicturePaths(integer);
                         }else {
+                            //无配图情况直接调用界面中的成功方法
                             mView.onSuccess(null);
                         }
                     }
                 });
-
-        compositeSubscription.add(subscribe);
+        compositeSubscription.add(subscribe);/*为了方便在本Presenter生命
+                                        周期结束时取消订阅Subcription对象*/
     }
 
     @Override

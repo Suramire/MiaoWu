@@ -26,8 +26,6 @@ public interface LoginContract {
 
         void onGetInfoSuccess(User userinfo);
 
-
-
     }
 
     interface Presenter extends BasePresenter<View> {

@@ -38,7 +38,7 @@ public interface RegisterContract {
     }
 
     interface Presenter extends BasePresenter<View> {
-        void validatePhoneNumber(final OnGetResultListener onPhoneValidListener);
+        void validatePhoneNumber();
 
         void validateInformation();
     }

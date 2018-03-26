@@ -59,6 +59,7 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
     LinearLayout llLogin;
     @Bind(R.id.ll_verify)
     LinearLayout llVerify;
+
     private ProgressDialog mProgressDialog;
     private Integer uid;
 
@@ -168,6 +169,8 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
         uid = userinfo.getId();
         //登录用户为管理员时显示审核帖子选项
         llVerify.setVisibility(userinfo.getRole()==1?View.VISIBLE:View.GONE);
+
+
 
     }
 

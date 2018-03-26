@@ -32,10 +32,6 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
     Spinner spNeutering;
     @Bind(R.id.sp_insecticide)
     Spinner spInsecticide;
-    @Bind(R.id.sp_contact)
-    Spinner spContact;
-    @Bind(R.id.edt_contact)
-    EditText edtContact;
     @Bind(R.id.edt_type)
     EditText edtType;
     @Bind(R.id.edt_conditions)
@@ -63,7 +59,6 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
             public void onClick(View v) {
                 //领养要求不能为空
                 String conditions = edtConditions.getText().toString().trim();
-                String contact = edtContact.getText().toString().trim();
                 String type = edtType.getText().toString().trim();
                 if (TextUtils.isEmpty(conditions)) {
                     CommonUtil.snackBar(ExtendedInformationActivity.this, "领养条件不能为空", "去完善", new View.OnClickListener() {
@@ -72,27 +67,13 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
                         }
                     });
 
-                } else if (spContact.getSelectedItemPosition() == 0) {
-                    CommonUtil.snackBar(ExtendedInformationActivity.this, "请选择联系方式", "去完善", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                        }
-                    });
-                } else if (TextUtils.isEmpty(contact)) {
-                    CommonUtil.snackBar(ExtendedInformationActivity.this, "请填写联系方式", "去完善", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                        }
-                    });
-                } else {
+                }  else {
                     Catinfo catinfo = new Catinfo();
                     catinfo.setAge(spAge.getSelectedItemPosition());
                     catinfo.setSex(spSex.getSelectedItemPosition());
-                    catinfo.setContacttype(spContact.getSelectedItemPosition());
                     catinfo.setNeutering(spNeutering.getSelectedItemPosition());
                     catinfo.setInsecticide(spInsecticide.getSelectedItemPosition());
                     catinfo.setType(type);
-                    catinfo.setContact(contact);
                     catinfo.setConditions(conditions);
                     Intent intent = new Intent();
                     intent.putExtra("catinfo",catinfo);
@@ -116,7 +97,6 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
         if (item.getItemId() == 0x11) {
 //          领养要求不能为空
             String conditions = edtConditions.getText().toString().trim();
-            String contact = edtContact.getText().toString().trim();
             String type = edtType.getText().toString().trim();
             if (TextUtils.isEmpty(conditions)) {
                 CommonUtil.snackBar(this, "领养条件不能为空", "去完善", new View.OnClickListener() {
@@ -125,27 +105,13 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
                     }
                 });
 
-            } else if (spContact.getSelectedItemPosition() == 0) {
-                CommonUtil.snackBar(this, "请选择联系方式", "去完善", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                    }
-                });
-            } else if (TextUtils.isEmpty(contact)) {
-                CommonUtil.snackBar(this, "请填写联系方式", "去完善", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                    }
-                });
             } else {
                 Catinfo catinfo = new Catinfo();
                 catinfo.setAge(spAge.getSelectedItemPosition());
                 catinfo.setSex(spSex.getSelectedItemPosition());
-                catinfo.setContacttype(spContact.getSelectedItemPosition());
                 catinfo.setNeutering(spNeutering.getSelectedItemPosition());
                 catinfo.setInsecticide(spInsecticide.getSelectedItemPosition());
                 catinfo.setType(type);
-                catinfo.setContact(contact);
                 catinfo.setConditions(conditions);
                 Intent intent = new Intent();
                 intent.putExtra("catinfo",catinfo);

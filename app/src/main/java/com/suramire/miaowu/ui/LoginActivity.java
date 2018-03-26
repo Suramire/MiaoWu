@@ -112,11 +112,10 @@ public class LoginActivity extends BaseSwipeActivity<LoginPresenter> implements 
         SPUtils.put("uid", user.getId());
         SPUtils.put("hascontact",user.getContacttype());
         SPUtils.put("nickname", user.getNickname());
-        SPUtils.put("password", user.getPassword());
+        SPUtils.put("password", user.getPassword());//本地MD5加密
         SPUtils.put("autologin",1);
         setResult(ApiConfig.RESULTCODE);
         finish();
-
     }
 
     @Override

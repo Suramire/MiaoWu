@@ -83,6 +83,10 @@ public interface ApiService {
     @GET("listunverifyNote")
     Observable<BaseResponse<List<Note>>> listUnverifyNotes();
 
+    //搜索帖子
+    @FormUrlEncoded
+    @POST("searchNote")
+    Observable<BaseResponse<List<Note>>> getSearchNotes(@Field(JSON) String string);
     //审核帖子
     @GET("passNote")
     Observable<BaseResponse<Void>> passNote(@Query(JSON) String string);

@@ -139,34 +139,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-
-            android:paddingLeft="8dp"
-            android:text="@string/contact"
-            android:textAlignment="textStart"/>
-
-        <TextView
-            android:id="@+id/tv_contacttype"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            />
-
-        <TextView
-            android:id="@+id/tv_contact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="8dp">
 

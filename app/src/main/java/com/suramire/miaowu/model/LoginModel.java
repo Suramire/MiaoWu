@@ -15,10 +15,10 @@ import rx.Observable;
 
 public class LoginModel implements LoginContract.Model {
     @Override
-    public Observable<User> doLogin(final String username, final String password) {
+    public Observable<User> doLogin(final String username,
+                                    final String password) {
         //信息完整性验证
         if(TextUtils.isEmpty(username)|| TextUtils.isEmpty(password)){
-//            onLoginListener.onFailure("请将帐号信息补充完整");
             return null;
         }else{
             User user = new User();

@@ -148,37 +148,7 @@ public class RegisterActivity extends BaseSwipeActivity<RegisterPresenter> imple
         switch (view.getId()) {
 // step0
             case R.id.btn_register_next:{
-                mPresenter.validatePhoneNumber(new OnGetResultListener() {
-                    @Override
-                    public void onSuccess(Object object) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                SMSSDK.getVerificationCode("86", getPhoneNumber());
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(final String failtureMessage) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ToastUtil.showShortToastCenter(failtureMessage);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onError(final String errorMessage) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ToastUtil.showShortToastCenter(errorMessage);
-                            }
-                        });
-                    }
-                });
+                mPresenter.validatePhoneNumber();
 
             }break;
 //step1
@@ -263,6 +233,8 @@ public class RegisterActivity extends BaseSwipeActivity<RegisterPresenter> imple
     @Override
     public void onPhoneSuccess() {
         // TODO: 2018/1/24 手机验证成功后的处理
+        SMSSDK.getVerificationCode("86", getPhoneNumber());
+        goStep1();
     }
 
     @Override

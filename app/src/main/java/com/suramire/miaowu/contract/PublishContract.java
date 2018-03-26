@@ -15,7 +15,6 @@ import rx.Observable;
 
 public interface PublishContract {
     interface Model<T> {
-
         /**
          * 发送猫咪信息
          * @param catinfo
@@ -30,7 +29,7 @@ public interface PublishContract {
          * @param catId 猫咪编号
          * @return
          */
-        Observable<T> publicNoteInfo(Note note,int type,int catId);
+        Observable<T> publishNoteInfo(Note note, int type, int catId);
 
         /**
          * 上传帖子图片文件名
@@ -45,21 +44,20 @@ public interface PublishContract {
 
     interface View extends BaseView {
 
-
+        //返回新帖子信息
         Note getNoteInfo();
-
+        //返回猫咪信息
         Catinfo getCatinfo();
-
         //帖子配图的路径
         List<String> getPicturePaths();
     }
 
     interface Presenter extends BasePresenter<View> {
-
+        //发送帖子信息
         void publishNote(int type,int catId);
-
+        //发送猫咪信息
         void publishCat();
-
+        //发送帖子配图文件序号名
         void publishPicturePaths(int nid);
     }
 }

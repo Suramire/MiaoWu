@@ -28,7 +28,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
      * 验证手机号是否可以注册
      */
     @Override
-    public void validatePhoneNumber(final OnGetResultListener onPhoneValidListener){
+    public void validatePhoneNumber(){
         mView.showLoading();
         Subscription subscribe = mRegisterModel.validatePhoneNumber(mView.getPhoneNumber())
                 .subscribe(new ResponseSubscriber<User>() {

@@ -53,7 +53,10 @@
             android:id="@+id/btn_register_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="下一步"/>
+            android:layout_margin="8dp"
+            android:background="@drawable/btn_blue"
+            android:text="下一步"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
@@ -87,7 +90,10 @@
             android:id="@+id/btn_register_next_validation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="下一步"/>
+            android:layout_margin="8dp"
+            android:background="@drawable/btn_blue"
+            android:textColor="@color/white"
+            android:text="下一步" />
 
         <TextView
             android:layout_width="match_parent"
@@ -164,7 +170,11 @@
             android:id="@+id/btn_register_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/btn_blue"
+            android:textColor="@color/white"
             android:text="注册"/>
+
 
     </LinearLayout>
 

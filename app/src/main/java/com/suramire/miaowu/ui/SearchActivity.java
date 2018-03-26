@@ -1,5 +1,6 @@
 package com.suramire.miaowu.ui;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.ui.fragment.SearchResultFragment;
+import com.suramire.miaowu.util.L;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,15 +73,41 @@ public class SearchActivity extends BaseSwipeActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
                 | WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
-        final String[] tabTitles = {"帖子","回复","用户"};
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                setupResult(query);
+                L.e("onQueryTextSubmit");
+
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                L.e("onQueryTextChange");
+                return false;
+            }
+        });
+
+
+    }
+
+    private void setupResult(String query) {
+        final String[] tabTitles = {"帖子","回复","用户"};
         final List<Fragment> fragments = new ArrayList<>();
+        Bundle bundle = new Bundle();
+        bundle.putString("query",query);
         SearchResultFragment searchResultFragment = new SearchResultFragment();
-        SearchResultFragment searchResultFragment2 = new SearchResultFragment();
-        SearchResultFragment searchResultFragment3 = new SearchResultFragment();
+        searchResultFragment.setArguments(bundle);
+//        SearchResultFragment searchResultFragment2 = new SearchResultFragment();
+//        searchResultFragment2.setArguments(bundle);
+//        SearchResultFragment searchResultFragment3 = new SearchResultFragment();
+//        searchResultFragment3.setArguments(bundle);
         fragments.add(searchResultFragment);
-        fragments.add(searchResultFragment2);
-        fragments.add(searchResultFragment3);
+//        fragments.add(searchResultFragment2);
+//        fragments.add(searchResultFragment3);
         viewpager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {

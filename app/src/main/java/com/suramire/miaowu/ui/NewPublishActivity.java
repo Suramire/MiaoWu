@@ -250,8 +250,9 @@ public class NewPublishActivity extends BaseSwipeActivity<PublishPresenter> impl
 
     @Override
     public void onSuccess(Object data) {
-        isPublish = true;
-        Snackbar.make(findViewById(android.R.id.content), "帖子发布成功，请等待审核", Snackbar.LENGTH_INDEFINITE)
+        isPublish = true;//发帖标志位，防止重复发帖 true=已经发布过了
+        Snackbar.make(findViewById(android.R.id.content),
+                "帖子发布成功，请等待审核", Snackbar.LENGTH_INDEFINITE)
                 .setAction("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -283,7 +284,6 @@ public class NewPublishActivity extends BaseSwipeActivity<PublishPresenter> impl
                         .setPhotoCount(9)
                         .setGridColumnCount(4)
                         .start(this);
-
             }
             break;
         }
