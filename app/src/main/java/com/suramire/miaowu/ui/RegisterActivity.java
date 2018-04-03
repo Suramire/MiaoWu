@@ -3,6 +3,7 @@ package com.suramire.miaowu.ui;
 import android.app.ProgressDialog;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -148,20 +149,42 @@ public class RegisterActivity extends BaseSwipeActivity<RegisterPresenter> imple
         switch (view.getId()) {
 // step0
             case R.id.btn_register_next:{
-                mPresenter.validatePhoneNumber();
+                //输入验证
+                if(TextUtils.isEmpty(getPhoneNumber())){
+                    ToastUtil.showShortToastCenter("请输入手机号码");
+                }else if(!CommonUtil.isMobileNumber(getPhoneNumber())){
+                    ToastUtil.showShortToastCenter("请输入正确的手机号码");
+                }else{
+                    mPresenter.validatePhoneNumber();
+                }
 
             }break;
 //step1
 
             case R.id.btn_register_next_validation: {
                 String validationNumber = mEditTextValidation.getText().toString().trim();
-                SMSSDK.submitVerificationCode("86",getPhoneNumber(),validationNumber);
+                if(TextUtils.isEmpty(validationNumber)){
+                    ToastUtil.showShortToastCenter("请输入验证码");
+                }else if(validationNumber.length()!=4){
+                    ToastUtil.showShortToastCenter("请输入4位验证码");
+                }else{
+                    SMSSDK.submitVerificationCode("86",getPhoneNumber(),validationNumber);
+                }
             }break;
 
 
 //step2
             case R.id.btn_register_confirm:{
-                mPresenter.validateInformation();
+                if(TextUtils.isEmpty(getUserName())
+                        ||TextUtils.isEmpty(getPassword())
+                        ||TextUtils.isEmpty(getRePassword())){
+                    ToastUtil.showShortToastCenter("请将用户信息填写完整");
+                }else if(!getRePassword().equals(getPassword())){
+                    ToastUtil.showShortToastCenter("两次输入的密码不一致，请重新输入");
+                } else{
+                    mPresenter.validateInformation();
+
+                }
             }break;
 
             case R.id.editText_name:{
@@ -225,7 +248,7 @@ public class RegisterActivity extends BaseSwipeActivity<RegisterPresenter> imple
 
     @Override
     public void onSuccess(Object data) {
-        ToastUtil.showShortToastCenter("注册成功，请前往登录！");
+        ToastUtil.showShortToastCenter("注册成功！请前往登录");
         finish();
     }
 

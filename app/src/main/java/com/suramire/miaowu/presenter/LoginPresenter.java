@@ -39,18 +39,16 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
         if(!TextUtils.isEmpty(sName) && !TextUtils.isEmpty(sPassword)){
             Subscription subscribe = mLoginModel.doLogin(sName, sPassword)
-                    .subscribe(new Action1<User>() {
+                    .subscribe(new ResponseSubscriber<User>() {
                                    @Override
-                                   public void call(User user) {
+                                   public void onError(Throwable e) {
+                                       mView.cancelLoading();
+                                       ToastUtil.showShortToastCenter(e.getMessage());
+                                   }
+                                   @Override
+                                   public void onNext(User user) {
                                        mView.cancelLoading();
                                        mView.onSuccess(user);
-                                   }
-                               }, new Action1<Throwable>() {
-                                   @Override
-                                   public void call(Throwable throwable) {
-                                       mView.cancelLoading();
-                                       ToastUtil.
-                                       showShortToastCenter(throwable.getMessage());
                                    }
                                }
                     );

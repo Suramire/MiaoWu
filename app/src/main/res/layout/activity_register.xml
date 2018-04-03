@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical">
+              >
 
+
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_login2"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
    <include
        layout="@layout/toolbar"
        android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:background="@android:color/transparent"/>
+       android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/ll_phone"
@@ -24,12 +37,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="+86"
-                android:textSize="20sp"/>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:text="+86"-->
+                <!--android:textSize="20sp"/>-->
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tl_phone"
@@ -53,7 +66,7 @@
             android:id="@+id/btn_register_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="16dp"
             android:background="@drawable/btn_blue"
             android:text="下一步"
             android:textColor="@color/white" />
@@ -90,7 +103,7 @@
             android:id="@+id/btn_register_next_validation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="16dp"
             android:background="@drawable/btn_blue"
             android:textColor="@color/white"
             android:text="下一步" />
@@ -99,6 +112,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:text="收不到验证码？"
             android:textAlignment="viewEnd"
             android:textSize="16sp"/>
@@ -170,12 +184,13 @@
             android:id="@+id/btn_register_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="16dp"
             android:background="@drawable/btn_blue"
             android:textColor="@color/white"
             android:text="注册"/>
 
 
     </LinearLayout>
+    </LinearLayout>
 
-</LinearLayout>
+</FrameLayout>

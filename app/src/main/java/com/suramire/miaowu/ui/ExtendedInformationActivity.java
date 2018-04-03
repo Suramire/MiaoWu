@@ -105,7 +105,7 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
                     }
                 });
 
-            } else {
+            }else {
                 Catinfo catinfo = new Catinfo();
                 catinfo.setAge(spAge.getSelectedItemPosition());
                 catinfo.setSex(spSex.getSelectedItemPosition());

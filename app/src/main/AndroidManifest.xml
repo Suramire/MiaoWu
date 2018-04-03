@@ -41,18 +41,19 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!--第三方图片选择-->
+        <activity android:name="me.iwf.photopicker.PhotoPickerActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name="me.iwf.photopicker.PhotoPagerActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <!---->
+        <activity android:name=".ui.SearchActivity"/>
         <activity android:name=".ui.RegisterActivity"/>
         <activity android:name=".ui.LoginActivity"/>
         <activity android:name=".ui.NoteDetailActivity"/>
         <activity android:name=".ui.NewPublishActivity"/>
         <activity android:name=".ui.ReplyDetailActivity"/>
         <activity android:name=".ui.ExtendedInformationActivity"/>
-        <activity android:name="me.iwf.photopicker.PhotoPickerActivity"
-            android:theme="@style/AppTheme"/>
-
-        <activity android:name="me.iwf.photopicker.PhotoPagerActivity"
-                  android:theme="@style/AppTheme"/>
-        <activity android:name=".ui.SearchActivity"/>
         <activity android:name=".ui.NoteListActivity"/>
         <activity android:name=".ui.HDPictureActivity"/>
         <activity android:name=".ui.FansListActivity"/>

@@ -105,6 +105,7 @@ public class FansListActivity extends BaseListActivity<FansPresenter> implements
 
             }
         });
+        //根据传过来的下标使选择对应标签页
         tablayout.getTabAt(index).select();
         switch (currentPosition){
             //若通过关注进入则强制刷新列表

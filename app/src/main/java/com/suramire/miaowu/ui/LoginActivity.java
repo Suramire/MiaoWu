@@ -15,6 +15,7 @@ import com.suramire.miaowu.presenter.LoginPresenter;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.util.ToastUtil;
+import com.suramire.miaowu.wiget.MyToolbar;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -25,7 +26,7 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseSwipeActivity<LoginPresenter> implements LoginContract.View {
     @Bind(R.id.toolbar)
-    Toolbar mToolbar3;
+    MyToolbar mToolbar3;
     @Bind(R.id.edt_name)
     EditText mEdtName;
     @Bind(R.id.tl_username)
@@ -72,11 +73,13 @@ public class LoginActivity extends BaseSwipeActivity<LoginPresenter> implements 
     public void initView() {
         setSupportActionBar(mToolbar3);
         getSupportActionBar().setTitle("登录" + getResources().getString(R.string.app_name));
+        mToolbar3.setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
+        mToolbar3.setLeftImage(R.drawable.ic_arrow_back_black);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("请稍候……");
     }
 
-    @OnClick({R.id.edt_name, R.id.edt_password, R.id.btn_login, R.id.tv_reg, R.id.tv_forget})
+    @OnClick({R.id.edt_name, R.id.edt_password, R.id.btn_login, R.id.tv_reg, R.id.tv_forget,R.id.toolbar_image_left})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.edt_name:
@@ -90,6 +93,9 @@ public class LoginActivity extends BaseSwipeActivity<LoginPresenter> implements 
                 startActivity(RegisterActivity.class);
                 break;
             case R.id.tv_forget:
+                break;
+            case R.id.toolbar_image_left:
+                finish();
                 break;
         }
     }

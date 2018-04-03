@@ -213,8 +213,9 @@
                             android:id="@+id/edt_phone"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-
+                            android:textColor="@color/verydarkgray"
                             android:layout_alignParentTop="true"
+                            android:enabled="false"
                             android:layout_marginStart="180dp"
                             android:background="@null"
                             tools:text="12345678"

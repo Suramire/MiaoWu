@@ -46,7 +46,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="190dp"
                         android:layout_alignParentBottom="true"
-                        android:layout_alignParentStart="true"
                         android:background="@android:color/white"
                         android:orientation="vertical">
 
@@ -54,20 +53,25 @@
                             android:id="@+id/tv_username"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_above="@+id/tv_signal"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginBottom="16dp"
                             android:layout_marginTop="42dp"
                             android:text="@string/my_name"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:textSize="22sp"/>
 
+                        <ImageButton
+                            android:visibility="gone"
+                            android:id="@+id/imageButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@android:color/transparent"
+                            app:srcCompat="@drawable/btn_follow"/>
+
                         <LinearLayout
                             android:id="@+id/linearLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
                             android:background="@color/white"
                             android:orientation="horizontal">
 
@@ -156,13 +160,7 @@
                             </LinearLayout>
                         </LinearLayout>
 
-                        <ImageButton
-                            android:visibility="gone"
-                            android:id="@+id/imageButton"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:background="@android:color/transparent"
-                            app:srcCompat="@drawable/btn_follow"/>
+
 
                     </LinearLayout>
 
@@ -233,24 +231,7 @@
 
                         </LinearLayout>
 
-                        <!--<LinearLayout-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_margin="8dp"-->
-                            <!--android:orientation="horizontal">-->
 
-                            <!--<ImageView-->
-                                <!--android:layout_width="48dp"-->
-                                <!--android:layout_height="48dp"-->
-                                <!--app:srcCompat="@drawable/sort1"/>-->
-
-                            <!--<TextView-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--android:text="@string/my_note"/>-->
-
-                        <!--</LinearLayout>-->
 
                     </LinearLayout>
                 </ScrollView>

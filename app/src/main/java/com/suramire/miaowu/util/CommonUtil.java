@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
+import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.App;
 
 import java.io.File;
@@ -50,7 +51,10 @@ public class CommonUtil {
 
     public static void snackBar(Context context,String message,String actionMessage, View.OnClickListener listener){
         Snackbar.make(((Activity)context).findViewById(android.R.id.content),message,Snackbar.LENGTH_LONG)
-                .setAction(actionMessage,listener).show();
+                .setAction(actionMessage,listener)
+                .setActionTextColor(context.getResources().getColor(R.color.white))
+                .show();
+
     }
 
 
