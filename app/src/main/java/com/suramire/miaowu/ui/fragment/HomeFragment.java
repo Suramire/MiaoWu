@@ -1,13 +1,9 @@
 package com.suramire.miaowu.ui.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -16,7 +12,6 @@ import android.widget.Toast;
 
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonAdapter;
-import com.classic.adapter.CommonRecyclerAdapter;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseFragment;
 import com.suramire.miaowu.bean.Multi;
@@ -32,7 +27,6 @@ import com.suramire.miaowu.util.PicassoUtil;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 import static com.suramire.miaowu.util.ApiConfig.BASNOTEPICEURL;
 import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
@@ -53,6 +47,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     LinearLayout llEmpty;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+    private int currentPosition;
 
     @Override
     public int bindLayout() {
@@ -71,10 +66,10 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
     @Override
     public void onSuccess(Object data) {
-        final List<Multi> notes = (List<Multi>) data;
-        if (notes.size() > 0) {
+        final List<Multi> multis = (List<Multi>) data;
+        if (multis.size() > 0) {
 
-            listview.setAdapter(new CommonAdapter<Multi>(mContext, R.layout.item_home2, notes) {
+            listview.setAdapter(new CommonAdapter<Multi>(mContext, R.layout.item_home, multis) {
 
                 @Override
                 public void onUpdate(final BaseAdapterHelper helper, final Multi item, int position) {
@@ -95,11 +90,13 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
                     });
                     helper.setText(R.id.notetitle, note.getTitle())
                             .setText(R.id.notecontent, note.getContent())
+                            .setText(R.id.textView7,note.getThumbs()+"")
                             .setText(R.id.notepublishtime, CommonUtil.getHowLongAgo(note.getPublish()))
+                            .setText(R.id.textView6, item.getReplyNumber() + "")
                             .setText(R.id.authorname, user.getNickname());
                 }
             });
-            Toast.makeText(mContext, "成功获取" + notes.size() + "条数据", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "成功获取" + multis.size() + "条数据", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(mContext, "暂无新帖子", Toast.LENGTH_SHORT).show();
         }
@@ -123,7 +120,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                mPresenter.getData(tab.getPosition()+1);
+                mPresenter.getData(tab.getPosition() +1);
+
             }
 
             @Override

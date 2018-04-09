@@ -19,7 +19,9 @@ import android.widget.Toast;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.adapter.MultiItemAdapter;
+import com.suramire.miaowu.base.App;
 import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.bean.Apply;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
@@ -27,6 +29,8 @@ import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.presenter.NoteDetailPresenter;
 import com.suramire.miaowu.ui.dialog.BottomCommentDialogFragment;
+import com.suramire.miaowu.util.A;
+import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.ToastUtil;
@@ -82,6 +86,10 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     private int userId;
     private int verify;
     private Integer verified;
+    private Apply apply;
+    private Note mNote;
+    private User mUser;
+    private Catinfo mCatInfo;
 
 
     @Override
@@ -103,25 +111,35 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
         mToolbar.setLeftOnclickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setResult(ApiConfig.RESULTCODE_NOTIFICATION);
                 finish();
             }
         });
         noteId = getIntent().getIntExtra("noteId", 0);
         userId = getIntent().getIntExtra("userId", 0);
-        verify = getIntent().getIntExtra("verify", 0);
+        verify = getIntent().getIntExtra("verifyApply", 0);
 
 
         //查询帖子信息
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("正在读取帖子信息，请稍候……");
 
-        // TODO: 2017/11/14 点击详情页 浏览次数+1
         mObjects = new ArrayList<>();
 
         mAdapter = new MultiItemAdapter(this, mObjects);
+        //申请按钮点击回调
+        mAdapter.setListener(new MultiItemAdapter.OnApplyListener() {
+            @Override
+            public void onClick() {
+                apply = new Apply();
+                apply.setUid(CommonUtil.getCurrentUid());
+                apply.setCid(mCatInfo.getId());
+                apply.setNid(mNote.getId());
+                apply.setTime(A.getTimeStamp());
+                mPresenter.apply();
+            }
+        });
         mListNotedetail.setAdapter(mAdapter);
-
-
         mPresenter.getPictue();
 
     }
@@ -151,7 +169,7 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
 
         mAdapter.notifyDataSetChanged();
         setReplyCount(mReplyCount);
-
+        mPresenter.increaseNouteCount();
     }
 
     @Override
@@ -166,9 +184,11 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
 
 
     private void thumb(int count) {
+
         if (count <= 0) {
             mBarNum2.setVisibility(View.GONE);
         } else {
+            mBarNum2.setVisibility(View.VISIBLE);
             if (count > 99) {
                 mBarNum2.setText("99+");
             } else {
@@ -199,7 +219,13 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
 
     @Override
     public void onGetNoteInfoSuccess(Note note) {
+        mNote = note;
         verified = note.getVerified();
+        /*将帖子类型存放于用户密码字段
+        因为用户信息先于帖子信息显示，
+        显示用户信息前需根据帖子类型隐藏或显示申请按钮*/
+        mUser.setPassword(note.getType()+"");
+        mObjects.add(mUser);
         mObjects.add(note);
         mAdapter.notifyDataSetChanged();
         mThumbs = note.getThumbs();
@@ -215,8 +241,9 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
 
     @Override
     public void onGetUserInfoSuccess(User user) {
-        mObjects.add(user);
-        mAdapter.notifyDataSetChanged();
+        mUser = user;
+//        mObjects.add(user);
+//        mAdapter.notifyDataSetChanged();
         //帖子是登录用户所发表时，显示发帖者特有的功能
         if (user.getId() == CommonUtil.getCurrentUid()) {
             toolbarTextRight.setVisibility(View.VISIBLE);
@@ -231,10 +258,17 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
 
     @Override
     public void onGetCatInfoSuccess(Catinfo catinfo) {
+
+        mCatInfo = catinfo;
         if (catinfo != null) {
             mObjects.add(catinfo);
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onApplySuccess() {
+        ToastUtil.showShortToastCenter("已成功发送申请，等待作者审核");
     }
 
 
@@ -246,6 +280,7 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     @Override
     public void onLockSuccess() {
         ToastUtil.showShortToastCenter("锁定成功");
+        setResult(ApiConfig.RESULTCODE_NOTIFICATION);
         finish();
     }
 
@@ -257,7 +292,23 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     @Override
     public void onDeleteSuccess() {
         ToastUtil.showShortToastCenter("删除成功");
+        setResult(ApiConfig.RESULTCODE_NOTIFICATION);
         finish();
+    }
+
+    @Override
+    public void onGetApplySuccess(Apply apply) {
+
+    }
+
+    @Override
+    public Apply getApply() {
+        return apply;
+    }
+
+    @Override
+    public void onChoiceDone() {
+
     }
 
 

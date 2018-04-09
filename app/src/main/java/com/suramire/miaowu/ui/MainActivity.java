@@ -55,11 +55,18 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private HomeFragment homeFragment;
     private int currentPosition;
     private User mUser;
+    private int freshPostion;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ApiConfig.LOGINREQUESTCODE && resultCode == ApiConfig.RESULTCODE) {
             //登录成功情况下
+            freshPostion = 2;
+            requireFresh = true;
+            initData();
+        }else if(requestCode == ApiConfig.REQUESTCODE_NOTIFICATION && resultCode ==ApiConfig.RESULTCODE_NOTIFICATION){
+            //读取通知后
+            freshPostion = 1;
             requireFresh = true;
             initData();
         }
@@ -188,7 +195,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
         if (requireFresh) {
 //            viewpager.setCurrentItem(3);
-            bottomNavigationBar.selectTab(2);
+            bottomNavigationBar.selectTab(freshPostion);
             requireFresh = false;
         }else {
             bottomNavigationBar.selectTab(0);

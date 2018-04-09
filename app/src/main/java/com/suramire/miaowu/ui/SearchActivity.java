@@ -12,9 +12,14 @@ import android.view.WindowManager;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.bean.Note;
+import com.suramire.miaowu.bean.User;
+import com.suramire.miaowu.contract.SearchContract;
+import com.suramire.miaowu.presenter.SearchPresenter;
 import com.suramire.miaowu.ui.fragment.SearchResultFragment;
 import com.suramire.miaowu.util.L;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +29,7 @@ import butterknife.Bind;
  * Created by Suramire on 2018/1/26.
  */
 
-public class SearchActivity extends BaseSwipeActivity {
+public class SearchActivity extends BaseSwipeActivity<SearchPresenter> implements SearchContract.View {
     @Bind(R.id.search_view)
     SearchView searchView;
     @Bind(R.id.toolbar)
@@ -33,6 +38,8 @@ public class SearchActivity extends BaseSwipeActivity {
     TabLayout tablayout;
     @Bind(R.id.viewpager)
     ViewPager viewpager;
+    private String mQuery;
+    private List<Note> mNotes;
 
     @Override
     public void showLoading() {
@@ -56,7 +63,7 @@ public class SearchActivity extends BaseSwipeActivity {
 
     @Override
     public void createPresenter() {
-
+        mPresenter = new SearchPresenter();
     }
 
     @Override
@@ -77,7 +84,9 @@ public class SearchActivity extends BaseSwipeActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                setupResult(query);
+//                setupResult(query);
+                mQuery = query;
+                mPresenter.searchNote();
                 L.e("onQueryTextSubmit");
 
 
@@ -94,21 +103,33 @@ public class SearchActivity extends BaseSwipeActivity {
 
     }
 
-    private void setupResult(String query) {
-        final String[] tabTitles = {"帖子","回复","用户"};
+    private void setupResult(List<Note> notes,List<User> users) {
+//        final String[] tabTitles = {"帖子","用户"};
+        final List<String> titles = new ArrayList<>();
         final List<Fragment> fragments = new ArrayList<>();
-        Bundle bundle = new Bundle();
-        bundle.putString("query",query);
-        SearchResultFragment searchResultFragment = new SearchResultFragment();
-        searchResultFragment.setArguments(bundle);
-//        SearchResultFragment searchResultFragment2 = new SearchResultFragment();
-//        searchResultFragment2.setArguments(bundle);
-//        SearchResultFragment searchResultFragment3 = new SearchResultFragment();
-//        searchResultFragment3.setArguments(bundle);
-        fragments.add(searchResultFragment);
-//        fragments.add(searchResultFragment2);
-//        fragments.add(searchResultFragment3);
+
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("index",0);
+            bundle.putSerializable("notes", (Serializable) notes);
+            SearchResultFragment searchResultFragment = new SearchResultFragment();
+            searchResultFragment.setArguments(bundle);
+            fragments.add(searchResultFragment);
+            titles.add("帖子");
+
+
+            Bundle bundle2 = new Bundle();
+            bundle2.putInt("index",1);
+            bundle2.putSerializable("users", (Serializable) users);
+            SearchResultFragment searchResultFragment2 = new SearchResultFragment();
+            searchResultFragment2.setArguments(bundle2);
+            fragments.add(searchResultFragment2);
+            titles.add("用户");
+
+
+
         viewpager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+
             @Override
             public Fragment getItem(int position) {
                 return fragments.get(position);
@@ -121,11 +142,28 @@ public class SearchActivity extends BaseSwipeActivity {
 
             @Override
             public CharSequence getPageTitle(int position) {
-                return tabTitles[position];
+                return titles.get(position);
             }
         });
         tablayout.setupWithViewPager(viewpager);
+
     }
 
 
+    @Override
+    public void onUserSuccess(List<User> users) {
+        setupResult(mNotes, users);
+        L.e("users.size:" + users.size());
+    }
+
+    @Override
+    public void onNoteSuccess(List<Note> notes) {
+        mNotes = notes;
+        L.e("notes.size:" + notes.size());
+    }
+
+    @Override
+    public String getQuery() {
+        return mQuery;
+    }
 }

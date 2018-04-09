@@ -1,5 +1,6 @@
 package com.suramire.miaowu.http;
 
+import com.suramire.miaowu.bean.Apply;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Multi0;
@@ -67,7 +68,9 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("updateUser")
     Observable<BaseResponse<User>> updateProfile(@Field(JSON) String string);
-
+    @FormUrlEncoded
+    @POST("searchUser")
+    Observable<BaseResponse<List<User>>> searchUser(@Field(JSON) String string);
     //修改用户头像
     @Multipart
     @POST("getPicUser")
@@ -137,6 +140,20 @@ public interface ApiService {
     //点赞操作
     @GET("thumbNote")
     Observable<BaseResponse<Object>> thumbNote(@Query(JSON) String string);
+
+    //增加浏览次数
+    @GET("increasecountNote")
+    Observable<BaseResponse<Void>> increaseCount(@Query(JSON) String string);
+
+    @FormUrlEncoded
+    @POST("addApply")
+    Observable<BaseResponse<Void>> addApply(@Field(JSON) String string);
+
+    @GET("verifyApply")
+    Observable<BaseResponse<Void>> verifyApply(@Query(JSON) String string);
+
+    @GET("getoneApply")
+    Observable<BaseResponse<Apply>> getOneApply(@Query(JSON) String string);
 
     //图片上传 单张
     @Multipart

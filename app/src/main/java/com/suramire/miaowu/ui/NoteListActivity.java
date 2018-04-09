@@ -67,7 +67,7 @@ public class NoteListActivity extends BaseListActivity<NotePresenter> implements
                                     public void onClick(View v) {
                                         Intent intent = new Intent(mContext, NoteDetailActivity.class);
                                         intent.putExtra("noteId",item.getId());
-                                        intent.putExtra("verify", item.getVerified());
+                                        intent.putExtra("verifyApply", item.getVerified());
                                         intent.putExtra("userId",item.getUid());
                                         startActivity(intent);
                                     }

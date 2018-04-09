@@ -13,9 +13,11 @@ import com.suramire.miaowu.base.BaseListFragment;
 import com.suramire.miaowu.bean.Notification;
 import com.suramire.miaowu.contract.NotificationContract;
 import com.suramire.miaowu.presenter.NotificationPresenter;
+import com.suramire.miaowu.ui.ApplyDetailActivity;
 import com.suramire.miaowu.ui.NoteDetailActivity;
 import com.suramire.miaowu.ui.ProfileActivity;
 import com.suramire.miaowu.util.A;
+import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.ToastUtil;
 
@@ -109,13 +111,11 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
                 helper.setOnClickListener(R.id.tv_notification_content, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ToastUtil.showShortToastCenter("点击通知内容:类型"+item.getType());
+//                        ToastUtil.showShortToastCenter("点击通知内容:类型"+item.getType());
                         switch (item.getType()){
                             case 1:{
                                 intent = new Intent(mContext, ProfileActivity.class);
                                 intent.putExtra("uid", item.getUid1());
-
-//                                startActivity(intent);
                             }break;//关注类通知 点击跳转到关注源用户
                             case 2:{
                                 intent = new Intent(mContext, NoteDetailActivity.class);
@@ -123,16 +123,27 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
                                 intent.putExtra("userId", item.getUid2());
 //                                startActivity(intent);
                             }break;
+                            case 3:{
+                                intent = new Intent(mContext, ApplyDetailActivity.class);
+                                intent.putExtra("aid", item.getUid1());
+                            }break;
+                            case 4:{
+                                intent = new Intent(mContext, ApplyDetailActivity.class);
+                                intent.putExtra("req", 1);
+                                intent.putExtra("aid", item.getUid1());
+
+                            }
 
 
                         }
-
                         currentId = item.getId();
-                        if(item.getIsread()==0){
-                            mPresenter.readNotification();
-                        }else {
-                            startActivity(intent);
-                        }
+                        mPresenter.readNotification();
+
+//                        if(item.getIsread()==0){
+//
+//                        }else {
+//                            startActivity(intent);
+//                        }
 
                     }
                 });
@@ -155,7 +166,7 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
     public void onReadSuccess(int id) {
         // TODO: 2018/1/31 更新通知列表
         if (intent!=null){
-            startActivity(intent);
+            getActivity().startActivityForResult(intent, ApiConfig.REQUESTCODE_NOTIFICATION);
         }
         if(count>0){
             count--;

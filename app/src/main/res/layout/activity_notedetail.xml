@@ -7,10 +7,6 @@
     android:layout_height="match_parent">
 
 
-
-
-
-
     <ListView
         android:id="@+id/list_notedetail"
         android:layout_width="match_parent"

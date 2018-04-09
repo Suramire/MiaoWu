@@ -15,11 +15,15 @@ import rx.Observable;
 
 public interface SearchContract {
     interface Model<T> {
+
+        Observable<T> searchUser(String query);
+
         Observable<T> searchNote(String query);
     }
 
     interface View extends BaseView {
 
+        void onUserSuccess(List<User> users);
 
         void onNoteSuccess(List<Note> notes);
 
@@ -31,6 +35,7 @@ public interface SearchContract {
 
         void searchNote();
 
+        void searchUser();
 
     }
 }

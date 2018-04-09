@@ -16,6 +16,7 @@ import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.FansContract;
 import com.suramire.miaowu.presenter.FansPresenter;
 import com.suramire.miaowu.util.ApiConfig;
+import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 
@@ -55,8 +56,18 @@ public class FansListActivity extends BaseListActivity<FansPresenter> implements
 
     @Override
     public void onSuccess(Object data) {
-        if(data!=null){
-            showData((List<User>) data);
+
+        if(data !=null){
+            List<User> data1 = (List<User>) data;
+            if(data1.size()>0){
+                showData((List<User>) data1);
+            }else{
+                switch (currentPosition){
+                    case 0:showEmpty("暂无关注用户");break;
+                    case 1:showEmpty("暂无粉丝用户");break;
+                }
+            }
+
         }else{
             switch (currentPosition){
                 case 0:showEmpty("暂无关注用户");break;
@@ -107,10 +118,10 @@ public class FansListActivity extends BaseListActivity<FansPresenter> implements
         });
         //根据传过来的下标使选择对应标签页
         tablayout.getTabAt(index).select();
-        switch (currentPosition){
+        switch (index){
             //若通过关注进入则强制刷新列表
             case 0:showEmpty("暂无关注用户");mPresenter.getFollow();break;
-            case 1:showEmpty("暂无粉丝用户");break;
+            case 1:showEmpty("暂无粉丝用户");mPresenter.getFollower();break;
         }
 
     }
@@ -136,7 +147,6 @@ public class FansListActivity extends BaseListActivity<FansPresenter> implements
             }
         });
     }
-
 
     @OnClick(R.id.toolbar_image_left)
     public void onViewClicked() {

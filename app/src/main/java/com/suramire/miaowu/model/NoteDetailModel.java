@@ -1,5 +1,7 @@
 package com.suramire.miaowu.model;
 
+import com.suramire.miaowu.base.App;
+import com.suramire.miaowu.bean.Apply;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
@@ -101,5 +103,32 @@ public class NoteDetailModel implements NoteDetailContract.Model {
                 .map(new ResponseFunc<Void>());
     }
 
+    @Override
+    public Observable<Void> increaseNoteCount(int noteId) {
+        Note note = new Note();
+        note.setId(noteId);
+        return ApiLoader.increaseCount(note)
+                .map(new ResponseFunc<Void>());
+    }
+
+    @Override
+    public Observable<Void> apply(Apply apply) {
+        return ApiLoader.addApply(apply)
+                .map(new ResponseFunc<Void>());
+    }
+
+    @Override
+    public Observable<Void> makeChoice(Apply apply) {
+        return ApiLoader.verifyApply(apply)
+                .map(new ResponseFunc<Void>());
+    }
+
+    @Override
+    public Observable<Apply> getApply(int applyId) {
+        Apply apply = new Apply();
+        apply.setId(applyId);
+        return ApiLoader.getOneApply(apply)
+                .map(new ResponseFunc<Apply>());
+    }
 
 }

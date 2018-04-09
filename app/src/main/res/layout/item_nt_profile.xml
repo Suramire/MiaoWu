@@ -29,16 +29,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:maxLines="1"
             android:layout_weight="1"
             android:text="TextView"
             android:textColor="@android:color/black"
             android:textSize="16sp"/>
 
         <Button
+            android:id="@+id/btn_apply"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_blue"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:padding="0dp"
+            android:text="申请领养"
+            android:textColor="@color/white"/>
+
+        <Button
             android:id="@+id/btn_nt_follow"
             android:layout_width="80dp"
             android:layout_height="40dp"
-            android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
             android:background="@drawable/btn_blue"
             android:padding="0dp"
             android:text="联系TA"

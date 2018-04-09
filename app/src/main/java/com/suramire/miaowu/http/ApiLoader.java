@@ -1,5 +1,6 @@
 package com.suramire.miaowu.http;
 
+import com.suramire.miaowu.bean.Apply;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Follow;
 import com.suramire.miaowu.bean.Multi;
@@ -40,7 +41,6 @@ public class ApiLoader {
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
-
 
     /*用户相关*/
     public static Observable<BaseResponse<User>> login(User user){
@@ -92,6 +92,9 @@ public class ApiLoader {
         return observer(getApiService().updateProfile(GsonUtil.objectToJson(user)));
     }
 
+    public static Observable<BaseResponse<List<User>>> searchUser(User user){
+        return observer(getApiService().searchUser(GsonUtil.objectToJson(user)));
+    }
 
 
     public static Observable<BaseResponse<List<User>>> getUserFollower(User user){
@@ -166,6 +169,22 @@ public class ApiLoader {
         return observer(getApiService().thumbNote(GsonUtil.objectToJson(note)));
     }
 
+    public static Observable<BaseResponse<Void>> increaseCount(Note note){
+        return observer(getApiService().increaseCount(GsonUtil.objectToJson(note)));
+    }
+
+    public static Observable<BaseResponse<Void>> addApply(Apply apply){
+        return observer(getApiService().addApply(GsonUtil.objectToJson(apply)));
+    }
+
+    public static Observable<BaseResponse<Void>> verifyApply(Apply apply){
+        return observer(getApiService().verifyApply(GsonUtil.objectToJson(apply)));
+    }
+
+    public static Observable<BaseResponse<Apply>> getOneApply(Apply apply){
+        return observer(getApiService().getOneApply(GsonUtil.objectToJson(apply)));
+    }
+
     public static Observable<BaseResponse<Object>> uploadPicture(RequestBody description , MultipartBody.Part body){
         return observer(getApiService().uploadPicture(description,body));
     }
@@ -177,8 +196,6 @@ public class ApiLoader {
     public static Observable<BaseResponse<Integer>> getUserNoteCount(User user){
         return observer(getApiService().getUserNoteCount(GsonUtil.objectToJson(user)));
     }
-
-
 
 
     /*回复相关*/
@@ -211,8 +228,6 @@ public class ApiLoader {
     public static Observable<BaseResponse<Integer>> getunreadCount(User user){
         return observer(getApiService().getunreadCount(GsonUtil.objectToJson(user)));
     }
-
-
 
 
 

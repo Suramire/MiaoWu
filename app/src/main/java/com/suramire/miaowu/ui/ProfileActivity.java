@@ -29,6 +29,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Suramire on 2018/1/27.
+ * 他人信息查看
  */
 
 public class ProfileActivity extends BaseActivity<UserPresenter> implements UserContract.View {
@@ -226,6 +227,7 @@ public class ProfileActivity extends BaseActivity<UserPresenter> implements User
             }
             break;
             case R.id.toolbar_image_left:
+                setResult(ApiConfig.RESULTCODE_NOTIFICATION);
                 finish();
                 break;
             case R.id.toolbar_text_right:

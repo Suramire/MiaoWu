@@ -200,12 +200,13 @@
                             <ImageView
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                app:srcCompat="@mipmap/ic_cat_icon"/>
+                                app:srcCompat="@drawable/option_note"/>
 
                             <TextView
                                 android:id="@+id/tv_title_note"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
                                 android:layout_gravity="center"
                                 android:text="@string/hint_my_note"/>
 
@@ -220,12 +221,13 @@
                             <ImageView
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                app:srcCompat="@mipmap/ic_cat_icon"/>
+                                app:srcCompat="@drawable/option_reply"/>
 
                             <TextView
                                 android:id="@+id/tv_title_reply"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
                                 android:layout_gravity="center"
                                 android:text="@string/hint_my_reply"/>
 

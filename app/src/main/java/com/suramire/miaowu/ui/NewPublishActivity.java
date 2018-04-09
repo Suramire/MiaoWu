@@ -98,9 +98,6 @@ public class NewPublishActivity extends BaseSwipeActivity<PublishPresenter> impl
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (needcat) {
-            menu.add(0, 0x11, 0, "填表").setIcon(R.drawable.ic_format_align_left_black_24dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        }
         menu.add(0, 0x12, 1, "发表").setIcon(R.drawable.ic_send_black_24dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return super.onCreateOptionsMenu(menu);
     }
@@ -115,7 +112,6 @@ public class NewPublishActivity extends BaseSwipeActivity<PublishPresenter> impl
                 mPhotos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
                 for (String s : mPhotos
                         ) {
-                    L.e("NewPublishActivity:"+ FileUtil.getFileMD5(new File(s)));
                 }
                 mGridviewPicture.setAdapter(new CommonAdapter<String>(this, R.layout.item_picture, mPhotos) {
                     @Override
@@ -134,11 +130,6 @@ public class NewPublishActivity extends BaseSwipeActivity<PublishPresenter> impl
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == 0x11) {
-            Intent intent = new Intent(this, ExtendedInformationActivity.class);
-            startActivityForResult(intent, ApiConfig.REQUESTCODE);
-//            startActivity(ExtendedInformationActivity.class);
-        }
         if (item.getItemId() == 0x12) {
             //这里执行发帖操作
             //发送帖子对象（文本）
@@ -176,7 +167,7 @@ public class NewPublishActivity extends BaseSwipeActivity<PublishPresenter> impl
                     CommonUtil.snackBar(this, "请先完善猫咪的信息", "去完善", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(NewPublishActivity.this, ExtendedInformationActivity.class);
+                            Intent intent = new Intent(NewPublishActivity.this, CatInfoActivity.class);
                             startActivityForResult(intent, ApiConfig.REQUESTCODE);
                         }
                     });
@@ -272,11 +263,16 @@ public class NewPublishActivity extends BaseSwipeActivity<PublishPresenter> impl
 
                 break;
             case R.id.imageView19: {
-                mEditContent.setText(mEditTitle.getText());
+                if(needcat){
+                    Intent intent = new Intent(NewPublishActivity.this, CatInfoActivity.class);
+                    startActivityForResult(intent, ApiConfig.REQUESTCODE);
+                }else{
+                    ToastUtil.showShortToastCenter("无需填写猫咪信息");
+                }
+
             }
             break;
             case R.id.imageView18: {
-                Log.d("NewPublishActivity", mEditContent.getText().toString().trim());
             }
             break;
             case R.id.imageView17: {

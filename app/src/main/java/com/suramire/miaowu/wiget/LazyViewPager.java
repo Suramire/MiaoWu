@@ -1363,7 +1363,7 @@ public class LazyViewPager extends ViewGroup {
 
         // we add ourselves (if focusable) in all cases except for when we are
         // FOCUS_AFTER_DESCENDANTS and there are some descendants focusable.  this is
-        // to avoid the focus search finding layouts when a more precise search
+        // to avoid the focus searchUser finding layouts when a more precise searchUser
         // among the focusable children would be more interesting.
         if (
                 descendantFocusability != FOCUS_AFTER_DESCENDANTS ||

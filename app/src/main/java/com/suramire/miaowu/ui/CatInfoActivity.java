@@ -21,7 +21,7 @@ import butterknife.Bind;
  * Created by Suramire on 2017/11/25.
  */
 
-public class ExtendedInformationActivity extends BaseSwipeActivity {
+public class CatInfoActivity extends BaseSwipeActivity {
     @Bind(R.id.toolbar)
     MyToolbar mToolbar;
     @Bind(R.id.sp_sex)
@@ -52,8 +52,14 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
     @Override
     public void initView() {
         mToolbar.setTitle("详细信息");
-        mToolbar.setStyle(MyToolbar.STYLE_RIGHT_AND_TITLE);
         mToolbar.setRightText("完成");
+        mToolbar.setLeftImage(R.drawable.ic_arrow_back_black);
+        mToolbar.setLeftOnclickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         mToolbar.setRightOnclickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +67,7 @@ public class ExtendedInformationActivity extends BaseSwipeActivity {
                 String conditions = edtConditions.getText().toString().trim();
                 String type = edtType.getText().toString().trim();
                 if (TextUtils.isEmpty(conditions)) {
-                    CommonUtil.snackBar(ExtendedInformationActivity.this, "领养条件不能为空", "去完善", new View.OnClickListener() {
+                    CommonUtil.snackBar(CatInfoActivity.this, "领养条件不能为空", "去完善", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                         }

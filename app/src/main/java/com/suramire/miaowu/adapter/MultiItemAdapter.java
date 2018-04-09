@@ -5,6 +5,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
+import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +44,7 @@ import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
 
 /**
  * Created by Suramire on 2017/11/7.
- * 多类型列表适配器
+ * 多类型列表适配器 帖子详情页
  */
 
 public class MultiItemAdapter extends BaseAdapter {
@@ -51,6 +53,17 @@ public class MultiItemAdapter extends BaseAdapter {
     private List  mList;
     private Context mContext;
     private boolean isFirst = true;
+    private Integer type;
+
+    //申请按钮监听器
+    public interface OnApplyListener{
+        void onClick();
+    }
+    private OnApplyListener listener;
+
+    public void setListener(OnApplyListener listener) {
+        this.listener = listener;
+    }
 
     class GlideImageLoader extends ImageLoader {
         @Override
@@ -106,6 +119,7 @@ public class MultiItemAdapter extends BaseAdapter {
         return convertView;
     }
 
+    //帖子回复
     private View getView0(int position, View convertView, ViewGroup parent){
         ViewHolder0 mVH;
         if(convertView==null){
@@ -152,6 +166,7 @@ public class MultiItemAdapter extends BaseAdapter {
         return convertView;
     }
 
+    //帖子内容
     private View getView1(int position, View convertView, ViewGroup parent){
         ViewHolder1 mVH;
         if(convertView==null){
@@ -166,7 +181,14 @@ public class MultiItemAdapter extends BaseAdapter {
             mVH = (ViewHolder1) convertView.getTag();
         }
         Note note = (Note) mList.get(position);
-        mVH.mtvTitle.setText(note.getTitle());
+
+        String titleString = null;
+        if(note.getVerified()==3){
+            titleString = "[已锁定] "+note.getTitle();
+        }else{
+            titleString = note.getTitle();
+        }
+        mVH.mtvTitle.setText(titleString);
         mVH.mtvContent.setText(note.getContent());
         mVH.mtvPublishTime.setText("发布时间："+CommonUtil.timeStampToDateString(note.getPublish()));
         mVH.mtvViewcount.setText("浏览次数:"+note.getViewcount()+"");
@@ -174,7 +196,7 @@ public class MultiItemAdapter extends BaseAdapter {
     }
 
 
-
+    //帖子配图轮播
     private View getView2(int position, View convertView, ViewGroup parent){
         ViewHolder2 mVH;
         if(convertView==null){
@@ -196,25 +218,18 @@ public class MultiItemAdapter extends BaseAdapter {
                 .isAutoPlay(false)
                 .setBannerStyle(BannerConfig.NUM_INDICATOR)
                 .setIndicatorGravity(BannerConfig.RIGHT)
-                .setOnBannerListener(new OnBannerListener() {
-
-                    @Override
-                    public void OnBannerClick(int position) {
-                        Intent intent = new Intent(mContext, HDPictureActivity.class);
-                        intent.putExtra("path", newItems.get(position));
-                        mContext.startActivity(intent);
-                    }
-                })
                 .start();
         return convertView;
     }
 
+    //作者信息区
     private View getView3(int position, View convertView, ViewGroup parent){
         ViewHolder3 mVH;
         if(convertView==null){
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_nt_profile, null, false);
             mVH = new ViewHolder3();
             mVH.mButtonFollow = convertView.findViewById(R.id.btn_nt_follow);
+            mVH.mButtonApply = convertView.findViewById(R.id.btn_apply);
             mVH.mImgUser = convertView.findViewById(R.id.img_nt_profile);
             mVH.mTvNickname = convertView.findViewById(R.id.tv_nt_nickname);
             mVH.llProfile = convertView.findViewById(R.id.ll_profile);
@@ -224,15 +239,30 @@ public class MultiItemAdapter extends BaseAdapter {
         }
         final User user = (User) mList.get(position);
         mVH.mTvNickname.setText(user.getNickname());
+        //当前登录的用户为帖子作者时 不显示联系作者按钮
         if(user.getId()==CommonUtil.getCurrentUid()){
             mVH.mButtonFollow.setVisibility(View.GONE);
         }else{
             mVH.mButtonFollow.setVisibility(View.VISIBLE);
         }
+        //当前帖子类型不为有猫等待领养时 隐藏申请按钮
+        type = Integer.parseInt(user.getPassword());//帖子类型 2=有猫 1=找猫
+        if(type!=2 && user.getId()==CommonUtil.getCurrentUid()){
+            mVH.mButtonApply.setVisibility(View.GONE);
+        }
+        mVH.mButtonApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: 2018/4/9 生成领养单与通知
+                if(listener!=null){
+                    listener.onClick();
+                }
+            }
+        });
         mVH.mButtonFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "这里响应查看作者联系方式事件", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "这里响应查看作者联系方式事件", Toast.LENGTH_SHORT).show();
                 String contacttype = "";
                 switch (user.getContacttype()){
                     case 1:contacttype="电话";break;
@@ -331,6 +361,7 @@ public class MultiItemAdapter extends BaseAdapter {
         ImageView mImgUser;
         TextView mTvNickname;
         Button mButtonFollow;
+        Button mButtonApply;
     }
 
 
@@ -340,8 +371,6 @@ public class MultiItemAdapter extends BaseAdapter {
         TextView tvNeutering;
         TextView tvInsecticide;
         TextView tvType;
-        TextView tvContacttype;
-        TextView tvContact;
         TextView tvConditions;
 
         public ViewHolder4(View view) {

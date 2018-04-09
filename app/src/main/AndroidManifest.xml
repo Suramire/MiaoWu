@@ -53,12 +53,12 @@
         <activity android:name=".ui.NoteDetailActivity"/>
         <activity android:name=".ui.NewPublishActivity"/>
         <activity android:name=".ui.ReplyDetailActivity"/>
-        <activity android:name=".ui.ExtendedInformationActivity"/>
+        <activity android:name=".ui.CatInfoActivity"/>
         <activity android:name=".ui.NoteListActivity"/>
-        <activity android:name=".ui.HDPictureActivity"/>
         <activity android:name=".ui.FansListActivity"/>
         <activity android:name=".ui.ProfileActivity"/>
         <activity android:name=".ui.ProfileDetailActivity" />
+        <activity android:name=".ui.ApplyDetailActivity" />
 
 
     </application>

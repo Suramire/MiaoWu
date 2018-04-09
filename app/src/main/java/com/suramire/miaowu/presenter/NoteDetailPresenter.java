@@ -1,5 +1,6 @@
 package com.suramire.miaowu.presenter;
 
+import com.suramire.miaowu.bean.Apply;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
@@ -152,6 +153,26 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
     }
 
     @Override
+    public void apply() {
+        mView.showLoading();
+        Subscription subscribe = noteDetailModel.apply(mView.getApply())
+                .subscribe(new ResponseSubscriber<Void>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("申请时出错：" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        mView.cancelLoading();
+                        mView.onApplySuccess();
+                    }
+                });
+        compositeSubscription.add(subscribe);
+    }
+
+    @Override
     public void passNote() {
         mView.showLoading();
         Subscription subscribe = noteDetailModel.passNote(mView.getNoteId())
@@ -238,6 +259,64 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
         compositeSubscription.add(subscribe);
     }
 
+    @Override
+    public void increaseNouteCount() {
+        Subscription subscribe = noteDetailModel.increaseNoteCount(mView.getNoteId())
+                .subscribe(new ResponseSubscriber<Void>() {
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+
+                    }
+                });
+        compositeSubscription.add(subscribe);
+    }
+
+    @Override
+    public void makeChoice() {
+        mView.showLoading();
+        Subscription subscribe = noteDetailModel.makeChoice(mView.getApply())
+                .subscribe(new ResponseSubscriber<Void>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("响应请求时出错："+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        mView.cancelLoading();
+                        mView.onChoiceDone();
+                    }
+                });
+        compositeSubscription.add(subscribe);
+
+    }
+
+    @Override
+    public void getApplyInfo() {
+        mView.showLoading();
+        Subscription subscribe = noteDetailModel.getApply(mView.getApply().getId())
+                .subscribe(new ResponseSubscriber<Apply>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("获取申请单时出错：" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Apply apply) {
+                        mView.cancelLoading();
+                        mView.onGetApplySuccess(apply);
+                    }
+                });
+        compositeSubscription.add(subscribe);
+    }
+
 
     @Override
     public void attachView(NoteDetailContract.View view) {
@@ -249,6 +328,5 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
     public void detachView() {
         mView = null;
         compositeSubscription.unsubscribe();
-
     }
 }
