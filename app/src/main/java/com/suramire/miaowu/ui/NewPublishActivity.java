@@ -81,7 +81,6 @@ public class NewPublishActivity extends BaseSwipeActivity<PublishPresenter> impl
     @Override
     public void initView() {
         //根据帖子类型判断是否需要填写猫咪信息
-        setSupportActionBar(mToolbar);
         needcat = getIntent().getBooleanExtra("needcat", false);
         mToolbar.setTitle("发表帖子");
         mToolbar.setLeftImage(R.drawable.ic_close_black_24dp);

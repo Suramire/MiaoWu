@@ -13,6 +13,7 @@ import com.suramire.miaowu.base.BaseFragment;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.presenter.UserPresenter;
+import com.suramire.miaowu.ui.ApplyListActivity;
 import com.suramire.miaowu.ui.FansListActivity;
 import com.suramire.miaowu.ui.LoginActivity;
 import com.suramire.miaowu.ui.NoteListActivity;
@@ -114,7 +115,8 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
     }
 
 
-    @OnClick({R.id.btn_login, R.id.img_icon, R.id.ll_followlist, R.id.ll_followerlist, R.id.ll_mynote, R.id.ll_note2,R.id.ll_verify})
+    @OnClick({R.id.btn_login, R.id.img_icon, R.id.ll_followlist, R.id.ll_followerlist,
+            R.id.ll_mynote, R.id.ll_note2,R.id.ll_verify,R.id.ll_apply})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
@@ -148,6 +150,12 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
                 Intent intent0 = new Intent(mContext, NoteListActivity.class);
                 intent0.putExtra("uid", -1);
                 startActivity(intent0);
+                break;
+            case R.id.ll_apply:
+                // 帖子审核页面
+                Intent intent3 = new Intent(mContext, ApplyListActivity.class);
+                intent3.putExtra("uid", getUid());
+                startActivity(intent3);
                 break;
         }
     }

@@ -68,7 +68,6 @@ public class SearchActivity extends BaseSwipeActivity<SearchPresenter> implement
 
     @Override
     public void initView() {
-        setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

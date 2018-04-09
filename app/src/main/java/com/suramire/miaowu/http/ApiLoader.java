@@ -185,6 +185,10 @@ public class ApiLoader {
         return observer(getApiService().getOneApply(GsonUtil.objectToJson(apply)));
     }
 
+    public static Observable<BaseResponse<List<Apply>>> getallApply(Apply apply){
+        return observer(getApiService().getallApply(GsonUtil.objectToJson(apply)));
+    }
+
     public static Observable<BaseResponse<Object>> uploadPicture(RequestBody description , MultipartBody.Part body){
         return observer(getApiService().uploadPicture(description,body));
     }

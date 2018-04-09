@@ -247,7 +247,7 @@ public class MultiItemAdapter extends BaseAdapter {
         }
         //当前帖子类型不为有猫等待领养时 隐藏申请按钮
         type = Integer.parseInt(user.getPassword());//帖子类型 2=有猫 1=找猫
-        if(type!=2 && user.getId()==CommonUtil.getCurrentUid()){
+        if(type!=2 || user.getId()==CommonUtil.getCurrentUid()){
             mVH.mButtonApply.setVisibility(View.GONE);
         }
         mVH.mButtonApply.setOnClickListener(new View.OnClickListener() {

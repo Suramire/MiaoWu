@@ -155,6 +155,9 @@ public interface ApiService {
     @GET("getoneApply")
     Observable<BaseResponse<Apply>> getOneApply(@Query(JSON) String string);
 
+    @GET("getallApply")
+    Observable<BaseResponse<List<Apply>>> getallApply(@Query(JSON) String string);
+
     //图片上传 单张
     @Multipart
     @POST("getPicNote")
