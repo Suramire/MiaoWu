@@ -1,6 +1,7 @@
 package com.suramire.miaowu.ui;
 
 import android.app.ProgressDialog;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Suramire on 2018/2/1.
+ * 个人详情页
  */
 
 public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implements ProfileContract.View {
@@ -157,6 +159,9 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
                 break;
             case R.id.tv_modify_password:
                 // TODO: 2018/2/1 修改密码
+                Bundle bundle = new Bundle();
+                bundle.putInt("uid",getUid());
+                startActivity(ModifyPasswordActivity.class,bundle);
                 break;
         }
     }

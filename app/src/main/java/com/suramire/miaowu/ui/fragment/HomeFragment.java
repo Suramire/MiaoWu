@@ -77,7 +77,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
                     NotePhoto notePhoto = item.getmNotePhoto();
                     User user = item.getmUser();
                     PicassoUtil.show(BASNOTEPICEURL + notePhoto.getName(), (ImageView) helper.getView(R.id.noteimg),
-                            R.drawable.ic_loading, R.drawable.ic_loading_error);
+                            R.mipmap.ic_loading, R.mipmap.ic_loading_error);
                     PicassoUtil.show(BASUSERPICEURL + user.getIcon(), (ImageView) helper.getView(R.id.anthorimg));
                     helper.setOnClickListener(R.id.cardview_item, new View.OnClickListener() {
                         @Override

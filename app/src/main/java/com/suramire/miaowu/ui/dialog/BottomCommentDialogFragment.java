@@ -1,11 +1,16 @@
 package com.suramire.miaowu.ui.dialog;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.app.DialogFragment;
+import android.support.annotation.Nullable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -14,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseDialogFragment;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.contract.ReplyContract;
@@ -24,20 +28,17 @@ import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.util.ToastUtil;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * Created by Suramire on 2017/11/2.
  */
 
-public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresenter> implements ReplyContract.View {
+public class BottomCommentDialogFragment extends DialogFragment implements ReplyContract.View {
 
     @Bind(R.id.edittext_comment)
     EditText edittextComment;
-    @Bind(R.id.imageView9)
-    ImageView imageView9;
-    @Bind(R.id.imageView13)
-    ImageView imageView13;
     @Bind(R.id.button2)
     Button button2;
     @Bind(R.id.ll_popup)
@@ -48,10 +49,8 @@ public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresent
     private OnReplyListener mReplyListener;
     private int floorId;
     private int unpass;
-
-    public OnReplyListener getReplyListener() {
-        return mReplyListener;
-    }
+    private Activity mContext;
+    private ReplyPresenter replyPresenter;
 
     public void setReplyListener(OnReplyListener replyListener) {
         mReplyListener = replyListener;
@@ -62,9 +61,9 @@ public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresent
     public void onViewClicked() {
         if(unpass==1){
             // TODO: 2018/1/31 这里生成驳回帖子的通知消息
-            mPresenter.unPassNote();
+            replyPresenter.unPassNote();
         }else{
-            mPresenter.postReply();
+            replyPresenter.postReply();
 
         }
     }
@@ -73,7 +72,6 @@ public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresent
 
         void onSucess();
 
-        void onFailure(String failureMessage);
 
         void onError(String errorMessage);
     }
@@ -94,37 +92,35 @@ public class BottomCommentDialogFragment extends BaseDialogFragment<ReplyPresent
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        mContext = getActivity();
+
+        View view = inflater.inflate(R.layout.popup_comment, null);
+        ButterKnife.bind(this, view);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mProgressDialog = new ProgressDialog(mContext);
+        mProgressDialog.setMessage("请稍候……");
+        replyPresenter = new ReplyPresenter();
+        replyPresenter.attachView(this);
+        if(unpass==1){
+            edittextComment.setHint("请输入驳回帖子的理由");
+            button2.setText("驳回");
+        }
+        return view;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getActivity();
+
         nid = getArguments().getInt("nid");
         //是否是驳回帖子操作的标志位
         unpass = getArguments().getInt("unpass");
         replyuid = getArguments().getInt("replyuid");
         floorId = getArguments().getInt("floorId");
-    }
-
-
-    @Override
-    public void createPresenter() {
-        mPresenter = new ReplyPresenter();
-    }
-
-    @Override
-    public void initView() {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setMessage("请稍候……");
-        if(unpass==1){
-            edittextComment.setHint("请输入驳回帖子的理由");
-            button2.setText("驳回");
-        }
-    }
-
-    @Override
-    public int bindLayout() {
-        return R.layout.popup_comment;
     }
 
 

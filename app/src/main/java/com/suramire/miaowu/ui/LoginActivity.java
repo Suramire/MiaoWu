@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.LoginContract;
 import com.suramire.miaowu.presenter.LoginPresenter;
@@ -24,7 +24,7 @@ import butterknife.OnClick;
  * Created by Suramire on 2017/10/21.
  */
 
-public class LoginActivity extends BaseSwipeActivity<LoginPresenter> implements LoginContract.View {
+public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.View {
     @Bind(R.id.toolbar)
     MyToolbar mToolbar3;
     @Bind(R.id.edt_name)

@@ -23,8 +23,7 @@
             android:layout_height="56dp"
             android:layout_weight="1"
             android:elevation="4dp"
-            android:src="@mipmap/ic_cat_icon"
-            tools:src="@drawable/i"
+            tools:src="@mipmap/ic_cat_icon"
             app:riv_oval="true"/>
 
 
@@ -34,7 +33,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="4"
-            android:text="TextView"
             android:textSize="18sp"
             tools:text="吴彦祖"/>
 

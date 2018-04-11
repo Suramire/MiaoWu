@@ -66,7 +66,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:background="@android:color/transparent"
-                            app:srcCompat="@drawable/btn_follow"/>
+                            tools:srcCompat="@mipmap/btn_follow"/>
 
                         <LinearLayout
                             android:id="@+id/linearLayout"
@@ -200,7 +200,7 @@
                             <ImageView
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                app:srcCompat="@drawable/option_note"/>
+                                app:srcCompat="@mipmap/option_note"/>
 
                             <TextView
                                 android:id="@+id/tv_title_note"
@@ -221,7 +221,7 @@
                             <ImageView
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                app:srcCompat="@drawable/option_reply"/>
+                                app:srcCompat="@mipmap/option_reply"/>
 
                             <TextView
                                 android:id="@+id/tv_title_reply"

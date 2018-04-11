@@ -112,15 +112,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_add_cat"/>
+                        android:src="@mipmap/option_apply"/>
 
-                    <ImageView
-                        android:visibility="gone"
-                        android:id="@+id/imageView18"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:src="@drawable/ic_insert_emoticon_black_24dp"/>
 
                     <ImageView
                         android:id="@+id/imageView17"

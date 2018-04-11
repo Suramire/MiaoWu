@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.SearchContract;
@@ -29,7 +29,7 @@ import butterknife.Bind;
  * Created by Suramire on 2018/1/26.
  */
 
-public class SearchActivity extends BaseSwipeActivity<SearchPresenter> implements SearchContract.View {
+public class SearchActivity extends BaseActivity<SearchPresenter> implements SearchContract.View {
     @Bind(R.id.search_view)
     SearchView searchView;
     @Bind(R.id.toolbar)

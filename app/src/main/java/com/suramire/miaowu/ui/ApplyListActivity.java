@@ -10,7 +10,6 @@ import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseListActivity;
-import com.suramire.miaowu.base.BaseSwipeActivity;
 import com.suramire.miaowu.bean.Apply;
 import com.suramire.miaowu.contract.ApplyContract;
 import com.suramire.miaowu.presenter.ApplyPresenter;

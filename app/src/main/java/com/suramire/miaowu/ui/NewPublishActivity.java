@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonAdapter;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.contract.PublishContract;
@@ -47,7 +47,7 @@ import me.iwf.photopicker.PhotoPreview;
  */
 // TODO: 2017/10/27 字数限制
 
-public class NewPublishActivity extends BaseSwipeActivity<PublishPresenter> implements PublishContract.View {
+public class NewPublishActivity extends BaseActivity<PublishPresenter> implements PublishContract.View {
     @Bind(R.id.toolbar)
     MyToolbar mToolbar;
     @Bind(R.id.gridview_picture)
@@ -252,7 +252,7 @@ public class NewPublishActivity extends BaseSwipeActivity<PublishPresenter> impl
     }
 
 
-    @OnClick({R.id.toolbar_image_left, R.id.toolbar_text_right,R.id.imageView17, R.id.imageView19, R.id.imageView18})
+    @OnClick({R.id.toolbar_image_left, R.id.toolbar_text_right,R.id.imageView17, R.id.imageView19})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.toolbar_image_left:
@@ -271,9 +271,7 @@ public class NewPublishActivity extends BaseSwipeActivity<PublishPresenter> impl
 
             }
             break;
-            case R.id.imageView18: {
-            }
-            break;
+
             case R.id.imageView17: {
                 PhotoPicker.builder()
                         .setPhotoCount(9)

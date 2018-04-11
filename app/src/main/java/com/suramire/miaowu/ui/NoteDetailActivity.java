@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.adapter.MultiItemAdapter;
 import com.suramire.miaowu.base.App;
-import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Apply;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi0;
@@ -47,7 +47,7 @@ import butterknife.OnClick;
  * Created by Suramire on 2017/10/17.
  */
 
-public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> implements NoteDetailContract.View {
+public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implements NoteDetailContract.View {
 
     @Bind(R.id.toolbar)
     MyToolbar mToolbar;
@@ -61,10 +61,6 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
     LinearLayout llBottom;
     @Bind(R.id.edittext_comment)
     EditText edittextComment;
-    @Bind(R.id.imageView9)
-    ImageView imageView9;
-    @Bind(R.id.imageView13)
-    ImageView imageView13;
     @Bind(R.id.button2)
     Button button2;
     @Bind(R.id.ll_popup)
@@ -362,10 +358,7 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
 
                         }
 
-                        @Override
-                        public void onFailure(String failureMessage) {
-                            Toast.makeText(mContext, "发表失败:" + failureMessage, Toast.LENGTH_SHORT).show();
-                        }
+
 
                         @Override
                         public void onError(String errorMessage) {
@@ -400,9 +393,6 @@ public class NoteDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> i
                         bottomCommentDialogFragment.dismiss();
                     }
 
-                    @Override
-                    public void onFailure(String failureMessage) {
-                    }
 
                     @Override
                     public void onError(String errorMessage) {

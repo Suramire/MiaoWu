@@ -56,11 +56,6 @@ dependencies {
     //微信分享相关jar包
     compile files('libs/MobCommons-2017.0914.1125.jar')
     compile files('libs/MobTools-2017.0914.1125.jar')
-    compile files('libs/ShareSDK-Core-3.1.0.jar')
-    compile files('libs/ShareSDK-Wechat-3.1.0.jar')
-    compile files('libs/ShareSDK-Wechat-Core-3.1.0.jar')
-    compile files('libs/ShareSDK-Wechat-Favorite-3.1.0.jar')
-    compile files('libs/ShareSDK-Wechat-Moments-3.1.0.jar')
     //短信验证码相关
     compile name: 'SMSSDK-3.0.0', ext: 'aar'
     //JSON

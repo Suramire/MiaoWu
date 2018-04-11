@@ -2,7 +2,6 @@ package com.suramire.miaowu.contract;
 
 import com.suramire.miaowu.base.BasePresenter;
 import com.suramire.miaowu.base.BaseView;
-import com.suramire.miaowu.base.OnGetResultListener;
 
 import rx.Observable;
 

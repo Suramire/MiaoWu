@@ -5,7 +5,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,25 +16,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
-import com.suramire.miaowu.ui.HDPictureActivity;
 import com.suramire.miaowu.ui.ProfileActivity;
-import com.suramire.miaowu.ui.ReplyDetailActivity;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
-import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,8 +63,8 @@ public class MultiItemAdapter extends BaseAdapter {
         public void displayImage(Context context, Object path, ImageView imageView) {
             Glide.with(context)
                     .load(path)
-                    .placeholder(R.drawable.ic_loading)
-                    .error(R.drawable.ic_loading_error)
+                    .placeholder(R.mipmap.ic_loading)
+                    .error(R.mipmap.ic_loading_error)
                     .into(imageView);
         }
     }
@@ -154,15 +147,7 @@ public class MultiItemAdapter extends BaseAdapter {
             mVH.mtvTitle.setVisibility(View.VISIBLE);
             isFirst = false;
         }
-        mVH.mll_repleydetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, ReplyDetailActivity.class);
-                intent.putExtra("multi",  multi0);
 
-                mContext.startActivity(intent);
-            }
-        });
         return convertView;
     }
 

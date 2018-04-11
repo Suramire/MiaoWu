@@ -18,6 +18,7 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.http.GET;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -99,6 +100,10 @@ public class ApiLoader {
 
     public static Observable<BaseResponse<List<User>>> getUserFollower(User user){
         return observer(getApiService().getUserFollower(GsonUtil.objectToJson(user)));
+    }
+
+    public static Observable<BaseResponse<Void>> modifyPassword(User user){
+        return observer(getApiService().modifyPassword(GsonUtil.objectToJson(user)));
     }
 
 

@@ -75,7 +75,10 @@ public interface ApiService {
     @Multipart
     @POST("getPicUser")
     Observable<BaseResponse<Object>> uploadUserIcon(@Part("description") RequestBody description,
-                                                   @Part MultipartBody.Part file);
+                                                    @Part MultipartBody.Part file);
+    //修改用户密码
+    @GET("modifypwdUser")
+    Observable<BaseResponse<Void>> modifyPassword(@Query(JSON) String string);
 
     /*帖子相关*/
     //获取首页帖子 所有

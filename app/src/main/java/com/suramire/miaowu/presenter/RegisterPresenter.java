@@ -1,6 +1,5 @@
 package com.suramire.miaowu.presenter;
 
-import com.suramire.miaowu.base.OnGetResultListener;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.RegisterContract;
 import com.suramire.miaowu.http.base.ResponseSubscriber;

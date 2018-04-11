@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Apply;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Note;
@@ -36,7 +36,7 @@ import butterknife.OnClick;
  * Created by Suramire on 2018/4/9.
  */
 
-public class ApplyDetailActivity extends BaseSwipeActivity<NoteDetailPresenter> implements NoteDetailContract.View {
+public class ApplyDetailActivity extends BaseActivity<NoteDetailPresenter> implements NoteDetailContract.View {
     @Bind(R.id.toolbar_image_left)
     ImageView toolbarImageLeft;
     @Bind(R.id.toolbar_text_center)

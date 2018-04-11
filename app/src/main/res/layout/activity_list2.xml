@@ -56,7 +56,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="150dp"
-            android:src="@drawable/empty_list"/>
+            android:src="@mipmap/empty_list"/>
 
         <TextView
             android:id="@+id/tv_empty"

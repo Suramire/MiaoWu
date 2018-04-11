@@ -176,13 +176,13 @@ public class ProfileActivity extends BaseActivity<UserPresenter> implements User
                 imageButton.setVisibility(View.GONE);
                 break;//未登录用户
             case 1:
-                imageButton.setImageResource(R.drawable.btn_unfollow);
+                imageButton.setImageResource(R.mipmap.btn_unfollow);
                 break;//登录用户关注页面用户
             case 2:
-                imageButton.setImageResource(R.drawable.btn_follow);
+                imageButton.setImageResource(R.mipmap.btn_follow);
                 break;//用户未关注页面用户
             case 3:
-                imageButton.setImageResource(R.drawable.btn_follow_eachother);
+                imageButton.setImageResource(R.mipmap.btn_follow_eachother);
                 ;
                 break;//互相关注
         }

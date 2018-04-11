@@ -1,16 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">MiaoWu</string>
-    <string name="course_intro">编程语言层出不穷，能以不变应万变的奥秘就是“编程之魂”。本课程将高中生学习编程前应该了解的那些事儿，从具体的编程语言中剥离出来，取其灵魂，聚焦于程序审计思维的建立，不讲编程语言，只讲编程思想和方法，不写代码，也能运行“程序”。</string>
-    <string name="coach_intro">男，1964年12月出生，湖北随州人，汉族。研究生学历，博士学位，副教授职称。现任哈尔滨工业大学经济与管理系主任，博士生导师……</string>
-    <string name="coach_name">张三</string>
-    <string name="coach_org">副教授 | 哈尔滨工业大学</string>
-    <string name="org_intro">哈尔滨工业大学（Harbin Insitute of Technology），简称哈工大，是首批中央直属管理、工业和信息化部直属的全国重点大学，由工信部、教育部、黑龙江省……</string>
-    <string name="hgd">哈尔滨工业大学</string>
-    <string name="course">课程</string>
-    <string name="coach">讲师</string>
-    <string name="course_name">课程名称</string>
-    <string name="org_name">机构名称</string>
-    <string name="course_starttime">开课时间</string>
     <string name="hint_password">请输入密码</string>
     <string name="hint_password2">请确认密码</string>
     <string name="tab_email">邮箱注册</string>

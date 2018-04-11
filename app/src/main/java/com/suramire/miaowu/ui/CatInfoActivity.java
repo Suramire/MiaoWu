@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseSwipeActivity;
+import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
@@ -21,7 +21,7 @@ import butterknife.Bind;
  * Created by Suramire on 2017/11/25.
  */
 
-public class CatInfoActivity extends BaseSwipeActivity {
+public class CatInfoActivity extends BaseActivity {
     @Bind(R.id.toolbar)
     MyToolbar mToolbar;
     @Bind(R.id.sp_sex)

@@ -28,7 +28,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             if(mPresenter!=null){
                 mPresenter.attachView(this);
             }
-            App.getInstance().addActivity(this);
             initView();
     }
 
@@ -42,7 +41,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         if(mPresenter!=null){
             mPresenter.detachView();
         }
-        App.getInstance().removeActivity(this);
     }
 
     /**
@@ -63,9 +61,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
 
 
-
-
-    /*为Activity切换提供动画效果*/
     public void startActivity(Class<?> cls){
         startActivity(cls,null);
     }
@@ -76,17 +71,12 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             intent.putExtras(bundle);
         }
         startActivity(intent);
-//        overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
     }
 
 
-    /*为Activity退出提供动画效果*/
-//    @Override
-//    public void finish() {
-//        super.finish();
-//        overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
-//    }
-
+    /**
+     * 返回图标点击事件
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() ==android.R.id.home){

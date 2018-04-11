@@ -45,13 +45,13 @@ public class FileUtil {
             b = new FileOutputStream(fileName);
             mBitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
         } catch (FileNotFoundException e) {
-            Log.e("TestActivity", "FileNotFoundException@writeToSDCard:" + e);
+            Log.e("FileUtil", "FileNotFoundException@writeToSDCard:" + e);
         } finally {
             try {// 关闭流
                 b.flush();
                 b.close();
             } catch (IOException e) {
-                Log.e("TestActivity", "IOException@writeToSDCard" + e);
+                Log.e("FileUtil", "IOException@writeToSDCard" + e);
             }
         }
         return fileName;
