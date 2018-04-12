@@ -14,6 +14,7 @@ import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.presenter.UserPresenter;
 import com.suramire.miaowu.ui.ApplyListActivity;
+import com.suramire.miaowu.ui.CatInfoActivity;
 import com.suramire.miaowu.ui.FansListActivity;
 import com.suramire.miaowu.ui.LoginActivity;
 import com.suramire.miaowu.ui.NoteListActivity;
@@ -58,6 +59,10 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
     LinearLayout llLogin;
     @Bind(R.id.ll_verify)
     LinearLayout llVerify;
+    @Bind(R.id.ll_verifycat)
+    LinearLayout llVerifycat;
+    @Bind(R.id.ll_addcat)
+    LinearLayout llAddCat;
 
     private ProgressDialog mProgressDialog;
     private Integer uid;
@@ -114,11 +119,11 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
 
 
     @OnClick({R.id.btn_login, R.id.img_icon, R.id.ll_followlist, R.id.ll_followerlist,
-            R.id.ll_mynote, R.id.ll_note2,R.id.ll_verify,R.id.ll_apply})
+            R.id.ll_mynote, R.id.ll_note2,R.id.ll_verify,R.id.ll_apply,R.id.ll_verifycat,
+            R.id.ll_addcat})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-//                startActivityForResult(LoginActivity.class,ApiConfig.LOGINREQUESTCODE);
                 getActivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class), ApiConfig.LOGINREQUESTCODE);
                 break;
             case R.id.img_icon:
@@ -155,6 +160,13 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
                 intent3.putExtra("uid", getUid());
                 startActivity(intent3);
                 break;
+            case R.id.ll_verifycat:
+                // TODO: 2018/4/12 猫咪领养审核
+                break;
+
+            case R.id.ll_addcat:
+                startActivity(CatInfoActivity.class);
+               break;
         }
     }
 
@@ -173,7 +185,10 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
         tvUsername.setText(userinfo.getNickname());
         uid = userinfo.getId();
         //登录用户为管理员时显示审核帖子选项
-        llVerify.setVisibility(userinfo.getRole()==1?View.VISIBLE:View.GONE);
+        int visibility = userinfo.getRole()==1?View.VISIBLE:View.GONE;
+        llVerify.setVisibility(visibility);
+        llAddCat.setVisibility(visibility);
+        llVerifycat.setVisibility(visibility);
 
 
 

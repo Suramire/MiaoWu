@@ -8,8 +8,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
-
     <LinearLayout
         android:id="@+id/ll_notlogin"
         android:layout_width="match_parent"
@@ -45,9 +43,6 @@
             android:textColor="@android:color/white"/>
     </LinearLayout>
 
-
-
-
         <LinearLayout
             android:id="@+id/ll_login"
             android:layout_width="match_parent"
@@ -55,24 +50,25 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="2dp"
-                app:cardElevation="2dp">
-
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="360dp"
-                    android:background="@drawable/bg_person">
-
-
+                    android:layout_height="360dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
+                        android:background="@drawable/bg_person"
+                        android:layout_height="190dp"/>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
                         android:layout_height="170dp"
-                        android:layout_alignParentBottom="true"
                         android:layout_alignParentStart="true"
+                        android:layout_alignParentBottom="true"
+                        android:elevation="2dp"
+                        app:cardElevation="2dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="170dp"
                         android:background="@android:color/white"
                         android:orientation="vertical">
 
@@ -184,6 +180,7 @@
                         </LinearLayout>
 
                     </LinearLayout>
+                    </android.support.v7.widget.CardView>
 
                     <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/img_icon"
@@ -198,7 +195,6 @@
 
                 </RelativeLayout>
 
-            </android.support.v7.widget.CardView>
 
 
             <android.support.v7.widget.CardView
@@ -306,6 +302,50 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_gravity="center"
                                 android:text="@string/note_verify"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_verifycat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:visibility="gone"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                app:srcCompat="@mipmap/option_verify"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_gravity="center"
+                                android:text="@string/apply_verify"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_addcat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:visibility="gone"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                app:srcCompat="@mipmap/option_verify"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_gravity="center"
+                                android:text="@string/addcat"/>
 
                         </LinearLayout>
 

@@ -115,6 +115,30 @@ public class ApiLoader {
     }
 
 
+    /*猫咪相关*/
+
+    public static Observable<BaseResponse<Integer>> addOneCat(Catinfo catinfo){
+        return observer(getApiService().addCat(GsonUtil.objectToJson(catinfo)));
+    }
+
+    public static Observable<BaseResponse<Catinfo>> getOneCat(Catinfo catinfo){
+        return observer(getApiService().getOneCat(GsonUtil.objectToJson(catinfo)));
+    }
+
+    public static Observable<BaseResponse<List<Catinfo>>> getAllCat(Catinfo catinfo){
+        return observer(getApiService().getAllCat(GsonUtil.objectToJson(catinfo)));
+    }
+
+    public static Observable<BaseResponse<List<Catinfo>>> getAllCat(){
+        return observer(getApiService().getAllCat(GsonUtil.objectToJson(null)));
+    }
+
+    public static Observable<BaseResponse<Void>> uploadCatPicture(RequestBody description , MultipartBody.Part body){
+        return observer(getApiService().uploadCatPicture(description, body));
+    }
+
+
+
     /*帖子相关*/
 
     public static Observable<BaseResponse<List<Multi>>> getMultiNotes(Note note){

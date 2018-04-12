@@ -10,6 +10,7 @@ public class ApiConfig {
     public static final String BASEURL = "http://10.0.2.2:8080/Miaowu/";
     public static final String BASNOTEPICEURL = BASEURL+"upload/note/";
     public static final String BASUSERPICEURL = BASEURL+"upload/user/";
+    public static final String BASECATPICEURL = BASEURL+"upload/user/";
     public static final int REQUESTCODE = 998;
     public static final int REQUESTCODE_PHOTO = 987;
     public static final int REQUESTCODE_NOTIFICATION = 233;//通知页请求码

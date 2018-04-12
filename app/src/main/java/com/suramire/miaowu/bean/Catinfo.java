@@ -1,5 +1,6 @@
 package com.suramire.miaowu.bean;
-// default package
+
+import java.util.Date;
 
 /**
  * Catinfo entity. @author MyEclipse Persistence Tools
@@ -16,9 +17,11 @@ public class Catinfo implements java.io.Serializable {
 	private Integer age;
 	private Integer neutering;
 	private Integer insecticide;
-	private Integer contacttype;
-	private String contact;
+	private Date adddate;
 	private String conditions;
+	private Integer isAdopted;
+	private Date adoptdate;
+	private Integer uid;
 
 	// Constructors
 
@@ -26,18 +29,26 @@ public class Catinfo implements java.io.Serializable {
 	public Catinfo() {
 	}
 
+	/** minimal constructor */
+	public Catinfo(Date adddate, Integer isAdopted) {
+		this.adddate = adddate;
+		this.isAdopted = isAdopted;
+	}
+
 	/** full constructor */
 	public Catinfo(String type, Integer sex, Integer age, Integer neutering,
-			Integer insecticide, Integer contacttype, String contact,
-			String conditions) {
+			Integer insecticide, Date adddate, String conditions,
+			Integer isAdopted, Date adoptdate, Integer uid) {
 		this.type = type;
 		this.sex = sex;
 		this.age = age;
 		this.neutering = neutering;
 		this.insecticide = insecticide;
-		this.contacttype = contacttype;
-		this.contact = contact;
+		this.adddate = adddate;
 		this.conditions = conditions;
+		this.isAdopted = isAdopted;
+		this.adoptdate = adoptdate;
+		this.uid = uid;
 	}
 
 	// Property accessors
@@ -90,20 +101,12 @@ public class Catinfo implements java.io.Serializable {
 		this.insecticide = insecticide;
 	}
 
-	public Integer getContacttype() {
-		return this.contacttype;
+	public Date getAdddate() {
+		return this.adddate;
 	}
 
-	public void setContacttype(Integer contacttype) {
-		this.contacttype = contacttype;
-	}
-
-	public String getContact() {
-		return this.contact;
-	}
-
-	public void setContact(String contact) {
-		this.contact = contact;
+	public void setAdddate(Date adddate) {
+		this.adddate = adddate;
 	}
 
 	public String getConditions() {
@@ -112,6 +115,30 @@ public class Catinfo implements java.io.Serializable {
 
 	public void setConditions(String conditions) {
 		this.conditions = conditions;
+	}
+
+	public Integer getIsAdopted() {
+		return this.isAdopted;
+	}
+
+	public void setIsAdopted(Integer isAdopted) {
+		this.isAdopted = isAdopted;
+	}
+
+	public Date getAdoptdate() {
+		return this.adoptdate;
+	}
+
+	public void setAdoptdate(Date adoptdate) {
+		this.adoptdate = adoptdate;
+	}
+
+	public Integer getUid() {
+		return this.uid;
+	}
+
+	public void setUid(Integer uid) {
+		this.uid = uid;
 	}
 
 }

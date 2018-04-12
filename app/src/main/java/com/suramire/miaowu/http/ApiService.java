@@ -88,6 +88,23 @@ public interface ApiService {
     @GET("updateAvaterUser")
     Observable<BaseResponse<Void>> updateAvater(@Query(JSON) String string);
 
+    //获取一只猫咪信息
+    @GET("getOneCat")
+    Observable<BaseResponse<Catinfo>> getOneCat(@Query(JSON) String string);
+
+    @FormUrlEncoded
+    @POST("addCat")
+    Observable<BaseResponse<Integer>> addCat(@Field(JSON) String string);
+
+    @GET("getAllCat")
+    Observable<BaseResponse<List<Catinfo>>> getAllCat(@Query(JSON) String string);
+
+
+    @Multipart
+    @POST("uploadPicCat")
+    Observable<BaseResponse<Void>> uploadCatPicture(@Part("description") RequestBody description,
+                                                @Part MultipartBody.Part file);
+
     /*帖子相关*/
     //获取首页帖子 所有
     @FormUrlEncoded

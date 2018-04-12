@@ -142,4 +142,8 @@
     <string name="hint_login">请先登录</string>
     <string name="tx_login">登&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;&#x0020;录</string>
     <string name="applyhistory">领养记录</string>
+    <string name="apply_verify">领养审核</string>
+    <string name="picture">图片</string>
+    <string name="choosepicture">选择图片</string>
+    <string name="addcat">添加猫咪</string>
 </resources>

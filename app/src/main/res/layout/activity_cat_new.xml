@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/white"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:divider="@drawable/divider"
+    android:showDividers="middle|end"
+    android:orientation="vertical">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,14 +20,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/sex"/>
+            android:text="@string/picture" />
 
-        <Spinner
-            android:id="@+id/sp_sex"
+        <TextView
+            android:id="@+id/tv_choosepic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:entries="@array/sexs"/>
+            android:text="@string/choosepicture"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <HorizontalScrollView
+            android:id="@+id/hscroll"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="bottom"
+            android:visibility="gone"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <GridView
+                    android:id="@+id/gridview_picture"
+                    android:layout_width="900dp"
+                    android:layout_height="100dp"
+                    android:background="@color/white"
+                    android:columnWidth="100dp"
+                    android:numColumns="auto_fit">
+
+                </GridView>
+            </LinearLayout>
+        </HorizontalScrollView>
 
     </LinearLayout>
 
@@ -38,7 +73,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/age"/>
+            android:text="@string/sex" />
+
+        <Spinner
+            android:id="@+id/sp_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/sexs" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/age" />
 
         <Spinner
             android:id="@+id/sp_age"
@@ -46,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:entries="@array/ages"
-            android:spinnerMode="dialog"/>
+            android:spinnerMode="dialog" />
 
     </LinearLayout>
 
@@ -60,14 +116,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/neutering"/>
+            android:text="@string/neutering" />
 
         <Spinner
             android:id="@+id/sp_neutering"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:entries="@array/options"/>
+            android:entries="@array/options" />
 
     </LinearLayout>
 
@@ -81,14 +137,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/insecticide"/>
+            android:text="@string/insecticide" />
 
         <Spinner
             android:id="@+id/sp_insecticide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:entries="@array/options"/>
+            android:entries="@array/options" />
 
     </LinearLayout>
 
@@ -100,11 +156,10 @@
         android:padding="8dp">
 
         <TextView
-            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/type"/>
+            android:text="@string/type" />
 
         <EditText
             android:id="@+id/edt_type"
@@ -112,8 +167,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName"
-            />
+            android:inputType="textPersonName" />
 
     </LinearLayout>
 
@@ -127,7 +181,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/otherCondition"/>
+            android:text="@string/otherCondition" />
 
         <EditText
             android:id="@+id/edt_conditions"
@@ -138,7 +192,7 @@
             android:gravity="top"
             android:hint="@string/hint_conditions"
             android:inputType="textPersonName"
-            android:padding="8dp"/>
+            android:padding="8dp" />
     </LinearLayout>
 
 
