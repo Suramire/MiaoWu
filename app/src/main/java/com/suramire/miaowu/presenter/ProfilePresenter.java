@@ -64,6 +64,47 @@ public class ProfilePresenter implements ProfileContract.Presenter {
     }
 
     @Override
+    public void updateAvater() {
+        mView.showLoading();
+        Subscription subscribe = mProfileModel.updateAvater(mView.getUid())
+                .subscribe(new ResponseSubscriber<Void>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("更新用户头像字段时出错："+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        mView.cancelLoading();
+                        uploadAvater();
+                    }
+                });
+        compositeSubscription.add(subscribe);
+
+    }
+
+    @Override
+    public void uploadAvater() {
+        mView.showLoading();
+        Subscription subscribe = mProfileModel.uploadAvater(mView.getUid(), mView.getAvaterPath())
+                .subscribe(new ResponseSubscriber<Void>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToast("上传用户头像时出错：" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        mView.cancelLoading();
+                        mView.onUpdateAvaterSuccess();
+                    }
+                });
+        compositeSubscription.add(subscribe);
+    }
+
+    @Override
     public void attachView(ProfileContract.View view) {
         mView = view;
         compositeSubscription = new CompositeSubscription();

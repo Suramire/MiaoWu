@@ -2,7 +2,6 @@ package com.suramire.miaowu.ui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,7 +22,6 @@ import com.suramire.miaowu.util.ToastUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -32,7 +30,7 @@ import butterknife.OnClick;
  * 他人信息查看
  */
 
-public class ProfileActivity extends BaseActivity<UserPresenter> implements UserContract.View {
+public class UserActivity extends BaseActivity<UserPresenter> implements UserContract.View {
 
 
     @Bind(R.id.img_icon)
@@ -101,7 +99,7 @@ public class ProfileActivity extends BaseActivity<UserPresenter> implements User
 
     @Override
     public int bindLayout() {
-        return R.layout.activity_person;
+        return R.layout.activity_user;
     }
 
     @Override

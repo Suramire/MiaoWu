@@ -22,7 +22,7 @@ import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
-import com.suramire.miaowu.ui.ProfileActivity;
+import com.suramire.miaowu.ui.UserActivity;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.PicassoUtil;
 import com.youth.banner.Banner;
@@ -238,7 +238,6 @@ public class MultiItemAdapter extends BaseAdapter {
         mVH.mButtonApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 2018/4/9 生成领养单与通知
                 if(listener!=null){
                     listener.onClick();
                 }
@@ -272,7 +271,7 @@ public class MultiItemAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 // 进入个人详情页
-                Intent intent = new Intent(mContext, ProfileActivity.class);
+                Intent intent = new Intent(mContext, UserActivity.class);
                 intent.putExtra("uid",user.getId());
                 mContext.startActivity(intent);
             }

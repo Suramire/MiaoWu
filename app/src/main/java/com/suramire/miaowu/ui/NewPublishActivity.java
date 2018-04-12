@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,9 @@ import android.widget.TextView;
 
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonAdapter;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Catinfo;
@@ -38,8 +42,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import me.iwf.photopicker.PhotoPicker;
-import me.iwf.photopicker.PhotoPreview;
 
 
 /**
@@ -81,6 +83,7 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
     @Override
     public void initView() {
         //根据帖子类型判断是否需要填写猫咪信息
+        setSupportActionBar(mToolbar);
         needcat = getIntent().getBooleanExtra("needcat", false);
         mToolbar.setTitle("发表帖子");
         mToolbar.setLeftImage(R.drawable.ic_close_black_24dp);
@@ -104,20 +107,20 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK &&
-                (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
+        if (resultCode == ImagePicker.RESULT_CODE_ITEMS && requestCode == ApiConfig.REQUESTCODE_PHOTO) {
             if (data != null) {
+                mPhotos = new ArrayList<>();
                 mHscroll.setVisibility(View.VISIBLE);
-                mPhotos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-                for (String s : mPhotos
-                        ) {
-                }
-                mGridviewPicture.setAdapter(new CommonAdapter<String>(this, R.layout.item_picture, mPhotos) {
+                ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                mGridviewPicture.setAdapter(new CommonAdapter<ImageItem>(this, R.layout.item_picture, images) {
                     @Override
-                    public void onUpdate(BaseAdapterHelper helper, String item, int position) {
-                        PicassoUtil.show(new File(item),(ImageView) helper.getView(R.id.imageView15));
+                    public void onUpdate(BaseAdapterHelper helper, ImageItem item, int position) {
+                        PicassoUtil.show(new File(item.path),(ImageView) helper.getView(R.id.imageView15));
                     }
                 });
+                for (int i = 0; i < images.size(); i++) {
+                    mPhotos.add(images.get(i).path);
+                }
             }
         }
         if (requestCode == ApiConfig.REQUESTCODE && resultCode == Activity.RESULT_OK) {
@@ -175,18 +178,22 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
             } else {
                 if (!isPublish) {
                     if(mPhotos!=null && mPhotos.size()>0){
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        builder.setTitle("提示")
-                                .setMessage("是否发布该帖子")
-                                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        mPresenter.publishNote(1, 0);
-                                    }
-                                })
-                                .setNegativeButton("取消", null)
-                                .setCancelable(true)
-                                .show();
+                        String title = mEditTitle.getText().toString().trim();
+                        String content = mEditContent.getText().toString().trim();
+                        L.e("content.length():" + content);
+                        if(TextUtils.isEmpty(title)|| TextUtils.isEmpty(content)){
+                            ToastUtil.showShortToastCenter("请输入帖子标题和内容");
+                        }else if(content.length()>32767){
+                            ToastUtil.showShortToastCenter("输入的内容长度超出限制");
+                        }else{
+                            CommonUtil.showDialog(mContext, "提示", "是否发布该帖子？",
+                                    "确认", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            mPresenter.publishNote(1, 0);
+                                        }
+                                    },"取消",null);
+                        }
                     }else{
                         ToastUtil.showShortToastCenter("帖子配图不能为空");
                     }
@@ -201,8 +208,6 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
                     });
                 }
             }
-
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -273,10 +278,10 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
             break;
 
             case R.id.imageView17: {
-                PhotoPicker.builder()
-                        .setPhotoCount(9)
-                        .setGridColumnCount(4)
-                        .start(this);
+                ImagePicker imagePicker = ImagePicker.getInstance();
+                imagePicker.setSelectLimit(9);    //选中数量限制
+                Intent intent = new Intent(mContext, ImageGridActivity.class);
+                startActivityForResult(intent,ApiConfig.REQUESTCODE_PHOTO);
             }
             break;
         }

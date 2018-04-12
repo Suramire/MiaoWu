@@ -12,7 +12,6 @@ import android.widget.ImageView;
 
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
-import com.google.gson.reflect.TypeToken;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseListFragment;
 import com.suramire.miaowu.bean.Note;
@@ -20,7 +19,7 @@ import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.SearchContract;
 import com.suramire.miaowu.presenter.SearchPresenter;
 import com.suramire.miaowu.ui.NoteDetailActivity;
-import com.suramire.miaowu.ui.ProfileActivity;
+import com.suramire.miaowu.ui.UserActivity;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
@@ -106,7 +105,7 @@ public class SearchResultFragment extends BaseListFragment implements SearchCont
                                 .setOnClickListener(R.id.ll_fans, new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        Intent intent = new Intent(mContext, ProfileActivity.class);
+                                        Intent intent = new Intent(mContext, UserActivity.class);
                                         intent.putExtra("uid",item.getId());
                                         startActivity(intent);
                                     }

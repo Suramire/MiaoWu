@@ -3,7 +3,6 @@ package com.suramire.miaowu.ui;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,17 +18,14 @@ import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.presenter.NoteDetailPresenter;
-import com.suramire.miaowu.util.A;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -163,7 +159,7 @@ public class ApplyDetailActivity extends BaseActivity<NoteDetailPresenter> imple
         llProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, ProfileActivity.class);
+                Intent intent = new Intent(mContext, UserActivity.class);
                 intent.putExtra("uid",user.getId());
                 mContext.startActivity(intent);
             }
@@ -226,7 +222,6 @@ public class ApplyDetailActivity extends BaseActivity<NoteDetailPresenter> imple
         CommonUtil.showDialog(mContext, "提示", "操作成功", "确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // TODO: 2018/4/9  关闭后刷新主页通知栏
                 setResult(ApiConfig.RESULTCODE_NOTIFICATION);
                 finish();
             }

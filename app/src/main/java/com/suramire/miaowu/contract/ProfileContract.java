@@ -15,6 +15,10 @@ public interface ProfileContract {
         Observable<T> getProfile(int id);
 
         Observable<T> updateProfile(User user);
+
+        Observable<T> updateAvater(int uid);
+
+        Observable<T> uploadAvater(int uid,String path);
     }
 
     interface View extends BaseView {
@@ -25,6 +29,10 @@ public interface ProfileContract {
 
         void onUpdateSuccess(User user);
 
+        String getAvaterPath();
+
+        void onUpdateAvaterSuccess();
+
 
     }
 
@@ -33,5 +41,9 @@ public interface ProfileContract {
         void getProfile();
         //更新用户信息
         void updateProfile();
+        //更新用户头像字段
+        void updateAvater();
+
+        void uploadAvater();
     }
 }

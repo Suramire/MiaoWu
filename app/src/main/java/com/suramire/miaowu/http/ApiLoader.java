@@ -106,6 +106,14 @@ public class ApiLoader {
         return observer(getApiService().modifyPassword(GsonUtil.objectToJson(user)));
     }
 
+    public static Observable<BaseResponse<Void>> updateAvater(User user){
+        return observer(getApiService().updateAvater(GsonUtil.objectToJson(user)));
+    }
+
+    public static Observable<BaseResponse<Void>> uploadAvater(RequestBody description , MultipartBody.Part body){
+        return observer(getApiService().uploadAvater(description,body));
+    }
+
 
     /*帖子相关*/
 

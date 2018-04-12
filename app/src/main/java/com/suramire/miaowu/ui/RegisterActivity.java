@@ -255,7 +255,6 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
 
     @Override
     public void onPhoneSuccess() {
-        // TODO: 2018/1/24 手机验证成功后的处理
         SMSSDK.getVerificationCode("86", getPhoneNumber());
         goStep1();
     }

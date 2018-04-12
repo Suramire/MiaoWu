@@ -15,11 +15,10 @@ import com.suramire.miaowu.contract.NotificationContract;
 import com.suramire.miaowu.presenter.NotificationPresenter;
 import com.suramire.miaowu.ui.ApplyDetailActivity;
 import com.suramire.miaowu.ui.NoteDetailActivity;
-import com.suramire.miaowu.ui.ProfileActivity;
+import com.suramire.miaowu.ui.UserActivity;
 import com.suramire.miaowu.util.A;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.ToastUtil;
 
 import java.util.List;
 
@@ -114,7 +113,7 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
 //                        ToastUtil.showShortToastCenter("点击通知内容:类型"+item.getType());
                         switch (item.getType()){
                             case 1:{
-                                intent = new Intent(mContext, ProfileActivity.class);
+                                intent = new Intent(mContext, UserActivity.class);
                                 intent.putExtra("uid", item.getUid1());
                             }break;//关注类通知 点击跳转到关注源用户
                             case 2:{

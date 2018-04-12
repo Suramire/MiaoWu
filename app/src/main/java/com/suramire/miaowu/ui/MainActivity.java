@@ -19,11 +19,9 @@ import com.suramire.miaowu.contract.MainContract;
 import com.suramire.miaowu.presenter.MainPresenter;
 import com.suramire.miaowu.ui.fragment.HomeFragment;
 import com.suramire.miaowu.ui.fragment.NotificationFragment;
-import com.suramire.miaowu.ui.fragment.PersonFragment;
+import com.suramire.miaowu.ui.fragment.UserFragment;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.SPUtils;
-import com.suramire.miaowu.util.ToastUtil;
 import com.suramire.miaowu.wiget.LazyViewPager;
 import com.suramire.miaowu.wiget.MyToolbar;
 
@@ -130,8 +128,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 bottomNavigationBar.selectTab(currentPosition);
             }
         });
-        PersonFragment personFragment2 = new PersonFragment();
-        personFragment2.setListener(new PersonFragment.OnUserListener() {
+        UserFragment userFragment2 = new UserFragment();
+        userFragment2.setListener(new UserFragment.OnUserListener() {
             @Override
             public void onGetUserSuccess(User user) {
                 mUser = user;
@@ -139,7 +137,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         });
         fragments.add(homeFragment);
         fragments.add(notificationFragment);
-        fragments.add(personFragment2);
+        fragments.add(userFragment2);
 
         viewpager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override

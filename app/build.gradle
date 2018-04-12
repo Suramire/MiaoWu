@@ -53,34 +53,30 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     //通用适配器
     compile 'com.classic.adapter:commonadapter:1.8.1'
-    //微信分享相关jar包
+    //短信验证码相关
     compile files('libs/MobCommons-2017.0914.1125.jar')
     compile files('libs/MobTools-2017.0914.1125.jar')
-    //短信验证码相关
     compile name: 'SMSSDK-3.0.0', ext: 'aar'
-    //JSON
-    compile 'com.squareup.okhttp3:okhttp:3.3.0'
     //圆形头像
     compile 'com.makeramen:roundedimageview:2.2.1'
     //图片选择器
-    compile 'me.iwf.photopicker:PhotoPicker:0.9.5@aar'
-    compile 'com.github.bumptech.glide:glide:3.6.1'
-    compile 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.lzy.widget:imagepicker:0.6.1'
     //百分比布局
     compile 'com.android.support:percent:26.+'
     //轮播图
     compile 'com.youth.banner:banner:1.4.9'
     //图片加载毕加索
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
     //Retrofit + RxJava
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'//retrofit
-    compile 'com.google.code.gson:gson:2.6.2'//Gson 库
     //下面两个是RxJava 和RxAndroid
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'//转换器，请求结果转换成Model
+    compile 'com.google.code.gson:gson:2.6.2'//Gson 库
+    compile 'com.squareup.okhttp3:okhttp:3.3.0'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'//retrofit
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'//json转换器，请求结果转换成Model
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'//配合Rxjava 使用 。
-    compile 'me.imid.swipebacklayout.lib:library:1.1.0'//右滑返回
 
     compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'//底部导航
 }

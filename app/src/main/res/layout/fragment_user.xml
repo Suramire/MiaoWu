@@ -46,9 +46,7 @@
     </LinearLayout>
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
 
         <LinearLayout
             android:id="@+id/ll_login"
@@ -69,17 +67,6 @@
                     android:background="@drawable/bg_person">
 
 
-
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:id="@+id/img_icon"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="120dp"
-                        android:elevation="4dp"
-                        android:scaleType="centerCrop"
-                        android:src="@mipmap/ic_cat_icon"
-                        app:riv_oval="true"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -102,19 +89,6 @@
                             android:textColor="@color/black"
                             android:textSize="22sp"/>
 
-                        <TextView
-                            android:id="@+id/tv_signal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_above="@+id/linearLayout"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginBottom="16dp"
-                            android:text="@string/my_signal"
-                            android:textAlignment="center"
-                            android:textColor="@color/verydarkgray"
-                            android:visibility="gone"
-                            android:textSize="14sp"
-                            />
 
                         <LinearLayout
                             android:id="@+id/linearLayout"
@@ -210,6 +184,17 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/img_icon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="120dp"
+                        android:elevation="4dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/ic_cat_icon"
+                        app:riv_oval="true"/>
 
                 </RelativeLayout>
 
@@ -332,6 +317,5 @@
             </android.support.v7.widget.CardView>
         </LinearLayout>
 
-    </ScrollView>
 
     </LinearLayout>

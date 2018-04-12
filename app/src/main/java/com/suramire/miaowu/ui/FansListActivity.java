@@ -16,7 +16,6 @@ import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.FansContract;
 import com.suramire.miaowu.presenter.FansPresenter;
 import com.suramire.miaowu.util.ApiConfig;
-import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 
@@ -138,7 +137,7 @@ public class FansListActivity extends BaseListActivity<FansPresenter> implements
                         .setOnClickListener(R.id.ll_fans, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent = new Intent(mContext, ProfileActivity.class);
+                                Intent intent = new Intent(mContext, UserActivity.class);
                                 intent.putExtra("uid", item.getId());
                                 startActivity(intent);
                             }

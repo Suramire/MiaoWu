@@ -79,6 +79,14 @@ public interface ApiService {
     //修改用户密码
     @GET("modifypwdUser")
     Observable<BaseResponse<Void>> modifyPassword(@Query(JSON) String string);
+    //图片上传 单张
+    @Multipart
+    @POST("uploadPicUser")
+    Observable<BaseResponse<Void>> uploadAvater(@Part("description") RequestBody description,
+                                                   @Part MultipartBody.Part file);
+    //更新头像字段
+    @GET("updateAvaterUser")
+    Observable<BaseResponse<Void>> updateAvater(@Query(JSON) String string);
 
     /*帖子相关*/
     //获取首页帖子 所有

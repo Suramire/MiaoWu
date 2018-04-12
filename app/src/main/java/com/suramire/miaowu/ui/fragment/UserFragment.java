@@ -29,7 +29,7 @@ import butterknife.OnClick;
  * Created by Suramire on 2018/1/25.
  */
 
-public class PersonFragment extends BaseFragment<UserPresenter> implements UserContract.View {
+public class UserFragment extends BaseFragment<UserPresenter> implements UserContract.View {
 
 
     @Bind(R.id.btn_login)
@@ -40,8 +40,6 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
     RoundedImageView imgIcon;
     @Bind(R.id.tv_username)
     TextView tvUsername;
-    @Bind(R.id.tv_signal)
-    TextView tvSignal;
     @Bind(R.id.tv_follow_count)
     TextView tvFollowCount;
     @Bind(R.id.ll_followlist)
@@ -111,7 +109,7 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
 
     @Override
     public int bindLayout() {
-        return R.layout.fragment_person;
+        return R.layout.fragment_user;
     }
 
 
@@ -168,7 +166,6 @@ public class PersonFragment extends BaseFragment<UserPresenter> implements UserC
 
     @Override
     public void onGetInfoSuccess(User userinfo) {
-        L.e("成功获取用户信息:" + userinfo);
         if(listener!=null){
             listener.onGetUserSuccess(userinfo);
         }

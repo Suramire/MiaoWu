@@ -1,6 +1,7 @@
 package com.suramire.miaowu.ui;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,7 +10,15 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.classic.adapter.BaseAdapterHelper;
+import com.classic.adapter.CommonAdapter;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.User;
@@ -21,6 +30,9 @@ import com.suramire.miaowu.util.PicassoUtil;
 import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.util.ToastUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
+
+import java.io.File;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -59,6 +71,7 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
     private User mUser;
     private ProgressDialog progressDialog;
     private int uid;
+    private String avaterPath;
 
     @Override
     public void showLoading() {
@@ -79,7 +92,12 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
     }
 
     private void showData(User user) {
-        PicassoUtil.show(ApiConfig.BASUSERPICEURL + user.getIcon(), imgIcon);
+//        PicassoUtil.show(ApiConfig.BASUSERPICEURL + user.getIcon(), imgIcon);
+        Picasso.with(mContext)
+                .load(ApiConfig.BASUSERPICEURL + user.getIcon())
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .into(imgIcon);
         edtUsername.setText(user.getNickname());
         edtBirthday.setText(CommonUtil.dateToString(user.getBirthday()));
         edtPhone.setText(user.getPhonenumber());
@@ -130,6 +148,16 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
         showData(user);
     }
 
+    @Override
+    public String getAvaterPath() {
+        return avaterPath;
+    }
+
+    @Override
+    public void onUpdateAvaterSuccess() {
+        ToastUtil.showShortToastCenter("更新头像成功");
+        mPresenter.getProfile();
+    }
 
 
     @OnClick({R.id.toolbar_image_left, R.id.toolbar_text_right, R.id.img_icon, R.id.edt_birthday,
@@ -145,7 +173,10 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
                 mPresenter.updateProfile();
                 break;
             case R.id.img_icon:
-                // TODO: 2018/2/1 选择头像
+                ImagePicker imagePicker = ImagePicker.getInstance();
+                imagePicker.setSelectLimit(1);    //选中数量限制
+                Intent intent = new Intent(mContext, ImageGridActivity.class);
+                startActivityForResult(intent,ApiConfig.REQUESTCODE_PHOTO);
                 break;
             case R.id.edt_birthday:
                 // TODO: 2018/2/1 日期选择
@@ -155,7 +186,6 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
                 ToastUtil.showShortToastCenter("注销成功");
                 setResult(ApiConfig.RESULTCODE);
                 finish();
-                // TODO: 2018/2/1 上一个页面刷新
                 break;
             case R.id.tv_modify_password:
                 // TODO: 2018/2/1 修改密码
@@ -185,5 +215,19 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
         mUser.setContacttype(selectedItemPosition);
         mUser.setContact(contact);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == ImagePicker.RESULT_CODE_ITEMS && requestCode == ApiConfig.REQUESTCODE_PHOTO) {
+            if (data != null) {
+                ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                if(images!=null){
+                    avaterPath = images.get(0).path;
+                    mPresenter.updateAvater();
+                }
+            }
+        }
     }
 }

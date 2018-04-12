@@ -587,7 +587,6 @@ public class LazyViewPager extends ViewGroup {
         Collections.sort(mItems, COMPARATOR);
 
         if (newCurrItem >= 0) {
-            // TODO This currently causes a jump.
             setCurrentItemInternal(newCurrItem, false, true);
             needPopulate = true;
         }
@@ -1234,7 +1233,6 @@ public class LazyViewPager extends ViewGroup {
             final int count = group.getChildCount();
             // Count backwards - let topmost views consume scroll distance first.
             for (int i = count - 1; i >= 0; i--) {
-                // TODO: Add versioned support here for transformed views.
                 // This will not work for transformed views in Honeycomb+
                 final View child = group.getChildAt(i);
                 if (x + scrollX >= child.getLeft() && x + scrollX < child.getRight() &&
@@ -1441,7 +1439,6 @@ public class LazyViewPager extends ViewGroup {
         // ViewPagers should only report accessibility info for the current page,
         // otherwise things get very confusing.
 
-        // TODO: Should this note something about the paging container?
 
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {

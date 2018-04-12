@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_cat_icon_round"
         android:supportsRtl="true"
         android:theme="@style/otherPageStyle">
-        <!--微信分享相关-->
+        <!--短信验证码key-->
         <meta-data android:name="Mob-AppKey" android:value="216b9eb8c2969"/>
         <meta-data android:name="Mob-AppSecret" android:value="8a1bdbea78d4a76bdb8488cd87ad5e3d"/>
 
@@ -29,10 +29,9 @@
             </intent-filter>
         </activity>
         <!--第三方图片选择-->
-        <activity android:name="me.iwf.photopicker.PhotoPickerActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name="me.iwf.photopicker.PhotoPagerActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name="com.lzy.imagepicker.ui.ImagePreviewDelActivity"
+            android:theme="@style/ImagePickerThemeFullScreen"/>
         <!---->
         <activity android:name=".ui.SearchActivity"/>
         <activity android:name=".ui.RegisterActivity"/>
@@ -42,7 +41,7 @@
         <activity android:name=".ui.CatInfoActivity"/>
         <activity android:name=".ui.NoteListActivity"/>
         <activity android:name=".ui.FansListActivity"/>
-        <activity android:name=".ui.ProfileActivity"/>
+        <activity android:name=".ui.UserActivity"/>
         <activity android:name=".ui.ProfileDetailActivity" />
         <activity android:name=".ui.ApplyDetailActivity" />
         <activity android:name=".ui.ApplyListActivity" />
