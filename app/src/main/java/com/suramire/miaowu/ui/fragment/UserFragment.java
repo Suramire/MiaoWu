@@ -13,14 +13,13 @@ import com.suramire.miaowu.base.BaseFragment;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.presenter.UserPresenter;
-import com.suramire.miaowu.ui.ApplyListActivity;
+import com.suramire.miaowu.ui.AdoptHistoryActivity;
 import com.suramire.miaowu.ui.CatInfoActivity;
 import com.suramire.miaowu.ui.FansListActivity;
 import com.suramire.miaowu.ui.LoginActivity;
 import com.suramire.miaowu.ui.NoteListActivity;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
 
 import butterknife.Bind;
@@ -119,7 +118,7 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
 
 
     @OnClick({R.id.btn_login, R.id.img_icon, R.id.ll_followlist, R.id.ll_followerlist,
-            R.id.ll_mynote, R.id.ll_note2,R.id.ll_verify,R.id.ll_apply,R.id.ll_verifycat,
+            R.id.ll_mynote, R.id.ll_note2,R.id.ll_verify,R.id.ll_adopt,R.id.ll_verifycat,
             R.id.ll_addcat})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -154,9 +153,9 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
                 intent0.putExtra("uid", -1);
                 startActivity(intent0);
                 break;
-            case R.id.ll_apply:
+            case R.id.ll_adopt:
                 // 帖子审核页面
-                Intent intent3 = new Intent(mContext, ApplyListActivity.class);
+                Intent intent3 = new Intent(mContext, AdoptHistoryActivity.class);
                 intent3.putExtra("uid", getUid());
                 startActivity(intent3);
                 break;

@@ -61,33 +61,31 @@ public class CatPresenter implements CatContract.Presenter {
         compositeSubscription.add(subscribe);
     }
 
-    @Override
-    public void listCats() {
-        mView.showLoading();
-        Subscription subscribe = catModel.listCats()
-                .subscribe(new ResponseSubscriber<List<Catinfo>>() {
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取猫咪列表时出错："+e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(List<Catinfo> catinfos) {
-                        mView.cancelLoading();
-                        mView.onGetCatListSuccess(catinfos);
-
-                    }
-                });
-        compositeSubscription.add(subscribe);
-
-    }
 
     @Override
     public void uploadPicture() {
 //        mView.showLoading();
         catModel.uploadPicture(mView.getStringPaths(),mView.getCatId());
 
+    }
+
+    @Override
+    public void getAllPictures() {
+        mView.showLoading();
+        catModel.getAllPictures(mView.getCatId())
+                .subscribe(new ResponseSubscriber<List<String>>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("获取猫咪配图时出错："+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<String> strings) {
+                        mView.cancelLoading();
+                        mView.onGetAllPicturesSuccess(strings);
+                    }
+                });
     }
 
     @Override

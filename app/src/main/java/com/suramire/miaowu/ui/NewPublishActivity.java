@@ -67,7 +67,7 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
     private ArrayList<String> mPhotos;
     private boolean isCatInfoOk;
     private Catinfo catInfo;
-    private boolean needcat;
+//    private boolean needcat;
 
 
     @Override
@@ -84,7 +84,7 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
     public void initView() {
         //根据帖子类型判断是否需要填写猫咪信息
         setSupportActionBar(mToolbar);
-        needcat = getIntent().getBooleanExtra("needcat", false);
+//        needcat = getIntent().getBooleanExtra("needcat", false);
         mToolbar.setTitle("发表帖子");
         mToolbar.setLeftImage(R.drawable.ic_close_black_24dp);
         mToolbar.setLeftOnclickListener(new View.OnClickListener() {
@@ -136,77 +136,78 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
             //这里执行发帖操作
             //发送帖子对象（文本）
             //将帖子里的图片传至服务器
-            if (needcat) {
-                if (isCatInfoOk) {
-                    if (!isPublish) {
-                        if(mPhotos!=null && mPhotos.size()>0){
-                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setTitle("提示")
-                                    .setMessage("是否发布该帖子")
-                                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            mPresenter.publishCat();
-                                        }
-                                    })
-                                    .setNegativeButton("取消", null)
-                                    .setCancelable(true)
-                                    .show();
-                        }else{
-                            ToastUtil.showShortToastCenter("帖子配图不能为空");
-                        }
-
-                    } else {
-
-                        CommonUtil.snackBar(this, "请不要频繁发帖", "确定", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        });
+//            if (needcat) {
+//                if (isCatInfoOk) {
+//                    if (!isPublish) {
+//                        if(mPhotos!=null && mPhotos.size()>0){
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                            builder.setTitle("提示")
+//                                    .setMessage("是否发布该帖子")
+//                                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            mPresenter.publishCat();
+//                                        }
+//                                    })
+//                                    .setNegativeButton("取消", null)
+//                                    .setCancelable(true)
+//                                    .show();
+//                        }else{
+//                            ToastUtil.showShortToastCenter("帖子配图不能为空");
+//                        }
+//
+//                    } else {
+//
+//                        CommonUtil.snackBar(this, "请不要频繁发帖", "确定", new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//
+//                            }
+//                        });
+//                    }
+//                } else {
+//                    CommonUtil.snackBar(this, "请先完善猫咪的信息", "去完善", new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Intent intent = new Intent(NewPublishActivity.this, CatInfoActivity.class);
+//                            startActivityForResult(intent, ApiConfig.REQUESTCODE);
+//                        }
+//                    });
+//                }
+//
+//            } else {
+//
+//            }
+            if (!isPublish) {
+                if(mPhotos!=null && mPhotos.size()>0){
+                    String title = mEditTitle.getText().toString().trim();
+                    String content = mEditContent.getText().toString().trim();
+                    L.e("content.length():" + content);
+                    if(TextUtils.isEmpty(title)|| TextUtils.isEmpty(content)){
+                        ToastUtil.showShortToastCenter("请输入帖子标题和内容");
+                    }else if(content.length()>32767){
+                        ToastUtil.showShortToastCenter("输入的内容长度超出限制");
+                    }else{
+                        CommonUtil.showDialog(mContext, "提示", "是否发布该帖子？",
+                                "确认", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        mPresenter.publishNote(1, 0);
+                                    }
+                                },"取消",null);
                     }
-                } else {
-                    CommonUtil.snackBar(this, "请先完善猫咪的信息", "去完善", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(NewPublishActivity.this, CatInfoActivity.class);
-                            startActivityForResult(intent, ApiConfig.REQUESTCODE);
-                        }
-                    });
+                }else{
+                    ToastUtil.showShortToastCenter("帖子配图不能为空");
                 }
 
             } else {
-                if (!isPublish) {
-                    if(mPhotos!=null && mPhotos.size()>0){
-                        String title = mEditTitle.getText().toString().trim();
-                        String content = mEditContent.getText().toString().trim();
-                        L.e("content.length():" + content);
-                        if(TextUtils.isEmpty(title)|| TextUtils.isEmpty(content)){
-                            ToastUtil.showShortToastCenter("请输入帖子标题和内容");
-                        }else if(content.length()>32767){
-                            ToastUtil.showShortToastCenter("输入的内容长度超出限制");
-                        }else{
-                            CommonUtil.showDialog(mContext, "提示", "是否发布该帖子？",
-                                    "确认", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            mPresenter.publishNote(1, 0);
-                                        }
-                                    },"取消",null);
-                        }
-                    }else{
-                        ToastUtil.showShortToastCenter("帖子配图不能为空");
+
+                CommonUtil.snackBar(this, "请不要频繁发帖", "确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
                     }
-
-                } else {
-
-                    CommonUtil.snackBar(this, "请不要频繁发帖", "确定", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
-                    });
-                }
+                });
             }
         }
         return super.onOptionsItemSelected(item);
@@ -267,12 +268,12 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
 
                 break;
             case R.id.imageView19: {
-                if(needcat){
-                    Intent intent = new Intent(NewPublishActivity.this, CatInfoActivity.class);
-                    startActivityForResult(intent, ApiConfig.REQUESTCODE);
-                }else{
-                    ToastUtil.showShortToastCenter("无需填写猫咪信息");
-                }
+//                if(needcat){
+//                    Intent intent = new Intent(NewPublishActivity.this, CatInfoActivity.class);
+//                    startActivityForResult(intent, ApiConfig.REQUESTCODE);
+//                }else{
+//                    ToastUtil.showShortToastCenter("无需填写猫咪信息");
+//                }
 
             }
             break;

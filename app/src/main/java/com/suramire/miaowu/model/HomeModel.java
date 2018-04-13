@@ -1,5 +1,6 @@
 package com.suramire.miaowu.model;
 
+import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.contract.HomeContract;
@@ -16,11 +17,15 @@ import rx.Observable;
 
 public class HomeModel implements HomeContract.Model {
     @Override
-    public Observable<List<Multi>> getData(int type,int start,int end) {
-        Note note = new Note();
-        note.setType(type);
-        return ApiLoader.getMultiNotes(note)
+    public Observable<List<Multi>> getData(int start,int end) {
+        return ApiLoader.getMultiNotes(null)
                 .map(new ResponseFunc<List<Multi>>());
+    }
+
+    @Override
+    public Observable<List<Catinfo>> listCats() {
+        return ApiLoader.getAllCat()
+                .map(new ResponseFunc<List<Catinfo>>());
     }
 
 

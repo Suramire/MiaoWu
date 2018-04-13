@@ -2,6 +2,9 @@ package com.suramire.miaowu.contract;
 
 import com.suramire.miaowu.base.BasePresenter;
 import com.suramire.miaowu.base.BaseView;
+import com.suramire.miaowu.bean.Catinfo;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -11,17 +14,23 @@ import rx.Observable;
 
 public interface HomeContract {
     interface Model<T> {
-        Observable<T> getData(int type,int start, int end);
+        Observable<T> getData(int start, int end);
+
+        Observable<T> listCats();
+
 
     }
 
     interface View extends BaseView {
         void clearData();
 
+        void onGetCatListSuccess(List<Catinfo> catinfos);
+
     }
 
     interface Presenter extends BasePresenter<View> {
-        void getData(int type);
+        void getData();
 
+        void listCats();
     }
 }

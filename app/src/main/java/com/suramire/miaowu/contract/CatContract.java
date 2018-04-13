@@ -16,7 +16,8 @@ public interface CatContract {
 
         Observable<T> getCat(int catId);
 
-        Observable<T> listCats();
+
+        Observable<T> getAllPictures(int catId);
 
     }
 
@@ -27,9 +28,10 @@ public interface CatContract {
 
         void onAddCatSuccess(int cid);
 
-        void onGetCatListSuccess(List<Catinfo> catinfos);
 
         List<String> getStringPaths();
+
+        void onGetAllPicturesSuccess(List<String> paths);
     }
 
     interface Presenter extends BasePresenter<View>{
@@ -37,8 +39,8 @@ public interface CatContract {
 
         void getCat();
 
-        void listCats();
-
         void uploadPicture();
+
+        void getAllPictures();
     }
 }

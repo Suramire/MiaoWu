@@ -56,13 +56,13 @@ public class NoteDetailModel implements NoteDetailContract.Model {
 
     }
 
-    @Override
-    public Observable<Catinfo> getCatInfo(int noteId) {
-        Note note = new Note();
-        note.setId(noteId);
-        return ApiLoader.getCat(note)
-                .map(new ResponseFunc<Catinfo>());
-    }
+//    @Override
+//    public Observable<Catinfo> getCatInfo(int noteId) {
+//        Note note = new Note();
+//        note.setId(noteId);
+//        return ApiLoader.getCat(note)
+//                .map(new ResponseFunc<Catinfo>());
+//    }
 
     @Override
     public Observable<User> getUserInfo(int userId) {
@@ -112,24 +112,24 @@ public class NoteDetailModel implements NoteDetailContract.Model {
                 .map(new ResponseFunc<Void>());
     }
 
-    @Override
-    public Observable<Void> apply(Apply apply) {
-        return ApiLoader.addApply(apply)
-                .map(new ResponseFunc<Void>());
-    }
-
-    @Override
-    public Observable<Void> makeChoice(Apply apply) {
-        return ApiLoader.verifyApply(apply)
-                .map(new ResponseFunc<Void>());
-    }
-
-    @Override
-    public Observable<Apply> getApply(int applyId) {
-        Apply apply = new Apply();
-        apply.setId(applyId);
-        return ApiLoader.getOneApply(apply)
-                .map(new ResponseFunc<Apply>());
-    }
+//    @Override
+//    public Observable<Void> apply(Apply apply) {
+//        return ApiLoader.addApply(apply)
+//                .map(new ResponseFunc<Void>());
+//    }
+//
+//    @Override
+//    public Observable<Void> makeChoice(Apply apply) {
+//        return ApiLoader.verifyApply(apply)
+//                .map(new ResponseFunc<Void>());
+//    }
+//
+//    @Override
+//    public Observable<Apply> getApply(int applyId) {
+//        Apply apply = new Apply();
+//        apply.setId(applyId);
+//        return ApiLoader.getOneApply(apply)
+//                .map(new ResponseFunc<Apply>());
+//    }
 
 }

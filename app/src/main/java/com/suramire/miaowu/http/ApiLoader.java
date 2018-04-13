@@ -137,6 +137,13 @@ public class ApiLoader {
         return observer(getApiService().uploadCatPicture(description, body));
     }
 
+    public static Observable<BaseResponse<List<String>>> getAllpictuesCat(Catinfo catinfo){
+        return observer(getApiService().getPicturesCat(GsonUtil.objectToJson(catinfo)));
+    }
+
+    public static Observable<BaseResponse<List<Catinfo>>> getAdoptedCat(Catinfo catinfo){
+        return observer(getApiService().getAdoptedCat(GsonUtil.objectToJson(catinfo)));
+    }
 
 
     /*帖子相关*/

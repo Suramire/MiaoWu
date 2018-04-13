@@ -1,7 +1,9 @@
 package com.suramire.miaowu.presenter;
 
+import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi;
 import com.suramire.miaowu.contract.HomeContract;
+import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.HomeModel;
 import com.suramire.miaowu.util.ToastUtil;
 
@@ -16,20 +18,20 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class HomePresenter implements HomeContract.Presenter {
-    private final HomeModel mHomeModel;
+    private final HomeModel homeModel;
     private CompositeSubscription compositeSubscription;
     private HomeContract.View mView;
 
     public HomePresenter() {
-        mHomeModel = new HomeModel();
+        homeModel = new HomeModel();
 
     }
 
     @Override
-    public void getData(int type){
+    public void getData(){
         mView.clearData();
         mView.showLoading();
-        Subscription subscribe = mHomeModel.getData(type,0, 0)
+        Subscription subscribe = homeModel.getData(0, 0)
                 .subscribe(new Action1<List<Multi>>() {
                     @Override
                     public void call(List<Multi> multis) {
@@ -45,6 +47,28 @@ public class HomePresenter implements HomeContract.Presenter {
                 });
         compositeSubscription.add(subscribe);
 
+    }
+
+    @Override
+    public void listCats() {
+        mView.clearData();
+        mView.showLoading();
+        Subscription subscribe = homeModel.listCats()
+                .subscribe(new ResponseSubscriber<List<Catinfo>>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("获取猫咪列表时出错："+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<Catinfo> catinfos) {
+                        mView.cancelLoading();
+                        mView.onGetCatListSuccess(catinfos);
+
+                    }
+                });
+        compositeSubscription.add(subscribe);
     }
 
 

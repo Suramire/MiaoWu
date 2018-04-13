@@ -44,11 +44,12 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
                     @Override
                     public void onNext(Note note) {
                         mView.onGetNoteInfoSuccess(note);
-                        if(note.getType()==2){
-                            getCatInfo();
-                        }else{
-                            getReply();
-                        }
+//                        if(note.getType()==2){
+//                            getCatInfo();
+//                        }else{
+//
+//                        }
+                        getReply();
 
                     }
                 });
@@ -112,25 +113,25 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
         compositeSubscription.add(subscribe);
     }
 
-    @Override
-    public void getCatInfo() {
-        Subscription subscribe = noteDetailModel.getCatInfo(mView.getNoteId())
-                .subscribe(new ResponseSubscriber<Catinfo>() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        L.e("获取猫咪信息失败:"+throwable.getMessage());
-                        getReply();
-                    }
-
-                    @Override
-                    public void onNext(Catinfo catinfo) {
-                        mView.onGetCatInfoSuccess(catinfo);
-                        getReply();
-                    }
-                });
-        compositeSubscription.add(subscribe);
-
-    }
+//    @Override
+//    public void getCatInfo() {
+//        Subscription subscribe = noteDetailModel.getCatInfo(mView.getNoteId())
+//                .subscribe(new ResponseSubscriber<Catinfo>() {
+//                    @Override
+//                    public void onError(Throwable throwable) {
+//                        L.e("获取猫咪信息失败:"+throwable.getMessage());
+//                        getReply();
+//                    }
+//
+//                    @Override
+//                    public void onNext(Catinfo catinfo) {
+//                        mView.onGetCatInfoSuccess(catinfo);
+//                        getReply();
+//                    }
+//                });
+//        compositeSubscription.add(subscribe);
+//
+//    }
 
     @Override
     public void getUserInfo() {
@@ -152,25 +153,25 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
 
     }
 
-    @Override
-    public void apply() {
-        mView.showLoading();
-        Subscription subscribe = noteDetailModel.apply(mView.getApply())
-                .subscribe(new ResponseSubscriber<Void>() {
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("申请时出错：" + e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(Void aVoid) {
-                        mView.cancelLoading();
-                        mView.onApplySuccess();
-                    }
-                });
-        compositeSubscription.add(subscribe);
-    }
+//    @Override
+//    public void apply() {
+//        mView.showLoading();
+//        Subscription subscribe = noteDetailModel.apply(mView.getApply())
+//                .subscribe(new ResponseSubscriber<Void>() {
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        mView.cancelLoading();
+//                        ToastUtil.showShortToastCenter("申请时出错：" + e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onNext(Void aVoid) {
+//                        mView.cancelLoading();
+//                        mView.onApplySuccess();
+//                    }
+//                });
+//        compositeSubscription.add(subscribe);
+//    }
 
     @Override
     public void passNote() {
@@ -276,46 +277,46 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
         compositeSubscription.add(subscribe);
     }
 
-    @Override
-    public void makeChoice() {
-        mView.showLoading();
-        Subscription subscribe = noteDetailModel.makeChoice(mView.getApply())
-                .subscribe(new ResponseSubscriber<Void>() {
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("响应请求时出错："+e.getMessage());
-                    }
+//    @Override
+//    public void makeChoice() {
+//        mView.showLoading();
+//        Subscription subscribe = noteDetailModel.makeChoice(mView.getApply())
+//                .subscribe(new ResponseSubscriber<Void>() {
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        mView.cancelLoading();
+//                        ToastUtil.showShortToastCenter("响应请求时出错："+e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onNext(Void aVoid) {
+//                        mView.cancelLoading();
+//                        mView.onChoiceDone();
+//                    }
+//                });
+//        compositeSubscription.add(subscribe);
+//
+//    }
 
-                    @Override
-                    public void onNext(Void aVoid) {
-                        mView.cancelLoading();
-                        mView.onChoiceDone();
-                    }
-                });
-        compositeSubscription.add(subscribe);
-
-    }
-
-    @Override
-    public void getApplyInfo() {
-        mView.showLoading();
-        Subscription subscribe = noteDetailModel.getApply(mView.getApply().getId())
-                .subscribe(new ResponseSubscriber<Apply>() {
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取申请单时出错：" + e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(Apply apply) {
-                        mView.cancelLoading();
-                        mView.onGetApplySuccess(apply);
-                    }
-                });
-        compositeSubscription.add(subscribe);
-    }
+//    @Override
+//    public void getApplyInfo() {
+//        mView.showLoading();
+//        Subscription subscribe = noteDetailModel.getApply(mView.getApply().getId())
+//                .subscribe(new ResponseSubscriber<Apply>() {
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        mView.cancelLoading();
+//                        ToastUtil.showShortToastCenter("获取申请单时出错：" + e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onNext(Apply apply) {
+//                        mView.cancelLoading();
+//                        mView.onGetApplySuccess(apply);
+//                    }
+//                });
+//        compositeSubscription.add(subscribe);
+//    }
 
 
     @Override

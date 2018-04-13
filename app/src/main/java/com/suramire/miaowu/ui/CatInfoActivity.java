@@ -232,13 +232,14 @@ public class CatInfoActivity extends BaseActivity<CatPresenter> implements CatCo
         flag = true;
     }
 
-    @Override
-    public void onGetCatListSuccess(List<Catinfo> catinfos) {
-
-    }
 
     @Override
     public List<String> getStringPaths() {
         return mPhotos;
+    }
+
+    @Override
+    public void onGetAllPicturesSuccess(List<String> paths) {
+
     }
 }

@@ -26,6 +26,7 @@
                 android:elevation="2dp"
                 app:cardElevation="2dp">
 
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -76,95 +77,88 @@
                     android:orientation="vertical"
                     android:showDividers="middle">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="2dp"
-                        android:background="@color/white"
+                    <LinearLayout
                         android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="100dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerInParent="true"
-                            android:layout_marginStart="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
                             android:text="@string/nickname"
-                            android:textColor="@color/verydarkgray"/>
+                            android:textColor="@color/verydarkgray" />
 
                         <EditText
                             android:id="@+id/edt_username"
-                            android:layout_width="200dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:inputType="none"
                             android:layout_alignParentTop="true"
-                            android:layout_marginStart="180dp"
                             android:background="@null"
                             tools:text="Alexandra"
                             android:textSize="14sp"/>
-                    </RelativeLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="2dp"
-                        android:background="@color/white"
+                    </LinearLayout>
+
+
+                    <LinearLayout
                         android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="100dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginStart="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
                             android:text="@string/birthday"
-                            android:textColor="@color/verydarkgray"/>
+                            android:textColor="@color/verydarkgray" />
 
                         <EditText
                             android:id="@+id/edt_birthday"
-                            android:layout_width="200dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginStart="180dp"
                             android:background="@null"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             tools:text="2008-1-1"
                             android:textSize="14sp"/>
-                    </RelativeLayout>
+
+                    </LinearLayout>
 
 
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="8dp"
-                        android:background="@color/white"
+
+                    <LinearLayout
                         android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="100dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerInParent="true"
-                            android:layout_marginStart="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
                             android:text="@string/address"
-                            android:textColor="@color/verydarkgray"/>
+                            android:textColor="@color/verydarkgray" />
 
                         <EditText
                             android:id="@+id/edt_address"
-                            android:layout_width="200dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
-
-                            android:layout_alignParentTop="true"
-                            android:layout_marginStart="180dp"
                             android:background="@null"
-                            tools:text="@string/hint_address"
+                            tools:text="Xiamen"
                             android:textSize="14sp"/>
-                    </RelativeLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -182,104 +176,86 @@
                     android:orientation="vertical"
                     android:showDividers="middle">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="2dp"
-                        android:background="@color/white"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
 
-                        <TextView
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerInParent="true"
-                            android:layout_marginStart="24dp"
-                            android:text="@string/phone"
-                            android:textColor="@color/verydarkgray"/>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                        <EditText
-                            android:id="@+id/edt_phone"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/verydarkgray"
-                            android:layout_alignParentTop="true"
-                            android:enabled="false"
-                            android:layout_marginStart="180dp"
-                            android:background="@null"
-                            tools:text="12345678"
-                            android:textSize="14sp"/>
-                    </RelativeLayout>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:text="@string/phone"
+                        android:textColor="@color/verydarkgray" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="2dp"
-                        android:background="@color/white"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
-
-                        <Spinner
-                            android:id="@+id/spinner"
-                            android:background="@null"
-                            android:layout_width="190dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerInParent="true"
-                            android:layout_marginStart="16dp"
-                            android:entries="@array/contacts" />
-
-                        <!---->
-                        <!--<TextView-->
-                            <!--android:layout_width="100dp"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_alignParentStart="true"-->
-                            <!--android:layout_centerInParent="true"-->
-                            <!--android:layout_marginStart="24dp"-->
-                            <!--android:text="@string/email"-->
-                            <!--android:textColor="@color/verydarkgray"/>-->
-
-                        <EditText
-                            android:id="@+id/edt_contact"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-
-                            android:layout_alignParentTop="true"
-                            android:layout_marginStart="180dp"
-                            android:background="@null"
-                            tools:text="12345678@qq.com"
-                            android:textSize="14sp"/>
+                    <EditText
+                        android:id="@+id/edt_phone"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/verydarkgray"
+                        android:enabled="false"
+                        android:background="@null"
+                        tools:text="12345678"
+                        android:textSize="14sp"/>
 
 
-                    </RelativeLayout>
+                </LinearLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="2dp"
-                        android:background="@color/white"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                        <TextView
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerInParent="true"
-                            android:layout_marginStart="24dp"
-                            android:text="@string/modify_password"
-                            android:textColor="@color/verydarkgray"/>
+                    <Spinner
+                        android:id="@+id/spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:entries="@array/contacts" />
 
-                        <TextView
-                            android:id="@+id/tv_modify_password"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerInParent="false"
-                            android:layout_marginStart="180dp"
-                            android:text="点击修改"/>
-                    </RelativeLayout>
+
+                    <EditText
+                        android:id="@+id/edt_contact"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:layout_marginStart="8dp"
+                        tools:text="12345678@qq.com"
+                        android:textSize="14sp"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:text="@string/modify_password"
+                        android:textColor="@color/verydarkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_modify_password"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="点击修改"/>
+
+                </LinearLayout>
 
 
 

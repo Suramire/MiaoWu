@@ -99,11 +99,17 @@ public interface ApiService {
     @GET("getAllCat")
     Observable<BaseResponse<List<Catinfo>>> getAllCat(@Query(JSON) String string);
 
+    //获取一只猫咪的所有配图
+    @GET("getpicCat")
+    Observable<BaseResponse<List<String>>> getPicturesCat(@Query(JSON) String string);
 
     @Multipart
     @POST("uploadPicCat")
     Observable<BaseResponse<Void>> uploadCatPicture(@Part("description") RequestBody description,
                                                 @Part MultipartBody.Part file);
+
+    @GET("getAdoptedCat")
+    Observable<BaseResponse<List<Catinfo>>> getAdoptedCat(@Query(JSON) String string);
 
     /*帖子相关*/
     //获取首页帖子 所有

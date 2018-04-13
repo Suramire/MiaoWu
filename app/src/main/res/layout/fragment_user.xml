@@ -239,7 +239,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/ll_apply"
+                            android:id="@+id/ll_adopt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"

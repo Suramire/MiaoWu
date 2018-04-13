@@ -132,10 +132,12 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
         PicassoUtil.show(ApiConfig.BASUSERPICEURL + userinfo.getIcon(), imgIcon);
         tvUsername.setText(userinfo.getNickname());
         if (userId == CommonUtil.getCurrentUid()) {
+            toolbar.setTitle("个人中心");
             tvTitleNote.setText("我的帖子");
             tvTitleReply.setText("我的回复");
             toolbarTextRight.setVisibility(View.VISIBLE);
         } else {
+            toolbar.setTitle("他人信息");
             tvTitleNote.setText(userinfo.getNickname() + "的帖子");
             tvTitleReply.setText(userinfo.getNickname() + "的回复");
             toolbarTextRight.setVisibility(View.GONE);
@@ -188,7 +190,7 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
 
 
     @OnClick({R.id.ll_followlist, R.id.ll_followerlist, R.id.ll_note2, R.id.ll_mynote,
-            R.id.imageButton, R.id.toolbar_image_left, R.id.toolbar_text_right})
+            R.id.imageButton, R.id.toolbar_image_left, R.id.toolbar_text_right,R.id.ll_adopt})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_followlist:
@@ -224,14 +226,20 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
                 }
             }
             break;
+            case R.id.ll_adopt:
+                //领养记录
+                Intent intent3 = new Intent(mContext, AdoptHistoryActivity.class);
+                intent3.putExtra("uid", getUid());
+                startActivity(intent3);
+                break;
             case R.id.toolbar_image_left:
                 setResult(ApiConfig.RESULTCODE_NOTIFICATION);
                 finish();
                 break;
             case R.id.toolbar_text_right:
-                Intent intent3 = new Intent(mContext, ProfileDetailActivity.class);
-                intent3.putExtra("uid", CommonUtil.getCurrentUid());
-                startActivityForResult(intent3,ApiConfig.LOGINREQUESTCODE);
+                Intent intent4 = new Intent(mContext, ProfileDetailActivity.class);
+                intent4.putExtra("uid", CommonUtil.getCurrentUid());
+                startActivityForResult(intent4,ApiConfig.LOGINREQUESTCODE);
                 break;
         }
     }

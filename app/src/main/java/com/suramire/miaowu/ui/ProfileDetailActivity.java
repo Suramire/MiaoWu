@@ -4,7 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -97,6 +101,8 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
                 .load(ApiConfig.BASUSERPICEURL + user.getIcon())
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
+                .placeholder(R.mipmap.ic_loading_small)
+                .error(R.mipmap.ic_loading_error_small)
                 .into(imgIcon);
         edtUsername.setText(user.getNickname());
         edtBirthday.setText(CommonUtil.dateToString(user.getBirthday()));
@@ -129,6 +135,22 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
         progressDialog.setMessage("请稍候……");
         uid = getIntent().getIntExtra("uid", 0);
         mPresenter.getProfile();
+        String[] stringArray = getResources().getStringArray(R.array.contacts);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, stringArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+                //showPrice(position);
+                TextView tv = (TextView)view;
+                tv.setTextColor(getResources().getColor(R.color.verydarkgray));    //设置颜色
+                tv.setTextSize(14.0f);    //设置大小
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent){}
+        });
+        spinner.setAdapter(adapter);
     }
 
 

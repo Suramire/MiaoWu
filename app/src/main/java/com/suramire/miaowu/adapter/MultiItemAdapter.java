@@ -25,6 +25,7 @@ import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.ui.UserActivity;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.PicassoUtil;
+import com.suramire.miaowu.util.ToastUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
@@ -214,7 +215,7 @@ public class MultiItemAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_nt_profile, null, false);
             mVH = new ViewHolder3();
             mVH.mButtonFollow = convertView.findViewById(R.id.btn_nt_follow);
-            mVH.mButtonApply = convertView.findViewById(R.id.btn_apply);
+//            mVH.mButtonApply = convertView.findViewById(R.id.btn_apply);
             mVH.mImgUser = convertView.findViewById(R.id.img_nt_profile);
             mVH.mTvNickname = convertView.findViewById(R.id.tv_nt_nickname);
             mVH.llProfile = convertView.findViewById(R.id.ll_profile);
@@ -231,40 +232,44 @@ public class MultiItemAdapter extends BaseAdapter {
             mVH.mButtonFollow.setVisibility(View.VISIBLE);
         }
         //当前帖子类型不为有猫等待领养时 隐藏申请按钮
-        type = Integer.parseInt(user.getPassword());//帖子类型 2=有猫 1=找猫
-        if(type!=2 || user.getId()==CommonUtil.getCurrentUid()){
-            mVH.mButtonApply.setVisibility(View.GONE);
-        }
-        mVH.mButtonApply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(listener!=null){
-                    listener.onClick();
-                }
-            }
-        });
+//        type = Integer.parseInt(user.getPassword());//帖子类型 2=有猫 1=找猫
+//        if(type!=2 || user.getId()==CommonUtil.getCurrentUid()){
+//            mVH.mButtonApply.setVisibility(View.GONE);
+//        }
+//        mVH.mButtonApply.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(listener!=null){
+//                    listener.onClick();
+//                }
+//            }
+//        });
         mVH.mButtonFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(mContext, "这里响应查看作者联系方式事件", Toast.LENGTH_SHORT).show();
-                String contacttype = "";
-                switch (user.getContacttype()){
-                    case 1:contacttype="电话";break;
-                    case 2:contacttype="QQ";break;
-                    case 3:contacttype="微信";break;
-                    case 4:contacttype="邮箱";break;
+                if(CommonUtil.isLogined()){
+                    String contacttype = "";
+                    switch (user.getContacttype()){
+                        case 1:contacttype="电话";break;
+                        case 2:contacttype="QQ";break;
+                        case 3:contacttype="微信";break;
+                        case 4:contacttype="邮箱";break;
+                    }
+                    CommonUtil.showDialog(mContext,"联系方式", "联系方式:" + contacttype + " " + user.getContact(), "复制",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                                    ClipData mClipData = ClipData.newPlainText("contact", user.getContact());
+                                    // 将ClipData内容放到系统剪贴板里。
+                                    cm.setPrimaryClip(mClipData);
+                                    Toast.makeText(mContext, "复制成功！", Toast.LENGTH_SHORT).show();
+                                }
+                            },"关闭",null);
+                }else{
+                    ToastUtil.showShortToastCenter("请先登录");
                 }
-                CommonUtil.showDialog(mContext,"联系方式", "联系方式:" + contacttype + " " + user.getContact(), "复制",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                                ClipData mClipData = ClipData.newPlainText("contact", user.getContact());
-                                // 将ClipData内容放到系统剪贴板里。
-                                cm.setPrimaryClip(mClipData);
-                                Toast.makeText(mContext, "复制成功！", Toast.LENGTH_SHORT).show();
-                            }
-                        },"关闭",null);
+
             }
         });
         mVH.llProfile.setOnClickListener(new View.OnClickListener() {

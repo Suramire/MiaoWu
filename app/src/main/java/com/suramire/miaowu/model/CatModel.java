@@ -4,6 +4,7 @@ import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.contract.CatContract;
 import com.suramire.miaowu.http.ApiLoader;
 import com.suramire.miaowu.http.base.ResponseFunc;
+import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.L;
 
 import java.io.File;
@@ -33,10 +34,13 @@ public class CatModel implements CatContract.Model {
                 .map(new ResponseFunc<Catinfo>());
     }
 
+
     @Override
-    public Observable<List<Catinfo>> listCats() {
-        return ApiLoader.getAllCat()
-                .map(new ResponseFunc<List<Catinfo>>());
+    public Observable<List<String>> getAllPictures(int catId) {
+        Catinfo catinfo = new Catinfo();
+        catinfo.setId(catId);
+        return ApiLoader.getAllpictuesCat(catinfo)
+                .map(new ResponseFunc<List<String>>());
     }
 
 

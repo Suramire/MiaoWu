@@ -1,8 +1,8 @@
 package com.suramire.miaowu.presenter;
 
 import com.suramire.miaowu.bean.Apply;
-import com.suramire.miaowu.contract.ApplyContract;
-import com.suramire.miaowu.contract.FansContract;
+import com.suramire.miaowu.bean.Catinfo;
+import com.suramire.miaowu.contract.AdoptContract;
 import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.ApplyModel;
 import com.suramire.miaowu.util.ToastUtil;
@@ -16,10 +16,10 @@ import rx.subscriptions.CompositeSubscription;
  * Created by Suramire on 2018/4/9.
  */
 
-public class ApplyPresenter implements ApplyContract.Presenter {
+public class ApplyPresenter implements AdoptContract.Presenter {
 
     private final ApplyModel applyModel;
-    private ApplyContract.View mView;
+    private AdoptContract.View mView;
     private CompositeSubscription compositeSubscription;
 
 
@@ -28,7 +28,7 @@ public class ApplyPresenter implements ApplyContract.Presenter {
     }
 
     @Override
-    public void attachView(ApplyContract.View view) {
+    public void attachView(AdoptContract.View view) {
         mView = view;
         compositeSubscription = new CompositeSubscription();
 
@@ -42,10 +42,10 @@ public class ApplyPresenter implements ApplyContract.Presenter {
     }
 
     @Override
-    public void getApplys() {
+    public void getAdoptHistory() {
         mView.showLoading();
-        Subscription subscribe = applyModel.getApplys(mView.getUid())
-                .subscribe(new ResponseSubscriber<List<Apply>>() {
+        Subscription subscribe = applyModel.getAdoptHistory(mView.getUid())
+                .subscribe(new ResponseSubscriber<List<Catinfo>>() {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
@@ -53,7 +53,7 @@ public class ApplyPresenter implements ApplyContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(List<Apply> applies) {
+                    public void onNext(List<Catinfo> applies) {
                         mView.cancelLoading();
                         mView.onSuccess(applies);
                     }

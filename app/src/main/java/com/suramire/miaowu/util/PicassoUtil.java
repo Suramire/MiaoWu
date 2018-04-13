@@ -24,8 +24,8 @@ public class PicassoUtil {
     public static void show(String path, ImageView target){
         Picasso.with(App.getInstance())
                 .load(path)
-                .placeholder(R.mipmap.ic_cat_icon)
-                .error(R.mipmap.ic_cat_icon)
+                .placeholder(R.mipmap.ic_loading)
+                .error(R.mipmap.ic_loading_error)
                 .into(target);
     }
     /**
@@ -36,8 +36,8 @@ public class PicassoUtil {
     public static void show(File file, ImageView target){
         Picasso.with(App.getInstance())
                 .load(file)
-                .placeholder(R.mipmap.ic_cat_icon)
-                .error(R.mipmap.ic_cat_icon)
+                .placeholder(R.mipmap.ic_loading)
+                .error(R.mipmap.ic_loading_error)
                 .into(target);
     }
 

@@ -25,7 +25,7 @@ public interface NoteDetailContract {
 
         Observable<T> thumb(int noteId);
 
-        Observable<T> getCatInfo(int noteId);
+//        Observable<T> getCatInfo(int noteId);
 
         Observable<T> getUserInfo(int noteId);
 
@@ -39,11 +39,11 @@ public interface NoteDetailContract {
 
         Observable<T> increaseNoteCount(int noteId);
 
-        Observable<T> apply(Apply apply);
+//        Observable<T> apply(Apply apply);
 
-        Observable<T> makeChoice(Apply apply);
+//        Observable<T> makeChoice(Apply apply);
 
-        Observable<T> getApply(int applyId);
+//        Observable<T> getApply(int applyId);
 
     }
 
@@ -61,7 +61,7 @@ public interface NoteDetailContract {
 
         void onOnGetPictureSuccess(List<String> paths);
 
-        void onGetCatInfoSuccess(Catinfo catinfo);
+//        void onGetCatInfoSuccess(Catinfo catinfo);
         //成功发送领养申请
         void onApplySuccess();
 
@@ -73,14 +73,14 @@ public interface NoteDetailContract {
 
         void onDeleteSuccess();
 
-        void onGetApplySuccess(Apply apply);
+//        void onGetApplySuccess(Apply apply);
 
 
         //在帖子详情页发送请求时调用
-        Apply getApply();
+//        Apply getApply();
 
         //成功做出决定时的回调
-        void onChoiceDone();
+//        void onChoiceDone();
 
     }
 
@@ -94,11 +94,11 @@ public interface NoteDetailContract {
         //获取帖子配图路径
         void getPictue();
         //获取猫咪信息
-        void getCatInfo();
+//        void getCatInfo();
 
         void getUserInfo();
         //申请领养
-        void apply();
+//        void apply();
         //审核通过
         void passNote();
         //锁定帖子
@@ -112,9 +112,9 @@ public interface NoteDetailContract {
         //增加帖子访问量
         void increaseNouteCount();
         //响应领养请求
-        void makeChoice();
+//        void makeChoice();
 
-        void getApplyInfo();
+//        void getApplyInfo();
 
     }
 }

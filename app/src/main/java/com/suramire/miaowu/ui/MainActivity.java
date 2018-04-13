@@ -234,30 +234,30 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                     case 0:{
                         if (CommonUtil.isLogined()) {
                             if(CommonUtil.hasContact()){
-                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                builder.setTitle("请选择帖子类型");
-                                final String[] items = {"我要领养小猫","寻找好心人领养"};
-                                builder.setItems(items, new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(MainActivity.this, NewPublishActivity.class);
-                                        switch (which) {
-                                            case 0: {
-                                                //寻领养不需填写猫咪信息
-                                                intent.putExtra("needcat", false);
-                                            }
-                                            break;
-                                            case 1: {
-                                                intent.putExtra("needcat", true);
-                                            }
-                                            break;
-                                        }
-                                        startActivity(intent);
-
-                                    }
-                                });
-                                builder.setCancelable(false).show();
+//                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                                builder.setTitle("请选择帖子类型");
+//                                final String[] items = {"我要领养小猫","寻找好心人领养"};
+//                                builder.setItems(items, new DialogInterface.OnClickListener() {
+//
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int which) {
+////                                        Intent intent = new Intent(MainActivity.this, NewPublishActivity.class);
+////                                        switch (which) {
+////                                            case 0: {
+////                                                //寻领养不需填写猫咪信息
+////                                                intent.putExtra("needcat", false);
+////                                            }
+////                                            break;
+////                                            case 1: {
+////                                                intent.putExtra("needcat", true);
+////                                            }
+////                                            break;
+////                                        }
+//
+//                                    }
+//                                });
+//                                builder.setCancelable(false).show();
+                                startActivity(NewPublishActivity.class);
                             }else{
                                 CommonUtil.snackBar(MainActivity.this, "请先填写联系方式", "填写", new View.OnClickListener() {
                                     @Override

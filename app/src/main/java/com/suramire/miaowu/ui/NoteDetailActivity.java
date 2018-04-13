@@ -82,7 +82,6 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
     private int userId;
     private int verify;
     private Integer verified;
-    private Apply apply;
     private Note mNote;
     private User mUser;
     private Catinfo mCatInfo;
@@ -124,17 +123,17 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
 
         mAdapter = new MultiItemAdapter(this, mObjects);
         //申请按钮点击回调
-        mAdapter.setListener(new MultiItemAdapter.OnApplyListener() {
-            @Override
-            public void onClick() {
-                apply = new Apply();
-                apply.setUid(CommonUtil.getCurrentUid());
-                apply.setCid(mCatInfo.getId());
-                apply.setNid(mNote.getId());
-                apply.setTime(A.getTimeStamp());
-                mPresenter.apply();
-            }
-        });
+//        mAdapter.setListener(new MultiItemAdapter.OnApplyListener() {
+//            @Override
+//            public void onClick() {
+//                apply = new Apply();
+//                apply.setUid(CommonUtil.getCurrentUid());
+//                apply.setCid(mCatInfo.getId());
+//                apply.setNid(mNote.getId());
+//                apply.setTime(A.getTimeStamp());
+////                mPresenter.apply();
+//            }
+//        });
         mListNotedetail.setAdapter(mAdapter);
         mPresenter.getPictue();
 
@@ -165,6 +164,7 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
 
         mAdapter.notifyDataSetChanged();
         setReplyCount(mReplyCount);
+        //成功获取帖子信息后使帖子的阅读量加一
         mPresenter.increaseNouteCount();
     }
 
@@ -215,13 +215,13 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
 
     @Override
     public void onGetNoteInfoSuccess(Note note) {
-        mNote = note;
+//        mNote = note;
         verified = note.getVerified();
-        /*将帖子类型存放于用户密码字段
-        因为用户信息先于帖子信息显示，
-        显示用户信息前需根据帖子类型隐藏或显示申请按钮*/
-        mUser.setPassword(note.getType()+"");
-        mObjects.add(mUser);
+//        /*将帖子类型存放于用户密码字段
+//        因为用户信息先于帖子信息显示，
+//        显示用户信息前需根据帖子类型隐藏或显示申请按钮*/
+//        mUser.setPassword(note.getType()+"");
+//        mObjects.add(mUser);
         mObjects.add(note);
         mAdapter.notifyDataSetChanged();
         mThumbs = note.getThumbs();
@@ -237,9 +237,9 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
 
     @Override
     public void onGetUserInfoSuccess(User user) {
-        mUser = user;
-//        mObjects.add(user);
-//        mAdapter.notifyDataSetChanged();
+//        mUser = user;
+        mObjects.add(user);
+        mAdapter.notifyDataSetChanged();
         //帖子是登录用户所发表时，显示发帖者特有的功能
         if (user.getId() == CommonUtil.getCurrentUid()) {
             toolbarTextRight.setVisibility(View.VISIBLE);
@@ -252,15 +252,15 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
         mAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onGetCatInfoSuccess(Catinfo catinfo) {
-
-        mCatInfo = catinfo;
-        if (catinfo != null) {
-            mObjects.add(catinfo);
-            mAdapter.notifyDataSetChanged();
-        }
-    }
+//    @Override
+//    public void onGetCatInfoSuccess(Catinfo catinfo) {
+//
+//        mCatInfo = catinfo;
+//        if (catinfo != null) {
+//            mObjects.add(catinfo);
+//            mAdapter.notifyDataSetChanged();
+//        }
+//    }
 
     @Override
     public void onApplySuccess() {
@@ -292,20 +292,20 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
         finish();
     }
 
-    @Override
-    public void onGetApplySuccess(Apply apply) {
+//    @Override
+//    public void onGetApplySuccess(Apply apply) {
+//
+//    }
+//
+//    @Override
+//    public Apply getApply() {
+//        return apply;
+//    }
 
-    }
-
-    @Override
-    public Apply getApply() {
-        return apply;
-    }
-
-    @Override
-    public void onChoiceDone() {
-
-    }
+//    @Override
+//    public void onChoiceDone() {
+//
+//    }
 
 
     @OnClick({R.id.btn_comment, R.id.btn_like, R.id.btn_share, R.id.editText3, R.id.btn_pass,

@@ -103,7 +103,7 @@ public class ApplyDetailActivity extends BaseActivity<NoteDetailPresenter> imple
         showResult = getIntent().getIntExtra("req", 0);
         aid = getIntent().getIntExtra("aid", 0);
         //根据申请单编号查询出对应的 申请者编号 帖子编号以及申请时间
-        mPresenter.getApplyInfo();
+//        mPresenter.getApplyInfo();
 
 
     }
@@ -171,10 +171,10 @@ public class ApplyDetailActivity extends BaseActivity<NoteDetailPresenter> imple
 
     }
 
-    @Override
-    public void onGetCatInfoSuccess(Catinfo catinfo) {
-
-    }
+//    @Override
+//    public void onGetCatInfoSuccess(Catinfo catinfo) {
+//
+//    }
 
     @Override
     public void onApplySuccess() {
@@ -201,38 +201,38 @@ public class ApplyDetailActivity extends BaseActivity<NoteDetailPresenter> imple
 
     }
 
-    @Override
-    public void onGetApplySuccess(Apply apply) {
-        nid = apply.getNid();
-        uid = apply.getUid();
-        verify = apply.getVerify();
-        mPresenter.getUserInfo();
-    }
-
-    @Override
-    public Apply getApply() {
-        Apply apply = new Apply();
-        apply.setId(aid);
-        apply.setCid(choiceFlag);//标识是否同意请求
-        return apply;
-    }
-
-    @Override
-    public void onChoiceDone() {
-        CommonUtil.showDialog(mContext, "提示", "操作成功", "确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                setResult(ApiConfig.RESULTCODE_NOTIFICATION);
-                finish();
-            }
-        }, "关闭", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                setResult(ApiConfig.RESULTCODE_NOTIFICATION);
-                finish();
-            }
-        });
-    }
+//    @Override
+//    public void onGetApplySuccess(Apply apply) {
+//        nid = apply.getNid();
+//        uid = apply.getUid();
+//        verify = apply.getVerify();
+//        mPresenter.getUserInfo();
+//    }
+//
+//    @Override
+//    public Apply getApply() {
+//        Apply apply = new Apply();
+//        apply.setId(aid);
+//        apply.setCid(choiceFlag);//标识是否同意请求
+//        return apply;
+//    }
+//
+//    @Override
+//    public void onChoiceDone() {
+//        CommonUtil.showDialog(mContext, "提示", "操作成功", "确定", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                setResult(ApiConfig.RESULTCODE_NOTIFICATION);
+//                finish();
+//            }
+//        }, "关闭", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                setResult(ApiConfig.RESULTCODE_NOTIFICATION);
+//                finish();
+//            }
+//        });
+//    }
 
 
     @OnClick({R.id.toolbar_image_left, R.id.ll_profile, R.id.note, R.id.btn_agree, R.id.btn_disagree})
@@ -244,11 +244,11 @@ public class ApplyDetailActivity extends BaseActivity<NoteDetailPresenter> imple
                 break;
             case R.id.btn_agree:
                 choiceFlag = 1;
-                mPresenter.makeChoice();
+//                mPresenter.makeChoice();
                 break;
             case R.id.btn_disagree:
                 choiceFlag = 0;
-                mPresenter.makeChoice();
+//                mPresenter.makeChoice();
                 break;
         }
     }
