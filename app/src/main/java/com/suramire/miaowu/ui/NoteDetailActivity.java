@@ -126,12 +126,12 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
 //        mAdapter.setListener(new MultiItemAdapter.OnApplyListener() {
 //            @Override
 //            public void onClick() {
-//                apply = new Apply();
-//                apply.setUid(CommonUtil.getCurrentUid());
-//                apply.setCid(mCatInfo.getId());
-//                apply.setNid(mNote.getId());
-//                apply.setTime(A.getTimeStamp());
-////                mPresenter.apply();
+//                reviewApply = new Apply();
+//                reviewApply.setUid(CommonUtil.getCurrentUid());
+//                reviewApply.setCid(mCatInfo.getId());
+//                reviewApply.setNid(mNote.getId());
+//                reviewApply.setTime(A.getTimeStamp());
+////                mPresenter.reviewApply();
 //            }
 //        });
         mListNotedetail.setAdapter(mAdapter);
@@ -293,13 +293,13 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
     }
 
 //    @Override
-//    public void onGetApplySuccess(Apply apply) {
+//    public void onGetApplySuccess(Apply reviewApply) {
 //
 //    }
 //
 //    @Override
 //    public Apply getApply() {
-//        return apply;
+//        return reviewApply;
 //    }
 
 //    @Override

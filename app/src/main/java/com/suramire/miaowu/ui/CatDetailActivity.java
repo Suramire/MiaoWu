@@ -14,7 +14,9 @@ import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.contract.CatContract;
 import com.suramire.miaowu.presenter.CatPresenter;
+import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
+import com.suramire.miaowu.util.ToastUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -29,6 +31,12 @@ import butterknife.OnClick;
 
 import static com.suramire.miaowu.util.ApiConfig.BASECATPICEURL;
 import static com.suramire.miaowu.util.ApiConfig.BASNOTEPICEURL;
+
+
+/**
+ * 猫咪详细信息页
+ * 查看信息 进行领养操作
+ */
 
 public class CatDetailActivity extends BaseActivity<CatPresenter> implements CatContract.View {
 
@@ -51,6 +59,7 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
 
     private ProgressDialog progressDialog;
     private int cid;
+    private boolean flag;
 
     @Override
     public int bindLayout() {
@@ -83,8 +92,19 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
     }
 
     @Override
+    public int getUid() {
+        return CommonUtil.getCurrentUid();
+    }
+
+    @Override
     public void onAddCatSuccess(int cid) {
 
+    }
+
+    @Override
+    public void onApplyCatSuccess() {
+        ToastUtil.showShortToastCenter("申请成功，请等待管理员审核");
+        flag = true;
     }
 
 
@@ -148,6 +168,9 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
                     @Override
                     public void onClick(View v) {
                         // TODO: 2018/4/13 响应申请操作
+                        if(!flag){
+                            mPresenter.applyCat();
+                        }
                     }
                 });
             }

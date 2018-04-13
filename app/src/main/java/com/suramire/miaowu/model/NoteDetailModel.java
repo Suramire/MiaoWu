@@ -113,22 +113,22 @@ public class NoteDetailModel implements NoteDetailContract.Model {
     }
 
 //    @Override
-//    public Observable<Void> apply(Apply apply) {
-//        return ApiLoader.addApply(apply)
+//    public Observable<Void> reviewApply(Apply reviewApply) {
+//        return ApiLoader.addApply(reviewApply)
 //                .map(new ResponseFunc<Void>());
 //    }
 //
 //    @Override
-//    public Observable<Void> makeChoice(Apply apply) {
-//        return ApiLoader.verifyApply(apply)
+//    public Observable<Void> makeChoice(Apply reviewApply) {
+//        return ApiLoader.verifyApply(reviewApply)
 //                .map(new ResponseFunc<Void>());
 //    }
 //
 //    @Override
 //    public Observable<Apply> getApply(int applyId) {
-//        Apply apply = new Apply();
-//        apply.setId(applyId);
-//        return ApiLoader.getOneApply(apply)
+//        Apply reviewApply = new Apply();
+//        reviewApply.setId(applyId);
+//        return ApiLoader.getOneApply(reviewApply)
 //                .map(new ResponseFunc<Apply>());
 //    }
 

@@ -34,6 +34,7 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
     private Integer currentId;
     private Intent intent;
     private int count;
+    private Integer currentType;
 
     public interface onNotificationListener{
         void onChange(int count);
@@ -59,7 +60,12 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
     public void onSuccess(Object data) {
         if(data!=null){
             List<Notification> notifications = (List<Notification>) data;
-            count = notifications.size();
+            count = 0;
+            for (int i = 0; i < notifications.size(); i++) {
+                if(notifications.get(i).getIsread()==0){
+                    count++;
+                }
+            }
             if(listener!=null){
                 listener.onChange(count);
             }
@@ -111,6 +117,7 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
                     @Override
                     public void onClick(View v) {
 //                        ToastUtil.showShortToastCenter("点击通知内容:类型"+item.getType());
+                        currentType = item.getType();
                         switch (item.getType()){
                             case 1:{
                                 intent = new Intent(mContext, UserActivity.class);
@@ -126,12 +133,13 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
                                 intent = new Intent(mContext, ApplyDetailActivity.class);
                                 intent.putExtra("aid", item.getUid1());
                             }break;
-                            case 4:{
-                                intent = new Intent(mContext, ApplyDetailActivity.class);
-                                intent.putExtra("req", 1);
-                                intent.putExtra("aid", item.getUid1());
-
-                            }
+//                            case 4:{
+//                                intent = new Intent(mContext, ApplyDetailActivity.class);
+//                                intent.putExtra("req", 1);
+//                                intent.putExtra("aid", item.getUid1());
+//
+//                            }
+                            default:break;
 
 
                         }
@@ -164,7 +172,7 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
     @Override
     public void onReadSuccess(int id) {
         // TODO: 2018/1/31 更新通知列表
-        if (intent!=null){
+        if (intent!=null&&currentType!=4){
             getActivity().startActivityForResult(intent, ApiConfig.REQUESTCODE_NOTIFICATION);
         }
         if(count>0){

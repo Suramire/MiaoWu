@@ -17,24 +17,7 @@
 
 
         <include
-            layout="@layout/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <!--<android.support.v7.widget.Toolbar-->
-            <!--android:id="@+id/toolbar"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@android:color/transparent"-->
-            <!--android:minHeight="?attr/actionBarSize"-->
-            <!--android:theme="?attr/actionBarTheme">-->
-
-            <!--&lt;!&ndash;<ProgressBar&ndash;&gt;-->
-            <!--&lt;!&ndash;android:id="@+id/progressBar"&ndash;&gt;-->
-            <!--&lt;!&ndash;style="?android:attr/progressBarStyle"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_height="wrap_content"/>&ndash;&gt;-->
-        <!--</android.support.v7.widget.Toolbar>-->
-
+            layout="@layout/toolbar" />
 
 
         <android.support.design.widget.TextInputLayout

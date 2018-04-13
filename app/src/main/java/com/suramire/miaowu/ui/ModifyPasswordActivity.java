@@ -1,7 +1,9 @@
 package com.suramire.miaowu.ui;
 
 import android.app.ProgressDialog;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
@@ -67,12 +69,19 @@ public class ModifyPasswordActivity extends BaseActivity<PasswordPresenter> impl
                         @Override
                         public void run() {
                             ToastUtil.showShortToastCenter(msg);
+//                            {"status":477,"detail":"the sending messages of this phone exceeds the limit"}
                         }
                     });
                 } else {
                     if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                         // 成功发送短信
                         sendCode = true;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ToastUtil.showLongToast("已发送验证码，请查收短信");
+                            }
+                        });
                         L.e("成功发送验证码");
 
                     } else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
@@ -83,6 +92,32 @@ public class ModifyPasswordActivity extends BaseActivity<PasswordPresenter> impl
             }
         };
         SMSSDK.registerEventHandler(mEventHandler);
+        edtVerifycode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String code = s.toString().trim();
+                if(code.length()!=4){
+//                    ToastUtil.showLongToast("请输入4位验证码");
+                }else{
+                    //服务器收到验证码时
+                    if(sendCode){
+                        SMSSDK.submitVerificationCode("86",phone,code);
+                    }else{
+                        ToastUtil.showLongToast("服务器尚未收到验证码");
+                    }
+                }
+            }
+        });
 
     }
 
@@ -112,7 +147,6 @@ public class ModifyPasswordActivity extends BaseActivity<PasswordPresenter> impl
                 phone = edtPhone.getText().toString().trim();
                 if(CommonUtil.isMobileNumber(phone)){
                     if(!clicked){
-                        ToastUtil.showLongToast("已发送验证码，请查收短信");
                         SMSSDK.getVerificationCode("86", phone);
                         clicked = true;
                     }else{
@@ -139,21 +173,9 @@ public class ModifyPasswordActivity extends BaseActivity<PasswordPresenter> impl
                             }else{
                                 ToastUtil.showLongToast("两次输入的密码不一致");
                             }
-
-                            mPresenter.modify();
                         //未验证手机号
                         }else{
-                            String code = edtVerifycode.getText().toString().trim();
-                            if(code.length()!=4){
-                                ToastUtil.showLongToast("请输入4位验证码");
-                            }else{
-                                //服务器收到验证码时
-                                if(sendCode){
-                                    SMSSDK.submitVerificationCode("86",phone,code);
-                                }else{
-                                    ToastUtil.showLongToast("服务器尚未收到验证码");
-                                }
-                            }
+                            ToastUtil.showShortToastCenter("验证码不正确");
                         }
                     }else{
                         ToastUtil.showLongToast("请先进行手机号码验证");
@@ -169,6 +191,7 @@ public class ModifyPasswordActivity extends BaseActivity<PasswordPresenter> impl
     public User getUser() {
         User user = new User();
         user.setId(uid);
+        user.setPhonenumber(phone);
         user.setPassword(password);
         return user;
     }

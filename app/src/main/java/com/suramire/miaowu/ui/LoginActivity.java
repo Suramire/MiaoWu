@@ -93,6 +93,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 startActivity(RegisterActivity.class);
                 break;
             case R.id.tv_forget:
+
+                startActivity(ModifyPasswordActivity.class);
                 break;
             case R.id.toolbar_image_left:
                 finish();

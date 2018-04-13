@@ -108,8 +108,18 @@ public interface ApiService {
     Observable<BaseResponse<Void>> uploadCatPicture(@Part("description") RequestBody description,
                                                 @Part MultipartBody.Part file);
 
+    //获取某用户所领养的所有猫咪信息
     @GET("getAdoptedCat")
     Observable<BaseResponse<List<Catinfo>>> getAdoptedCat(@Query(JSON) String string);
+
+    //响应申请请求
+    @GET("reviewApplyCat")
+    Observable<BaseResponse<Void>> reviewApplyCat(@Query(JSON) String s);
+
+    //申请领养
+    @GET("applyCat")
+    Observable<BaseResponse<Void>> applyCat(@Query(JSON) String s);
+
 
     /*帖子相关*/
     //获取首页帖子 所有

@@ -38,7 +38,7 @@
         <activity android:name=".ui.LoginActivity"/>
         <activity android:name=".ui.NoteDetailActivity"/>
         <activity android:name=".ui.NewPublishActivity"/>
-        <activity android:name=".ui.CatInfoActivity"/>
+        <activity android:name=".ui.NewCatActivity"/>
         <activity android:name=".ui.NoteListActivity"/>
         <activity android:name=".ui.FansListActivity"/>
         <activity android:name=".ui.UserActivity"/>

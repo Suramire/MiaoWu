@@ -89,6 +89,27 @@ public class CatPresenter implements CatContract.Presenter {
     }
 
     @Override
+    public void applyCat() {
+        mView.showLoading();
+        Subscription subscribe = catModel.applyCat(mView.getCatId(), mView.getUid())
+                .subscribe(new ResponseSubscriber<Void>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("申请失败：" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        mView.cancelLoading();
+                        mView.onApplyCatSuccess();
+
+                    }
+                });
+        compositeSubscription.add(subscribe);
+    }
+
+    @Override
     public void attachView(CatContract.View view) {
         mView = view;
         compositeSubscription = new CompositeSubscription();

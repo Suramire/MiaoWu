@@ -14,7 +14,7 @@ import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.presenter.UserPresenter;
 import com.suramire.miaowu.ui.AdoptHistoryActivity;
-import com.suramire.miaowu.ui.CatInfoActivity;
+import com.suramire.miaowu.ui.NewCatActivity;
 import com.suramire.miaowu.ui.FansListActivity;
 import com.suramire.miaowu.ui.LoginActivity;
 import com.suramire.miaowu.ui.NoteListActivity;
@@ -164,7 +164,7 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
                 break;
 
             case R.id.ll_addcat:
-                startActivity(CatInfoActivity.class);
+                startActivity(NewCatActivity.class);
                break;
         }
     }

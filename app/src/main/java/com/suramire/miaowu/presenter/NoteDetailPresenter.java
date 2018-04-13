@@ -154,9 +154,9 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
     }
 
 //    @Override
-//    public void apply() {
+//    public void reviewApply() {
 //        mView.showLoading();
-//        Subscription subscribe = noteDetailModel.apply(mView.getApply())
+//        Subscription subscribe = noteDetailModel.reviewApply(mView.getApply())
 //                .subscribe(new ResponseSubscriber<Void>() {
 //                    @Override
 //                    public void onError(Throwable e) {
@@ -310,9 +310,9 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
 //                    }
 //
 //                    @Override
-//                    public void onNext(Apply apply) {
+//                    public void onNext(Apply reviewApply) {
 //                        mView.cancelLoading();
-//                        mView.onGetApplySuccess(apply);
+//                        mView.onGetApplySuccess(reviewApply);
 //                    }
 //                });
 //        compositeSubscription.add(subscribe);

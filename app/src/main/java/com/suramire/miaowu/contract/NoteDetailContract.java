@@ -39,9 +39,9 @@ public interface NoteDetailContract {
 
         Observable<T> increaseNoteCount(int noteId);
 
-//        Observable<T> apply(Apply apply);
+//        Observable<T> reviewApply(Apply reviewApply);
 
-//        Observable<T> makeChoice(Apply apply);
+//        Observable<T> makeChoice(Apply reviewApply);
 
 //        Observable<T> getApply(int applyId);
 
@@ -73,7 +73,7 @@ public interface NoteDetailContract {
 
         void onDeleteSuccess();
 
-//        void onGetApplySuccess(Apply apply);
+//        void onGetApplySuccess(Apply reviewApply);
 
 
         //在帖子详情页发送请求时调用
@@ -98,7 +98,7 @@ public interface NoteDetailContract {
 
         void getUserInfo();
         //申请领养
-//        void apply();
+//        void reviewApply();
         //审核通过
         void passNote();
         //锁定帖子

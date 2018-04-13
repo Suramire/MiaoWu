@@ -1,5 +1,6 @@
 package com.suramire.miaowu.http;
 
+import com.google.gson.Gson;
 import com.suramire.miaowu.bean.Apply;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Follow;
@@ -18,7 +19,6 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.http.GET;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -143,6 +143,14 @@ public class ApiLoader {
 
     public static Observable<BaseResponse<List<Catinfo>>> getAdoptedCat(Catinfo catinfo){
         return observer(getApiService().getAdoptedCat(GsonUtil.objectToJson(catinfo)));
+    }
+
+    public static Observable<BaseResponse<Void>> reviewApplyCat(Catinfo catinfo){
+        return observer(getApiService().reviewApplyCat(GsonUtil.objectToJson(catinfo)));
+    }
+
+    public static Observable<BaseResponse<Void>> applyCat(Catinfo catinfo){
+        return observer(getApiService().applyCat(GsonUtil.objectToJson(catinfo)));
     }
 
 

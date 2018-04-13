@@ -43,6 +43,15 @@ public class CatModel implements CatContract.Model {
                 .map(new ResponseFunc<List<String>>());
     }
 
+    @Override
+    public Observable<Void> applyCat(int catId, int uid) {
+        Catinfo catinfo = new Catinfo();
+        catinfo.setId(catId);
+        catinfo.setUid(uid);
+        return ApiLoader.applyCat(catinfo)
+                .map(new ResponseFunc<Void>());
+    }
+
 
     public void uploadPicture(final List<String> paths, final int cid){
         if(paths==null || paths.size()==0){

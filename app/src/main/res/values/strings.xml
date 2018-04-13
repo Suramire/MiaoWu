@@ -110,4 +110,5 @@
     <string name="picture">图片</string>
     <string name="choosepicture">选择图片</string>
     <string name="addcat">添加猫咪</string>
+    <string name="id">编号</string>
 </resources>
