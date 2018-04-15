@@ -248,11 +248,10 @@
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:scaleType="center"
                             app:srcCompat="@mipmap/option_apply" />
 
                         <TextView
-                            android:id="@+id/tv_title_apply"
+                            android:id="@+id/tv_title_history"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
@@ -266,6 +265,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
+                        android:visibility="gone"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -332,13 +332,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:visibility="gone"
                         android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            app:srcCompat="@mipmap/option_verify"/>
+                            android:src="@mipmap/option_add"/>
 
                         <TextView
                             android:layout_width="wrap_content"

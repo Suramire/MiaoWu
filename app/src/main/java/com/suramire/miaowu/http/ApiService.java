@@ -2,7 +2,7 @@ package com.suramire.miaowu.http;
 
 import com.suramire.miaowu.bean.Apply;
 import com.suramire.miaowu.bean.Catinfo;
-import com.suramire.miaowu.bean.Multi;
+import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Notification;
@@ -88,6 +88,8 @@ public interface ApiService {
     @GET("updateAvaterUser")
     Observable<BaseResponse<Void>> updateAvater(@Query(JSON) String string);
 
+    /*猫咪相关*/
+
     //获取一只猫咪信息
     @GET("getOneCat")
     Observable<BaseResponse<Catinfo>> getOneCat(@Query(JSON) String string);
@@ -120,12 +122,16 @@ public interface ApiService {
     @GET("applyCat")
     Observable<BaseResponse<Void>> applyCat(@Query(JSON) String s);
 
+    //列出所有领养申请
+    @GET("listappCat")
+    Observable<BaseResponse<List<M>>> listApplied(@Query(JSON) String s);
+
 
     /*帖子相关*/
     //获取首页帖子 所有
     @FormUrlEncoded
-    @POST("listMultiNote")
-    Observable<BaseResponse<List<Multi>>> getMultiNotes(@Field(JSON) String string);
+    @POST("listmNote")
+    Observable<BaseResponse<List<M>>> getMultiNotes(@Field(JSON) String string);
     //列出所有未审核的帖子
     @GET("listunverifyNote")
     Observable<BaseResponse<List<Note>>> listUnverifyNotes();

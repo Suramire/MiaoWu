@@ -17,16 +17,22 @@
         android:padding="8dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/picture" />
 
         <TextView
             android:id="@+id/tv_choosepic"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/mainblue"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/choosepicture"/>
 
     </LinearLayout>
@@ -70,16 +76,21 @@
         android:padding="8dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/sex" />
 
         <Spinner
             android:id="@+id/sp_sex"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:entries="@array/sexs" />
 
     </LinearLayout>
@@ -91,16 +102,21 @@
         android:padding="8dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/age" />
 
         <Spinner
             android:id="@+id/sp_age"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:entries="@array/ages"
             android:spinnerMode="dialog" />
 
@@ -113,16 +129,21 @@
         android:padding="8dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/neutering" />
 
         <Spinner
             android:id="@+id/sp_neutering"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:entries="@array/options" />
 
     </LinearLayout>
@@ -134,16 +155,21 @@
         android:padding="8dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/insecticide" />
 
         <Spinner
             android:id="@+id/sp_insecticide"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:entries="@array/options" />
 
     </LinearLayout>
@@ -156,17 +182,22 @@
         android:padding="8dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/type" />
 
         <EditText
             android:id="@+id/edt_type"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:inputType="textPersonName" />
 
     </LinearLayout>
@@ -177,11 +208,14 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/otherCondition" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:paddingLeft="8dp"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:layout_marginBottom="8dp"-->
+            <!--android:text="@string/otherCondition" />-->
 
         <EditText
             android:id="@+id/edt_conditions"
@@ -191,8 +225,12 @@
             android:ems="10"
             android:gravity="top"
             android:hint="@string/hint_conditions"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:inputType="textPersonName"
             android:padding="8dp" />
+
+
     </LinearLayout>
 
 

@@ -1,10 +1,9 @@
 package com.suramire.miaowu.http;
 
-import com.google.gson.Gson;
 import com.suramire.miaowu.bean.Apply;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Follow;
-import com.suramire.miaowu.bean.Multi;
+import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Notification;
@@ -114,7 +113,6 @@ public class ApiLoader {
         return observer(getApiService().uploadAvater(description,body));
     }
 
-
     /*猫咪相关*/
 
     public static Observable<BaseResponse<Integer>> addOneCat(Catinfo catinfo){
@@ -153,10 +151,15 @@ public class ApiLoader {
         return observer(getApiService().applyCat(GsonUtil.objectToJson(catinfo)));
     }
 
+    public static Observable<BaseResponse<List<M>>> listApplied(){
+        return observer(getApiService().listApplied(GsonUtil.objectToJson(null)));
+    }
+
+
 
     /*帖子相关*/
 
-    public static Observable<BaseResponse<List<Multi>>> getMultiNotes(Note note){
+    public static Observable<BaseResponse<List<M>>> getMultiNotes(Note note){
         return observer(getApiService().getMultiNotes(GsonUtil.objectToJson(note)));
     }
     public static Observable<BaseResponse<List<Note>>> getNoteByUser(User user){

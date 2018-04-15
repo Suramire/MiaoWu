@@ -117,11 +117,11 @@ public class FansListActivity extends BaseListActivity<FansPresenter> implements
         });
         //根据传过来的下标使选择对应标签页
         tablayout.getTabAt(index).select();
-        switch (index){
-            //若通过关注进入则强制刷新列表
-            case 0:showEmpty("暂无关注用户");mPresenter.getFollow();break;
-            case 1:showEmpty("暂无粉丝用户");mPresenter.getFollower();break;
-        }
+//        switch (index){
+//            //若通过关注进入则强制刷新列表
+//            case 0:showEmpty("暂无关注用户");mPresenter.getFollow();break;
+//            case 1:showEmpty("暂无粉丝用户");mPresenter.getFollower();break;
+//        }
 
     }
 

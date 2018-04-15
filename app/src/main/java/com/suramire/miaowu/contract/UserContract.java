@@ -2,7 +2,10 @@ package com.suramire.miaowu.contract;
 
 import com.suramire.miaowu.base.BasePresenter;
 import com.suramire.miaowu.base.BaseView;
+import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.User;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -26,6 +29,8 @@ public interface UserContract {
         Observable<T> unfollow(int uid1, int uid2);
 
         Observable<T> getRelationship(int uid,int uid2);
+
+
     }
 
     interface View extends BaseView {
@@ -42,6 +47,8 @@ public interface UserContract {
         void onGetUserNoteCountSuccess(int count);
 
         void onGetRelationshipSuccess(int type);
+
+
 
 
     }
@@ -64,6 +71,8 @@ public interface UserContract {
         void follow();
         //取消关注
         void unfollow();
+
+
 
 
     }

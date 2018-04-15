@@ -55,7 +55,6 @@ public class SearchPresenter implements SearchContract.Presenter {
                     public void onNext(List<Note> notes) {
                         mView.cancelLoading();
                         mView.onNoteSuccess(notes);
-                        searchUser();
                     }
                 });
         compositeSubscription.add(subscribe);
@@ -63,18 +62,18 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void searchUser() {
-//        mView.showLoading();
+        mView.showLoading();
         Subscription subscribe = searchModel.searchUser(mView.getQuery())
                 .subscribe(new ResponseSubscriber<List<User>>() {
                     @Override
                     public void onError(Throwable e) {
-//                        mView.cancelLoading();
+                        mView.cancelLoading();
                         ToastUtil.showShortToastCenter("搜索用户信息出错：" + e.getMessage());
                     }
 
                     @Override
                     public void onNext(List<User> users) {
-//                        mView.cancelLoading();
+                        mView.cancelLoading();
                         mView.onUserSuccess(users);
 
                     }

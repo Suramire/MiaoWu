@@ -83,7 +83,6 @@ public class ModifyPasswordActivity extends BaseActivity<PasswordPresenter> impl
                             }
                         });
                         L.e("成功发送验证码");
-
                     } else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                         verifyCode = true;
                         L.e("成功验证验证码");

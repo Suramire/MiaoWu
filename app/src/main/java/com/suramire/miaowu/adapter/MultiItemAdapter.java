@@ -16,7 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
+import com.suramire.miaowu.base.App;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
@@ -49,15 +51,6 @@ public class MultiItemAdapter extends BaseAdapter {
     private boolean isFirst = true;
     private Integer type;
 
-    //申请按钮监听器
-    public interface OnApplyListener{
-        void onClick();
-    }
-    private OnApplyListener listener;
-
-    public void setListener(OnApplyListener listener) {
-        this.listener = listener;
-    }
 
     class GlideImageLoader extends ImageLoader {
         @Override
@@ -74,7 +67,7 @@ public class MultiItemAdapter extends BaseAdapter {
         public MultiItemAdapter(Context context , List list) {
         mList = list;
         mContext = context;
-        mClasses =new Class[]{Multi0.class, Note.class, ArrayList.class, User.class, Catinfo.class};
+        mClasses =new Class[]{Multi0.class, Note.class, ArrayList.class, User.class};
     }
 
     @Override
@@ -105,9 +98,6 @@ public class MultiItemAdapter extends BaseAdapter {
             }break;
             case 3:{
                 convertView = getView3(position, convertView, parent);
-            }break;
-            case 4:{
-                convertView = getView4(position, convertView, parent);
             }break;
         }
         return convertView;
@@ -281,52 +271,18 @@ public class MultiItemAdapter extends BaseAdapter {
                 mContext.startActivity(intent);
             }
         });
-        PicassoUtil.show(BASUSERPICEURL+user.getIcon(),mVH.mImgUser);
+
+        Picasso.with(App.getInstance())
+                .load(BASUSERPICEURL + user.getIcon())
+                .placeholder(R.mipmap.ic_loading)
+                .resize(100, 100)
+                .centerCrop()
+                .error(R.mipmap.ic_loading_error)
+                .into(mVH.mImgUser);
 
         return convertView;
     }
 
-    private View getView4(int position, View convertView, ViewGroup parent){
-        ViewHolder4 mVH;
-        if(convertView==null){
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_catinfo, null, false);
-            mVH = new ViewHolder4(convertView);
-            convertView.setTag(mVH);
-        }else{
-            mVH = (ViewHolder4) convertView.getTag();
-        }
-        Catinfo catinfo = (Catinfo) mList.get(position);
-
-        mVH.tvAge.setText(catinfo.getAge()==0?"未知":catinfo.getAge().toString());
-        Integer sex = catinfo.getSex();
-        if(sex==2){
-            mVH.tvSex.setText("母");
-        }else if(sex==1){
-            mVH.tvSex.setText("公");
-        }else{
-            mVH.tvSex.setText("未知");
-        }
-        mVH.tvType.setText(catinfo.getType());
-        Integer neutering = catinfo.getNeutering();
-        if(neutering==1){
-            mVH.tvNeutering.setText("是");
-        }else if(neutering ==2){
-            mVH.tvNeutering.setText("否");
-        }else{
-            mVH.tvNeutering.setText("未知");
-        }
-        Integer insecticide = catinfo.getInsecticide();
-        if(insecticide==1){
-            mVH.tvInsecticide.setText("是");
-        }else if(insecticide ==2){
-            mVH.tvInsecticide.setText("否");
-        }else{
-            mVH.tvInsecticide.setText("未知");
-        }
-
-        mVH.tvConditions.setText(catinfo.getConditions());
-        return convertView;
-    }
 
 
     class ViewHolder0 {
@@ -354,23 +310,6 @@ public class MultiItemAdapter extends BaseAdapter {
     }
 
 
-    class ViewHolder4 {
-        TextView tvSex;
-        TextView tvAge;
-        TextView tvNeutering;
-        TextView tvInsecticide;
-        TextView tvType;
-        TextView tvConditions;
-
-        public ViewHolder4(View view) {
-            tvSex = (TextView) view.findViewById(R.id.tv_sex);
-            tvAge = (TextView) view.findViewById(R.id.tv_age);
-            tvNeutering = (TextView) view.findViewById(R.id.tv_neutering);
-            tvInsecticide = (TextView) view.findViewById(R.id.tv_insecticide);
-            tvType = (TextView) view.findViewById(R.id.tv_type);
-            tvConditions = (TextView) view.findViewById(R.id.tv_conditions);
-        }
-    }
 
     @Override
     public int getViewTypeCount() {

@@ -3,6 +3,7 @@ package com.suramire.miaowu.contract;
 import com.suramire.miaowu.base.BasePresenter;
 import com.suramire.miaowu.base.BaseView;
 import com.suramire.miaowu.bean.Catinfo;
+import com.suramire.miaowu.bean.M;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public interface CatContract {
 
         Observable<T> applyCat(int catId, int uid);
 
+        Observable<T> listAppliedCat();
+
     }
 
     interface View extends BaseView{
@@ -36,6 +39,8 @@ public interface CatContract {
         List<String> getStringPaths();
 
         void onGetAllPicturesSuccess(List<String> paths);
+
+        void onListAppliedCatSuccess(List<M> catinfo);
     }
 
     interface Presenter extends BasePresenter<View>{
@@ -53,6 +58,9 @@ public interface CatContract {
 
         //申请领养
         void applyCat();
+
+        //列出待审核的领养申请
+        void listAppliedCat();
 
 
     }

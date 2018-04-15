@@ -35,7 +35,6 @@ import butterknife.OnClick;
  */
 
 public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View {
-    private static final int REQUESTCODE = 0x100;
     @Bind(R.id.toolbar_image_left)
     ImageView toolbarImageLeft;
     @Bind(R.id.toolbar_text_center)

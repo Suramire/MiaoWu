@@ -14,6 +14,7 @@ import com.suramire.miaowu.base.BaseListActivity;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.contract.NoteContract;
 import com.suramire.miaowu.presenter.NotePresenter;
+import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.ToastUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 
@@ -50,9 +51,81 @@ public class NoteListActivity extends BaseListActivity<NotePresenter> implements
 
     @Override
     public void onSuccess(Object data) {
-        // TODO: 2018/1/27 这里显示帖子列表
         if(data!=null){
             List<Note> notes = (List<Note>) data;
+            if(notes.size()>0){
+                showList();
+                listview.setLayoutManager(new LinearLayoutManager(mContext));
+                listview.setAdapter(new CommonRecyclerAdapter<Note>(mContext,R.layout.item_note, notes) {
+
+                    @Override
+                    public void onUpdate(BaseAdapterHelper helper, final Note item, int position) {
+                        helper.setText(R.id.note_title, item.getTitle())
+                                .setText(R.id.note_content, item.getContent())
+                                .setText(R.id.note_date, CommonUtil.timeStampToDateString(item.getPublish()))
+                                .setOnClickListener(R.id.ll_note, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(mContext, NoteDetailActivity.class);
+                                        intent.putExtra("noteId", item.getId());
+                                        intent.putExtra("verifyApply", item.getVerified());
+                                        intent.putExtra("userId", item.getUid());
+                                        startActivity(intent);
+                                    }
+                                });
+                    }
+                });
+            }else{
+                showEmpty("暂时没有待审核的帖子");
+            }
+        }
+        else{
+            showEmpty("暂时没有待审核的帖子");
+        }
+
+
+    }
+
+    @Override
+    public int bindLayout() {
+        return R.layout.activity_list_toolbar;
+    }
+
+    @Override
+    public void createPresenter() {
+        mPresenter = new NotePresenter();
+    }
+
+    @Override
+    public void initView() {
+        swipeRefreshLayout.setEnabled(false);
+        progressDialog = new ProgressDialog(mContext);
+        progressDialog.setMessage("请稍候……");
+        toolbarImageLeft.setImageResource(R.drawable.ic_arrow_back_black);
+        toolbarTextCenter.setText("帖子列表");
+        int uid = getIntent().getIntExtra("uid", 0);
+        if(uid==-1){
+            //管理员显示待审核帖子
+            toolbarTextCenter.setText("待审核帖子列表");
+            mPresenter.getUnverifyNotes();
+        }else if(uid!=0){
+            mPresenter.getNotesByUser(uid);
+        }else{
+            ToastUtil.showShortToastCenter("获取帖子列表失败:未知的用户编号");
+        }
+    }
+
+
+
+    @OnClick(R.id.toolbar_image_left)
+    public void onViewClicked() {
+        finish();
+    }
+
+
+    @Override
+    public void onGetNoteByUserSuccess(List<Note> notes) {
+
             if(notes.size()>0){
                 showList();
                 listview.setLayoutManager(new LinearLayoutManager(mContext));
@@ -75,48 +148,9 @@ public class NoteListActivity extends BaseListActivity<NotePresenter> implements
                     }
                 });
             }else{
-                    showEmpty("该用户还没发帖子");
+                showEmpty("该用户还没发帖子");
             }
 
         }
-
-    }
-
-    @Override
-    public int bindLayout() {
-        return R.layout.activity_list_toolbar;
-    }
-
-    @Override
-    public void createPresenter() {
-        mPresenter = new NotePresenter();
-    }
-
-    @Override
-    public void initView() {
-        progressDialog = new ProgressDialog(mContext);
-        progressDialog.setMessage("请稍候……");
-        toolbarImageLeft.setImageResource(R.drawable.ic_arrow_back_black);
-        toolbarTextCenter.setText("帖子列表");
-        int uid = getIntent().getIntExtra("uid", 0);
-        if(uid==-1){
-            //管理员显示待审核帖子
-            toolbarTextCenter.setText("待审核帖子列表");
-            mPresenter.getUnverifyNotes();
-        }else if(uid!=0){
-            // TODO: 2018/1/27 这里根据用户id获取其发表的帖子
-            mPresenter.getNotesByUser(uid);
-        }else{
-            ToastUtil.showShortToastCenter("获取帖子列表失败:未知的用户编号");
-        }
-    }
-
-
-
-    @OnClick(R.id.toolbar_image_left)
-    public void onViewClicked() {
-        finish();
-    }
-
 
 }

@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,9 +18,7 @@ import android.widget.Toast;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.adapter.MultiItemAdapter;
-import com.suramire.miaowu.base.App;
 import com.suramire.miaowu.base.BaseActivity;
-import com.suramire.miaowu.bean.Apply;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
@@ -29,10 +26,8 @@ import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.NoteDetailContract;
 import com.suramire.miaowu.presenter.NoteDetailPresenter;
 import com.suramire.miaowu.ui.dialog.BottomCommentDialogFragment;
-import com.suramire.miaowu.util.A;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.ToastUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 
@@ -40,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -122,18 +116,6 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
         mObjects = new ArrayList<>();
 
         mAdapter = new MultiItemAdapter(this, mObjects);
-        //申请按钮点击回调
-//        mAdapter.setListener(new MultiItemAdapter.OnApplyListener() {
-//            @Override
-//            public void onClick() {
-//                reviewApply = new Apply();
-//                reviewApply.setUid(CommonUtil.getCurrentUid());
-//                reviewApply.setCid(mCatInfo.getId());
-//                reviewApply.setNid(mNote.getId());
-//                reviewApply.setTime(A.getTimeStamp());
-////                mPresenter.reviewApply();
-//            }
-//        });
         mListNotedetail.setAdapter(mAdapter);
         mPresenter.getPictue();
 
@@ -333,32 +315,29 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
                 }
                 break;
             case R.id.btn_share:
-                ToastUtil.showShortToastCenter("响应分享操作");
+//                ToastUtil.showShortToastCenter("响应分享操作");
                 break;
                 //底部评论框
             case R.id.editText3: {
                 if (!CommonUtil.isLogined()) {
-                    Snackbar.make(findViewById(android.R.id.content), "您还未登录", Snackbar.LENGTH_INDEFINITE)
-                            .setAction("登录", new View.OnClickListener() {
+                    CommonUtil.snackBar(mContext,
+                            "您还未登录","登录",new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     startActivity(LoginActivity.class);
                                 }
-                            }).show();
+                            });
                 } else {
                     final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
                     final BottomCommentDialogFragment bottomCommentDialogFragment = BottomCommentDialogFragment.newInstance();
                     bottomCommentDialogFragment.setReplyListener(new BottomCommentDialogFragment.OnReplyListener() {
                         @Override
                         public void onSucess() {
-//                            Toast.makeText(mContext, "发表成功！", Toast.LENGTH_SHORT).show();
                             bottomCommentDialogFragment.dismiss();
                             mObjects.clear();//清除旧数据
                             mPresenter.getPictue();//从新获取帖子数据
 
                         }
-
-
 
                         @Override
                         public void onError(String errorMessage) {

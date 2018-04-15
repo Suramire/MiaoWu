@@ -10,10 +10,12 @@ import android.widget.TextView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseFragment;
+import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.presenter.UserPresenter;
 import com.suramire.miaowu.ui.AdoptHistoryActivity;
+import com.suramire.miaowu.ui.ApplyListActivity;
 import com.suramire.miaowu.ui.NewCatActivity;
 import com.suramire.miaowu.ui.FansListActivity;
 import com.suramire.miaowu.ui.LoginActivity;
@@ -21,6 +23,8 @@ import com.suramire.miaowu.ui.NoteListActivity;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.PicassoUtil;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -160,7 +164,7 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
                 startActivity(intent3);
                 break;
             case R.id.ll_verifycat:
-                // TODO: 2018/4/12 猫咪领养审核
+                startActivity(ApplyListActivity.class);
                 break;
 
             case R.id.ll_addcat:

@@ -1,6 +1,7 @@
 package com.suramire.miaowu.ui;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,8 +15,10 @@ import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.ReviewApplyContract;
 import com.suramire.miaowu.presenter.ReviewApplyPresenter;
 import com.suramire.miaowu.util.ApiConfig;
+import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
+import com.suramire.miaowu.util.ToastUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 
 import butterknife.Bind;
@@ -36,7 +39,7 @@ public class ApplyDetailActivity extends BaseActivity<ReviewApplyPresenter> impl
     @Bind(R.id.ll_profile)
     LinearLayout llProfile;
     @Bind(R.id.tv_)
-    TextView tv;
+    TextView tvId;
     @Bind(R.id.tv_sex)
     TextView tvSex;
     @Bind(R.id.tv_age)
@@ -68,6 +71,12 @@ public class ApplyDetailActivity extends BaseActivity<ReviewApplyPresenter> impl
     @Override
     public void onSuccess(Object data) {
 
+        CommonUtil.showDialog(mContext, "操作成功", "确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -88,7 +97,6 @@ public class ApplyDetailActivity extends BaseActivity<ReviewApplyPresenter> impl
         toolbar.setLeftImage(R.drawable.ic_arrow_back_black);
         flag = 0;
         cid = getIntent().getIntExtra("aid", 0);
-        L.e("cid:" + cid);
         if(cid!=0){
             mPresenter.getCatInfo();
         }
@@ -111,7 +119,7 @@ public class ApplyDetailActivity extends BaseActivity<ReviewApplyPresenter> impl
                 }
                 break;
             case R.id.btn_disagree:
-                flag = 2;
+                flag = 0;
                 if(!clicked){
                     mPresenter.reviewApply();
                     clicked = true;
@@ -150,6 +158,7 @@ public class ApplyDetailActivity extends BaseActivity<ReviewApplyPresenter> impl
     @Override
     public void onGetCatSuccess(Catinfo catinfo) {
         uid = catinfo.getUid();
+        tvId.setText(catinfo.getId()+"");
         tvSex.setText(catinfo.getSex()==0?"未知":(catinfo.getSex()==1)?"公":"母");
         tvAge.setText(catinfo.getAge()==0?"未知":catinfo.getAge()+"");
         tvNeutering.setText(catinfo.getNeutering()==0?"未知":(catinfo.getNeutering()==1)?"是":"否");

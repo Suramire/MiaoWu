@@ -13,9 +13,8 @@ import com.classic.adapter.CommonRecyclerAdapter;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseListFragment;
 import com.suramire.miaowu.bean.Catinfo;
-import com.suramire.miaowu.bean.Multi;
+import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.bean.Note;
-import com.suramire.miaowu.bean.NotePhoto;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.HomeContract;
 import com.suramire.miaowu.presenter.HomePresenter;
@@ -23,8 +22,8 @@ import com.suramire.miaowu.ui.CatDetailActivity;
 import com.suramire.miaowu.ui.NoteDetailActivity;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
+import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.PicassoUtil;
-import com.suramire.miaowu.util.ToastUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -65,42 +64,7 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
 
     @Override
     public void onSuccess(Object data) {
-        if(data!=null){
-            final List<Multi> multis = (List<Multi>) data;
-            if ( multis.size() > 0) {
-                listview.setAdapter(new CommonRecyclerAdapter<Multi>(mContext, R.layout.item_home, multis) {
 
-                    @Override
-                    public void onUpdate(BaseAdapterHelper helper, Multi item, int position) {
-                        final Note note = item.getmNote();
-                        NotePhoto notePhoto = item.getmNotePhoto();
-                        User user = item.getmUser();
-                        PicassoUtil.show(BASNOTEPICEURL + notePhoto.getName(), (ImageView) helper.getView(R.id.noteimg),
-                                R.mipmap.ic_loading, R.mipmap.ic_loading_error);
-                        PicassoUtil.show(BASUSERPICEURL + user.getIcon(), (ImageView) helper.getView(R.id.anthorimg));
-                        helper.setOnClickListener(R.id.cardview_item, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(mContext, NoteDetailActivity.class);
-                                intent.putExtra("noteId", note.getId());
-                                intent.putExtra("userId", note.getUid());
-                                startActivity(intent);
-                            }
-                        });
-                        helper.setText(R.id.notetitle, note.getTitle())
-                                .setText(R.id.notecontent, note.getContent())
-                                .setText(R.id.textView7,note.getThumbs()+"")
-                                .setText(R.id.notepublishtime, CommonUtil.getHowLongAgo(note.getPublish()))
-                                .setText(R.id.textView6, item.getReplyNumber() + "")
-                                .setText(R.id.authorname, user.getNickname());
-                    }
-                });
-            }
-            else {
-                ToastUtil.showShortToastCenter("暂无新帖子");
-            }
-
-        }
 
     }
 
@@ -111,6 +75,7 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
 
     @Override
     public void initView() {
+        position = 0;
         showEmpty("没有帖子数据，下拉刷新");
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -176,6 +141,49 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
             showEmpty("暂时没有猫咪信息");
         }
     }
+
+    @Override
+    public void onGetNoteListSuccess(List<M> mList) {
+
+        if ( mList!=null&&mList.size() > 0) {
+            showList();
+            listview.setLayoutManager(new LinearLayoutManager(mContext));
+            listview.setAdapter(new CommonRecyclerAdapter<M>(mContext, R.layout.item_home, mList) {
+
+                @Override
+                public void onUpdate(BaseAdapterHelper helper, M item, int position) {
+
+                    final Note note = (Note) GsonUtil.jsonToObject(item.getStringx(), Note.class);
+                    String firstPhoto = item.getStringz();
+                    User user =  (User) GsonUtil.jsonToObject(item.getStringy(), User.class);
+                    PicassoUtil.show(BASNOTEPICEURL + firstPhoto, (ImageView) helper.getView(R.id.noteimg),
+                            R.mipmap.ic_loading, R.mipmap.ic_loading_error);
+                    PicassoUtil.show(BASUSERPICEURL + user.getIcon(), (ImageView) helper.getView(R.id.anthorimg));
+                    helper.setOnClickListener(R.id.cardview_item, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(mContext, NoteDetailActivity.class);
+                            intent.putExtra("noteId", note.getId());
+                            intent.putExtra("userId", note.getUid());
+                            startActivity(intent);
+                        }
+                    });
+                    helper.setText(R.id.notetitle, note.getTitle())
+                            .setText(R.id.notecontent, note.getContent())
+                            .setText(R.id.textView7,note.getThumbs()+"")
+                            .setText(R.id.notepublishtime, CommonUtil.getHowLongAgo(note.getPublish()))
+                            .setText(R.id.textView6, item.getIntx() + "")
+                            .setText(R.id.authorname, user.getNickname());
+                }
+            });
+        } else {
+                showEmpty("暂无新帖子");
+//                ToastUtil.showShortToastCenter("暂无新帖子");
+            }
+
+
+    }
+
 
 
 }

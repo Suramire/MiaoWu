@@ -1,6 +1,7 @@
 package com.suramire.miaowu.presenter;
 
 import com.suramire.miaowu.bean.Catinfo;
+import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.contract.CatContract;
 import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.CatModel;
@@ -107,6 +108,28 @@ public class CatPresenter implements CatContract.Presenter {
                     }
                 });
         compositeSubscription.add(subscribe);
+    }
+
+    @Override
+    public void listAppliedCat() {
+
+        mView.showLoading();
+        Subscription subscribe = catModel.listAppliedCat()
+                .subscribe(new ResponseSubscriber<List<M>>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("获取待审核列表出错："+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<M> catinfo) {
+                        mView.cancelLoading();
+                        mView.onListAppliedCatSuccess(catinfo);
+                    }
+                });
+        compositeSubscription.add(subscribe);
+
     }
 
     @Override

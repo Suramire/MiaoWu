@@ -1,5 +1,6 @@
 package com.suramire.miaowu.ui;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -37,6 +39,8 @@ import com.suramire.miaowu.wiget.MyToolbar;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -76,6 +80,11 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
     private ProgressDialog progressDialog;
     private int uid;
     private String avaterPath;
+    int year_begin;
+    int month_begin;
+    int day_begin;
+    long time_begin;
+    private Calendar calendar;
 
     @Override
     public void showLoading() {
@@ -96,22 +105,20 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
     }
 
     private void showData(User user) {
-//        PicassoUtil.show(ApiConfig.BASUSERPICEURL + user.getIcon(), imgIcon);
-        Picasso.with(mContext)
-                .load(ApiConfig.BASUSERPICEURL + user.getIcon())
-                .memoryPolicy(MemoryPolicy.NO_CACHE)
-                .networkPolicy(NetworkPolicy.NO_CACHE)
-                .placeholder(R.mipmap.ic_loading_small)
-                .error(R.mipmap.ic_loading_error_small)
-                .into(imgIcon);
+        PicassoUtil.show(ApiConfig.BASUSERPICEURL + user.getIcon(), imgIcon);
         edtUsername.setText(user.getNickname());
-        edtBirthday.setText(CommonUtil.dateToString(user.getBirthday()));
+        Date birthday1 = user.getBirthday();
+        edtBirthday.setText(CommonUtil.dateToString(birthday1));
         edtPhone.setText(user.getPhonenumber());
         //若用户有留联系方式则显示
         spinner.setSelection(user.getContacttype());
         edtContact.setText(user.getContact());
         mUser = user;
         SPUtils.put("hascontact",user.getContacttype());
+        String birthday = birthday1.toString().trim();
+        if(!TextUtils.isEmpty(birthday)){
+            calendar.setTime(birthday1);
+        }
 
     }
 
@@ -128,6 +135,8 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
 
     @Override
     public void initView() {
+        calendar = Calendar.getInstance();
+        calendar.setTime(new Date());//设置日历对象
         toolbar.setTitle("个人信息");
         toolbarImageLeft.setImageResource(R.drawable.ic_arrow_back_black);
         toolbarTextRight.setText("保存");
@@ -201,7 +210,17 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
                 startActivityForResult(intent,ApiConfig.REQUESTCODE_PHOTO);
                 break;
             case R.id.edt_birthday:
-                // TODO: 2018/2/1 日期选择
+                DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        edtBirthday.setText(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
+                        calendar.set(year, monthOfYear, dayOfMonth);
+                        time_begin = calendar.getTimeInMillis();
+                    }
+                }, year_begin,month_begin,day_begin);
+                datePickerDialog.show();
+
                 break;
             case R.id.btn_loginout:
                 CommonUtil.loginOut();
@@ -210,7 +229,6 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
                 finish();
                 break;
             case R.id.tv_modify_password:
-                // TODO: 2018/2/1 修改密码
                 Bundle bundle = new Bundle();
                 bundle.putInt("uid",getUid());
                 startActivity(ModifyPasswordActivity.class,bundle);
@@ -227,13 +245,13 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
         if(TextUtils.isEmpty(birthday)){
             ToastUtil.showShortToastCenter("请填写生日信息");
             return;
+        }else{
+            mUser.setBirthday(new Date(calendar.getTimeInMillis()));
         }
         if(selectedItemPosition!=0 && TextUtils.isEmpty(contact)){
             ToastUtil.showShortToastCenter("若选择了联系方式请填写完整");
             return;
         }
-
-//        mUser.setBirthday();
         mUser.setContacttype(selectedItemPosition);
         mUser.setContact(contact);
 

@@ -52,7 +52,7 @@ public class NotePresenter implements NoteContract.Presenter {
                     @Override
                     public void onNext(List<Note> notes) {
                         mView.cancelLoading();
-                        mView.onSuccess(notes);
+                        mView.onGetNoteByUserSuccess(notes);
                     }
                 });
         compositeSubscription.add(subscribe);

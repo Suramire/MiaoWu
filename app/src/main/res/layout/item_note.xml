@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="4dp"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
@@ -36,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
-                android:text="A Loooooooooooooooooooooooong Title Here"
+                tools:text="A Loooooooooooooooooooooooong Title Here"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"/>
 
@@ -45,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="3"
-                android:text="    content here content here content here content here content here content here content here content here content here content here"/>
+                tools:text="    content here content here content here content here content here content here content here content here content here content here"/>
         </LinearLayout>
 
         <LinearLayout
@@ -55,35 +56,14 @@
             android:orientation="horizontal"
             android:padding="8dp">
 
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="4dp"
-                android:src="@drawable/ic_thumb_up2_black_24dp"/>
-
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/note_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:text="999"/>
+                tools:text="2018-1-1 20:10:03"
+                />
 
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="4dp"
-                android:src="@drawable/ic_textsms_black_24dp"/>
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:text="666"/>
         </LinearLayout>
 
     </LinearLayout>

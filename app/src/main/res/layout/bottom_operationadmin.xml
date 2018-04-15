@@ -15,7 +15,7 @@
 
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
@@ -24,6 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/btn_blue"
+            android:textColor="@color/white"
             android:text="审核通过"/>
 
 
@@ -31,7 +33,7 @@
 
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
@@ -40,7 +42,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/btn_red"
+            android:textColor="@color/white"
             android:text="驳回帖子"/>
+
+
 
 
 

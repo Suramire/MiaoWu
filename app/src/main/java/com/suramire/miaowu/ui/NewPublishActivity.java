@@ -47,7 +47,6 @@ import butterknife.OnClick;
 /**
  * Created by Suramire on 2017/10/26.
  */
-// TODO: 2017/10/27 字数限制
 
 public class NewPublishActivity extends BaseActivity<PublishPresenter> implements PublishContract.View {
     @Bind(R.id.toolbar)
@@ -247,14 +246,13 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
     @Override
     public void onSuccess(Object data) {
         isPublish = true;//发帖标志位，防止重复发帖 true=已经发布过了
-        Snackbar.make(findViewById(android.R.id.content),
-                "帖子发布成功，请等待审核", Snackbar.LENGTH_INDEFINITE)
-                .setAction("确定", new View.OnClickListener() {
+        CommonUtil.snackBar(mContext,
+                "帖子发布成功，请等待审核","确定",new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         finish();
                     }
-                }).show();
+                });
     }
 
 

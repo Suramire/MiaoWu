@@ -1,6 +1,7 @@
 package com.suramire.miaowu.model;
 
 import com.suramire.miaowu.bean.Catinfo;
+import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.contract.CatContract;
 import com.suramire.miaowu.http.ApiLoader;
 import com.suramire.miaowu.http.base.ResponseFunc;
@@ -60,6 +61,12 @@ public class CatModel implements CatContract.Model {
             upload(paths, cid, 0);
         }
 
+    }
+
+    @Override
+    public Observable<List<M>> listAppliedCat() {
+        return ApiLoader.listApplied()
+                .map(new ResponseFunc<List<M>>());
     }
 
     private void upload(final List<String> paths, final int cid, final int i) {

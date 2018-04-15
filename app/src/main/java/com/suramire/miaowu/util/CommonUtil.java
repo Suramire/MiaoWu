@@ -52,7 +52,7 @@ public class CommonUtil {
     public static void snackBar(Context context,String message,String actionMessage, View.OnClickListener listener){
         Snackbar.make(((Activity)context).findViewById(android.R.id.content),message,Snackbar.LENGTH_LONG)
                 .setAction(actionMessage,listener)
-                .setActionTextColor(context.getResources().getColor(R.color.white))
+                .setActionTextColor(context.getResources().getColor(R.color.white))//设置按钮文本颜色
                 .show();
 
     }
@@ -209,6 +209,11 @@ public class CommonUtil {
         return simpleDateFormat.format(date);
     }
 
+    /**
+     * 获取现在距离某个时间的时差
+     * @param timestamp
+     * @return
+     */
     public static String getHowLongAgo(Timestamp timestamp){
         long l = getTimeStamp().getTime() - timestamp.getTime();
         long l1 = l / 1000 / 60 / 60 / 24 / 30;
@@ -269,5 +274,18 @@ public class CommonUtil {
                 .setCancelable(false)
                 .show();
     }
+
+    public static void showDialog(Context context, String message, String positiveText, DialogInterface.OnClickListener positiveListener
+                                  ){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("提示")
+                .setMessage(message)
+                .setPositiveButton(positiveText, positiveListener)
+                .setNegativeButton("取消", null)
+                .setCancelable(false)
+                .show();
+    }
+
+
 
 }

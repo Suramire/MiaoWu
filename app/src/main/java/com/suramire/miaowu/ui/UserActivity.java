@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
+import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.presenter.UserPresenter;
@@ -20,6 +21,8 @@ import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
 import com.suramire.miaowu.util.ToastUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -59,6 +62,8 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
     LinearLayout llMynote;
     @Bind(R.id.tv_title_reply)
     TextView tvTitleReply;
+    @Bind(R.id.tv_title_history)
+    TextView tvTitleHistory;
     @Bind(R.id.ll_login)
     LinearLayout llLogin;
     @Bind(R.id.toolbar_image_left)
@@ -89,7 +94,6 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
         String s = (String) data;
         if ("follow".equals(s)) {
             ToastUtil.showShortToastCenter("成功关注该用户");
-            // TODO: 2018/1/30 按钮文字样式变化
             // TODO: 2018/1/30 操作前 登录判断
 
         } else {
@@ -135,11 +139,13 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
             toolbar.setTitle("个人中心");
             tvTitleNote.setText("我的帖子");
             tvTitleReply.setText("我的回复");
+            tvTitleReply.setText("我的领养记录");
             toolbarTextRight.setVisibility(View.VISIBLE);
         } else {
             toolbar.setTitle("他人信息");
             tvTitleNote.setText(userinfo.getNickname() + "的帖子");
             tvTitleReply.setText(userinfo.getNickname() + "的回复");
+            tvTitleHistory.setText(userinfo.getNickname() + "的领养记录");
             toolbarTextRight.setVisibility(View.GONE);
         }
 
@@ -189,19 +195,18 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
     }
 
 
+
     @OnClick({R.id.ll_followlist, R.id.ll_followerlist, R.id.ll_note2, R.id.ll_mynote,
             R.id.imageButton, R.id.toolbar_image_left, R.id.toolbar_text_right,R.id.ll_adopt})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_followlist:
-                // TODO: 2018/1/30 跳转到关注列表
                 Intent intent1 = new Intent(mContext, FansListActivity.class);
                 intent1.putExtra("index", 0);
                 intent1.putExtra("uid", uid);
                 startActivity(intent1);
                 break;
             case R.id.ll_followerlist:
-                // TODO: 2018/1/30 跳转到粉丝列表
                 Intent intent2 = new Intent(mContext, FansListActivity.class);
                 intent2.putExtra("index", 1);
                 intent2.putExtra("uid", uid);
@@ -214,7 +219,6 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
                 startActivity(intent);
                 break;
             case R.id.imageButton: {
-                // TODO: 2018/1/30 这里根据情况进行关注/取消关注操作
                 switch (type) {
                     case 2:
                         mPresenter.follow();

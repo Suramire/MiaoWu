@@ -61,8 +61,6 @@ dependencies {
     compile 'com.makeramen:roundedimageview:2.2.1'
     //图片选择器
     implementation 'com.lzy.widget:imagepicker:0.6.1'
-    //百分比布局
-    compile 'com.android.support:percent:26.+'
     //轮播图
     compile 'com.youth.banner:banner:1.4.9'
     //图片加载毕加索
@@ -77,6 +75,5 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'//retrofit
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'//json转换器，请求结果转换成Model
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'//配合Rxjava 使用 。
-
     compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'//底部导航
 }

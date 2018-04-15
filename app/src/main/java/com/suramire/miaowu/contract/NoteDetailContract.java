@@ -39,11 +39,6 @@ public interface NoteDetailContract {
 
         Observable<T> increaseNoteCount(int noteId);
 
-//        Observable<T> reviewApply(Apply reviewApply);
-
-//        Observable<T> makeChoice(Apply reviewApply);
-
-//        Observable<T> getApply(int applyId);
 
     }
 
@@ -73,14 +68,6 @@ public interface NoteDetailContract {
 
         void onDeleteSuccess();
 
-//        void onGetApplySuccess(Apply reviewApply);
-
-
-        //在帖子详情页发送请求时调用
-//        Apply getApply();
-
-        //成功做出决定时的回调
-//        void onChoiceDone();
 
     }
 

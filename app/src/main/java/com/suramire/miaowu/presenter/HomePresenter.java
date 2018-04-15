@@ -1,7 +1,7 @@
 package com.suramire.miaowu.presenter;
 
 import com.suramire.miaowu.bean.Catinfo;
-import com.suramire.miaowu.bean.Multi;
+import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.contract.HomeContract;
 import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.HomeModel;
@@ -10,7 +10,6 @@ import com.suramire.miaowu.util.ToastUtil;
 import java.util.List;
 
 import rx.Subscription;
-import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -32,17 +31,17 @@ public class HomePresenter implements HomeContract.Presenter {
         mView.clearData();
         mView.showLoading();
         Subscription subscribe = homeModel.getData(0, 0)
-                .subscribe(new Action1<List<Multi>>() {
+                .subscribe(new ResponseSubscriber<List<M>>() {
                     @Override
-                    public void call(List<Multi> multis) {
+                    public void onError(Throwable e) {
                         mView.cancelLoading();
-                        mView.onSuccess(multis);
+                        ToastUtil.showShortToastCenter("获取帖子数据失败:"+e.getMessage());
                     }
-                }, new Action1<Throwable>() {
+
                     @Override
-                    public void call(Throwable throwable) {
+                    public void onNext(List<M> multis) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取帖子数据失败:"+throwable.getMessage());
+                        mView.onGetNoteListSuccess(multis);
                     }
                 });
         compositeSubscription.add(subscribe);

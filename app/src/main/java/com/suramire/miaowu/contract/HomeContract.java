@@ -3,6 +3,7 @@ package com.suramire.miaowu.contract;
 import com.suramire.miaowu.base.BasePresenter;
 import com.suramire.miaowu.base.BaseView;
 import com.suramire.miaowu.bean.Catinfo;
+import com.suramire.miaowu.bean.M;
 
 import java.util.List;
 
@@ -25,6 +26,8 @@ public interface HomeContract {
         void clearData();
 
         void onGetCatListSuccess(List<Catinfo> catinfos);
+
+        void onGetNoteListSuccess(List<M> mList);
 
     }
 

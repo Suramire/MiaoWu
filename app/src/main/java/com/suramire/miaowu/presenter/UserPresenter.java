@@ -1,5 +1,6 @@
 package com.suramire.miaowu.presenter;
 
+import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Follow;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
@@ -7,6 +8,8 @@ import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.UserModel;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.ToastUtil;
+
+import java.util.List;
 
 import rx.Subscription;
 import rx.functions.Action1;
@@ -156,4 +159,6 @@ public class UserPresenter implements UserContract.Presenter {
                 });
         compositeSubscription.add(subscribe);
     }
+
+
 }

@@ -2,6 +2,9 @@ package com.suramire.miaowu.contract;
 
 import com.suramire.miaowu.base.BasePresenter;
 import com.suramire.miaowu.base.BaseView;
+import com.suramire.miaowu.bean.Note;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -19,6 +22,7 @@ public interface NoteContract {
 
     interface View extends BaseView {
 
+        void onGetNoteByUserSuccess(List<Note> noteLis);
 
     }
 

@@ -12,6 +12,7 @@ import com.suramire.miaowu.R;
 import com.suramire.miaowu.adapter.MultiItemAdapter;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Catinfo;
+import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.contract.CatContract;
 import com.suramire.miaowu.presenter.CatPresenter;
 import com.suramire.miaowu.util.CommonUtil;
@@ -126,7 +127,14 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
                     .setBannerStyle(BannerConfig.NUM_INDICATOR)
                     .setIndicatorGravity(BannerConfig.RIGHT)
                     .start();
+        } else{
+            banner.setVisibility(View.GONE);
         }
+
+    }
+
+    @Override
+    public void onListAppliedCatSuccess(List<M> catinfo) {
 
     }
 
@@ -167,7 +175,6 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
                 toolbar.setRightOnclickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // TODO: 2018/4/13 响应申请操作
                         if(!flag){
                             mPresenter.applyCat();
                         }

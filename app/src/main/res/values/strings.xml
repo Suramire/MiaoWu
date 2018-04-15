@@ -32,17 +32,8 @@
     <string name="open">打开</string>
     <string name="close">关闭</string>
     <string name="longtext">public class BottomNavigationViewBehavior extends CoordinatorLayout.Behavior {
-
-    @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
-
-        //得到依赖View的滑动距离
-        int top = ((AppBarLayout.Behavior)((CoordinatorLayout.LayoutParams)dependency.getLayoutParams()).getBehavior()).getTopAndBottomOffset();
-        //因为BottomNavigation的滑动与ToolBar是反向的，所以取-top值
-        ViewCompat.setTranslationY(child, -top);
-        return false;
-    }
-}</string>
+        int top = ((AppBarLayout.Behavior)((CoordinatorLayout.LayoutParams)dependency.getLayoutParams()).getBehavior()).getTopAndBottomOffset();}
+</string>
     <string-array name="contacts">
         <item>请选择联系方式</item>
         <item>电话</item>

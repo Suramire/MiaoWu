@@ -9,271 +9,281 @@
               android:layout_height="match_parent">
    <include layout="@layout/toolbar"/>
 
-    <ScrollView
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:elevation="2dp"
+        app:cardElevation="2dp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="40dp"
+                android:text="@string/hint_icon"
+                android:textColor="@color/verydarkgray"/>
+
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/img_icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="190dp"
+                android:elevation="4dp"
+                android:scaleType="centerCrop"
+                tools:src="@mipmap/ic_cat_icon_round"
+                app:riv_border_color="@color/white"
+                app:riv_border_width="2dp"
+                app:riv_oval="true"/>
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:elevation="2dp"
+        app:cardElevation="2dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:divider="@drawable/divider"
+            android:orientation="vertical"
+            android:showDividers="middle">
 
-            <android.support.v7.widget.CardView
+            <LinearLayout
+                android:orientation="horizontal"
+                android:padding="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:elevation="2dp"
-                app:cardElevation="2dp">
+                android:layout_height="wrap_content">
 
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/white"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/nickname"
+                    android:textColor="@color/verydarkgray" />
 
-                    <TextView
-                        android:id="@+id/tv_username"
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="40dp"
-                        android:text="@string/hint_icon"
-                        android:textColor="@color/verydarkgray"/>
-
-
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:id="@+id/img_icon"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_marginStart="190dp"
-                        android:elevation="4dp"
-                        android:scaleType="centerCrop"
-                        tools:src="@mipmap/ic_cat_icon_round"
-                        app:riv_border_color="@color/white"
-                        app:riv_border_width="2dp"
-                        app:riv_oval="true"/>
-
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:elevation="2dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <EditText
+                    android:id="@+id/edt_username"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:divider="@drawable/divider"
-                    android:orientation="vertical"
-                    android:showDividers="middle">
+                    android:inputType="none"
+                    android:layout_alignParentTop="true"
+                    android:background="@null"
+                    android:maxLines="1"
+                    tools:text="Alexandra"
+                    android:textSize="14sp"/>
 
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_weight="1"
-                            android:text="@string/nickname"
-                            android:textColor="@color/verydarkgray" />
-
-                        <EditText
-                            android:id="@+id/edt_username"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:inputType="none"
-                            android:layout_alignParentTop="true"
-                            android:background="@null"
-                            tools:text="Alexandra"
-                            android:textSize="14sp"/>
-
-                    </LinearLayout>
+            </LinearLayout>
 
 
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_weight="1"
-                            android:text="@string/birthday"
-                            android:textColor="@color/verydarkgray" />
-
-                        <EditText
-                            android:id="@+id/edt_birthday"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            tools:text="2008-1-1"
-                            android:textSize="14sp"/>
-
-                    </LinearLayout>
-
-
-
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_weight="1"
-                            android:text="@string/address"
-                            android:textColor="@color/verydarkgray" />
-
-                        <EditText
-                            android:id="@+id/edt_address"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            tools:text="Xiamen"
-                            android:textSize="14sp"/>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
+            <LinearLayout
+                android:orientation="horizontal"
+                android:padding="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="2dp"
-                app:cardElevation="2dp">
+                android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:divider="@drawable/divider"
-                    android:orientation="vertical"
-                    android:showDividers="middle">
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/birthday"
+                    android:textColor="@color/verydarkgray" />
 
+                <EditText
+                    android:id="@+id/edt_birthday"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:maxLines="1"
+                    tools:text="2008-1-1"
+                    android:textSize="14sp"/>
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:padding="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:text="@string/phone"
-                        android:textColor="@color/verydarkgray" />
-
-                    <EditText
-                        android:id="@+id/edt_phone"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/verydarkgray"
-                        android:enabled="false"
-                        android:background="@null"
-                        tools:text="12345678"
-                        android:textSize="14sp"/>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:padding="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <Spinner
-                        android:id="@+id/spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:entries="@array/contacts" />
-
-
-                    <EditText
-                        android:id="@+id/edt_contact"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:layout_marginStart="8dp"
-                        tools:text="12345678@qq.com"
-                        android:textSize="14sp"/>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:padding="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:text="@string/modify_password"
-                        android:textColor="@color/verydarkgray" />
-
-                    <TextView
-                        android:id="@+id/tv_modify_password"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="点击修改"/>
-
-                </LinearLayout>
+            </LinearLayout>
 
 
 
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
 
-            <Button
-                android:id="@+id/btn_loginout"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:padding="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:background="@drawable/btn_blue"
-                android:text="@string/btn_loginout"
-                android:textColor="@color/white"/>
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/address"
+                    android:textColor="@color/verydarkgray" />
+
+                <EditText
+                    android:id="@+id/edt_address"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    tools:text="Xiamen"
+                    android:maxLines="1"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        app:cardElevation="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/divider"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/phone"
+                    android:textColor="@color/verydarkgray" />
+
+                <EditText
+                    android:id="@+id/edt_phone"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/verydarkgray"
+                    android:enabled="false"
+                    android:background="@null"
+                    android:maxLines="1"
+                    tools:text="12345678"
+                    android:textSize="14sp"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:entries="@array/contacts" />
+
+
+                <EditText
+                    android:id="@+id/edt_contact"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:layout_marginStart="8dp"
+                    android:maxLines="1"
+                    tools:text="12345678@qq.com"
+                    android:textSize="14sp"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/modify_password"
+                    android:textColor="@color/verydarkgray" />
+
+                <TextView
+                    android:id="@+id/tv_modify_password"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="点击修改"/>
+
+            </LinearLayout>
+
 
 
         </LinearLayout>
-    </ScrollView>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btn_loginout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="16dp"
+            android:background="@drawable/btn_blue"
+            android:text="@string/btn_loginout"
+            android:textColor="@color/white"/>
+
+
+    </RelativeLayout>
+
+
+
 
 
 </LinearLayout>
