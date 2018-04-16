@@ -25,11 +25,8 @@ public interface PublishContract {
         /**
          * 发布帖子信息
          * @param note 帖子信息
-         * @param type 帖子类型
-         * @param catId 猫咪编号
-         * @return
          */
-        Observable<T> publishNoteInfo(Note note, int type, int catId);
+        Observable<T> publishNoteInfo(Note note);
 
         /**
          * 上传帖子图片文件名
@@ -54,9 +51,7 @@ public interface PublishContract {
 
     interface Presenter extends BasePresenter<View> {
         //发送帖子信息
-        void publishNote(int type,int catId);
-        //发送猫咪信息
-        void publishCat();
+        void publishNote();
         //发送帖子配图文件序号名
         void publishPicturePaths(int nid);
     }

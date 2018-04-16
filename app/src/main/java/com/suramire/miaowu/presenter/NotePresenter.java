@@ -59,6 +59,26 @@ public class NotePresenter implements NoteContract.Presenter {
     }
 
     @Override
+    public void getAllNotesByUser(int uid) {
+        mView.showLoading();
+        Subscription subscribe = noteModel.getAllNotesByUser(uid)
+                .subscribe(new ResponseSubscriber<List<Note>>() {
+                    @Override
+                    public void onError(Throwable throwable) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("获取帖子列表失败:" + throwable.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<Note> notes) {
+                        mView.cancelLoading();
+                        mView.onGetNoteByUserSuccess(notes);
+                    }
+                });
+        compositeSubscription.add(subscribe);
+    }
+
+    @Override
     public void getUnverifyNotes() {
         mView.showLoading();
         Subscription subscribe = noteModel.getUnverifyNotes()

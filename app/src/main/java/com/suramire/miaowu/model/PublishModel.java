@@ -39,7 +39,8 @@ public class PublishModel implements PublishContract.Model {
             map.put("picname",nid+"_"+i+".png");
             names.add(map);
         }
-        return ApiLoader.picToDBNote(names).map(new ResponseFunc<Object>());
+        return ApiLoader.picToDBNote(names).
+                map(new ResponseFunc<Object>());
     }
 
 
@@ -49,12 +50,10 @@ public class PublishModel implements PublishContract.Model {
     }
 
     @Override
-    public Observable<Integer> publishNoteInfo(Note note, int type, int catId) {
+    public Observable<Integer> publishNoteInfo(Note note) {
         note.setPublish(CommonUtil.getTimeStamp());//设置发帖时间
         note.setThumbs(0);//初始化点赞数为0
         note.setViewcount(0);//初始化浏览数为0
-        note.setType(type);
-        note.setCid(catId);//0=不需要提供猫咪信息
         note.setVerified(0);//新帖默认为待审核状态
         return ApiLoader.addNote(note).map(new ResponseFunc<Integer>());
     }

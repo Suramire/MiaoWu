@@ -1,9 +1,6 @@
 package com.suramire.miaowu.model;
 
-import com.suramire.miaowu.base.App;
-import com.suramire.miaowu.bean.Apply;
-import com.suramire.miaowu.bean.Catinfo;
-import com.suramire.miaowu.bean.Multi0;
+import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
@@ -39,11 +36,11 @@ public class NoteDetailModel implements NoteDetailContract.Model {
     }
 
     @Override
-    public Observable<List<Multi0>> getNoteReply(final int noteId) {
+    public Observable<List<M>> getNoteReply(final int noteId) {
         Reply reply = new Reply();
         reply.setNid(noteId);
         return ApiLoader.listReplys(reply)
-                .map(new ResponseFunc<List<Multi0>>());
+                .map(new ResponseFunc<List<M>>());
 
     }
 
@@ -104,6 +101,12 @@ public class NoteDetailModel implements NoteDetailContract.Model {
                 .map(new ResponseFunc<Void>());
     }
 
+//    @Override
+//    public Observable<Void> updateNote(Note note) {
+//        return ApiLoader.updateNote(note)
+//                .map(new ResponseFunc<Void>());
+//    }
+
     @Override
     public Observable<Void> increaseNoteCount(int noteId) {
         Note note = new Note();
@@ -112,24 +115,5 @@ public class NoteDetailModel implements NoteDetailContract.Model {
                 .map(new ResponseFunc<Void>());
     }
 
-//    @Override
-//    public Observable<Void> reviewApply(Apply reviewApply) {
-//        return ApiLoader.addApply(reviewApply)
-//                .map(new ResponseFunc<Void>());
-//    }
-//
-//    @Override
-//    public Observable<Void> makeChoice(Apply reviewApply) {
-//        return ApiLoader.verifyApply(reviewApply)
-//                .map(new ResponseFunc<Void>());
-//    }
-//
-//    @Override
-//    public Observable<Apply> getApply(int applyId) {
-//        Apply reviewApply = new Apply();
-//        reviewApply.setId(applyId);
-//        return ApiLoader.getOneApply(reviewApply)
-//                .map(new ResponseFunc<Apply>());
-//    }
 
 }

@@ -22,7 +22,7 @@ import butterknife.OnClick;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
-public class ModifyPasswordActivity extends BaseActivity<PasswordPresenter> implements PasswordContract.View{
+public class PasswordActivity extends BaseActivity<PasswordPresenter> implements PasswordContract.View{
     @Bind(R.id.toolbar)
     MyToolbar toolbar;
     @Bind(R.id.edt_phone)
@@ -38,9 +38,10 @@ public class ModifyPasswordActivity extends BaseActivity<PasswordPresenter> impl
     private boolean clicked;
     private boolean sendCode;
     private boolean verifyCode;
-    private String phone;
     private int uid;
     private String password;
+    private boolean isPhoneOk;
+    private String mPhone;
 
     @Override
     public int bindLayout() {
@@ -85,7 +86,7 @@ public class ModifyPasswordActivity extends BaseActivity<PasswordPresenter> impl
                         L.e("成功发送验证码");
                     } else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                         verifyCode = true;
-                        L.e("成功验证验证码");
+                        ToastUtil.showShortToastCenter("成功验证验证码");
                     }
                 }
             }
@@ -110,14 +111,13 @@ public class ModifyPasswordActivity extends BaseActivity<PasswordPresenter> impl
                 }else{
                     //服务器收到验证码时
                     if(sendCode){
-                        SMSSDK.submitVerificationCode("86",phone,code);
+                        SMSSDK.submitVerificationCode("86",mPhone,code);
                     }else{
                         ToastUtil.showLongToast("服务器尚未收到验证码");
                     }
                 }
             }
         });
-
     }
 
     @Override
@@ -132,8 +132,13 @@ public class ModifyPasswordActivity extends BaseActivity<PasswordPresenter> impl
 
     @Override
     public void onSuccess(Object data) {
-        ToastUtil.showLongToast("修改成功，重新登录以生效");
         done = true;
+        CommonUtil.snackBar(mContext, "修改成功，重新登录以生效", "确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @OnClick({R.id.toolbar_image_left, R.id.btn_getverifycode, R.id.btn_modifypassword})
@@ -143,14 +148,21 @@ public class ModifyPasswordActivity extends BaseActivity<PasswordPresenter> impl
                 finish();
                 break;
             case R.id.btn_getverifycode:
-                phone = edtPhone.getText().toString().trim();
-                if(CommonUtil.isMobileNumber(phone)){
-                    if(!clicked){
-                        SMSSDK.getVerificationCode("86", phone);
-                        clicked = true;
+
+                mPhone = edtPhone.getText().toString().trim();
+                if(!TextUtils.isEmpty(mPhone) && CommonUtil.isMobileNumber(mPhone)){
+                    if(isPhoneOk){
+                        if(!clicked){
+                            SMSSDK.getVerificationCode("86", mPhone);
+                            clicked = true;
+                        }else{
+                            ToastUtil.showLongToast("已发送了验证码，请勿频繁点击");
+                        }
                     }else{
-                        ToastUtil.showLongToast("已发送了验证码，请勿频繁点击");
+                        //先判断手机号是否已注册
+                        mPresenter.checkPhone();
                     }
+
                 }else{
                     ToastUtil.showLongToast("请输入正确的手机号码格式");
                 }
@@ -190,8 +202,24 @@ public class ModifyPasswordActivity extends BaseActivity<PasswordPresenter> impl
     public User getUser() {
         User user = new User();
         user.setId(uid);
-        user.setPhonenumber(phone);
+        user.setPhonenumber(mPhone);
         user.setPassword(password);
         return user;
+    }
+
+    @Override
+    public String getPhoneNumber() {
+        return mPhone;
+    }
+
+    @Override
+    public void onCheckPhoneSuccess() {
+        isPhoneOk = true;
+    }
+
+    @Override
+    public void onCheckPhoneFailed() {
+        isPhoneOk = false;
+        ToastUtil.showLongToast("该手机号尚未注册，请重新输入");
     }
 }

@@ -13,4 +13,12 @@ public class PasswordModel implements PasswordContract.Model {
         return ApiLoader.modifyPassword(user)
                 .map(new ResponseFunc<Void>());
     }
+
+    @Override
+    public Observable<User> checkPhone(String phoneNumber) {
+        User user = new User();
+        user.setPhonenumber(phoneNumber);
+        return ApiLoader.checkPhoneUser(user)
+                .map(new ResponseFunc<User>());
+    }
 }

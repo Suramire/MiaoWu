@@ -16,6 +16,7 @@ import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.FansContract;
 import com.suramire.miaowu.presenter.FansPresenter;
 import com.suramire.miaowu.util.ApiConfig;
+import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 
@@ -23,6 +24,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+
+import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
 
 /**
  * Created by Suramire on 2018/1/30.
@@ -59,7 +62,7 @@ public class FansListActivity extends BaseListActivity<FansPresenter> implements
         if(data !=null){
             List<User> data1 = (List<User>) data;
             if(data1.size()>0){
-                showData((List<User>) data1);
+                showData(data1);
             }else{
                 switch (currentPosition){
                     case 0:showEmpty("暂无关注用户");break;
@@ -117,6 +120,9 @@ public class FansListActivity extends BaseListActivity<FansPresenter> implements
         });
         //根据传过来的下标使选择对应标签页
         tablayout.getTabAt(index).select();
+        if(index==0){
+            mPresenter.getFollow();
+        }
 //        switch (index){
 //            //若通过关注进入则强制刷新列表
 //            case 0:showEmpty("暂无关注用户");mPresenter.getFollow();break;
@@ -126,25 +132,28 @@ public class FansListActivity extends BaseListActivity<FansPresenter> implements
     }
 
     private void showData(List<User> users){
-        showList();
-        listview.setLayoutManager(new LinearLayoutManager(mContext));
+        if(users!=null && users.size()>0){
+            showList();
+            listview.setLayoutManager(new LinearLayoutManager(mContext));
+            listview.setAdapter(new CommonRecyclerAdapter<User>(mContext,R.layout.item_fan, users) {
 
-        listview.setAdapter(new CommonRecyclerAdapter<User>(mContext,R.layout.item_fan, users) {
+                @Override
+                public void onUpdate(BaseAdapterHelper helper, final User item, int position) {
+                    helper.setText(R.id.tv_username,item.getNickname())
+                            .setOnClickListener(R.id.ll_fans, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(mContext, UserActivity.class);
+                                    intent.putExtra("uid", item.getId());
+                                    startActivity(intent);
+                                }
+                            });
+                    String icon = item.getIcon();
+                    PicassoUtil.showIcon(icon==null?null:BASUSERPICEURL+icon,(ImageView) helper.getView(R.id.img_icon));
+                }
+            });
+        }
 
-            @Override
-            public void onUpdate(BaseAdapterHelper helper, final User item, int position) {
-                helper.setText(R.id.tv_username,item.getNickname())
-                        .setOnClickListener(R.id.ll_fans, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(mContext, UserActivity.class);
-                                intent.putExtra("uid", item.getId());
-                                startActivity(intent);
-                            }
-                        });
-                PicassoUtil.show(ApiConfig.BASUSERPICEURL+item.getIcon(), (ImageView) helper.getView(R.id.img_icon));
-            }
-        });
     }
 
     @OnClick(R.id.toolbar_image_left)

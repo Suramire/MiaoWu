@@ -1,5 +1,7 @@
 package com.suramire.miaowu.presenter;
 
+import android.text.TextUtils;
+
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.SearchContract;
@@ -41,43 +43,46 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void searchNote() {
-        mView.showLoading();
-        Subscription subscribe = searchModel.searchNote(mView.getQuery())
-                .subscribe(new ResponseSubscriber<List<Note>>() {
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("搜索帖子信息时出错：" + e.getMessage());
-//                        searchUser();
-                    }
+        if(!TextUtils.isEmpty(mView.getQuery())){
+            mView.showLoading();
+            Subscription subscribe = searchModel.searchNote(mView.getQuery())
+                    .subscribe(new ResponseSubscriber<List<Note>>() {
+                        @Override
+                        public void onError(Throwable e) {
+                            mView.cancelLoading();
+                            ToastUtil.showShortToastCenter("搜索帖子信息时出错：" + e.getMessage());
+                        }
 
-                    @Override
-                    public void onNext(List<Note> notes) {
-                        mView.cancelLoading();
-                        mView.onNoteSuccess(notes);
-                    }
-                });
-        compositeSubscription.add(subscribe);
+                        @Override
+                        public void onNext(List<Note> notes) {
+                            mView.cancelLoading();
+                            mView.onNoteSuccess(notes);
+                        }
+                    });
+            compositeSubscription.add(subscribe);
+        }
     }
 
     @Override
     public void searchUser() {
-        mView.showLoading();
-        Subscription subscribe = searchModel.searchUser(mView.getQuery())
-                .subscribe(new ResponseSubscriber<List<User>>() {
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("搜索用户信息出错：" + e.getMessage());
-                    }
+        if(!TextUtils.isEmpty(mView.getQuery())){
+            mView.showLoading();
+            Subscription subscribe = searchModel.searchUser(mView.getQuery())
+                    .subscribe(new ResponseSubscriber<List<User>>() {
+                        @Override
+                        public void onError(Throwable e) {
+                            mView.cancelLoading();
+                            ToastUtil.showShortToastCenter("搜索用户信息出错：" + e.getMessage());
+                        }
 
-                    @Override
-                    public void onNext(List<User> users) {
-                        mView.cancelLoading();
-                        mView.onUserSuccess(users);
+                        @Override
+                        public void onNext(List<User> users) {
+                            mView.cancelLoading();
+                            mView.onUserSuccess(users);
+                        }
+                    });
+            compositeSubscription.add(subscribe);
+        }
 
-                    }
-                });
-        compositeSubscription.add(subscribe);
     }
 }

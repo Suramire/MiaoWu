@@ -1,10 +1,12 @@
 package com.suramire.miaowu.presenter;
 
+import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.PasswordContract;
 import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.PasswordModel;
 import com.suramire.miaowu.util.ToastUtil;
 
+import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 public class PasswordPresenter implements PasswordContract.Presenter {
@@ -35,6 +37,29 @@ public class PasswordPresenter implements PasswordContract.Presenter {
                         mView.onSuccess(aVoid);
                     }
                 });
+    }
+
+    @Override
+    public void checkPhone() {
+        mView.showLoading();
+        Subscription subscribe = passwordModel.checkPhone(mView.getPhoneNumber())
+                .subscribe(new ResponseSubscriber<User>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        //代表该手机号已被注册
+                        mView.onCheckPhoneSuccess();
+                    }
+
+                    @Override
+                    public void onNext(User user) {
+                        mView.cancelLoading();
+                        //代表该手机号未被注册
+                        mView.onCheckPhoneFailed();
+                    }
+                });
+        compositeSubscription.add(subscribe);
+
     }
 
     @Override

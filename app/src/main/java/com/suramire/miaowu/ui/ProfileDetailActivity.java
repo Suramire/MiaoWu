@@ -5,9 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -16,15 +14,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.classic.adapter.BaseAdapterHelper;
-import com.classic.adapter.CommonAdapter;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.User;
@@ -37,13 +30,14 @@ import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.util.ToastUtil;
 import com.suramire.miaowu.wiget.MyToolbar;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+
+import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
 
 /**
  * Created by Suramire on 2018/2/1.
@@ -105,7 +99,8 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
     }
 
     private void showData(User user) {
-        PicassoUtil.show(ApiConfig.BASUSERPICEURL + user.getIcon(), imgIcon);
+        String icon = user.getIcon();
+        PicassoUtil.showIcon(icon==null?null:BASUSERPICEURL+icon,(ImageView) imgIcon);
         edtUsername.setText(user.getNickname());
         Date birthday1 = user.getBirthday();
         edtBirthday.setText(CommonUtil.dateToString(birthday1));
@@ -113,13 +108,16 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
         //若用户有留联系方式则显示
         spinner.setSelection(user.getContacttype());
         edtContact.setText(user.getContact());
+        edtAddress.setText(user.getAddress());
         mUser = user;
         SPUtils.put("hascontact",user.getContacttype());
         String birthday = birthday1.toString().trim();
         if(!TextUtils.isEmpty(birthday)){
             calendar.setTime(birthday1);
+            year_begin = calendar.get(Calendar.YEAR);//获取当前年份
+            month_begin = calendar.get(Calendar.MONTH);//获取当前月份
+            day_begin = calendar.get(Calendar.DAY_OF_MONTH);//获取当前天数
         }
-
     }
 
 
@@ -137,6 +135,9 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
     public void initView() {
         calendar = Calendar.getInstance();
         calendar.setTime(new Date());//设置日历对象
+        year_begin = calendar.get(Calendar.YEAR);//获取当前年份
+        month_begin = calendar.get(Calendar.MONTH);//获取当前月份
+        day_begin = calendar.get(Calendar.DAY_OF_MONTH);//获取当前天数
         toolbar.setTitle("个人信息");
         toolbarImageLeft.setImageResource(R.drawable.ic_arrow_back_black);
         toolbarTextRight.setText("保存");
@@ -154,7 +155,7 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
                 //showPrice(position);
                 TextView tv = (TextView)view;
                 tv.setTextColor(getResources().getColor(R.color.verydarkgray));    //设置颜色
-                tv.setTextSize(14.0f);    //设置大小
+                tv.setTextSize(16.0f);    //设置大小
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent){}
@@ -231,7 +232,7 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
             case R.id.tv_modify_password:
                 Bundle bundle = new Bundle();
                 bundle.putInt("uid",getUid());
-                startActivity(ModifyPasswordActivity.class,bundle);
+                startActivity(PasswordActivity.class,bundle);
                 break;
         }
     }
@@ -252,6 +253,7 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
             ToastUtil.showShortToastCenter("若选择了联系方式请填写完整");
             return;
         }
+        mUser.setAddress(edtAddress.getText().toString().trim());
         mUser.setContacttype(selectedItemPosition);
         mUser.setContact(contact);
 

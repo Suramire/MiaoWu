@@ -19,6 +19,7 @@ import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.SearchContract;
 import com.suramire.miaowu.presenter.SearchPresenter;
+import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
@@ -26,6 +27,8 @@ import com.suramire.miaowu.util.PicassoUtil;
 import java.util.List;
 
 import butterknife.Bind;
+
+import static com.suramire.miaowu.util.ApiConfig.*;
 
 /**
  * Created by Suramire on 2018/1/26.
@@ -95,12 +98,12 @@ public class SearchActivity extends BaseListActivity<SearchPresenter> implements
                     case 0:mPresenter.searchNote();break;
                     case 1:mPresenter.searchUser();break;
                 }
-                L.e("onQueryTextSubmit");
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                mQuery = newText;
                 return false;
             }
         });
@@ -150,11 +153,10 @@ public class SearchActivity extends BaseListActivity<SearchPresenter> implements
                                     }
                                 });
 //                    //显示用户图片
-                        PicassoUtil.show(item.getIcon(), (ImageView) helper.getView(R.id.img_icon));
+                        String icon = item.getIcon();
+                        PicassoUtil.showIcon(icon==null?null: BASUSERPICEURL+icon, (ImageView) helper.getView(R.id.img_icon));
                     }
                 });
-
-
         }else{
             showEmpty("未搜索到符合条件的用户信息");
         }

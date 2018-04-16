@@ -9,6 +9,8 @@ import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.L;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -67,6 +69,19 @@ public class CatModel implements CatContract.Model {
     public Observable<List<M>> listAppliedCat() {
         return ApiLoader.listApplied()
                 .map(new ResponseFunc<List<M>>());
+    }
+
+    @Override
+    public Observable<Void> uploadPicturePaths(int cid, List paths) {
+        List<HashMap<String,String>> names = new ArrayList<>();
+        for (int i =0;i<paths.size();i++) {
+            HashMap<String,String> map = new HashMap<>();
+            map.put("cid",cid+"");
+            map.put("picname",cid+"_"+i+".png");
+            names.add(map);
+        }
+        return ApiLoader.picToDBCat(names)
+                .map(new ResponseFunc<Void>());
     }
 
     private void upload(final List<String> paths, final int cid, final int i) {

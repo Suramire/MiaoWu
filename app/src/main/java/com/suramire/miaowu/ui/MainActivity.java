@@ -95,8 +95,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                     .initialise();
             initData();
         }
-
-
     }
 
     private void initData() {
@@ -191,7 +189,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
 
         if (requireFresh) {
-//            viewpager.setCurrentItem(3);
             bottomNavigationBar.selectTab(freshPostion);
             requireFresh = false;
         }else {

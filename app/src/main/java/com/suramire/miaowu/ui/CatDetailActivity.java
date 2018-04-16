@@ -43,6 +43,8 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
 
     @Bind(R.id.toolbar)
     MyToolbar toolbar;
+    @Bind(R.id.tv_id)
+    TextView tvId;
     @Bind(R.id.tv_sex)
     TextView tvSex;
     @Bind(R.id.tv_age)
@@ -163,6 +165,7 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
     public void onSuccess(Object data) {
         if (data != null) {
             Catinfo catinfo = (Catinfo) data;
+            tvId.setText(String.valueOf(catinfo.getId()));
             tvSex.setText(catinfo.getSex()==0?"未知":(catinfo.getSex()==1)?"公":"母");
             tvAge.setText(catinfo.getAge()==0?"未知":catinfo.getAge()+"");
             tvNeutering.setText(catinfo.getNeutering()==0?"未知":(catinfo.getNeutering()==1)?"是":"否");

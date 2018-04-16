@@ -16,6 +16,8 @@ public interface NoteContract {
     interface Model<T> {
         Observable<T> getNotesByUser(int uid);
 
+        Observable<T> getAllNotesByUser(int uid);
+
         Observable<T> getUnverifyNotes();
 
     }
@@ -29,6 +31,8 @@ public interface NoteContract {
     interface Presenter extends BasePresenter<View> {
 
         void getNotesByUser(int uid);
+        //包括锁定的帖子
+        void getAllNotesByUser(int uid);
 
         void getUnverifyNotes();
     }

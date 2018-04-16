@@ -184,7 +184,8 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
         if(listener!=null){
             listener.onGetUserSuccess(userinfo);
         }
-        PicassoUtil.show(ApiConfig.BASUSERPICEURL + userinfo.getIcon(), imgIcon);
+        String icon = userinfo.getIcon();
+        PicassoUtil.showIcon(icon==null?null:ApiConfig.BASUSERPICEURL + icon, imgIcon);
         tvUsername.setText(userinfo.getNickname());
         uid = userinfo.getId();
         //登录用户为管理员时显示审核帖子选项
@@ -192,8 +193,6 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
         llVerify.setVisibility(visibility);
         llAddCat.setVisibility(visibility);
         llVerifycat.setVisibility(visibility);
-
-
 
     }
 

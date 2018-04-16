@@ -2,8 +2,6 @@ package com.suramire.miaowu.contract;
 
 import com.suramire.miaowu.base.BasePresenter;
 import com.suramire.miaowu.base.BaseView;
-import com.suramire.miaowu.bean.Apply;
-import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.User;
 
@@ -25,8 +23,6 @@ public interface NoteDetailContract {
 
         Observable<T> thumb(int noteId);
 
-//        Observable<T> getCatInfo(int noteId);
-
         Observable<T> getUserInfo(int noteId);
 
         Observable<T> passNote(int noteId);
@@ -36,6 +32,8 @@ public interface NoteDetailContract {
         Observable<T> unlockNote(int noteId);
 
         Observable<T> deleteNote(int noteId);
+
+//        Observable<T> updateNote(Note note);
 
         Observable<T> increaseNoteCount(int noteId);
 
@@ -56,9 +54,7 @@ public interface NoteDetailContract {
 
         void onOnGetPictureSuccess(List<String> paths);
 
-//        void onGetCatInfoSuccess(Catinfo catinfo);
         //成功发送领养申请
-        void onApplySuccess();
 
         void onPassSuccess();
 
@@ -67,6 +63,11 @@ public interface NoteDetailContract {
         void onUnlockSuccess();
 
         void onDeleteSuccess();
+
+        //获取需要修改的帖子信息
+//        Note getNote();
+
+//        void onUpdateSuccess();
 
 
     }
@@ -80,12 +81,8 @@ public interface NoteDetailContract {
         void thumb();
         //获取帖子配图路径
         void getPictue();
-        //获取猫咪信息
-//        void getCatInfo();
 
         void getUserInfo();
-        //申请领养
-//        void reviewApply();
         //审核通过
         void passNote();
         //锁定帖子
@@ -93,15 +90,12 @@ public interface NoteDetailContract {
         //解锁帖子
         void unlockNote();
         //更新帖子
-        void updateNote();
+//        void updateNote();
         //删除帖子
         void deleteNote();
         //增加帖子访问量
         void increaseNouteCount();
-        //响应领养请求
-//        void makeChoice();
 
-//        void getApplyInfo();
 
     }
 }

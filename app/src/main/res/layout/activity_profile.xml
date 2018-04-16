@@ -35,10 +35,10 @@
                 android:id="@+id/tv_username"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-
+                android:textSize="@dimen/textsize_content_small"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="40dp"
+                android:layout_marginStart="32dp"
                 android:text="@string/hint_icon"
                 android:textColor="@color/verydarkgray"/>
 
@@ -85,19 +85,20 @@
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:text="@string/nickname"
-                    android:textColor="@color/verydarkgray" />
+                    android:textColor="@color/verydarkgray"
+                    android:textSize="@dimen/textsize_content_small" />
 
                 <EditText
                     android:id="@+id/edt_username"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
                     android:layout_alignParentTop="true"
+                    android:layout_weight="1"
                     android:background="@null"
+                    android:inputType="none"
                     android:maxLines="1"
-                    tools:text="Alexandra"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/textsize_content_small"
+                    tools:text="Alexandra" />
 
             </LinearLayout>
 
@@ -114,19 +115,20 @@
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:text="@string/birthday"
-                    android:textColor="@color/verydarkgray" />
+                    android:textColor="@color/verydarkgray"
+                    android:textSize="@dimen/textsize_content_small" />
 
                 <EditText
                     android:id="@+id/edt_birthday"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:maxLines="1"
-                    tools:text="2008-1-1"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/textsize_content_small"
+                    tools:text="2008-1-1" />
 
             </LinearLayout>
 
@@ -145,17 +147,18 @@
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:text="@string/address"
-                    android:textColor="@color/verydarkgray" />
+                    android:textColor="@color/verydarkgray"
+                    android:textSize="@dimen/textsize_content_small" />
 
                 <EditText
                     android:id="@+id/edt_address"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@null"
-                    tools:text="Xiamen"
                     android:maxLines="1"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/textsize_content_small"
+                    tools:text="Xiamen" />
 
             </LinearLayout>
 
@@ -188,19 +191,20 @@
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:text="@string/phone"
-                    android:textColor="@color/verydarkgray" />
+                    android:textColor="@color/verydarkgray"
+                    android:textSize="@dimen/textsize_content_small" />
 
                 <EditText
                     android:id="@+id/edt_phone"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/verydarkgray"
-                    android:enabled="false"
+                    android:layout_weight="1"
                     android:background="@null"
+                    android:enabled="false"
                     android:maxLines="1"
-                    tools:text="12345678"
-                    android:textSize="14sp"/>
+                    android:textColor="@color/verydarkgray"
+                    android:textSize="@dimen/textsize_content_small"
+                    tools:text="12345678" />
 
 
             </LinearLayout>
@@ -224,13 +228,13 @@
                 <EditText
                     android:id="@+id/edt_contact"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@null"
-                    android:layout_marginStart="8dp"
                     android:maxLines="1"
-                    tools:text="12345678@qq.com"
-                    android:textSize="14sp"/>
+                    android:layout_marginStart="6dp"
+                    android:textSize="@dimen/textsize_content_small"
+                    tools:text="12345678@qq.com" />
 
 
             </LinearLayout>
@@ -247,14 +251,16 @@
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:text="@string/modify_password"
-                    android:textColor="@color/verydarkgray" />
+                    android:textColor="@color/verydarkgray"
+                    android:textSize="@dimen/textsize_content_small" />
 
                 <TextView
                     android:id="@+id/tv_modify_password"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="点击修改"/>
+                    android:layout_weight="1"
+                    android:text="点击修改"
+                    android:textSize="@dimen/textsize_content_small" />
 
             </LinearLayout>
 

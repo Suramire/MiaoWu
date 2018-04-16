@@ -4,13 +4,14 @@
                                     xmlns:app="http://schemas.android.com/apk/res-auto"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    xmlns:tools="http://schemas.android.com/tools"
                                     android:elevation="2dp"
                                     app:cardElevation="2dp">
 
     <LinearLayout
         android:id="@+id/ll_profile"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="72dp"
         android:orientation="horizontal">
 
         <com.makeramen.roundedimageview.RoundedImageView
@@ -18,8 +19,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            android:layout_margin="16dp"
             android:src="@mipmap/ic_cat_icon_round"
+            android:layout_marginStart="@dimen/margin_content"
             app:riv_border_color="@color/white"
             app:riv_border_width="1dp"
             app:riv_oval="true"/>
@@ -30,21 +31,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:maxLines="1"
-            android:layout_weight="1"
-            android:text="TextView"
+            tools:text="TextView"
+            android:layout_marginStart="32dp"
             android:textColor="@android:color/black"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/textsize_content_big"/>
 
 
         <Button
             android:id="@+id/btn_nt_follow"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="64dp"
             android:background="@drawable/btn_blue"
-            android:padding="0dp"
             android:text="联系TA"
             android:textColor="@color/white"/>
 

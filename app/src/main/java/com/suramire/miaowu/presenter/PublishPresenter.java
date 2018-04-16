@@ -23,11 +23,11 @@ public class PublishPresenter implements PublishContract.Presenter {
 
 
     @Override
-    public void publishNote(final int type, int catId) {
+    public void publishNote() {
         mView.showLoading();//开始操作前 显示界面的加载动画
         //subcribe 被观察者 ResponseSubscriber匿名内部类 观察者
         Subscription subscribe = mPublishModel.
-                publishNoteInfo(mView.getNoteInfo(), type, catId)
+                publishNoteInfo(mView.getNoteInfo())
                 .subscribe(new ResponseSubscriber<Integer>() {
                     @Override
                     public void onError(Throwable throwable) {
@@ -54,25 +54,6 @@ public class PublishPresenter implements PublishContract.Presenter {
                                         周期结束时取消订阅Subcription对象*/
     }
 
-    @Override
-    public void publishCat() {
-        mView.showLoading();
-        Subscription subscribe = mPublishModel.publishCatInfo(mView.getCatinfo())
-                .subscribe(new ResponseSubscriber<Integer>() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        ToastUtil.showShortToastCenter("发布猫咪信息失败:" + throwable.getMessage());
-                        publishNote(2, 0);
-                    }
-
-                    @Override
-                    public void onNext(Integer integer) {
-                        publishNote(2, integer);
-                    }
-                });
-        compositeSubscription.add(subscribe);
-
-    }
 
     @Override
     public void publishPicturePaths(final int nid) {

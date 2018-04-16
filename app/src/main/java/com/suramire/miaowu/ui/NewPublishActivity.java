@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -191,7 +188,7 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
                                 "确认", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        mPresenter.publishNote(1, 0);
+                                        mPresenter.publishNote();
                                     }
                                 },"取消",null);
                     }

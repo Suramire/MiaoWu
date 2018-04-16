@@ -62,6 +62,25 @@ public class CatPresenter implements CatContract.Presenter {
         compositeSubscription.add(subscribe);
     }
 
+    @Override
+    public void uploadPictuePaths() {
+        mView.showLoading();
+        catModel.uploadPicturePaths(mView.getCatId(),mView.getStringPaths())
+                .subscribe(new ResponseSubscriber<Void>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showShortToastCenter("保存配图文件名时出错："+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void o) {
+                        mView.cancelLoading();
+                        uploadPicture();
+                    }
+                });
+    }
+
 
     @Override
     public void uploadPicture() {

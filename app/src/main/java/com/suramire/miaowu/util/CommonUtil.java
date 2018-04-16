@@ -249,9 +249,16 @@ public class CommonUtil {
         return ((int)SPUtils.get("hascontact",0))!=0;
     }
 
+    public static boolean isAdmin(){return ((int)SPUtils.get("role",0))!=0;}
+
     public static void loginOut(){
         SPUtils.remove("uid");
         SPUtils.remove("hascontact");
+        SPUtils.remove("autologin");
+        SPUtils.remove("nickname");
+        SPUtils.remove("password");
+        SPUtils.remove("role");
+
     }
 
     /**

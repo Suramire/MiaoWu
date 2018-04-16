@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +19,7 @@ import com.suramire.miaowu.R;
 import com.suramire.miaowu.adapter.MultiItemAdapter;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Catinfo;
-import com.suramire.miaowu.bean.Multi0;
+import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.NoteDetailContract;
@@ -74,11 +73,11 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
     private int index;//上次浏览的index
     private int top;//距离顶部距离
     private int userId;
-    private int verify;
     private Integer verified;
     private Note mNote;
     private User mUser;
     private Catinfo mCatInfo;
+    private boolean clicked;
 
 
     @Override
@@ -106,7 +105,6 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
         });
         noteId = getIntent().getIntExtra("noteId", 0);
         userId = getIntent().getIntExtra("userId", 0);
-        verify = getIntent().getIntExtra("verifyApply", 0);
 
 
         //查询帖子信息
@@ -134,20 +132,23 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
 
     @Override
     public void onSuccess(Object object) {
-        List<Multi0> replies = (List<Multi0>) object;
-        for (Multi0 multi : replies
+        List<M> replies = (List<M>) object;
+        for (M multi : replies
                 ) {
             mObjects.add(multi);
-            //统计楼层数（非楼层回复）
-            if (multi.getReply().getReplyuid() == 0) {
-                mReplyCount++;
-            }
+            //统计楼层数
+//            if (multi.getReply().getReplyuid() == 0) {
+//                mReplyCount++;
+//            }
+            mReplyCount = replies.size();
         }
 
         mAdapter.notifyDataSetChanged();
         setReplyCount(mReplyCount);
-        //成功获取帖子信息后使帖子的阅读量加一
-        mPresenter.increaseNouteCount();
+        //成功获取帖子信息后使帖子的阅读量加一(待审核的帖子不增加)
+        if(verified==1){
+            mPresenter.increaseNouteCount();
+        }
     }
 
     @Override
@@ -197,18 +198,13 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
 
     @Override
     public void onGetNoteInfoSuccess(Note note) {
-//        mNote = note;
         verified = note.getVerified();
-//        /*将帖子类型存放于用户密码字段
-//        因为用户信息先于帖子信息显示，
-//        显示用户信息前需根据帖子类型隐藏或显示申请按钮*/
-//        mUser.setPassword(note.getType()+"");
-//        mObjects.add(mUser);
         mObjects.add(note);
         mAdapter.notifyDataSetChanged();
         mThumbs = note.getThumbs();
         thumb(mThumbs);
-        if (note.getVerified() == 0) {
+        // 管理员身份判断
+        if (note.getVerified() == 0  && CommonUtil.isAdmin() ) {
             //显示审核按钮
             llBottomadmin.setVisibility(View.VISIBLE);
             llBottom.setVisibility(View.GONE);
@@ -230,23 +226,9 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
 
     @Override
     public void onOnGetPictureSuccess(List<String> paths) {
+        mObjects.clear();
         mObjects.add(paths);
         mAdapter.notifyDataSetChanged();
-    }
-
-//    @Override
-//    public void onGetCatInfoSuccess(Catinfo catinfo) {
-//
-//        mCatInfo = catinfo;
-//        if (catinfo != null) {
-//            mObjects.add(catinfo);
-//            mAdapter.notifyDataSetChanged();
-//        }
-//    }
-
-    @Override
-    public void onApplySuccess() {
-        ToastUtil.showShortToastCenter("已成功发送申请，等待作者审核");
     }
 
 
@@ -274,20 +256,6 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
         finish();
     }
 
-//    @Override
-//    public void onGetApplySuccess(Apply reviewApply) {
-//
-//    }
-//
-//    @Override
-//    public Apply getApply() {
-//        return reviewApply;
-//    }
-
-//    @Override
-//    public void onChoiceDone() {
-//
-//    }
 
 
     @OnClick({R.id.btn_comment, R.id.btn_like, R.id.btn_share, R.id.editText3, R.id.btn_pass,
@@ -310,78 +278,92 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
             }
             break;
             case R.id.btn_like:
-                if (!thumbed) {
-                    mPresenter.thumb();
+                if(verified!=0){
+                    if (!thumbed) {
+                        mPresenter.thumb();
+                    }
                 }
+
+
                 break;
             case R.id.btn_share:
 //                ToastUtil.showShortToastCenter("响应分享操作");
                 break;
                 //底部评论框
             case R.id.editText3: {
-                if (!CommonUtil.isLogined()) {
-                    CommonUtil.snackBar(mContext,
-                            "您还未登录","登录",new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    startActivity(LoginActivity.class);
-                                }
-                            });
-                } else {
+                if(verified!=0){
+                    if (!CommonUtil.isLogined()) {
+                        CommonUtil.snackBar(mContext,
+                                "您还未登录","登录",new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        startActivity(LoginActivity.class);
+                                    }
+                                });
+                    } else {
+                        final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
+                        final BottomCommentDialogFragment bottomCommentDialogFragment = BottomCommentDialogFragment.newInstance();
+                        bottomCommentDialogFragment.setReplyListener(new BottomCommentDialogFragment.OnReplyListener() {
+                            @Override
+                            public void onSucess() {
+                                bottomCommentDialogFragment.dismiss();
+                                mObjects.clear();//清除旧数据
+                                mPresenter.getPictue();//从新获取帖子数据
+
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+                                Toast.makeText(mContext, "发表过程出现错误:" + errorMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("nid", getNoteId());
+                        bottomCommentDialogFragment.setArguments(bundle);
+                        bottomCommentDialogFragment.show(mFragTransaction, "111");
+                    }
+                }
+
+            }
+            break;
+            case R.id.btn_pass: {
+                if(!clicked){
+                    CommonUtil.showDialog(mContext, "提示", "确认审核通过该帖子？", "确认", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //响应审核操作
+                            mPresenter.passNote();
+                            clicked = true;
+                        }
+                    }, "取消", null);
+                }
+
+            }
+            break;
+            case R.id.btn_nopass: {
+                //响应驳回帖子操作
+                if(!clicked){
                     final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
                     final BottomCommentDialogFragment bottomCommentDialogFragment = BottomCommentDialogFragment.newInstance();
                     bottomCommentDialogFragment.setReplyListener(new BottomCommentDialogFragment.OnReplyListener() {
                         @Override
                         public void onSucess() {
+                            clicked = true;
+                            ToastUtil.showShortToastCenter("驳回操作成功!");
                             bottomCommentDialogFragment.dismiss();
-                            mObjects.clear();//清除旧数据
-                            mPresenter.getPictue();//从新获取帖子数据
-
                         }
+
 
                         @Override
                         public void onError(String errorMessage) {
-                            Toast.makeText(mContext, "发表过程出现错误:" + errorMessage, Toast.LENGTH_SHORT).show();
                         }
                     });
                     Bundle bundle = new Bundle();
                     bundle.putInt("nid", getNoteId());
+                    bundle.putInt("unpass", 1);
                     bottomCommentDialogFragment.setArguments(bundle);
                     bottomCommentDialogFragment.show(mFragTransaction, "111");
                 }
-            }
-            break;
-            case R.id.btn_pass: {
-                CommonUtil.showDialog(mContext, "提示", "确认审核通过该帖子？", "确认", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //响应审核操作
-                        mPresenter.passNote();
-                    }
-                }, "取消", null);
-            }
-            break;
-            case R.id.btn_nopass: {
-                //响应驳回帖子操作
-                final FragmentTransaction mFragTransaction = getFragmentManager().beginTransaction();
-                final BottomCommentDialogFragment bottomCommentDialogFragment = BottomCommentDialogFragment.newInstance();
-                bottomCommentDialogFragment.setReplyListener(new BottomCommentDialogFragment.OnReplyListener() {
-                    @Override
-                    public void onSucess() {
-                        ToastUtil.showShortToastCenter("驳回操作成功!");
-                        bottomCommentDialogFragment.dismiss();
-                    }
-
-
-                    @Override
-                    public void onError(String errorMessage) {
-                    }
-                });
-                Bundle bundle = new Bundle();
-                bundle.putInt("nid", getNoteId());
-                bundle.putInt("unpass", 1);
-                bottomCommentDialogFragment.setArguments(bundle);
-                bottomCommentDialogFragment.show(mFragTransaction, "111");
             }
             break;
             case R.id.toolbar_text_right:{
@@ -394,7 +376,6 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         menu.setHeaderTitle("帖子操作");
-        menu.add(0,1,1,"编辑帖子");
         if(verified==3){
             menu.add(0,2,2,"解锁帖子");
 
@@ -408,7 +389,6 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case 1:ToastUtil.showShortToastCenter("响应编辑帖子操作");break;
             case 2:{
                 if(verified==3){
                     mPresenter.unlockNote();

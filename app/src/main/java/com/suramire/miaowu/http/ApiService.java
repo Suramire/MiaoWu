@@ -1,9 +1,7 @@
 package com.suramire.miaowu.http;
 
-import com.suramire.miaowu.bean.Apply;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.M;
-import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Notification;
 import com.suramire.miaowu.bean.Reply;
@@ -71,11 +69,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("searchUser")
     Observable<BaseResponse<List<User>>> searchUser(@Field(JSON) String string);
-    //修改用户头像
-    @Multipart
-    @POST("getPicUser")
-    Observable<BaseResponse<Object>> uploadUserIcon(@Part("description") RequestBody description,
-                                                    @Part MultipartBody.Part file);
     //修改用户密码
     @GET("modifypwdUser")
     Observable<BaseResponse<Void>> modifyPassword(@Query(JSON) String string);
@@ -94,6 +87,7 @@ public interface ApiService {
     @GET("getOneCat")
     Observable<BaseResponse<Catinfo>> getOneCat(@Query(JSON) String string);
 
+    //添加一只猫
     @FormUrlEncoded
     @POST("addCat")
     Observable<BaseResponse<Integer>> addCat(@Field(JSON) String string);
@@ -105,6 +99,13 @@ public interface ApiService {
     @GET("getpicCat")
     Observable<BaseResponse<List<String>>> getPicturesCat(@Query(JSON) String string);
 
+
+    //发送猫咪配图路径
+    @FormUrlEncoded
+    @POST("picToDBCat")
+    Observable<BaseResponse<Void>> picToDBCat(@Field(JSON) String string);
+
+    //上传单张图片
     @Multipart
     @POST("uploadPicCat")
     Observable<BaseResponse<Void>> uploadCatPicture(@Part("description") RequestBody description,
@@ -160,9 +161,15 @@ public interface ApiService {
     @POST("updateNote")
     Observable<BaseResponse<Void>> updateNote(@Field(JSON) String string);
 
-    //获取某用户发表的所有帖子信息
+    //获取某用户发表的未锁定且审核通过的帖子
     @GET("getByUserNote")
     Observable<BaseResponse<List<Note>>> getNoteByUser(@Query(JSON) String string);
+
+    //获取某用户发表的所有帖子信息
+    @GET("getByUserAllNote")
+    Observable<BaseResponse<List<Note>>> getAllNoteByUser(@Query(JSON) String string);
+
+
 
     //获取用户发帖数
     @GET("getuCountNote")
@@ -195,19 +202,6 @@ public interface ApiService {
     @GET("increasecountNote")
     Observable<BaseResponse<Void>> increaseCount(@Query(JSON) String string);
 
-    @FormUrlEncoded
-    @POST("addApply")
-    Observable<BaseResponse<Void>> addApply(@Field(JSON) String string);
-
-    @GET("verifyApply")
-    Observable<BaseResponse<Void>> verifyApply(@Query(JSON) String string);
-
-    @GET("getoneApply")
-    Observable<BaseResponse<Apply>> getOneApply(@Query(JSON) String string);
-
-    @GET("getallApply")
-    Observable<BaseResponse<List<Apply>>> getallApply(@Query(JSON) String string);
-
     //图片上传 单张
     @Multipart
     @POST("getPicNote")
@@ -230,11 +224,8 @@ public interface ApiService {
 
     //列出帖子页回复
     @GET("listmReply")
-    Observable<BaseResponse<List<Multi0>>> listReply(@Query(JSON) String string);
+    Observable<BaseResponse<List<M>>> listReply(@Query(JSON) String string);
 
-    //列出回复详情
-    @GET("listdetailReply")
-    Observable<BaseResponse<List<Multi0>>> listReplyDetail(@Query(JSON) String string);
 
     /*通知相关*/
 

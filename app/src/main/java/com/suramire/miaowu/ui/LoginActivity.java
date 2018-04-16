@@ -2,7 +2,6 @@ package com.suramire.miaowu.ui;
 
 import android.app.ProgressDialog;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -94,7 +93,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 break;
             case R.id.tv_forget:
 
-                startActivity(ModifyPasswordActivity.class);
+                startActivity(PasswordActivity.class);
                 break;
             case R.id.toolbar_image_left:
                 finish();
@@ -122,6 +121,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         SPUtils.put("nickname", user.getNickname());
         SPUtils.put("password", user.getPassword());//本地MD5加密
         SPUtils.put("autologin",1);
+        SPUtils.put("role",user.getRole());
         setResult(ApiConfig.RESULTCODE);
         finish();
     }

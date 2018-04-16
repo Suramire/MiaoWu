@@ -1,10 +1,8 @@
 package com.suramire.miaowu.http;
 
-import com.suramire.miaowu.bean.Apply;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Follow;
 import com.suramire.miaowu.bean.M;
-import com.suramire.miaowu.bean.Multi0;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Notification;
 import com.suramire.miaowu.bean.Reply;
@@ -57,10 +55,6 @@ public class ApiLoader {
 
     public static Observable<BaseResponse<User>> addUser(User user){
         return observer(getApiService().addUser(GsonUtil.objectToJson(user)));
-    }
-
-    public static Observable<BaseResponse<Object>> uploadUserIcon(RequestBody description , MultipartBody.Part body){
-        return observer(getApiService().uploadUserIcon(description,body));
     }
 
     public static Observable<BaseResponse<Integer>> getUserFollowCount(User user){
@@ -131,6 +125,10 @@ public class ApiLoader {
         return observer(getApiService().getAllCat(GsonUtil.objectToJson(null)));
     }
 
+    public static Observable<BaseResponse<Void>> picToDBCat(List<HashMap<String, String>> maps){
+        return observer(getApiService().picToDBCat(GsonUtil.objectToJson(maps)));
+    }
+
     public static Observable<BaseResponse<Void>> uploadCatPicture(RequestBody description , MultipartBody.Part body){
         return observer(getApiService().uploadCatPicture(description, body));
     }
@@ -164,6 +162,10 @@ public class ApiLoader {
     }
     public static Observable<BaseResponse<List<Note>>> getNoteByUser(User user){
         return observer(getApiService().getNoteByUser(GsonUtil.objectToJson(user)));
+    }
+
+    public static Observable<BaseResponse<List<Note>>> getAllNoteByUser(User user){
+        return observer(getApiService().getAllNoteByUser(GsonUtil.objectToJson(user)));
     }
 
     public static Observable<BaseResponse<List<Note>>> searchNote(Note note){
@@ -228,21 +230,6 @@ public class ApiLoader {
         return observer(getApiService().increaseCount(GsonUtil.objectToJson(note)));
     }
 
-    public static Observable<BaseResponse<Void>> addApply(Apply apply){
-        return observer(getApiService().addApply(GsonUtil.objectToJson(apply)));
-    }
-
-    public static Observable<BaseResponse<Void>> verifyApply(Apply apply){
-        return observer(getApiService().verifyApply(GsonUtil.objectToJson(apply)));
-    }
-
-    public static Observable<BaseResponse<Apply>> getOneApply(Apply apply){
-        return observer(getApiService().getOneApply(GsonUtil.objectToJson(apply)));
-    }
-
-    public static Observable<BaseResponse<List<Apply>>> getallApply(Apply apply){
-        return observer(getApiService().getallApply(GsonUtil.objectToJson(apply)));
-    }
 
     public static Observable<BaseResponse<Object>> uploadPicture(RequestBody description , MultipartBody.Part body){
         return observer(getApiService().uploadPicture(description,body));
@@ -266,12 +253,8 @@ public class ApiLoader {
         return observer(getApiService().deleteReply(GsonUtil.objectToJson(reply)));
     }
 
-    public static Observable<BaseResponse<List<Multi0>>> listReplys(Reply reply){
+    public static Observable<BaseResponse<List<M>>> listReplys(Reply reply){
         return observer(getApiService().listReply(GsonUtil.objectToJson(reply)));
-    }
-
-    public static Observable<BaseResponse<List<Multi0>>> listReplyDetail(Reply reply){
-        return observer(getApiService().listReplyDetail(GsonUtil.objectToJson(reply)));
     }
 
     /*通知相关*/

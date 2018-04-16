@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
 import com.suramire.miaowu.R;
@@ -23,6 +24,7 @@ import com.suramire.miaowu.ui.NoteDetailActivity;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.GsonUtil;
+import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
 
 import java.text.SimpleDateFormat;
@@ -65,7 +67,6 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
     @Override
     public void onSuccess(Object data) {
 
-
     }
 
     @Override
@@ -80,9 +81,13 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                switch (position){
-                    case 0: mPresenter.getData();break;
-                    case 1: mPresenter.listCats();break;
+                switch (position) {
+                    case 0:
+                        mPresenter.getData();
+                        break;
+                    case 1:
+                        mPresenter.listCats();
+                        break;
                 }
             }
         });
@@ -90,9 +95,13 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 position = tab.getPosition();
-                switch (position){
-                    case 0: mPresenter.getData();break;
-                    case 1: mPresenter.listCats();break;
+                switch (position) {
+                    case 0:
+                        mPresenter.getData();
+                        break;
+                    case 1:
+                        mPresenter.listCats();
+                        break;
                 }
             }
 
@@ -106,8 +115,8 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
 
             }
         });
-
     }
+
 
     @Override
     public void clearData() {
@@ -145,7 +154,7 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
     @Override
     public void onGetNoteListSuccess(List<M> mList) {
 
-        if ( mList!=null&&mList.size() > 0) {
+        if (mList != null && mList.size() > 0) {
             showList();
             listview.setLayoutManager(new LinearLayoutManager(mContext));
             listview.setAdapter(new CommonRecyclerAdapter<M>(mContext, R.layout.item_home, mList) {
@@ -155,10 +164,11 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
 
                     final Note note = (Note) GsonUtil.jsonToObject(item.getStringx(), Note.class);
                     String firstPhoto = item.getStringz();
-                    User user =  (User) GsonUtil.jsonToObject(item.getStringy(), User.class);
+                    L.e("firstPhoto:" + firstPhoto);
+                    User user = (User) GsonUtil.jsonToObject(item.getStringy(), User.class);
                     PicassoUtil.show(BASNOTEPICEURL + firstPhoto, (ImageView) helper.getView(R.id.noteimg),
                             R.mipmap.ic_loading, R.mipmap.ic_loading_error);
-                    PicassoUtil.show(BASUSERPICEURL + user.getIcon(), (ImageView) helper.getView(R.id.anthorimg));
+                    PicassoUtil.showIcon(BASUSERPICEURL + user.getIcon(), (ImageView) helper.getView(R.id.anthorimg));
                     helper.setOnClickListener(R.id.cardview_item, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -170,20 +180,15 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
                     });
                     helper.setText(R.id.notetitle, note.getTitle())
                             .setText(R.id.notecontent, note.getContent())
-                            .setText(R.id.textView7,note.getThumbs()+"")
+                            .setText(R.id.textView7, note.getThumbs() + "")
                             .setText(R.id.notepublishtime, CommonUtil.getHowLongAgo(note.getPublish()))
                             .setText(R.id.textView6, item.getIntx() + "")
                             .setText(R.id.authorname, user.getNickname());
                 }
             });
         } else {
-                showEmpty("暂无新帖子");
-//                ToastUtil.showShortToastCenter("暂无新帖子");
-            }
-
-
+            showEmpty("暂无新帖子");
+        }
     }
-
-
 
 }

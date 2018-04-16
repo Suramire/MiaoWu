@@ -27,6 +27,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
 
+import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
+
 
 /**
  * Created by Suramire on 2018/1/27.
@@ -34,7 +36,6 @@ import butterknife.OnClick;
  */
 
 public class UserActivity extends BaseActivity<UserPresenter> implements UserContract.View {
-
 
     @Bind(R.id.img_icon)
     RoundedImageView imgIcon;
@@ -130,11 +131,12 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
     }
 
     @Override
-    public void onGetInfoSuccess(User userinfo) {
-        L.e("成功获取其他用户信息:" + userinfo);
-        userId = userinfo.getId();
-        PicassoUtil.show(ApiConfig.BASUSERPICEURL + userinfo.getIcon(), imgIcon);
-        tvUsername.setText(userinfo.getNickname());
+    public void onGetInfoSuccess(User user) {
+        L.e("成功获取其他用户信息:" + user);
+        userId = user.getId();
+        String icon = user.getIcon();
+        PicassoUtil.showIcon(icon==null?null:BASUSERPICEURL+icon,imgIcon);
+        tvUsername.setText(user.getNickname());
         if (userId == CommonUtil.getCurrentUid()) {
             toolbar.setTitle("个人中心");
             tvTitleNote.setText("我的帖子");
@@ -143,12 +145,11 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
             toolbarTextRight.setVisibility(View.VISIBLE);
         } else {
             toolbar.setTitle("他人信息");
-            tvTitleNote.setText(userinfo.getNickname() + "的帖子");
-            tvTitleReply.setText(userinfo.getNickname() + "的回复");
-            tvTitleHistory.setText(userinfo.getNickname() + "的领养记录");
+            tvTitleNote.setText(user.getNickname() + "的帖子");
+            tvTitleReply.setText(user.getNickname() + "的回复");
+            tvTitleHistory.setText(user.getNickname() + "的领养记录");
             toolbarTextRight.setVisibility(View.GONE);
         }
-
 
     }
 
@@ -170,7 +171,6 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
         if (userId != CommonUtil.getCurrentUid()) {
             mPresenter.getRelationship();
         }
-
     }
 
     @Override
@@ -193,7 +193,6 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
                 break;//互相关注
         }
     }
-
 
 
     @OnClick({R.id.ll_followlist, R.id.ll_followerlist, R.id.ll_note2, R.id.ll_mynote,
@@ -247,7 +246,5 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
                 break;
         }
     }
-
-
 
 }

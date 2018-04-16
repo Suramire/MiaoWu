@@ -28,6 +28,25 @@ public class PicassoUtil {
                 .error(R.mipmap.ic_loading_error)
                 .into(target);
     }
+
+    /**
+     * 加载头像图片 防止圆形头像变形
+     * @param path
+     * @param target
+     */
+    public static void showIcon(String path, ImageView target){
+        Picasso.with(App.getInstance())
+                .load(path)
+                .placeholder(R.mipmap.ic_cat_icon)
+                .error(R.mipmap.ic_loading_error)
+                .resize(100,100)
+                .centerCrop()
+                .into(target);
+
+    }
+
+
+
     /**
      * 加载图片默认占位图片
      * @param file 图片文件

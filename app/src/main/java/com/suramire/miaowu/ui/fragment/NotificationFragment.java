@@ -68,12 +68,13 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
             if(listener!=null){
                 listener.onChange(count);
             }
-            if(notifications!=null && notifications.size()>0){
+            if(notifications.size()>0){
                 showNotifications(notifications);
             }else{
                 showEmpty("暂无通知信息");
             }
         }else{
+            showEmpty("暂无通知信息");
         }
     }
 
@@ -89,6 +90,7 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
 
     @Override
     public void initView() {
+        swipeRefreshLayout.setEnabled(false);
         setRequireFresh(true);
         if(CommonUtil.isLogined()){
             mPresenter.getNotifications();
@@ -116,6 +118,7 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
                     @Override
                     public void onClick(View v) {
 //                        ToastUtil.showShortToastCenter("点击通知内容:类型"+item.getType());
+                        //已读的通知不能再点击
                         currentType = item.getType();
                         switch (item.getType()){
                             case 1:{
@@ -130,16 +133,17 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
                             case 3:{
                                 intent = new Intent(mContext, ApplyDetailActivity.class);
                                 intent.putExtra("aid", item.getUid1());
+                                //已经审核的申请不再显示
+                                if(item.getIsread()==1){
+                                    return;
+                                }
                             }break;
                             default:break;
-
-
                         }
                         item.setIsread(1);
                         notifyDataSetChanged();
                         currentId = item.getId();
                         mPresenter.readNotification();
-
 
                     }
                 });
@@ -169,7 +173,5 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
                 listener.onChange(count);
             }
         }
-
-
     }
 }

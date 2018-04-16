@@ -66,7 +66,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:divider="@drawable/divider"
+            android:showDividers="middle|end"
             android:elevation="2dp"
+            android:padding="8dp"
             android:orientation="vertical"
             >
 
@@ -81,13 +84,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/id" />
+                    android:text="@string/id"
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:textSize="@dimen/textsize_content" />
 
             </LinearLayout>
 
@@ -102,13 +107,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/sex" />
+                    android:text="@string/sex"
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_sex"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:textSize="@dimen/textsize_content" />
 
             </LinearLayout>
 
@@ -122,13 +129,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/age" />
+                    android:text="@string/age"
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_age"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:textSize="@dimen/textsize_content" />
 
             </LinearLayout>
 
@@ -142,13 +151,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/neutering" />
+                    android:text="@string/neutering"
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_neutering"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:textSize="@dimen/textsize_content" />
 
             </LinearLayout>
 
@@ -162,13 +173,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/insecticide" />
+                    android:text="@string/insecticide"
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_insecticide"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:textSize="@dimen/textsize_content" />
 
             </LinearLayout>
 
@@ -183,7 +196,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/type" />
+                    android:text="@string/type"
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_type"
@@ -191,7 +205,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:textSize="@dimen/textsize_content" />
 
             </LinearLayout>
 
@@ -205,7 +220,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/otherCondition" />
+                    android:text="@string/otherCondition"
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_conditions"
@@ -226,6 +242,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
+
         >
         <LinearLayout
             android:gravity="center"
@@ -234,17 +252,25 @@
             android:layout_height="match_parent">
             <Button
                 android:id="@+id/btn_agree"
-                android:layout_width="wrap_content"
-                android:layout_marginEnd="32dp"
-                android:text="同意"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_blue"
+                android:textColor="@color/white"
+                android:layout_marginStart="@dimen/margin_content"
+                android:layout_marginEnd="@dimen/margin_content"
+                android:text="@string/btn_agree"
                 android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/btn_disagree"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:text="拒绝" />
+                android:layout_marginStart="@dimen/margin_content"
+                android:layout_marginEnd="@dimen/margin_content"
+                android:background="@drawable/btn_red"
+                android:textColor="@color/white"
+                android:text="@string/btn_disagree" />
         </LinearLayout>
 
     </RelativeLayout>

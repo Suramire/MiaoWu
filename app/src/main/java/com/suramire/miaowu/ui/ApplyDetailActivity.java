@@ -24,6 +24,8 @@ import com.suramire.miaowu.wiget.MyToolbar;
 import butterknife.Bind;
 import butterknife.OnClick;
 
+import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
+
 /**
  * Created by Suramire on 2018/4/9.
  */
@@ -152,7 +154,8 @@ public class ApplyDetailActivity extends BaseActivity<ReviewApplyPresenter> impl
     @Override
     public void onGetUserSuccess(User user) {
         tvNtNickname.setText(user.getNickname());
-        PicassoUtil.show(ApiConfig.BASUSERPICEURL + user.getIcon(),imgNtProfile);
+        String icon = user.getIcon();
+        PicassoUtil.showIcon(icon==null?null:BASUSERPICEURL+icon,imgNtProfile);
     }
 
     @Override

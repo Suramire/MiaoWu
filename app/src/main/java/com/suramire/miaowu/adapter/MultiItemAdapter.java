@@ -1,10 +1,12 @@
 package com.suramire.miaowu.adapter;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +18,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.App;
 import com.suramire.miaowu.bean.Catinfo;
-import com.suramire.miaowu.bean.Multi0;
+import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.ui.UserActivity;
 import com.suramire.miaowu.util.CommonUtil;
+import com.suramire.miaowu.util.GsonUtil;
 import com.suramire.miaowu.util.PicassoUtil;
 import com.suramire.miaowu.util.ToastUtil;
 import com.youth.banner.Banner;
@@ -67,7 +71,7 @@ public class MultiItemAdapter extends BaseAdapter {
         public MultiItemAdapter(Context context , List list) {
         mList = list;
         mContext = context;
-        mClasses =new Class[]{Multi0.class, Note.class, ArrayList.class, User.class};
+        mClasses =new Class[]{M.class, Note.class, ArrayList.class, User.class};
     }
 
     @Override
@@ -115,29 +119,42 @@ public class MultiItemAdapter extends BaseAdapter {
             mVH.mimgUserIcon = convertView.findViewById(R.id.reply_user_icon);
             mVH.mtvCount = convertView.findViewById(R.id.reply_count);
             mVH.mll_repleydetail = convertView.findViewById(R.id.ll_replydetail);
+            mVH.ll_replyuser = convertView.findViewById(R.id.ll_reply_user);
             convertView.setTag(mVH);
         }else{
             mVH = (ViewHolder0) convertView.getTag();
         }
-        final Multi0 multi0 = (Multi0) mList.get(position);
-        Reply reply = multi0.getReply();
-        User user = multi0.getUser();
+        final M m = (M) mList.get(position);
+        Reply reply = (Reply) GsonUtil.jsonToObject(m.getStringx(),Reply.class);
+        final User user = (User) GsonUtil.jsonToObject(m.getStringy(),User.class);
+        //显示用户昵称与头像
         mVH.mtvNickname.setText(user.getNickname());
         String icon = user.getIcon();
-        if(icon!=null){
-            PicassoUtil.show(BASUSERPICEURL+icon,mVH.mimgUserIcon);
-        }
-//        int count = multi.getCount()-1;
-        mVH.mtvCount.setText("");
+        PicassoUtil.showIcon(icon==null?null:BASUSERPICEURL+icon,mVH.mimgUserIcon);
 
+//        int count = multi.getCount()-1;
+        mVH.mtvCount.setText("0");
         mVH.mtvContent.setText(reply.getReplycontent());
         mVH.mtvReplytime.setText(CommonUtil.timeStampToDateString(reply.getReplytime()));
-        //第一项添加标头
+        //评论第一项添加标头
         if(isFirst){
             mVH.mtvTitle = convertView.findViewById(R.id.tv_title_reply);
             mVH.mtvTitle.setVisibility(View.VISIBLE);
+            int replyCount = m.getIntx();
+            //在标头显示评论总数
+            if(replyCount >0){
+                mVH.mtvTitle.setText("帖子回复 ("+ replyCount +")");
+            }
             isFirst = false;
         }
+        mVH.ll_replyuser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, UserActivity.class);
+                intent.putExtra("uid",user.getId());
+                mContext.startActivity(intent);
+            }
+        });
 
         return convertView;
     }
@@ -221,19 +238,6 @@ public class MultiItemAdapter extends BaseAdapter {
         }else{
             mVH.mButtonFollow.setVisibility(View.VISIBLE);
         }
-        //当前帖子类型不为有猫等待领养时 隐藏申请按钮
-//        type = Integer.parseInt(user.getPassword());//帖子类型 2=有猫 1=找猫
-//        if(type!=2 || user.getId()==CommonUtil.getCurrentUid()){
-//            mVH.mButtonApply.setVisibility(View.GONE);
-//        }
-//        mVH.mButtonApply.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(listener!=null){
-//                    listener.onClick();
-//                }
-//            }
-//        });
         mVH.mButtonFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -271,15 +275,8 @@ public class MultiItemAdapter extends BaseAdapter {
                 mContext.startActivity(intent);
             }
         });
-
-        Picasso.with(App.getInstance())
-                .load(BASUSERPICEURL + user.getIcon())
-                .placeholder(R.mipmap.ic_loading)
-                .resize(100, 100)
-                .centerCrop()
-                .error(R.mipmap.ic_loading_error)
-                .into(mVH.mImgUser);
-
+        String icon = user.getIcon();
+        PicassoUtil.showIcon(icon==null?null:BASUSERPICEURL+icon,mVH.mImgUser);
         return convertView;
     }
 
@@ -289,7 +286,7 @@ public class MultiItemAdapter extends BaseAdapter {
         TextView mtvNickname,mtvContent,mtvCount;
         TextView mtvTitle,mtvReplytime;
         ImageView mimgUserIcon;
-        LinearLayout mll_repleydetail;
+        LinearLayout mll_repleydetail,ll_replyuser;
     }
 
     class ViewHolder1 {

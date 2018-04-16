@@ -38,6 +38,7 @@ public class NoteListActivity extends BaseListActivity<NotePresenter> implements
     @Bind(R.id.toolbar)
     MyToolbar toolbar;
     private ProgressDialog progressDialog;
+    private int uid;
 
     @Override
     public void showLoading() {
@@ -68,7 +69,6 @@ public class NoteListActivity extends BaseListActivity<NotePresenter> implements
                                     public void onClick(View v) {
                                         Intent intent = new Intent(mContext, NoteDetailActivity.class);
                                         intent.putExtra("noteId", item.getId());
-                                        intent.putExtra("verifyApply", item.getVerified());
                                         intent.putExtra("userId", item.getUid());
                                         startActivity(intent);
                                     }
@@ -103,19 +103,28 @@ public class NoteListActivity extends BaseListActivity<NotePresenter> implements
         progressDialog.setMessage("请稍候……");
         toolbarImageLeft.setImageResource(R.drawable.ic_arrow_back_black);
         toolbarTextCenter.setText("帖子列表");
-        int uid = getIntent().getIntExtra("uid", 0);
+        uid = getIntent().getIntExtra("uid", 0);//所查看用户的编号
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         if(uid==-1){
             //管理员显示待审核帖子
             toolbarTextCenter.setText("待审核帖子列表");
             mPresenter.getUnverifyNotes();
+
+        }else if(uid == CommonUtil.getCurrentUid() && uid!=0){
+            //当前登录的用户查看自己的发帖记录
+            mPresenter.getAllNotesByUser(uid);
         }else if(uid!=0){
+            //其他用户查看帖子记录
             mPresenter.getNotesByUser(uid);
         }else{
             ToastUtil.showShortToastCenter("获取帖子列表失败:未知的用户编号");
         }
     }
-
-
 
     @OnClick(R.id.toolbar_image_left)
     public void onViewClicked() {
@@ -135,12 +144,12 @@ public class NoteListActivity extends BaseListActivity<NotePresenter> implements
                     public void onUpdate(BaseAdapterHelper helper, final Note item, int position) {
                         helper.setText(R.id.note_title,item.getTitle())
                                 .setText(R.id.note_content,item.getContent())
+                                .setText(R.id.note_date, CommonUtil.timeStampToDateString(item.getPublish()))
                                 .setOnClickListener(R.id.ll_note, new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         Intent intent = new Intent(mContext, NoteDetailActivity.class);
                                         intent.putExtra("noteId",item.getId());
-                                        intent.putExtra("verifyApply", item.getVerified());
                                         intent.putExtra("userId",item.getUid());
                                         startActivity(intent);
                                     }

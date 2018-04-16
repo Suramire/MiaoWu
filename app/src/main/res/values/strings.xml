@@ -80,14 +80,15 @@
     <string name="delete">删除</string>
     <string name="copy">复制</string>
     <string name="reply">回复</string>
-    <string name="sex">性别</string>
-    <string name="age">年龄</string>
-    <string name="neutering">是否绝育</string>
-    <string name="insecticide">是否驱虫</string>
+    <string name="sex">性别：</string>
+    <string name="age">年龄：</string>
+    <string name="neutering">是否绝育：</string>
+    <string name="insecticide">是否驱虫：</string>
+    <string name="id">编号：</string>
+    <string name="type">品种：</string>
     <string name="otherCondition">领养条件：</string>
     <string name="contact">联系方式</string>
     <string name="hint_conditions">请填写领养条件</string>
-    <string name="type">品种</string>
     <string name="hint_notification_content">这是通知的内容啦啦啦啦啦啦啦啦啦，这是通知的内容啦啦啦啦啦啦啦啦啦，这是通知的内容啦啦啦啦啦啦啦啦啦，这是通知的内容啦啦啦啦啦啦啦啦啦，这是通知的内容啦啦啦啦啦啦啦啦啦，这是通知的内容啦啦啦啦啦啦啦啦啦，</string>
     <string name="hint_my_note">我的帖子</string>
     <string name="hint_my_reply">我的回复</string>
@@ -101,5 +102,7 @@
     <string name="picture">图片</string>
     <string name="choosepicture">选择图片</string>
     <string name="addcat">添加猫咪</string>
-    <string name="id">编号</string>
+    <string name="btn_agree">同&#x0020;&#x0020;意</string>
+    <string name="btn_disagree">拒&#x0020;&#x0020;绝</string>
+
 </resources>

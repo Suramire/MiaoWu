@@ -24,6 +24,14 @@ public class NoteModel implements NoteContract.Model {
     }
 
     @Override
+    public Observable<List<Note>> getAllNotesByUser(int uid) {
+        User user = new User();
+        user.setId(uid);
+        return ApiLoader.getAllNoteByUser(user)
+                .map(new ResponseFunc<List<Note>>());
+    }
+
+    @Override
     public Observable<List<Note>> getUnverifyNotes() {
         return ApiLoader.listUnverifyNotes()
                 .map(new ResponseFunc<List<Note>>());

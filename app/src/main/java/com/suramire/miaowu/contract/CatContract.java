@@ -23,6 +23,8 @@ public interface CatContract {
 
         Observable<T> listAppliedCat();
 
+        Observable<T> uploadPicturePaths(int cid,List<String> paths);
+
     }
 
     interface View extends BaseView{
@@ -50,7 +52,11 @@ public interface CatContract {
         //获取一只猫的信息
         void getCat();
 
-        //上次猫的图片
+        //上传猫咪配图的文件名
+
+        void uploadPictuePaths();
+
+        //上传猫的图片
         void uploadPicture();
 
         //获取猫的图片

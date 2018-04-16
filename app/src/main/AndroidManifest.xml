@@ -45,7 +45,7 @@
         <activity android:name=".ui.ProfileDetailActivity" />
         <activity android:name=".ui.ApplyDetailActivity" />
         <activity android:name=".ui.AdoptHistoryActivity" />
-        <activity android:name=".ui.ModifyPasswordActivity" />
+        <activity android:name=".ui.PasswordActivity" />
         <activity android:name=".ui.CatDetailActivity" />
         <activity android:name=".ui.ApplyListActivity" />
 

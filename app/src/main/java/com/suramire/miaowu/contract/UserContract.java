@@ -64,16 +64,12 @@ public interface UserContract {
         void getUserFollowerCount();
         //用户发帖数
         void getUserNoteCount();
-
         //获取当前页面的用户与登录用户的关系
         void getRelationship();
         //关注用户
         void follow();
         //取消关注
         void unfollow();
-
-
-
 
     }
 }

@@ -17,6 +17,7 @@ public class User implements java.io.Serializable {
 	private String password;
 	private String icon;
 	private Date birthday;
+	private String address;
 	private Integer role;
 	private Integer contacttype;
 	private String contact;
@@ -39,13 +40,14 @@ public class User implements java.io.Serializable {
 
 	/** full constructor */
 	public User(String phonenumber, String nickname, String password,
-			String icon, Date birthday, Integer role, Integer contacttype,
-			String contact) {
+			String icon, Date birthday, String address, Integer role,
+			Integer contacttype, String contact) {
 		this.phonenumber = phonenumber;
 		this.nickname = nickname;
 		this.password = password;
 		this.icon = icon;
 		this.birthday = birthday;
+		this.address = address;
 		this.role = role;
 		this.contacttype = contacttype;
 		this.contact = contact;
@@ -99,6 +101,14 @@ public class User implements java.io.Serializable {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+
+	public String getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public Integer getRole() {
