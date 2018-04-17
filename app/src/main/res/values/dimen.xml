@@ -6,4 +6,7 @@
     <dimen name="textsize_content">18sp</dimen>
     <dimen name="textsize_content_big">22sp</dimen>
     <dimen name="textsize_content_small">16sp</dimen>
+
+    <dimen name="toolbarElevation">4dp</dimen>
+    <dimen name="carElevation">2dp</dimen>
 </resources>

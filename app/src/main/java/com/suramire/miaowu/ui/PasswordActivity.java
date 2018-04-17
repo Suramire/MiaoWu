@@ -118,6 +118,7 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
                 }
             }
         });
+
     }
 
     @Override
@@ -192,7 +193,12 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
                         ToastUtil.showLongToast("请先进行手机号码验证");
                     }
                 }else{
-                    ToastUtil.showLongToast("已进行修改密码操作，请重新登录");
+                    CommonUtil.snackBar(mContext, "修改成功，重新登录以生效", "确定", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            finish();
+                        }
+                    });
                 }
                 break;
         }

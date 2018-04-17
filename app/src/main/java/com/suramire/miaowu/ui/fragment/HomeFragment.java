@@ -144,6 +144,7 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
                         }
                     });
                     PicassoUtil.show(ApiConfig.BASECATPICEURL + item.getId() + "_0.png", (ImageView) helper.getView(R.id.catimg));
+                    L.e(ApiConfig.BASECATPICEURL + item.getId() + "_0.png");
                 }
             });
         } else {
@@ -164,7 +165,6 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
 
                     final Note note = (Note) GsonUtil.jsonToObject(item.getStringx(), Note.class);
                     String firstPhoto = item.getStringz();
-                    L.e("firstPhoto:" + firstPhoto);
                     User user = (User) GsonUtil.jsonToObject(item.getStringy(), User.class);
                     PicassoUtil.show(BASNOTEPICEURL + firstPhoto, (ImageView) helper.getView(R.id.noteimg),
                             R.mipmap.ic_loading, R.mipmap.ic_loading_error);

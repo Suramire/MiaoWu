@@ -8,19 +8,21 @@
                                     android:elevation="2dp"
                                     app:cardElevation="2dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_profile"
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="72dp"
         android:orientation="horizontal">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/img_nt_profile"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_gravity="center"
             android:src="@mipmap/ic_cat_icon_round"
             android:layout_marginStart="@dimen/margin_content"
+            android:layout_centerVertical="true"
             app:riv_border_color="@color/white"
             app:riv_border_width="1dp"
             app:riv_oval="true"/>
@@ -32,7 +34,8 @@
             android:layout_gravity="center"
             android:maxLines="1"
             tools:text="TextView"
-            android:layout_marginStart="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="96dp"
             android:textColor="@android:color/black"
             android:textSize="@dimen/textsize_content_big"/>
 
@@ -42,11 +45,13 @@
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_gravity="center"
-            android:layout_marginStart="64dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
             android:background="@drawable/btn_blue"
+            android:layout_marginEnd="16dp"
             android:text="联系TA"
             android:textColor="@color/white"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </android.support.v7.widget.CardView>

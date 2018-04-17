@@ -2,9 +2,13 @@ package com.suramire.miaowu.base;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 
 import butterknife.ButterKnife;
 
@@ -18,6 +22,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     protected T mPresenter;
     protected Activity mContext;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

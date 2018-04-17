@@ -172,7 +172,7 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
             tvInsecticide.setText(catinfo.getInsecticide()==0?"未知":(catinfo.getInsecticide()==1)?"是":"否");
             tvType.setText(catinfo.getType() == null ? "未知" : catinfo.getType());
             tvConditions.setText(catinfo.getConditions());
-            if(catinfo.getIsAdopted()==0){
+            if(catinfo.getIsAdopted()==0 && CommonUtil.isLogined()){
                 //可以领养
                 toolbar.setRightText("申请领养");
                 toolbar.setRightOnclickListener(new View.OnClickListener() {

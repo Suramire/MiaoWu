@@ -5,7 +5,7 @@ android {
 
     }
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.suramire.miaowu"
         minSdkVersion 19
@@ -60,7 +60,7 @@ dependencies {
     //圆形头像
     compile 'com.makeramen:roundedimageview:2.2.1'
     //图片选择器
-    implementation 'com.lzy.widget:imagepicker:0.6.1'
+    compile 'com.lzy.widget:imagepicker:0.6.1'
     //轮播图
     compile 'com.youth.banner:banner:1.4.9'
     //图片加载毕加索

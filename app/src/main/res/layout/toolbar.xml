@@ -10,6 +10,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@android:color/white"
         android:minHeight="?attr/actionBarSize"
+        android:elevation="@dimen/toolbarElevation"
         app:contentInsetStart="0dp"
         android:theme="?attr/actionBarTheme">
 

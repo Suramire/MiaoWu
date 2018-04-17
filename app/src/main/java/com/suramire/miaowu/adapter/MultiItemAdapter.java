@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,7 +54,6 @@ public class MultiItemAdapter extends BaseAdapter {
     private List  mList;
     private Context mContext;
     private boolean isFirst = true;
-    private Integer type;
 
 
     class GlideImageLoader extends ImageLoader {
@@ -175,7 +175,7 @@ public class MultiItemAdapter extends BaseAdapter {
         }
         Note note = (Note) mList.get(position);
 
-        String titleString = null;
+        String titleString;
         if(note.getVerified()==3){
             titleString = "[已锁定] "+note.getTitle();
         }else{
@@ -299,11 +299,10 @@ public class MultiItemAdapter extends BaseAdapter {
     }
 
     class ViewHolder3 {
-        LinearLayout llProfile;
+        RelativeLayout llProfile;
         ImageView mImgUser;
         TextView mTvNickname;
         Button mButtonFollow;
-        Button mButtonApply;
     }
 
 

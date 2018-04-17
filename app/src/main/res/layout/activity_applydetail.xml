@@ -234,45 +234,47 @@
                     android:padding="8dp" />
             </LinearLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+
+                >
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+                    <Button
+                        android:id="@+id/btn_agree"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_blue"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="@dimen/margin_content"
+                        android:layout_marginEnd="@dimen/margin_content"
+                        android:text="@string/btn_agree"
+                        android:layout_height="wrap_content" />
+
+                    <Button
+                        android:id="@+id/btn_disagree"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_content"
+                        android:layout_marginEnd="@dimen/margin_content"
+                        android:background="@drawable/btn_red"
+                        android:textColor="@color/white"
+                        android:text="@string/btn_disagree" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
 
         </LinearLayout>
 
     </ScrollView>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
 
-        >
-        <LinearLayout
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="match_parent">
-            <Button
-                android:id="@+id/btn_agree"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_blue"
-                android:textColor="@color/white"
-                android:layout_marginStart="@dimen/margin_content"
-                android:layout_marginEnd="@dimen/margin_content"
-                android:text="@string/btn_agree"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/btn_disagree"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_content"
-                android:layout_marginEnd="@dimen/margin_content"
-                android:background="@drawable/btn_red"
-                android:textColor="@color/white"
-                android:text="@string/btn_disagree" />
-        </LinearLayout>
-
-    </RelativeLayout>
 
 </LinearLayout>
