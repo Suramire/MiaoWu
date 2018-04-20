@@ -76,6 +76,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         mToolbar3.setLeftImage(R.drawable.ic_arrow_back_black);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("请稍候……");
+        mProgressDialog.setCancelable(false);
     }
 
     @OnClick({R.id.edt_name, R.id.edt_password, R.id.btn_login, R.id.tv_reg, R.id.tv_forget,R.id.toolbar_image_left})

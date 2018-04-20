@@ -28,7 +28,7 @@ import rx.Observable;
 
 public interface ApiService {
 
-    public static final String JSON = "jsonString";
+    String JSON = "jsonString";
     /*用户相关*/
     //用户登录
     @FormUrlEncoded
@@ -185,9 +185,6 @@ public interface ApiService {
     //获取帖子所有配图
     @GET("getAllPictureNote")
     Observable<BaseResponse<List<String>>> getAllPictureNote(@Query(JSON) String string);
-    //获取帖子里的猫咪信息
-    @GET("getCatNote")
-    Observable<BaseResponse<Catinfo>> getCatNote(@Query(JSON) String string);
 
     //发布猫咪信息 返回 猫咪编号
     @FormUrlEncoded
@@ -217,10 +214,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("addReply")
     Observable<BaseResponse<Reply>> addReply(@Field(JSON) String string);
-
-    //删除回复
-    @GET("deleteReply")
-    Observable<BaseResponse<Reply>> deleteReply(@Query(JSON) String string);
 
     //列出帖子页回复
     @GET("listmReply")

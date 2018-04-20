@@ -18,10 +18,6 @@ public class ReplyModel implements ReplyContract.Model {
         return ApiLoader.addReply(reply).map(new ResponseFunc<Reply>());
     }
 
-    @Override
-    public Observable<Reply> deleteReply(Reply reply) {
-        return ApiLoader.deleteReply(reply).map(new ResponseFunc<Reply>());
-    }
 
     @Override
     public Observable<Void> unPassNote(Note note) {

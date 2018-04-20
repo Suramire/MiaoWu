@@ -78,7 +78,8 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
     public void initView() {
         cid = getIntent().getIntExtra("cid", 0);
         progressDialog = new ProgressDialog(mContext);
-        progressDialog.setTitle("请稍候……");
+        progressDialog.setMessage("请稍候……");
+        progressDialog.setCancelable(false);
         toolbar.setTitle("猫咪详情");
         toolbar.setLeftImage(R.drawable.ic_arrow_back_black);
         mPresenter.getCat();
@@ -114,6 +115,11 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
     @Override
     public List<String> getStringPaths() {
         return null;
+    }
+
+    @Override
+    public void onUploadCatPicturesSuccess() {
+
     }
 
     @Override

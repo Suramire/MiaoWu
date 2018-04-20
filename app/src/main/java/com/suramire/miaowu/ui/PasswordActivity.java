@@ -58,7 +58,8 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
         toolbar.setTitle("修改密码");
         toolbar.setLeftImage(R.drawable.ic_arrow_back_black);
         progressDialog = new ProgressDialog(mContext);
-        progressDialog.setTitle("请稍候……");
+        progressDialog.setMessage("请稍候……");
+        progressDialog.setCancelable(false);
         uid = getIntent().getIntExtra("uid", 0);
         //短信验证码相关
         EventHandler mEventHandler = new EventHandler() {

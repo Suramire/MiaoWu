@@ -45,6 +45,10 @@ public interface PublishContract {
         Note getNoteInfo();
         //返回猫咪信息
         Catinfo getCatinfo();
+
+        void onPostNoteSuccess(int nid);
+
+        void onUploadPicturesSuccess();
         //帖子配图的路径
         List<String> getPicturePaths();
     }

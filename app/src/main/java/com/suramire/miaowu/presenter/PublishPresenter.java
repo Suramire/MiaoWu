@@ -1,8 +1,12 @@
 package com.suramire.miaowu.presenter;
 
+import android.os.Handler;
+import android.os.SystemClock;
+
 import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.PublishModel;
+import com.suramire.miaowu.util.OnResultListener;
 import com.suramire.miaowu.util.ToastUtil;
 
 import rx.Subscription;
@@ -19,6 +23,23 @@ public class PublishPresenter implements PublishContract.Presenter {
 
     public PublishPresenter() {
         mPublishModel = new PublishModel();
+        mPublishModel.setListener(new OnResultListener() {
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+
+            @Override
+            public void onFailed(String failureMessage) {
+
+            }
+
+            @Override
+            public void onSuccess(Object object) {
+                mView.cancelLoading();
+                mView.onUploadPicturesSuccess();
+            }
+        });
     }
 
 
@@ -41,13 +62,8 @@ public class PublishPresenter implements PublishContract.Presenter {
                     public void onNext(Integer integer) {
                         //回调 正常执行时
                         //帖子有配图的情况 发送配图文件至服务器
-                        if(mView.getPicturePaths()!=null
-                                && mView.getPicturePaths().size()>0 ){
-                            publishPicturePaths(integer);
-                        }else {
-                            //无配图情况直接调用界面中的成功方法
-                            mView.onSuccess(null);
-                        }
+                        mView.onPostNoteSuccess(integer);
+
                     }
                 });
         compositeSubscription.add(subscribe);/*为了方便在本Presenter生命
@@ -67,8 +83,6 @@ public class PublishPresenter implements PublishContract.Presenter {
 
                     @Override
                     public void onNext(Object object) {
-                        mView.cancelLoading();
-                        mView.onSuccess(null);
                         //上传图片
                         mPublishModel.uploadPicture(mView.getPicturePaths(), 0, mView.getPicturePaths().size(), nid);
                     }

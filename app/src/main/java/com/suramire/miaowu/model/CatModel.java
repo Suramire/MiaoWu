@@ -5,8 +5,8 @@ import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.contract.CatContract;
 import com.suramire.miaowu.http.ApiLoader;
 import com.suramire.miaowu.http.base.ResponseFunc;
-import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.L;
+import com.suramire.miaowu.util.OnResultListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,6 +20,12 @@ import rx.Observable;
 import rx.functions.Action1;
 
 public class CatModel implements CatContract.Model {
+
+    private OnResultListener listener;
+
+    public void setListener(OnResultListener listener) {
+        this.listener = listener;
+    }
 
     int index = 0;
 
@@ -84,7 +90,16 @@ public class CatModel implements CatContract.Model {
                 .map(new ResponseFunc<Void>());
     }
 
+
+    // TODO: 2018/4/20 涉及图片上传的地方均需要进行图片压缩处理
+    /**
+     * 上传图片
+     * @param paths
+     * @param cid
+     * @param i
+     */
     private void upload(final List<String> paths, final int cid, final int i) {
+
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse("multipart/form-data"), new File(paths.get(i)));
         final MultipartBody.Part body =
@@ -97,14 +112,21 @@ public class CatModel implements CatContract.Model {
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
-                        if(i<=paths.size()-1){
+                        if(i<paths.size()-1){
                             upload(paths,cid,i+1);
+                        }else{
+                            if(null !=listener){
+                                listener.onSuccess(null);
+                            }
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         L.e("上传图片失败:" + throwable.getMessage());
+//                        if(null !=listener){
+//                            listener.onError("上传图片失败");
+//                        }
                     }
                 });
     }

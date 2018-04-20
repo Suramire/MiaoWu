@@ -26,6 +26,8 @@ public class PicassoUtil {
                 .load(path)
                 .placeholder(R.mipmap.ic_loading)
                 .error(R.mipmap.ic_loading_error)
+                .resize(500, 360)
+                .centerCrop()
                 .into(target);
     }
 
@@ -57,6 +59,8 @@ public class PicassoUtil {
                 .load(file)
                 .placeholder(R.mipmap.ic_loading)
                 .error(R.mipmap.ic_loading_error)
+                .resize(500, 360)
+                .centerCrop()
                 .into(target);
     }
 
@@ -72,6 +76,8 @@ public class PicassoUtil {
                 .load(path)
                 .placeholder(placeholder)
                 .error(errorholder)
+                .resize(500, 360)
+                .centerCrop()
                 .into(target);
     }
 
@@ -88,6 +94,8 @@ public class PicassoUtil {
                 .load(file)
                 .placeholder(placeholder)
                 .error(errorholder)
+                .resize(500, 360)
+                .centerCrop()
                 .into(target);
     }
 }

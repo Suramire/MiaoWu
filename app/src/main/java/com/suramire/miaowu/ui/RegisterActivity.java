@@ -98,6 +98,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
         mViews = new ViewGroup[]{mLlPhone, mLlValidation, mLlNamed};
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("请稍候……");
+        mProgressDialog.setCancelable(false);
 
         mEventHandler = new EventHandler() {
             public void afterEvent(int event, int result, Object data) {

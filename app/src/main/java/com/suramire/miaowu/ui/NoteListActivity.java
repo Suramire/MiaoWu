@@ -101,6 +101,7 @@ public class NoteListActivity extends BaseListActivity<NotePresenter> implements
         swipeRefreshLayout.setEnabled(false);
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setMessage("请稍候……");
+        progressDialog.setCancelable(false);
         toolbarImageLeft.setImageResource(R.drawable.ic_arrow_back_black);
         toolbarTextCenter.setText("帖子列表");
         uid = getIntent().getIntExtra("uid", 0);//所查看用户的编号

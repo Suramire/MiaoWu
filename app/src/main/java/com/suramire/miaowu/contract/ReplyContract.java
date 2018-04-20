@@ -15,8 +15,6 @@ public interface ReplyContract {
     interface Model<T> {
         //发表新评论
         Observable<T> postReply(Reply reply);
-        //删除评论
-        Observable<T> deleteReply(Reply reply);
 
         Observable<T> unPassNote(Note note);
 
@@ -39,7 +37,6 @@ public interface ReplyContract {
     interface Presenter extends BasePresenter<View> {
         void postReply();
 
-        void deleteReply();
 
         //驳回帖子
         void unPassNote();

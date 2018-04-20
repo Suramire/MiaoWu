@@ -119,6 +119,8 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
         toolbarTextRight.setText("详细设置");
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setMessage("请稍候……");
+        progressDialog.setCancelable(false);
+
         //获取其他用户编号
         uid = getIntent().getIntExtra("uid", 0);
         mPresenter.getUserInfo();

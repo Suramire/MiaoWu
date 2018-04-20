@@ -24,6 +24,7 @@ public class ToastUtil {
                 toast.setText(msg);
             }
             toast.show();
+            SdcardLogTools.saveCrashInfo2File("msg:" + msg);
         }
     }
     /**
@@ -39,6 +40,7 @@ public class ToastUtil {
             }
             toast.show();
             L.e("Toast msg:" + msg);
+            SdcardLogTools.saveCrashInfo2File("msg:" + msg);
         }
     }
 
@@ -54,6 +56,7 @@ public class ToastUtil {
                 toast.setText(msg);
             }
             toast.show();
+            SdcardLogTools.saveCrashInfo2File("msg:" + msg);
         }
     }
 
@@ -68,6 +71,7 @@ public class ToastUtil {
                 toast.setText(msg);
             }
             toast.show();
+            SdcardLogTools.saveCrashInfo2File("msg:" + msg);
         }
     }
     /**
@@ -82,6 +86,7 @@ public class ToastUtil {
                 toast.setText(msg);
             }
             toast.show();
+            SdcardLogTools.saveCrashInfo2File("msg:" + msg);
         }
     }
     /**
@@ -96,6 +101,7 @@ public class ToastUtil {
                 toast.setText(msg);
             }
             toast.show();
+            SdcardLogTools.saveCrashInfo2File("msg:" + msg);
         }
     }
 }

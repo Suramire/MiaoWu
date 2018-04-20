@@ -62,6 +62,7 @@ public class MultiItemAdapter extends BaseAdapter {
             Glide.with(context)
                     .load(path)
                     .placeholder(R.mipmap.ic_loading)
+
                     .error(R.mipmap.ic_loading_error)
                     .into(imageView);
         }
@@ -117,8 +118,6 @@ public class MultiItemAdapter extends BaseAdapter {
             mVH.mtvContent = convertView.findViewById(R.id.reply_content);
             mVH.mtvReplytime = convertView.findViewById(R.id.reply_date);
             mVH.mimgUserIcon = convertView.findViewById(R.id.reply_user_icon);
-            mVH.mtvCount = convertView.findViewById(R.id.reply_count);
-            mVH.mll_repleydetail = convertView.findViewById(R.id.ll_replydetail);
             mVH.ll_replyuser = convertView.findViewById(R.id.ll_reply_user);
             convertView.setTag(mVH);
         }else{
@@ -133,7 +132,6 @@ public class MultiItemAdapter extends BaseAdapter {
         PicassoUtil.showIcon(icon==null?null:BASUSERPICEURL+icon,mVH.mimgUserIcon);
 
 //        int count = multi.getCount()-1;
-        mVH.mtvCount.setText("0");
         mVH.mtvContent.setText(reply.getReplycontent());
         mVH.mtvReplytime.setText(CommonUtil.timeStampToDateString(reply.getReplytime()));
         //评论第一项添加标头
@@ -283,10 +281,10 @@ public class MultiItemAdapter extends BaseAdapter {
 
 
     class ViewHolder0 {
-        TextView mtvNickname,mtvContent,mtvCount;
+        TextView mtvNickname,mtvContent;
         TextView mtvTitle,mtvReplytime;
         ImageView mimgUserIcon;
-        LinearLayout mll_repleydetail,ll_replyuser;
+        LinearLayout ll_replyuser;
     }
 
     class ViewHolder1 {

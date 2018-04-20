@@ -110,6 +110,7 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
         //查询帖子信息
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("正在读取帖子信息，请稍候……");
+        mProgressDialog.setCancelable(false);
 
         mObjects = new ArrayList<>();
 

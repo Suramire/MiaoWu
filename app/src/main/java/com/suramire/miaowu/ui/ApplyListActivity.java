@@ -76,6 +76,7 @@ public class ApplyListActivity extends BaseListActivity<CatPresenter> implements
     public void initView() {
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setMessage("请稍候……");
+        progressDialog.setCancelable(false);
         toolbarImageLeft.setImageResource(R.drawable.ic_arrow_back_black);
         toolbarTextCenter.setText("申请列表");
     }
@@ -120,6 +121,11 @@ public class ApplyListActivity extends BaseListActivity<CatPresenter> implements
     @Override
     public List<String> getStringPaths() {
         return null;
+    }
+
+    @Override
+    public void onUploadCatPicturesSuccess() {
+
     }
 
     @Override

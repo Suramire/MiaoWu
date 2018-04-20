@@ -18,6 +18,10 @@ public class MyImageLoader implements ImageLoader {
     public void displayImage(Activity activity, String path, ImageView imageView, int width, int height) {
         Picasso.with(activity)
                 .load(Uri.fromFile(new File(path)))
+                .resize(200,200)
+                .centerCrop()
+                .placeholder(R.mipmap.ic_loading_small)
+                .error(R.mipmap.ic_loading_error_small)
                 .into(imageView);
     }
 

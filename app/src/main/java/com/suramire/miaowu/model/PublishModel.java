@@ -7,6 +7,7 @@ import com.suramire.miaowu.http.ApiLoader;
 import com.suramire.miaowu.http.base.ResponseFunc;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
+import com.suramire.miaowu.util.OnResultListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,7 +27,11 @@ import rx.functions.Action1;
 public class PublishModel implements PublishContract.Model {
 
 
+    private OnResultListener listener;
 
+    public void setListener(OnResultListener listener) {
+        this.listener = listener;
+    }
 
 
     @Override
@@ -80,6 +85,10 @@ public class PublishModel implements PublishContract.Model {
                             L.e("上传图片失败:" + throwable.getMessage());
                         }
                     });
+        }else{
+            if(null != listener){
+                listener.onSuccess(null);
+            }
         }
     }
 }

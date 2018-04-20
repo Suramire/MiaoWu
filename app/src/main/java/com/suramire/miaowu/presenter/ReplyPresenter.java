@@ -44,26 +44,6 @@ public class ReplyPresenter implements ReplyContract.Presenter {
 //
     }
 
-    @Override
-    public void deleteReply() {
-        mView.showLoading();
-        Subscription subscribe = mReplyModel.deleteReply(mView.getReplyInfo())
-                .subscribe(new ResponseSubscriber() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        mView.cancelLoading();
-                        ToastUtil.showShortToastCenter(throwable.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(Object o) {
-                        mView.cancelLoading();
-                        mView.onDeleteSuccess();
-                    }
-                });
-        compositeSubscription.add(subscribe);
-
-    }
 
     @Override
     public void unPassNote() {

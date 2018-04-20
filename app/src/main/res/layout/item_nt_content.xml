@@ -3,6 +3,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:elevation="2dp"
             app:cardElevation="2dp">
 
@@ -19,15 +20,20 @@
                 android:id="@+id/nt_publishtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:text="TextView"/>
+                tools:text="TextView"/>
 
             <TextView
                 android:id="@+id/nt_viewcount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:text="TextView"/>
+                android:textAlignment="textEnd"
+                tools:text="TextView"/>
         </LinearLayout>
 
         <TextView

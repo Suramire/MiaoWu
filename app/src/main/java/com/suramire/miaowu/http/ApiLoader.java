@@ -117,9 +117,6 @@ public class ApiLoader {
         return observer(getApiService().getOneCat(GsonUtil.objectToJson(catinfo)));
     }
 
-    public static Observable<BaseResponse<List<Catinfo>>> getAllCat(Catinfo catinfo){
-        return observer(getApiService().getAllCat(GsonUtil.objectToJson(catinfo)));
-    }
 
     public static Observable<BaseResponse<List<Catinfo>>> getAllCat(){
         return observer(getApiService().getAllCat(GsonUtil.objectToJson(null)));
@@ -218,9 +215,6 @@ public class ApiLoader {
         return observer(getApiService().getAllPictureNote(GsonUtil.objectToJson(note)));
     }
 
-    public static Observable<BaseResponse<Catinfo>> getCat(Note note){
-        return observer(getApiService().getCatNote(GsonUtil.objectToJson(note)));
-    }
 
     public static Observable<BaseResponse<Object>> thumbNote(Note note){
         return observer(getApiService().thumbNote(GsonUtil.objectToJson(note)));
@@ -249,9 +243,6 @@ public class ApiLoader {
         return observer(getApiService().addReply(GsonUtil.objectToJson(reply)));
     }
 
-    public static Observable<BaseResponse<Reply>> deleteReply(Reply reply){
-        return observer(getApiService().deleteReply(GsonUtil.objectToJson(reply)));
-    }
 
     public static Observable<BaseResponse<List<M>>> listReplys(Reply reply){
         return observer(getApiService().listReply(GsonUtil.objectToJson(reply)));

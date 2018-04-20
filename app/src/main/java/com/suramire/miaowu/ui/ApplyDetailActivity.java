@@ -95,6 +95,7 @@ public class ApplyDetailActivity extends BaseActivity<ReviewApplyPresenter> impl
     public void initView() {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("请稍候……");
+        mProgressDialog.setCancelable(false);
         toolbar.setTitle("申请详情");
         toolbar.setLeftImage(R.drawable.ic_arrow_back_black);
         flag = 0;

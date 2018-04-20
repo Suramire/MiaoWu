@@ -95,6 +95,7 @@ public class FansListActivity extends BaseListActivity<FansPresenter> implements
         toolbar.setLeftImage(R.drawable.ic_arrow_back_black);
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setMessage("请稍候……");
+        progressDialog.setCancelable(false);
         final int index = getIntent().getIntExtra("index", 0);
         uid = getIntent().getIntExtra("uid", 0);
 

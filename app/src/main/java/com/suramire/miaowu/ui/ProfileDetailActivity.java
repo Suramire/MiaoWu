@@ -143,6 +143,7 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
         toolbarTextRight.setText("保存");
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setMessage("请稍候……");
+        progressDialog.setCancelable(false);
         uid = getIntent().getIntExtra("uid", 0);
         mPresenter.getProfile();
         String[] stringArray = getResources().getStringArray(R.array.contacts);

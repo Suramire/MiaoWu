@@ -1,10 +1,13 @@
 package com.suramire.miaowu.presenter;
 
+import android.support.v7.view.menu.MenuView;
+
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.contract.CatContract;
 import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.CatModel;
+import com.suramire.miaowu.util.OnResultListener;
 import com.suramire.miaowu.util.ToastUtil;
 
 import java.util.List;
@@ -20,6 +23,23 @@ public class CatPresenter implements CatContract.Presenter {
 
     public CatPresenter() {
         catModel = new CatModel();
+        catModel.setListener(new OnResultListener() {
+            @Override
+            public void onError(String errorMessage) {
+                ToastUtil.showLongToast(errorMessage);
+            }
+
+            @Override
+            public void onFailed(String failureMessage) {
+
+            }
+
+            @Override
+            public void onSuccess(Object object) {
+                mView.cancelLoading();
+                mView.onUploadCatPicturesSuccess();
+            }
+        });
     }
 
     @Override
@@ -75,7 +95,6 @@ public class CatPresenter implements CatContract.Presenter {
 
                     @Override
                     public void onNext(Void o) {
-                        mView.cancelLoading();
                         uploadPicture();
                     }
                 });

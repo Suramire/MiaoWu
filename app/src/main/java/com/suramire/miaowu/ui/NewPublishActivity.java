@@ -91,6 +91,7 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
         });
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("发布中，请稍候……");
+        mProgressDialog.setCancelable(false);
 
     }
 
@@ -129,51 +130,6 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == 0x12) {
-            //这里执行发帖操作
-            //发送帖子对象（文本）
-            //将帖子里的图片传至服务器
-//            if (needcat) {
-//                if (isCatInfoOk) {
-//                    if (!isPublish) {
-//                        if(mPhotos!=null && mPhotos.size()>0){
-//                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                            builder.setTitle("提示")
-//                                    .setMessage("是否发布该帖子")
-//                                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(DialogInterface dialog, int which) {
-//                                            mPresenter.publishCat();
-//                                        }
-//                                    })
-//                                    .setNegativeButton("取消", null)
-//                                    .setCancelable(true)
-//                                    .show();
-//                        }else{
-//                            ToastUtil.showShortToastCenter("帖子配图不能为空");
-//                        }
-//
-//                    } else {
-//
-//                        CommonUtil.snackBar(this, "请不要频繁发帖", "确定", new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//
-//                            }
-//                        });
-//                    }
-//                } else {
-//                    CommonUtil.snackBar(this, "请先完善猫咪的信息", "去完善", new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            Intent intent = new Intent(NewPublishActivity.this, CatInfoActivity.class);
-//                            startActivityForResult(intent, ApiConfig.REQUESTCODE);
-//                        }
-//                    });
-//                }
-//
-//            } else {
-//
-//            }
             if (!isPublish) {
                 if(mPhotos!=null && mPhotos.size()>0){
                     String title = mEditTitle.getText().toString().trim();
@@ -226,6 +182,27 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
     }
 
     @Override
+    public void onPostNoteSuccess(int nid) {
+        isPublish = true;//发帖标志位，防止重复发帖 true=已经发布过了
+        mProgressDialog.setMessage("正在上传图片，请稍候……");
+        if(getPicturePaths()!=null
+                && getPicturePaths().size()>0 ){
+            mPresenter.publishPicturePaths(nid);
+        }
+    }
+
+    @Override
+    public void onUploadPicturesSuccess() {
+        CommonUtil.snackBar(mContext,
+                "帖子发布成功，请等待审核","确定",new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                });
+    }
+
+    @Override
     public List<String> getPicturePaths() {
         return mPhotos;
     }
@@ -242,14 +219,7 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
 
     @Override
     public void onSuccess(Object data) {
-        isPublish = true;//发帖标志位，防止重复发帖 true=已经发布过了
-        CommonUtil.snackBar(mContext,
-                "帖子发布成功，请等待审核","确定",new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                    }
-                });
+
     }
 
 

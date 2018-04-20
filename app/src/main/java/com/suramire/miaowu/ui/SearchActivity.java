@@ -1,5 +1,6 @@
 package com.suramire.miaowu.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,15 +48,16 @@ public class SearchActivity extends BaseListActivity<SearchPresenter> implements
     private List<Note> mNotes;
     private String query;
     private int currentPositiion;
+    private ProgressDialog progressDialog;
 
     @Override
     public void showLoading() {
-
+        progressDialog.show();
     }
 
     @Override
     public void cancelLoading() {
-
+        progressDialog.dismiss();
     }
 
     @Override
@@ -76,6 +78,9 @@ public class SearchActivity extends BaseListActivity<SearchPresenter> implements
     @Override
     public void initView() {
         currentPositiion = 0;
+        progressDialog = new ProgressDialog(mContext);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("搜索中，请稍候");
         swipeRefreshLayout.setEnabled(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

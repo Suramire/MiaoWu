@@ -40,6 +40,8 @@ public interface CatContract {
 
         List<String> getStringPaths();
 
+        void onUploadCatPicturesSuccess();
+
         void onGetAllPicturesSuccess(List<String> paths);
 
         void onListAppliedCatSuccess(List<M> catinfo);
