@@ -89,7 +89,7 @@
     <string name="otherCondition">领养条件：</string>
     <string name="contact">联系方式</string>
     <string name="hint_conditions">请填写领养条件</string>
-    <string name="hint_notification_content">这是通知的内容啦啦啦啦啦啦啦啦啦，这是通知的内容啦啦啦啦啦啦啦啦啦，这是通知的内容啦啦啦啦啦啦啦啦啦，这是通知的内容啦啦啦啦啦啦啦啦啦，这是通知的内容啦啦啦啦啦啦啦啦啦，这是通知的内容啦啦啦啦啦啦啦啦啦，</string>
+    <string name="hint_notification_content">这是通知的内容啦啦啦啦啦啦啦啦啦，这是通知的内容啦啦啦啦啦啦啦啦啦。</string>
     <string name="hint_my_note">我的帖子</string>
     <string name="hint_my_reply">我的回复</string>
     <string name="hint_empty">什么都没有</string>

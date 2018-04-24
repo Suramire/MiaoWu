@@ -12,11 +12,8 @@ public class ApiConfig {
     public static final String BASNOTEPICEURL = BASEURL+"upload/note/";
     public static final String BASUSERPICEURL = BASEURL+"upload/user/";
     public static final String BASECATPICEURL = BASEURL+"upload/cat/";
-    public static final int REQUESTCODE = 998;
     public static final int REQUESTCODE_PHOTO = 987;
-    public static final int REQUESTCODE_NOTIFICATION = 233;//通知页请求码
     public static final int RESULTCODE_NOTIFICATION = 232;//通知页请求码
-
     public static final int LOGINREQUESTCODE = 666;
     public static final int RESULTCODE = 888;
     public static final int TEXTMAXLENGTH = 32767;//文本内容的最大长度

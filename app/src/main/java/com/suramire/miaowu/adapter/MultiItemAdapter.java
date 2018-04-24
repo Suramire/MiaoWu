@@ -1,12 +1,10 @@
 package com.suramire.miaowu.adapter;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.App;
-import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.Reply;
@@ -259,7 +253,7 @@ public class MultiItemAdapter extends BaseAdapter {
                                 }
                             },"关闭",null);
                 }else{
-                    ToastUtil.showShortToastCenter("请先登录");
+                    ToastUtil.showLongToastCenter("请先登录");
                 }
 
             }

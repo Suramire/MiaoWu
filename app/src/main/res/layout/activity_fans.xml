@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <include layout="@layout/toolbar"/>
 
@@ -11,8 +11,9 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/tablayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:layout_height="@dimen/tab_height"
+        android:background="@color/white"
+        app:tabIndicatorColor="@color/mainblue">
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"

@@ -7,7 +7,5 @@ package com.suramire.miaowu.util;
 public interface OnResultListener {
     void onError(String errorMessage);
 
-    void onFailed(String failureMessage);
-
     void onSuccess(Object object);
 }

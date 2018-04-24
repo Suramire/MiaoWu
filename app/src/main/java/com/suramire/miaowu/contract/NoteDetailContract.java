@@ -33,7 +33,6 @@ public interface NoteDetailContract {
 
         Observable<T> deleteNote(int noteId);
 
-//        Observable<T> updateNote(Note note);
 
         Observable<T> increaseNoteCount(int noteId);
 
@@ -54,7 +53,6 @@ public interface NoteDetailContract {
 
         void onOnGetPictureSuccess(List<String> paths);
 
-        //成功发送领养申请
 
         void onPassSuccess();
 
@@ -63,11 +61,6 @@ public interface NoteDetailContract {
         void onUnlockSuccess();
 
         void onDeleteSuccess();
-
-        //获取需要修改的帖子信息
-//        Note getNote();
-
-//        void onUpdateSuccess();
 
 
     }

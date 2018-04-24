@@ -1,6 +1,5 @@
 package com.suramire.miaowu.ui;
 
-import android.app.ProgressDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -15,7 +14,6 @@ import com.suramire.miaowu.presenter.PasswordPresenter;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.ToastUtil;
-import com.suramire.miaowu.wiget.MyToolbar;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -23,8 +21,6 @@ import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
 public class PasswordActivity extends BaseActivity<PasswordPresenter> implements PasswordContract.View{
-    @Bind(R.id.toolbar)
-    MyToolbar toolbar;
     @Bind(R.id.edt_phone)
     EditText edtPhone;
     @Bind(R.id.edt_verifycode)
@@ -33,7 +29,6 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
     EditText edtPasswrod1;
     @Bind(R.id.edt_passwrod2)
     EditText edtPasswrod2;
-    private ProgressDialog progressDialog;
     private boolean done;
     private boolean clicked;
     private boolean sendCode;
@@ -55,11 +50,8 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
 
     @Override
     public void initView() {
-        toolbar.setTitle("修改密码");
-        toolbar.setLeftImage(R.drawable.ic_arrow_back_black);
-        progressDialog = new ProgressDialog(mContext);
+        setTitle("修改密码");
         progressDialog.setMessage("请稍候……");
-        progressDialog.setCancelable(false);
         uid = getIntent().getIntExtra("uid", 0);
         //短信验证码相关
         EventHandler mEventHandler = new EventHandler() {
@@ -70,7 +62,7 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            ToastUtil.showShortToastCenter(msg);
+                            ToastUtil.showLongToastCenter(msg);
 //                            {"status":477,"detail":"the sending messages of this phone exceeds the limit"}
                         }
                     });
@@ -81,13 +73,13 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ToastUtil.showLongToast("已发送验证码，请查收短信");
+                                ToastUtil.showLongToastCenter("已发送验证码，请查收短信");
                             }
                         });
                         L.e("成功发送验证码");
                     } else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                         verifyCode = true;
-                        ToastUtil.showShortToastCenter("成功验证验证码");
+                        ToastUtil.showLongToastCenter("成功验证验证码");
                     }
                 }
             }
@@ -114,7 +106,7 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
                     if(sendCode){
                         SMSSDK.submitVerificationCode("86",mPhone,code);
                     }else{
-                        ToastUtil.showLongToast("服务器尚未收到验证码");
+                        ToastUtil.showLongToastCenter("服务器尚未收到验证码");
                     }
                 }
             }
@@ -123,32 +115,14 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
     }
 
     @Override
-    public void showLoading() {
-        progressDialog.show();
-    }
-
-    @Override
-    public void cancelLoading() {
-        progressDialog.dismiss();
-    }
-
-    @Override
     public void onSuccess(Object data) {
         done = true;
-        CommonUtil.snackBar(mContext, "修改成功，重新登录以生效", "确定", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        ToastUtil.showLongToastCenter("已成功修改密码，请重新登录系统");
     }
 
-    @OnClick({R.id.toolbar_image_left, R.id.btn_getverifycode, R.id.btn_modifypassword})
+    @OnClick({R.id.btn_getverifycode, R.id.btn_modifypassword})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.toolbar_image_left:
-                finish();
-                break;
             case R.id.btn_getverifycode:
 
                 mPhone = edtPhone.getText().toString().trim();
@@ -158,7 +132,7 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
                             SMSSDK.getVerificationCode("86", mPhone);
                             clicked = true;
                         }else{
-                            ToastUtil.showLongToast("已发送了验证码，请勿频繁点击");
+                            ToastUtil.showLongToastCenter("已发送了验证码，请勿频繁点击");
                         }
                     }else{
                         //先判断手机号是否已注册
@@ -166,7 +140,7 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
                     }
 
                 }else{
-                    ToastUtil.showLongToast("请输入正确的手机号码格式");
+                    ToastUtil.showLongToastCenter("请输入正确的手机号码格式");
                 }
                 break;
             case R.id.btn_modifypassword:
@@ -179,27 +153,22 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
                             String password1 = edtPasswrod1.getText().toString().trim();
                             String password2 = edtPasswrod1.getText().toString().trim();
                             if(TextUtils.isEmpty(password1)||TextUtils.isEmpty(password2)){
-                                ToastUtil.showLongToast("新密码不能为空");
+                                ToastUtil.showLongToastCenter("新密码不能为空");
                             }else if(password1.equals(password2)){
                                 password = password2;
                                 mPresenter.modify();
                             }else{
-                                ToastUtil.showLongToast("两次输入的密码不一致");
+                                ToastUtil.showLongToastCenter("两次输入的密码不一致");
                             }
                         //未验证手机号
                         }else{
-                            ToastUtil.showShortToastCenter("验证码不正确");
+                            ToastUtil.showLongToastCenter("验证码不正确");
                         }
                     }else{
-                        ToastUtil.showLongToast("请先进行手机号码验证");
+                        ToastUtil.showLongToastCenter("请先进行手机号码验证");
                     }
                 }else{
-                    CommonUtil.snackBar(mContext, "修改成功，重新登录以生效", "确定", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            finish();
-                        }
-                    });
+                    ToastUtil.showLongToastCenter("已成功修改密码，请重新登录系统");
                 }
                 break;
         }
@@ -227,6 +196,6 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
     @Override
     public void onCheckPhoneFailed() {
         isPhoneOk = false;
-        ToastUtil.showLongToast("该手机号尚未注册，请重新输入");
+        ToastUtil.showLongToastCenter("该手机号尚未注册，请重新输入");
     }
 }

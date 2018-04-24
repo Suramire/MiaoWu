@@ -1,12 +1,10 @@
 package com.suramire.miaowu.ui;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
@@ -15,15 +13,11 @@ import com.suramire.miaowu.base.BaseListActivity;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.FansContract;
 import com.suramire.miaowu.presenter.FansPresenter;
-import com.suramire.miaowu.util.ApiConfig;
-import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
-import com.suramire.miaowu.wiget.MyToolbar;
 
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 
 import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
 
@@ -32,29 +26,11 @@ import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
  */
 
 public class FansListActivity extends BaseListActivity<FansPresenter> implements FansContract.View {
-    @Bind(R.id.toolbar_image_left)
-    ImageView toolbarImageLeft;
-    @Bind(R.id.toolbar_text_center)
-    TextView toolbarTextCenter;
-    @Bind(R.id.toolbar_text_right)
-    TextView toolbarTextRight;
-    @Bind(R.id.toolbar)
-    MyToolbar toolbar;
     @Bind(R.id.tablayout)
     TabLayout tablayout;
     private int uid;
     private int currentPosition;
-    private ProgressDialog progressDialog;
 
-    @Override
-    public void showLoading() {
-        progressDialog.show();
-    }
-
-    @Override
-    public void cancelLoading() {
-        progressDialog.dismiss();
-    }
 
     @Override
     public void onSuccess(Object data) {
@@ -91,11 +67,8 @@ public class FansListActivity extends BaseListActivity<FansPresenter> implements
 
     @Override
     public void initView() {
-        toolbar.setTitle("好友列表");
-        toolbar.setLeftImage(R.drawable.ic_arrow_back_black);
-        progressDialog = new ProgressDialog(mContext);
+        setTitle("好友列表");
         progressDialog.setMessage("请稍候……");
-        progressDialog.setCancelable(false);
         final int index = getIntent().getIntExtra("index", 0);
         uid = getIntent().getIntExtra("uid", 0);
 
@@ -124,11 +97,6 @@ public class FansListActivity extends BaseListActivity<FansPresenter> implements
         if(index==0){
             mPresenter.getFollow();
         }
-//        switch (index){
-//            //若通过关注进入则强制刷新列表
-//            case 0:showEmpty("暂无关注用户");mPresenter.getFollow();break;
-//            case 1:showEmpty("暂无粉丝用户");mPresenter.getFollower();break;
-//        }
 
     }
 
@@ -155,11 +123,6 @@ public class FansListActivity extends BaseListActivity<FansPresenter> implements
             });
         }
 
-    }
-
-    @OnClick(R.id.toolbar_image_left)
-    public void onViewClicked() {
-        finish();
     }
 
 

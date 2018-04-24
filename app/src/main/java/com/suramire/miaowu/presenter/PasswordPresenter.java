@@ -28,13 +28,13 @@ public class PasswordPresenter implements PasswordContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showLongToast("修改密码出错："+e.getMessage());
+                        ToastUtil.showLongToastCenter("修改密码出错："+e.getMessage());
                     }
 
                     @Override
                     public void onNext(Void aVoid) {
                         mView.cancelLoading();
-                        mView.onSuccess(aVoid);
+                        mView.onSuccess(null);
                     }
                 });
     }

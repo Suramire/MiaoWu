@@ -1,9 +1,8 @@
 package com.suramire.miaowu.ui;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,17 +20,13 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
-import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.presenter.PublishPresenter;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.FileUtil;
-import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
 import com.suramire.miaowu.util.ToastUtil;
-import com.suramire.miaowu.wiget.MyToolbar;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,10 +41,10 @@ import butterknife.OnClick;
  */
 
 public class NewPublishActivity extends BaseActivity<PublishPresenter> implements PublishContract.View {
-    @Bind(R.id.toolbar)
-    MyToolbar mToolbar;
     @Bind(R.id.gridview_picture)
     GridView mGridviewPicture;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     @Bind(R.id.edit_title)
     EditText mEditTitle;
     @Bind(R.id.edit_content)
@@ -58,12 +53,8 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
     HorizontalScrollView mHscroll;
     @Bind(R.id.toolbar_text_center)
     TextView toolbarTextCenter;
-    private ProgressDialog mProgressDialog;
     private boolean isPublish;
     private ArrayList<String> mPhotos;
-    private boolean isCatInfoOk;
-    private Catinfo catInfo;
-//    private boolean needcat;
 
 
     @Override
@@ -78,20 +69,10 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
 
     @Override
     public void initView() {
-        //根据帖子类型判断是否需要填写猫咪信息
-        setSupportActionBar(mToolbar);
-//        needcat = getIntent().getBooleanExtra("needcat", false);
-        mToolbar.setTitle("发表帖子");
-        mToolbar.setLeftImage(R.drawable.ic_close_black_24dp);
-        mToolbar.setLeftOnclickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("发布中，请稍候……");
-        mProgressDialog.setCancelable(false);
+        setSupportActionBar(toolbar);
+        setTitle("发表帖子");
+        setLeftImage(R.drawable.ic_close_black_24dp);
+        progressDialog.setMessage("发布中，请稍候……");
 
     }
 
@@ -104,6 +85,7 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //记录选取的图片路径并显示预览
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS && requestCode == ApiConfig.REQUESTCODE_PHOTO) {
             if (data != null) {
                 mPhotos = new ArrayList<>();
@@ -120,11 +102,6 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
                 }
             }
         }
-        if (requestCode == ApiConfig.REQUESTCODE && resultCode == Activity.RESULT_OK) {
-            isCatInfoOk = true;
-            //为帖子设置猫咪信息
-            catInfo = (Catinfo) data.getSerializableExtra("catinfo");
-        }
     }
 
     @Override
@@ -134,11 +111,10 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
                 if(mPhotos!=null && mPhotos.size()>0){
                     String title = mEditTitle.getText().toString().trim();
                     String content = mEditContent.getText().toString().trim();
-                    L.e("content.length():" + content);
                     if(TextUtils.isEmpty(title)|| TextUtils.isEmpty(content)){
-                        ToastUtil.showShortToastCenter("请输入帖子标题和内容");
+                        ToastUtil.showLongToastCenter("请输入帖子标题和内容");
                     }else if(content.length()>32767){
-                        ToastUtil.showShortToastCenter("输入的内容长度超出限制");
+                        ToastUtil.showLongToastCenter("输入的内容长度超出限制");
                     }else{
                         CommonUtil.showDialog(mContext, "提示", "是否发布该帖子？",
                                 "确认", new DialogInterface.OnClickListener() {
@@ -149,11 +125,10 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
                                 },"取消",null);
                     }
                 }else{
-                    ToastUtil.showShortToastCenter("帖子配图不能为空");
+                    ToastUtil.showLongToastCenter("帖子配图不能为空");
                 }
 
             } else {
-
                 CommonUtil.snackBar(this, "请不要频繁发帖", "确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -162,7 +137,7 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
                 });
             }
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
 
@@ -176,15 +151,11 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
     }
 
 
-    @Override
-    public Catinfo getCatinfo() {
-        return catInfo;
-    }
 
     @Override
     public void onPostNoteSuccess(int nid) {
         isPublish = true;//发帖标志位，防止重复发帖 true=已经发布过了
-        mProgressDialog.setMessage("正在上传图片，请稍候……");
+        progressDialog.setMessage("正在上传图片，请稍候……");
         if(getPicturePaths()!=null
                 && getPicturePaths().size()>0 ){
             mPresenter.publishPicturePaths(nid);
@@ -207,15 +178,6 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
         return mPhotos;
     }
 
-    @Override
-    public void showLoading() {
-        mProgressDialog.show();
-    }
-
-    @Override
-    public void cancelLoading() {
-        mProgressDialog.dismiss();
-    }
 
     @Override
     public void onSuccess(Object data) {
@@ -223,12 +185,9 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
     }
 
 
-    @OnClick({R.id.toolbar_image_left, R.id.toolbar_text_right,R.id.imageView17, R.id.imageView19})
+    @OnClick({R.id.toolbar_text_right,R.id.imageView17, R.id.imageView19})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.toolbar_image_left:
-                finish();
-                break;
             case R.id.toolbar_text_right:
 
                 break;
@@ -237,7 +196,7 @@ public class NewPublishActivity extends BaseActivity<PublishPresenter> implement
 //                    Intent intent = new Intent(NewPublishActivity.this, CatInfoActivity.class);
 //                    startActivityForResult(intent, ApiConfig.REQUESTCODE);
 //                }else{
-//                    ToastUtil.showShortToastCenter("无需填写猫咪信息");
+//                    ToastUtil.showLongToastCenter("无需填写猫咪信息");
 //                }
 
             }

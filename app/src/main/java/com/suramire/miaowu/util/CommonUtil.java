@@ -1,18 +1,13 @@
 package com.suramire.miaowu.util;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.provider.MediaStore.Images;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -21,14 +16,11 @@ import android.widget.EditText;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.App;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
-
-import static com.makeramen.roundedimageview.RoundedImageView.TAG;
 
 /**
  * Created by Suramire on 2017/10/16.
@@ -36,7 +28,6 @@ import static com.makeramen.roundedimageview.RoundedImageView.TAG;
  */
 
 public class CommonUtil {
-    private static Context mContext = App.getInstance();
 
 
     public static void snackBar(Context context,String message){
@@ -77,9 +68,10 @@ public class CommonUtil {
      * @return Bitmap
      */
     public static Bitmap getBitmap(String fileName){
+
         Bitmap bitmap = null;
         try {
-            bitmap = BitmapFactory.decodeStream(mContext.getAssets().open(fileName));
+            bitmap = BitmapFactory.decodeStream(App.getInstance().getAssets().open(fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,11 +88,11 @@ public class CommonUtil {
             ViewGroup tView = views[i];
             if(tView.getVisibility()!=View.GONE){
                 tView.setVisibility(View.GONE);
-                tView.setAnimation(AnimationUtils.makeOutAnimation(mContext, true));
+                tView.setAnimation(AnimationUtils.makeOutAnimation(App.getInstance(), true));
             }
             if(view.getVisibility()!=View.VISIBLE){
                 view.setVisibility(View.VISIBLE);
-                view.setAnimation(AnimationUtils.makeInAnimation(mContext, true));
+                view.setAnimation(AnimationUtils.makeInAnimation(App.getInstance(), true));
             }
         }
     }
@@ -131,55 +123,7 @@ public class CommonUtil {
         return Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[^1^4,\\D]))\\d{8}").matcher(mobiles).matches();
     }
 
-    /**
-     * 通过Uri获取对应文件
-     * @param uri
-     * @return
-     */
-    public static File getFileByUri(Uri uri) {
-        String path = null;
-        if ("file".equals(uri.getScheme())) {
-            path = uri.getEncodedPath();
-            if (path != null) {
-                path = Uri.decode(path);
-                ContentResolver cr = mContext.getContentResolver();
-                StringBuffer buff = new StringBuffer();
-                buff.append("(").append(Images.ImageColumns.DATA).append("=").append("'" + path + "'").append(")");
-                Cursor cur = cr.query(Images.Media.EXTERNAL_CONTENT_URI, new String[] { Images.ImageColumns._ID, Images.ImageColumns.DATA }, buff.toString(), null, null);
-                int index = 0;
-                int dataIdx = 0;
-                for (cur.moveToFirst(); !cur.isAfterLast(); cur.moveToNext()) {
-                    index = cur.getColumnIndex(Images.ImageColumns._ID);
-                    index = cur.getInt(index);
-                    dataIdx = cur.getColumnIndex(Images.ImageColumns.DATA);
-                    path = cur.getString(dataIdx);
-                }
-                cur.close();
-                if (index == 0) {
-                } else {
-                    Uri u = Uri.parse("content://media/external/images/media/" + index);
-                    System.out.println("temp uri is :" + u);
-                }
-            }
-            if (path != null) {
-                return new File(path);
-            }
-        } else if ("content".equals(uri.getScheme())) {
-            // 4.2.2以后
-            String[] proj = { Images.Media.DATA };
-            Cursor cursor = mContext.getContentResolver().query(uri, proj, null, null, null);
-            if (cursor.moveToFirst()) {
-                int columnIndex = cursor.getColumnIndexOrThrow(Images.Media.DATA);
-                path = cursor.getString(columnIndex);
-            }
-            cursor.close();
 
-            return new File(path);
-        } else {
-            Log.i(TAG, "Uri Scheme:" + uri.getScheme());
-        }
-        return null;
-    }
 
     /**
      * 得到当前时间戳
@@ -252,12 +196,7 @@ public class CommonUtil {
     public static boolean isAdmin(){return ((int)SPUtils.get("role",0))!=0;}
 
     public static void loginOut(){
-        SPUtils.remove("uid");
-        SPUtils.remove("hascontact");
-        SPUtils.remove("autologin");
-        SPUtils.remove("nickname");
-        SPUtils.remove("password");
-        SPUtils.remove("role");
+        SPUtils.clear();
 
     }
 

@@ -30,7 +30,7 @@ public class MainPresenter implements MainContract.Presenter {
                 .subscribe(new ResponseSubscriber<Integer>() {
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtil.showShortToastCenter("获取通知数失败:"+e.getMessage());
+                        ToastUtil.showLongToastCenter("获取通知数失败:"+e.getMessage());
                     }
 
                     @Override

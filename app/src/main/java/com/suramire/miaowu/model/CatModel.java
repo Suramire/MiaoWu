@@ -64,7 +64,6 @@ public class CatModel implements CatContract.Model {
 
     public void uploadPicture(final List<String> paths, final int cid){
         if(paths==null || paths.size()==0){
-            return;
         }else{
             upload(paths, cid, 0);
         }
@@ -91,7 +90,6 @@ public class CatModel implements CatContract.Model {
     }
 
 
-    // TODO: 2018/4/20 涉及图片上传的地方均需要进行图片压缩处理
     /**
      * 上传图片
      * @param paths

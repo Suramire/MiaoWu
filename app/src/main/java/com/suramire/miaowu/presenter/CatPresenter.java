@@ -1,7 +1,5 @@
 package com.suramire.miaowu.presenter;
 
-import android.support.v7.view.menu.MenuView;
-
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.contract.CatContract;
@@ -26,13 +24,9 @@ public class CatPresenter implements CatContract.Presenter {
         catModel.setListener(new OnResultListener() {
             @Override
             public void onError(String errorMessage) {
-                ToastUtil.showLongToast(errorMessage);
+                ToastUtil.showLongToastCenter(errorMessage);
             }
 
-            @Override
-            public void onFailed(String failureMessage) {
-
-            }
 
             @Override
             public void onSuccess(Object object) {
@@ -50,7 +44,7 @@ public class CatPresenter implements CatContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("添加猫咪信息时出错:" + e.getMessage());
+                        ToastUtil.showLongToastCenter("添加猫咪信息时出错:" + e.getMessage());
                     }
 
                     @Override
@@ -70,7 +64,7 @@ public class CatPresenter implements CatContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取猫咪信息时出错：" + e.getMessage());
+                        ToastUtil.showLongToastCenter("获取猫咪信息时出错：" + e.getMessage());
                     }
 
                     @Override
@@ -90,7 +84,7 @@ public class CatPresenter implements CatContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("保存配图文件名时出错："+e.getMessage());
+                        ToastUtil.showLongToastCenter("保存配图文件名时出错："+e.getMessage());
                     }
 
                     @Override
@@ -116,7 +110,7 @@ public class CatPresenter implements CatContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取猫咪配图时出错："+e.getMessage());
+                        ToastUtil.showLongToastCenter("获取猫咪配图时出错："+e.getMessage());
                     }
 
                     @Override
@@ -135,7 +129,7 @@ public class CatPresenter implements CatContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("申请失败：" + e.getMessage());
+                        ToastUtil.showLongToastCenter("申请失败：" + e.getMessage());
                     }
 
                     @Override
@@ -157,7 +151,7 @@ public class CatPresenter implements CatContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取待审核列表出错："+e.getMessage());
+                        ToastUtil.showLongToastCenter("获取待审核列表出错："+e.getMessage());
                     }
 
                     @Override

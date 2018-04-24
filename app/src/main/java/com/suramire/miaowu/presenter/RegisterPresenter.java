@@ -34,7 +34,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                     @Override
                     public void onError(Throwable throwable) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter(throwable.getMessage());
+                        ToastUtil.showLongToastCenter(throwable.getMessage());
                     }
 
                     @Override
@@ -59,7 +59,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                     @Override
                     public void onError(Throwable throwable) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter(throwable.getMessage());
+                        ToastUtil.showLongToastCenter(throwable.getMessage());
                     }
 
                     @Override

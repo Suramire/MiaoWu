@@ -67,8 +67,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
+                    android:textColor="@color/black"
                     android:background="@drawable/notification_bg"
-                    android:text="@string/hint_notification_content"/>
+                    tools:text="@string/hint_notification_content"/>
             </LinearLayout>
 
         </LinearLayout>

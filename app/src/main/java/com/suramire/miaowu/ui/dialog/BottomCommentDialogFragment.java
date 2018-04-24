@@ -15,7 +15,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.suramire.miaowu.R;
@@ -24,7 +23,6 @@ import com.suramire.miaowu.bean.Reply;
 import com.suramire.miaowu.contract.ReplyContract;
 import com.suramire.miaowu.presenter.ReplyPresenter;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.util.ToastUtil;
 
 import butterknife.Bind;
@@ -43,13 +41,11 @@ public class BottomCommentDialogFragment extends DialogFragment implements Reply
     Button button2;
     @Bind(R.id.ll_popup)
     LinearLayout llPopup;
-    private View view;
     private ProgressDialog mProgressDialog;
     private int nid, replyuid;
     private OnReplyListener mReplyListener;
     private int floorId;
     private int unpass;
-    private Activity mContext;
     private ReplyPresenter replyPresenter;
 
     public void setReplyListener(OnReplyListener replyListener) {
@@ -60,7 +56,6 @@ public class BottomCommentDialogFragment extends DialogFragment implements Reply
     @OnClick(R.id.button2)
     public void onViewClicked() {
         if(unpass==1){
-            // TODO: 2018/1/31 这里生成驳回帖子的通知消息
             replyPresenter.unPassNote();
         }else{
             replyPresenter.postReply();
@@ -77,8 +72,7 @@ public class BottomCommentDialogFragment extends DialogFragment implements Reply
     }
 
     public static BottomCommentDialogFragment newInstance() {
-        BottomCommentDialogFragment fragment = new BottomCommentDialogFragment();
-        return fragment;
+        return new BottomCommentDialogFragment();
     }
 
     @Override
@@ -96,8 +90,7 @@ public class BottomCommentDialogFragment extends DialogFragment implements Reply
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        mContext = getActivity();
-
+        Activity mContext = getActivity();
         View view = inflater.inflate(R.layout.popup_comment, null);
         ButterKnife.bind(this, view);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -136,18 +129,14 @@ public class BottomCommentDialogFragment extends DialogFragment implements Reply
 
     @Override
     public void onSuccess(Object object) {
-//        mReplyListener.onSucess();
     }
 
 
-    @Override
-    public void onDeleteSuccess() {
-        ToastUtil.showShortToastCenter("删除评论成功");
-    }
+
 
     @Override
     public void onAddSuccess() {
-        ToastUtil.showShortToastCenter("发布评论成功");
+        ToastUtil.showLongToastCenter("发布评论成功");
         mReplyListener.onSucess();
     }
 
@@ -156,7 +145,7 @@ public class BottomCommentDialogFragment extends DialogFragment implements Reply
         Reply reply = new Reply();
         reply.setNid(nid);
         reply.setReplytime(CommonUtil.getTimeStamp());
-        reply.setUid((int) SPUtils.get("uid", 0));
+        reply.setUid(CommonUtil.getCurrentUid());
         reply.setReplyuid(replyuid);
         reply.setFloorid(floorId);
         reply.setReplycontent(edittextComment.getText().toString().trim());

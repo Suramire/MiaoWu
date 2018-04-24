@@ -30,7 +30,7 @@ public class ReplyPresenter implements ReplyContract.Presenter {
                     @Override
                     public void onError(Throwable throwable) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter(throwable.getMessage());
+                        ToastUtil.showLongToastCenter(throwable.getMessage());
                     }
 
                     @Override
@@ -53,7 +53,7 @@ public class ReplyPresenter implements ReplyContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("发送驳回过程出错:"+e.getMessage());
+                        ToastUtil.showLongToastCenter("发送驳回过程出错:"+e.getMessage());
                     }
 
                     @Override

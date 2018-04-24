@@ -2,7 +2,6 @@ package com.suramire.miaowu.ui;
 
 
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.adapter.MultiItemAdapter;
 import com.suramire.miaowu.base.BaseActivity;
-import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.User;
@@ -41,9 +39,6 @@ import butterknife.OnClick;
  */
 
 public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implements NoteDetailContract.View {
-
-    @Bind(R.id.toolbar)
-    MyToolbar mToolbar;
     @Bind(R.id.list_notedetail)
     ListView mListNotedetail;
     @Bind(R.id.bar_num)
@@ -62,21 +57,14 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
     LinearLayout llBottomadmin;
     @Bind(R.id.toolbar_text_right)
     TextView toolbarTextRight;
-    private ProgressDialog mProgressDialog;
     private int noteId;
     private MultiItemAdapter mAdapter;
     private List<Object> mObjects;
     private boolean thumbed;
     private Integer mThumbs;
     private int mReplyCount;
-    private boolean isAtComment;//是否在评论页标志位
-    private int index;//上次浏览的index
-    private int top;//距离顶部距离
     private int userId;
     private Integer verified;
-    private Note mNote;
-    private User mUser;
-    private Catinfo mCatInfo;
     private boolean clicked;
 
 
@@ -92,25 +80,14 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
 
     @Override
     public void initView() {
-        mToolbar.setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
-        mToolbar.setLeftImage(R.drawable.ic_arrow_back_blue);
-        mToolbar.setRightText("帖子选项(长按)");
+        setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
+        setRightText("帖子选项(长按)");
         registerForContextMenu(toolbarTextRight);
-        mToolbar.setLeftOnclickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(ApiConfig.RESULTCODE_NOTIFICATION);
-                finish();
-            }
-        });
         noteId = getIntent().getIntExtra("noteId", 0);
         userId = getIntent().getIntExtra("userId", 0);
 
-
         //查询帖子信息
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("正在读取帖子信息，请稍候……");
-        mProgressDialog.setCancelable(false);
+        progressDialog.setMessage("正在读取帖子信息，请稍候……");
 
         mObjects = new ArrayList<>();
 
@@ -118,18 +95,9 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
         mListNotedetail.setAdapter(mAdapter);
         mPresenter.getPictue();
 
+
     }
 
-
-    @Override
-    public void showLoading() {
-        mProgressDialog.show();
-    }
-
-    @Override
-    public void cancelLoading() {
-        mProgressDialog.cancel();
-    }
 
     @Override
     public void onSuccess(Object object) {
@@ -137,10 +105,6 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
         for (M multi : replies
                 ) {
             mObjects.add(multi);
-            //统计楼层数
-//            if (multi.getReply().getReplyuid() == 0) {
-//                mReplyCount++;
-//            }
             mReplyCount = replies.size();
         }
 
@@ -193,7 +157,7 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
     @Override
     public void onThumbSuccess() {
         thumbed = true;
-        ToastUtil.showShortToastCenter("点赞成功！");
+        ToastUtil.showLongToastCenter("点赞成功！");
         thumb(mThumbs + 1);
     }
 
@@ -235,24 +199,24 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
 
     @Override
     public void onPassSuccess() {
-        ToastUtil.showShortToastCenter("审核通过！");
+        ToastUtil.showLongToastCenter("审核通过！");
     }
 
     @Override
     public void onLockSuccess() {
-        ToastUtil.showShortToastCenter("锁定成功");
+        ToastUtil.showLongToastCenter("锁定成功");
         setResult(ApiConfig.RESULTCODE_NOTIFICATION);
         finish();
     }
 
     @Override
     public void onUnlockSuccess() {
-        ToastUtil.showShortToastCenter("解锁成功");
+        ToastUtil.showLongToastCenter("解锁成功");
     }
 
     @Override
     public void onDeleteSuccess() {
-        ToastUtil.showShortToastCenter("删除成功");
+        ToastUtil.showLongToastCenter("删除成功");
         setResult(ApiConfig.RESULTCODE_NOTIFICATION);
         finish();
     }
@@ -264,17 +228,6 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_comment: {
-                if (!isAtComment) {
-                    isAtComment = true;
-                    //记录上次浏览位置
-                    index = mListNotedetail.getFirstVisiblePosition();
-                    View v = mListNotedetail.getChildAt(0);
-                    top = (v == null) ? 0 : v.getTop();
-                    mListNotedetail.smoothScrollToPosition(2);
-                } else {
-                    isAtComment = false;
-                    mListNotedetail.setSelectionFromTop(index, top);
-                }
 
             }
             break;
@@ -288,7 +241,7 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
 
                 break;
             case R.id.btn_share:
-//                ToastUtil.showShortToastCenter("响应分享操作");
+//                ToastUtil.showLongToastCenter("响应分享操作");
                 break;
                 //底部评论框
             case R.id.editText3: {
@@ -350,7 +303,7 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
                         @Override
                         public void onSucess() {
                             clicked = true;
-                            ToastUtil.showShortToastCenter("驳回操作成功!");
+                            ToastUtil.showLongToastCenter("驳回操作成功!");
                             bottomCommentDialogFragment.dismiss();
                         }
 

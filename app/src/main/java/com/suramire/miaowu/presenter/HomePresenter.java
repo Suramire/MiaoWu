@@ -35,7 +35,7 @@ public class HomePresenter implements HomeContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取帖子数据失败:"+e.getMessage());
+                        ToastUtil.showLongToastCenter("获取帖子数据失败:"+e.getMessage());
                     }
 
                     @Override
@@ -57,7 +57,7 @@ public class HomePresenter implements HomeContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取猫咪列表时出错："+e.getMessage());
+                        ToastUtil.showLongToastCenter("获取猫咪列表时出错："+e.getMessage());
                     }
 
                     @Override

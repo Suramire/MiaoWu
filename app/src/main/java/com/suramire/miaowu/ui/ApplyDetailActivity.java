@@ -1,6 +1,5 @@
 package com.suramire.miaowu.ui;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -14,12 +13,8 @@ import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.ReviewApplyContract;
 import com.suramire.miaowu.presenter.ReviewApplyPresenter;
-import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
-import com.suramire.miaowu.util.ToastUtil;
-import com.suramire.miaowu.wiget.MyToolbar;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -32,8 +27,6 @@ import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
 
 public class ApplyDetailActivity extends BaseActivity<ReviewApplyPresenter> implements ReviewApplyContract.View {
 
-    @Bind(R.id.toolbar)
-    MyToolbar toolbar;
     @Bind(R.id.img_nt_profile)
     RoundedImageView imgNtProfile;
     @Bind(R.id.tv_nt_nickname)
@@ -54,21 +47,11 @@ public class ApplyDetailActivity extends BaseActivity<ReviewApplyPresenter> impl
     TextView tvType;
     @Bind(R.id.tv_conditions)
     TextView tvConditions;
-    private ProgressDialog mProgressDialog;
     private int cid;
     private Integer uid;
     private int flag;
     private boolean clicked;
 
-    @Override
-    public void showLoading() {
-        mProgressDialog.show();
-    }
-
-    @Override
-    public void cancelLoading() {
-        mProgressDialog.dismiss();
-    }
 
     @Override
     public void onSuccess(Object data) {
@@ -93,11 +76,8 @@ public class ApplyDetailActivity extends BaseActivity<ReviewApplyPresenter> impl
 
     @Override
     public void initView() {
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("请稍候……");
-        mProgressDialog.setCancelable(false);
-        toolbar.setTitle("申请详情");
-        toolbar.setLeftImage(R.drawable.ic_arrow_back_black);
+        progressDialog.setMessage("请稍候……");
+        setTitle("申请详情");
         flag = 0;
         cid = getIntent().getIntExtra("aid", 0);
         if(cid!=0){
@@ -107,27 +87,33 @@ public class ApplyDetailActivity extends BaseActivity<ReviewApplyPresenter> impl
 
 
 
-    @OnClick({R.id.btn_agree, R.id.btn_disagree,R.id.toolbar_image_left,R.id.ll_profile})
+    @OnClick({R.id.btn_agree, R.id.btn_disagree,R.id.ll_profile})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.toolbar_image_left:
-                setResult(ApiConfig.RESULTCODE_NOTIFICATION);
-                finish();
-                break;
             case R.id.btn_agree:
                 flag = 1;
                 if(!clicked){
-                    clicked = true;
-                    mPresenter.reviewApply();
+                    CommonUtil.showDialog(mContext,"确认操作？", "确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            clicked = true;
+                            mPresenter.reviewApply();
+                        }
+                    });
                 }
                 break;
             case R.id.btn_disagree:
                 flag = 0;
                 if(!clicked){
-                    mPresenter.reviewApply();
-                    clicked = true;
+                    CommonUtil.showDialog(mContext,"确认操作？", "确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mPresenter.reviewApply();
+                            clicked = true;
+                        }
+                    });
+
                 }
-                // TODO: 2018/4/13 添加确认对话框
                 break;
             case R.id.ll_profile:
                 Bundle bundle = new Bundle();

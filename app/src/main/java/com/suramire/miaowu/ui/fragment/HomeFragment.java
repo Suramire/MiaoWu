@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -24,7 +23,6 @@ import com.suramire.miaowu.ui.NoteDetailActivity;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.GsonUtil;
-import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
 
 import java.text.SimpleDateFormat;
@@ -43,10 +41,6 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
 
     @Bind(R.id.tablayout)
     TabLayout tablayout;
-    @Bind(R.id.listview)
-    RecyclerView listview;
-    @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
     private int position;
 
     @Override
@@ -77,7 +71,7 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
     @Override
     public void initView() {
         position = 0;
-        showEmpty("没有帖子数据，下拉刷新");
+        showEmpty("没有数据，请下拉刷新");
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -144,11 +138,10 @@ public class HomeFragment extends BaseListFragment<HomePresenter> implements Hom
                         }
                     });
                     PicassoUtil.show(ApiConfig.BASECATPICEURL + item.getId() + "_0.png", (ImageView) helper.getView(R.id.catimg));
-                    L.e(ApiConfig.BASECATPICEURL + item.getId() + "_0.png");
                 }
             });
         } else {
-            showEmpty("暂时没有猫咪信息");
+            showEmpty("暂无猫咪信息");
         }
     }
 

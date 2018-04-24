@@ -37,15 +37,10 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * Layout manager that allows the user to flip left and right
- * through pages of data.  You supply an implementation of a
- * {@link android.support.v4.view.PagerAdapter} to generate the pages that the view shows.
- *
- * <p>Note this class is currently under early design and
- * development.  The API will likely change in later updates of
- * the compatibility library, requiring changes to the source code
- * of apps when they are compiled against the newer version.</p>
+ * 懒加载模式的Viewpager,
+ * 同一时间只有一个fragment被激活
  */
+
 public class LazyViewPager extends ViewGroup {
     private static final String TAG = "LazyViewPager";
     private static final boolean DEBUG = false;
@@ -101,8 +96,6 @@ public class LazyViewPager extends ViewGroup {
     private int mOffscreenPageLimit = DEFAULT_OFFSCREEN_PAGES;
 
     private boolean mIsBeingDragged;
-    private boolean mIsUnableToDrag;
-    private int mTouchSlop;
     private float mInitialMotionX;
     /**
      * Position of the last motion event.
@@ -233,7 +226,7 @@ public class LazyViewPager extends ViewGroup {
         final Context context = getContext();
         mScroller = new Scroller(context, sInterpolator);
         final ViewConfiguration configuration = ViewConfiguration.get(context);
-        mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
+        int mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
         mMinimumVelocity = configuration.getScaledMinimumFlingVelocity();
         mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
         mLeftEdge = new EdgeEffectCompat(context);
@@ -1191,7 +1184,7 @@ public class LazyViewPager extends ViewGroup {
 
     private void endDrag() {
         mIsBeingDragged = false;
-        mIsUnableToDrag = false;
+        boolean mIsUnableToDrag = false;
 
         if (mVelocityTracker != null) {
             mVelocityTracker.recycle();

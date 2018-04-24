@@ -1,11 +1,9 @@
 package com.suramire.miaowu.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.net.Uri;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.lzy.imagepicker.loader.ImageLoader;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;

@@ -1,6 +1,5 @@
 package com.suramire.miaowu.ui;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,23 +12,19 @@ import android.widget.ImageView;
 import com.classic.adapter.BaseAdapterHelper;
 import com.classic.adapter.CommonRecyclerAdapter;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.base.BaseListActivity;
-import com.suramire.miaowu.base.BaseListFragment;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.SearchContract;
 import com.suramire.miaowu.presenter.SearchPresenter;
-import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.PicassoUtil;
 
 import java.util.List;
 
 import butterknife.Bind;
 
-import static com.suramire.miaowu.util.ApiConfig.*;
+import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
 
 /**
  * Created by Suramire on 2018/1/26.
@@ -38,27 +33,12 @@ import static com.suramire.miaowu.util.ApiConfig.*;
 public class SearchActivity extends BaseListActivity<SearchPresenter> implements SearchContract.View {
     @Bind(R.id.search_view)
     SearchView searchView;
-    @Bind(R.id.toolbar)
+    @Bind(R.id.toolbar2)
     Toolbar toolbar;
     @Bind(R.id.tablayout)
     TabLayout tablayout;
-//    @Bind(R.id.viewpager)
-//    ViewPager viewpager;
     private String mQuery;
-    private List<Note> mNotes;
-    private String query;
     private int currentPositiion;
-    private ProgressDialog progressDialog;
-
-    @Override
-    public void showLoading() {
-        progressDialog.show();
-    }
-
-    @Override
-    public void cancelLoading() {
-        progressDialog.dismiss();
-    }
 
     @Override
     public void onSuccess(Object data) {
@@ -78,10 +58,9 @@ public class SearchActivity extends BaseListActivity<SearchPresenter> implements
     @Override
     public void initView() {
         currentPositiion = 0;
-        progressDialog = new ProgressDialog(mContext);
-        progressDialog.setCancelable(false);
         progressDialog.setMessage("搜索中，请稍候");
         swipeRefreshLayout.setEnabled(false);
+        setClosable(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

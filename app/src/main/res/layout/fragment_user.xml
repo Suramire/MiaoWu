@@ -4,6 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+    android:background="@color/white"
         android:orientation="vertical">
 
     <LinearLayout
@@ -52,6 +53,19 @@
             android:orientation="vertical"
             android:visibility="visible">
 
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="4dp"
+                android:elevation="2dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="false">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="360dp">
@@ -61,16 +75,11 @@
                     android:background="@drawable/bg_person"
                     android:layout_height="190dp"/>
 
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="170dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentBottom="true"
-                    android:elevation="2dp"
-                    app:cardElevation="2dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="170dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentBottom="true"
                         android:background="@android:color/white"
                         android:orientation="vertical">
 
@@ -182,7 +191,6 @@
                         </LinearLayout>
 
                     </LinearLayout>
-                </android.support.v7.widget.CardView>
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/img_icon"
@@ -197,14 +205,22 @@
 
             </RelativeLayout>
 
+            </android.support.v7.widget.CardView>
 
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="4dp"
                 android:elevation="2dp"
-                app:cardElevation="2dp">
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="false">
 
 
                 <LinearLayout
@@ -351,9 +367,8 @@
 
                 </LinearLayout>
 
-
-
             </android.support.v7.widget.CardView>
+
         </LinearLayout>
 
     </ScrollView>

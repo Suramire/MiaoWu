@@ -4,10 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/border"
     android:id="@+id/cardview_item"
-    android:layout_marginBottom="6dp"
-    android:layout_marginTop="6dp"
 
     android:orientation="vertical">
 
@@ -15,6 +12,7 @@
 
     <android.support.v7.widget.CardView
         app:cardElevation="2dp"
+        android:layout_margin="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout

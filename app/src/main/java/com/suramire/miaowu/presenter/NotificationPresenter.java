@@ -45,7 +45,7 @@ public class NotificationPresenter implements NotificationContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取通知列表失败:"+e.getMessage());
+                        ToastUtil.showLongToastCenter("获取通知列表失败:"+e.getMessage());
                     }
 
                     @Override
@@ -63,7 +63,7 @@ public class NotificationPresenter implements NotificationContract.Presenter {
                 .subscribe(new ResponseSubscriber<Integer>() {
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtil.showShortToastCenter("读取通知信息失败:"+e.getMessage());
+                        ToastUtil.showLongToastCenter("读取通知信息失败:"+e.getMessage());
                     }
 
                     @Override

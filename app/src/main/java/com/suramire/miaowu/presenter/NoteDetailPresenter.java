@@ -34,8 +34,9 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
                 .subscribe(new ResponseSubscriber<Note>() {
                     @Override
                     public void onError(Throwable throwable) {
-                        ToastUtil.showShortToastCenter("获取帖子详情失败:" + throwable.getMessage());
+                        ToastUtil.showLongToastCenter("获取帖子详情失败:" + throwable.getMessage());
 //                        getCatInfo();
+                        mView.cancelLoading();
                     }
 
                     @Override
@@ -57,13 +58,12 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
 
     @Override
     public void getReply() {
-        mView.showLoading();
         Subscription subscribe = noteDetailModel.getNoteReply(mView.getNoteId())
                 .subscribe(new ResponseSubscriber<List<M>>() {
                     @Override
                     public void onError(Throwable throwable) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter(throwable.getMessage());
+                        ToastUtil.showLongToastCenter(throwable.getMessage());
                     }
 
                     @Override
@@ -97,7 +97,8 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
                 .subscribe(new ResponseSubscriber<List<String>>() {
                     @Override
                     public void onError(Throwable throwable) {
-                        ToastUtil.showShortToastCenter("获取帖子配图失败:" + throwable.getMessage());
+                        ToastUtil.showLongToastCenter("获取帖子配图失败:" + throwable.getMessage());
+                        mView.cancelLoading();
                         getUserInfo();
                     }
 
@@ -136,7 +137,8 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
                 .subscribe(new ResponseSubscriber<User>() {
                     @Override
                     public void onError(Throwable throwable) {
-                        ToastUtil.showShortToastCenter("获取作者信息失败:" + throwable.getMessage());
+                        ToastUtil.showLongToastCenter("获取作者信息失败:" + throwable.getMessage());
+                        mView.cancelLoading();
                         getNoteInfo();
                     }
 
@@ -158,7 +160,7 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
 //                    @Override
 //                    public void onError(Throwable e) {
 //                        mView.cancelLoading();
-//                        ToastUtil.showShortToastCenter("申请时出错：" + e.getMessage());
+//                        ToastUtil.showLongToastCenter("申请时出错：" + e.getMessage());
 //                    }
 //
 //                    @Override
@@ -178,7 +180,7 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("发送审核过程出错:"+e.getMessage());
+                        ToastUtil.showLongToastCenter("发送审核过程出错:"+e.getMessage());
                     }
 
                     @Override
@@ -199,7 +201,7 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("锁定帖子时出错:"+e.getMessage());
+                        ToastUtil.showLongToastCenter("锁定帖子时出错:"+e.getMessage());
                     }
 
                     @Override
@@ -220,7 +222,7 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("解锁帖子失败:"+e.getMessage());
+                        ToastUtil.showLongToastCenter("解锁帖子失败:"+e.getMessage());
                     }
 
                     @Override
@@ -241,7 +243,7 @@ public class NoteDetailPresenter implements NoteDetailContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("删除帖子失败:"+e.getMessage());
+                        ToastUtil.showLongToastCenter("删除帖子失败:"+e.getMessage());
                     }
 
                     @Override

@@ -1,6 +1,5 @@
 package com.suramire.miaowu.ui;
 
-import android.app.ProgressDialog;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.EditText;
@@ -24,8 +23,6 @@ import butterknife.OnClick;
  */
 
 public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.View {
-    @Bind(R.id.toolbar)
-    MyToolbar mToolbar3;
     @Bind(R.id.edt_name)
     EditText mEdtName;
     @Bind(R.id.tl_username)
@@ -36,7 +33,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     TextInputLayout mTlPassword;
     @Bind(R.id.ll_login)
     LinearLayout mLlLogin;
-    private ProgressDialog mProgressDialog;
 
     public String getNameString() {
         return mNameString;
@@ -70,16 +66,12 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void initView() {
-        setSupportActionBar(mToolbar3);
-        getSupportActionBar().setTitle("登录" + getResources().getString(R.string.app_name));
-        mToolbar3.setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
-        mToolbar3.setLeftImage(R.drawable.ic_arrow_back_black);
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("请稍候……");
-        mProgressDialog.setCancelable(false);
+        setTitle("登录" + getResources().getString(R.string.app_name));
+        setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
+        progressDialog.setMessage("正在登录，请稍候……");
     }
 
-    @OnClick({R.id.edt_name, R.id.edt_password, R.id.btn_login, R.id.tv_reg, R.id.tv_forget,R.id.toolbar_image_left})
+    @OnClick({R.id.edt_name, R.id.edt_password, R.id.btn_login, R.id.tv_reg, R.id.tv_forget})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.edt_name:
@@ -93,28 +85,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 startActivity(RegisterActivity.class);
                 break;
             case R.id.tv_forget:
-
                 startActivity(PasswordActivity.class);
-                break;
-            case R.id.toolbar_image_left:
-                finish();
                 break;
         }
     }
 
-    @Override
-    public void showLoading() {
-        mProgressDialog.show();
-    }
-
-    @Override
-    public void cancelLoading() {
-        mProgressDialog.dismiss();
-    }
 
     @Override
     public void onSuccess(Object data) {
-        ToastUtil.showShortToastCenter("登录成功");
+        ToastUtil.showLongToastCenter("登录成功");
         User user = (User) data;
         //保存用户登录信息
         SPUtils.put("uid", user.getId());

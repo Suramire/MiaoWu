@@ -45,7 +45,7 @@ public class GsonUtil {
      */
     public static  <T> List<T> jsonToList(String jsonString, final Class<T> tClass ){
         Gson gson = new Gson();
-        List<T> list = new ArrayList<T>();
+        List<T> list = new ArrayList<>();
         try{
             JsonArray array = new JsonParser().parse(jsonString).getAsJsonArray();
             for(final JsonElement elem : array){

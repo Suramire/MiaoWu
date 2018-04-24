@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.SearchContract;
-import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.SearchModel;
 import com.suramire.miaowu.util.ToastUtil;
@@ -50,7 +49,7 @@ public class SearchPresenter implements SearchContract.Presenter {
                         @Override
                         public void onError(Throwable e) {
                             mView.cancelLoading();
-                            ToastUtil.showShortToastCenter("搜索帖子信息时出错：" + e.getMessage());
+                            ToastUtil.showLongToastCenter("搜索帖子信息时出错：" + e.getMessage());
                         }
 
                         @Override
@@ -72,7 +71,7 @@ public class SearchPresenter implements SearchContract.Presenter {
                         @Override
                         public void onError(Throwable e) {
                             mView.cancelLoading();
-                            ToastUtil.showShortToastCenter("搜索用户信息出错：" + e.getMessage());
+                            ToastUtil.showLongToastCenter("搜索用户信息出错：" + e.getMessage());
                         }
 
                         @Override

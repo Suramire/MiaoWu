@@ -1,24 +1,20 @@
 package com.suramire.miaowu.ui;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.Bundle;
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.suramire.miaowu.R;
-import com.suramire.miaowu.adapter.MultiItemAdapter;
 import com.suramire.miaowu.base.BaseActivity;
 import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.M;
 import com.suramire.miaowu.contract.CatContract;
 import com.suramire.miaowu.presenter.CatPresenter;
 import com.suramire.miaowu.util.CommonUtil;
-import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.ToastUtil;
-import com.suramire.miaowu.wiget.MyToolbar;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
@@ -27,11 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.suramire.miaowu.util.ApiConfig.BASECATPICEURL;
-import static com.suramire.miaowu.util.ApiConfig.BASNOTEPICEURL;
 
 
 /**
@@ -41,8 +35,6 @@ import static com.suramire.miaowu.util.ApiConfig.BASNOTEPICEURL;
 
 public class CatDetailActivity extends BaseActivity<CatPresenter> implements CatContract.View {
 
-    @Bind(R.id.toolbar)
-    MyToolbar toolbar;
     @Bind(R.id.tv_id)
     TextView tvId;
     @Bind(R.id.tv_sex)
@@ -60,7 +52,6 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
     @Bind(R.id.banner)
     Banner banner;
 
-    private ProgressDialog progressDialog;
     private int cid;
     private boolean flag;
 
@@ -77,11 +68,8 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
     @Override
     public void initView() {
         cid = getIntent().getIntExtra("cid", 0);
-        progressDialog = new ProgressDialog(mContext);
         progressDialog.setMessage("请稍候……");
-        progressDialog.setCancelable(false);
-        toolbar.setTitle("猫咪详情");
-        toolbar.setLeftImage(R.drawable.ic_arrow_back_black);
+        setTitle("猫咪详情");
         mPresenter.getCat();
     }
 
@@ -107,7 +95,7 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
 
     @Override
     public void onApplyCatSuccess() {
-        ToastUtil.showShortToastCenter("申请成功，请等待管理员审核");
+        ToastUtil.showLongToastCenter("申请成功，请等待管理员审核");
         flag = true;
     }
 
@@ -157,15 +145,6 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
                     .into(imageView);
         }
     }
-    @Override
-    public void showLoading() {
-        progressDialog.show();
-    }
-
-    @Override
-    public void cancelLoading() {
-        progressDialog.dismiss();
-    }
 
     @Override
     public void onSuccess(Object data) {
@@ -178,29 +157,30 @@ public class CatDetailActivity extends BaseActivity<CatPresenter> implements Cat
             tvInsecticide.setText(catinfo.getInsecticide()==0?"未知":(catinfo.getInsecticide()==1)?"是":"否");
             tvType.setText(catinfo.getType() == null ? "未知" : catinfo.getType());
             tvConditions.setText(catinfo.getConditions());
+
             if(catinfo.getIsAdopted()==0 && CommonUtil.isLogined()){
                 //可以领养
-                toolbar.setRightText("申请领养");
-                toolbar.setRightOnclickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(!flag){
-                            mPresenter.applyCat();
-                        }
-                    }
-                });
+                setRightText("申请领养");
             }
             mPresenter.getAllPictures();
         }
     }
 
 
-    @OnClick({R.id.toolbar_image_left})
+    @OnClick({R.id.toolbar_text_right})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.toolbar_image_left:
-                finish();
-                break;
+            case R.id.toolbar_text_right:{
+                //防止重复点击领养菜单
+                if(!flag){
+                    CommonUtil.showDialog(mContext, "确认领养这只猫吗？", "确认", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mPresenter.applyCat();
+                        }
+                    });
+                }
+            }break;
         }
     }
 }

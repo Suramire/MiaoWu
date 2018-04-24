@@ -1,6 +1,5 @@
 package com.suramire.miaowu.ui.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
@@ -10,21 +9,18 @@ import android.widget.TextView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseFragment;
-import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.presenter.UserPresenter;
 import com.suramire.miaowu.ui.AdoptHistoryActivity;
 import com.suramire.miaowu.ui.ApplyListActivity;
-import com.suramire.miaowu.ui.NewCatActivity;
 import com.suramire.miaowu.ui.FansListActivity;
 import com.suramire.miaowu.ui.LoginActivity;
+import com.suramire.miaowu.ui.NewCatActivity;
 import com.suramire.miaowu.ui.NoteListActivity;
 import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.PicassoUtil;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -67,11 +63,12 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
     @Bind(R.id.ll_addcat)
     LinearLayout llAddCat;
 
-    private ProgressDialog mProgressDialog;
     private Integer uid;
 
     public interface OnUserListener{
         void onGetUserSuccess(User user);
+
+        void onGetNoteCountSuccess();
     }
     private OnUserListener listener;
 
@@ -79,16 +76,6 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
         this.listener = listener;
     }
 
-    @Override
-    public void showLoading() {
-        mProgressDialog.show();
-    }
-
-    @Override
-    public void cancelLoading() {
-        mProgressDialog.dismiss();
-
-    }
 
     @Override
     public void onSuccess(Object data) {
@@ -103,8 +90,7 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
     @Override
     public void initView() {
         setRequireFresh(true);
-        mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setMessage("请稍候……");
+        progressDialog.setMessage("正在获取用户信息，请稍候……");
         if (CommonUtil.isLogined()) {
             llLogin.setVisibility(View.VISIBLE);
             llNotlogin.setVisibility(View.GONE);
@@ -210,6 +196,9 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
     @Override
     public void onGetUserNoteCountSuccess(int count) {
         tvNoteCount.setText(String.valueOf(count));
+        if(null != listener){
+            listener.onGetNoteCountSuccess();
+        }
     }
 
     @Override

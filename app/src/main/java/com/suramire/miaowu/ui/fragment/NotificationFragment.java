@@ -2,7 +2,6 @@ package com.suramire.miaowu.ui.fragment;
 
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,22 +13,16 @@ import com.suramire.miaowu.bean.Notification;
 import com.suramire.miaowu.contract.NotificationContract;
 import com.suramire.miaowu.presenter.NotificationPresenter;
 import com.suramire.miaowu.ui.ApplyDetailActivity;
-import com.suramire.miaowu.ui.NoteDetailActivity;
 import com.suramire.miaowu.ui.UserActivity;
-import com.suramire.miaowu.util.ApiConfig;
 import com.suramire.miaowu.util.CommonUtil;
 
 import java.util.List;
-
-import butterknife.Bind;
 
 /**
  * Created by Suramire on 2018/1/26.
  */
 
 public class NotificationFragment extends BaseListFragment<NotificationPresenter> implements NotificationContract.View {
-    @Bind(R.id.listview)
-    RecyclerView listview;
     private Integer currentId;
     private Intent intent;
     private int count;
@@ -45,15 +38,7 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
         this.listener = listener;
     }
 
-    @Override
-    public void showLoading() {
 
-    }
-
-    @Override
-    public void cancelLoading() {
-
-    }
 
     @Override
     public void onSuccess(Object data) {
@@ -92,6 +77,7 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
     public void initView() {
         swipeRefreshLayout.setEnabled(false);
         setRequireFresh(true);
+        progressDialog.setMessage("正在读取通知，请稍候……");
         if(CommonUtil.isLogined()){
             mPresenter.getNotifications();
         }else{
@@ -112,13 +98,12 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
                     ((TextView) helper.getView(R.id.tv_isread)).setTextColor(getResources().getColor(R.color.orange));
                 }else{
                     helper.setText(R.id.tv_isread,"已读");
-                    ((TextView) helper.getView(R.id.tv_isread)).setTextColor(getResources().getColor(R.color.darkgray));
+                    ((TextView) helper.getView(R.id.tv_isread)).setTextColor(getResources().getColor(R.color.verydarkgray));
                 }
                 helper.setOnClickListener(R.id.tv_notification_content, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        ToastUtil.showShortToastCenter("点击通知内容:类型"+item.getType());
-                        //已读的通知不能再点击
+
                         currentType = item.getType();
                         switch (item.getType()){
                             case 1:{
@@ -126,9 +111,9 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
                                 intent.putExtra("uid", item.getUid1());
                             }break;//关注类通知 点击跳转到关注源用户
                             case 2:{
-                                intent = new Intent(mContext, NoteDetailActivity.class);
-                                intent.putExtra("noteId", item.getUid1());
-                                intent.putExtra("userId", item.getUid2());
+//                                intent = new Intent(mContext, NoteDetailActivity.class);
+//                                intent.putExtra("noteId", item.getUid1());
+//                                intent.putExtra("userId", item.getUid2());
                             }break;
                             case 3:{
                                 intent = new Intent(mContext, ApplyDetailActivity.class);
@@ -140,6 +125,7 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
                             }break;
                             default:break;
                         }
+                        //已读的通知不能再点击
                         item.setIsread(1);
                         notifyDataSetChanged();
                         currentId = item.getId();
@@ -165,7 +151,7 @@ public class NotificationFragment extends BaseListFragment<NotificationPresenter
     @Override
     public void onReadSuccess(int id) {
         if (intent!=null&&currentType!=4){
-            getActivity().startActivityForResult(intent, ApiConfig.REQUESTCODE_NOTIFICATION);
+            startActivity(intent);
         }
         if(count>0){
             count--;

@@ -1,14 +1,11 @@
 package com.suramire.miaowu.model;
 
 
-import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Follow;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.http.ApiLoader;
 import com.suramire.miaowu.http.base.ResponseFunc;
-
-import java.util.List;
 
 import rx.Observable;
 

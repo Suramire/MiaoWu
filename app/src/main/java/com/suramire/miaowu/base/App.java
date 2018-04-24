@@ -1,13 +1,9 @@
 package com.suramire.miaowu.base;
 
-import android.app.Activity;
-
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.view.CropImageView;
 import com.mob.MobApplication;
 import com.suramire.miaowu.util.MyImageLoader;
-
-import java.util.HashSet;
 
 /**
  * 应用基类

@@ -1,10 +1,8 @@
 package com.suramire.miaowu.ui;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,12 +35,8 @@ import butterknife.OnClick;
 public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View {
     @Bind(R.id.toolbar_image_left)
     ImageView toolbarImageLeft;
-    @Bind(R.id.toolbar_text_center)
-    TextView toolbarTextCenter;
     @Bind(R.id.toolbar_text_right)
     TextView toolbarTextRight;
-    @Bind(R.id.toolbar)
-    MyToolbar toolbar;
     @Bind(R.id.viewpager)
     LazyViewPager viewpager;
     @Bind(R.id.bottom_navigation_bar)
@@ -57,13 +51,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ApiConfig.LOGINREQUESTCODE && resultCode == ApiConfig.RESULTCODE) {
-            //登录成功情况下
+            //登录成功情况下 刷新个人中心
             freshPostion = 2;
-            requireFresh = true;
-            initData();
-        }else if(requestCode == ApiConfig.REQUESTCODE_NOTIFICATION && resultCode ==ApiConfig.RESULTCODE_NOTIFICATION){
-            //读取通知后
-            freshPostion = 1;
             requireFresh = true;
             initData();
         }
@@ -83,9 +72,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void initView() {
         //设置一次只激活一个fragment
         viewpager.setOffscreenPageLimit(0);
-        toolbar.setTitle("首页");
-        toolbar.setStyle(MyToolbar.STYLE_RIGHT_AND_TITLE);
-        toolbar.setLeftImage(R.drawable.ic_search_black_24dp);
+        setTitle("首页");
+        setClosable(false);//需要重写返回按钮事件
+        setStyle(MyToolbar.STYLE_RIGHT_AND_TITLE);
+        setLeftImage(R.drawable.ic_search_black_24dp);
         initData();
     }
 
@@ -123,6 +113,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             public void onGetUserSuccess(User user) {
                 mUser = user;
             }
+
+            @Override
+            public void onGetNoteCountSuccess() {
+                //在成功获取用户发帖数之后才获取未读通知数
+                if(CommonUtil.isLogined()){
+                    mPresenter.getNotificationCount(CommonUtil.getCurrentUid());
+                }
+            }
         });
         fragments.add(homeFragment);
         fragments.add(notificationFragment);
@@ -139,8 +137,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 return fragments.size();
             }
         });
+        bottomNavigationBar.clearAll();
 
-
+        bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_black_24dp, "主页"))
+                .addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知"))
+                .addItem(new BottomNavigationItem(R.drawable.ic_person_black, "我的"))
+                .setMode(BottomNavigationBar.MODE_FIXED)
+                .initialise();
         bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int i) {
@@ -148,21 +151,21 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 currentPosition = i;
                 switch (i) {
                     case 0:
-                        toolbar.setTitle("首页");
+                        setTitle("首页");
                         toolbarTextRight.setVisibility(View.VISIBLE);
-                        toolbarTextRight.setText("发帖");
+                        setRightText("发帖");
                         toolbarImageLeft.setVisibility(View.VISIBLE);
                         break;
                     case 1:
-                        toolbar.setTitle("通知中心");
+                        setTitle("通知中心");
                         toolbarTextRight.setVisibility(View.GONE);
                         toolbarImageLeft.setVisibility(View.GONE);
 
                         break;
                     case 2:
-                        toolbar.setTitle("个人中心");
+                        setTitle("个人中心");
                         toolbarTextRight.setVisibility(View.VISIBLE);
-                        toolbarTextRight.setText("设置");
+                        setRightText("设置");
                         toolbarImageLeft.setVisibility(View.GONE);
                         break;
                 }
@@ -186,20 +189,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             bottomNavigationBar.selectTab(0);
         }
 
-        if(CommonUtil.isLogined()){
-            mPresenter.getNotificationCount(CommonUtil.getCurrentUid());
-        }
-    }
-
-    @Override
-    public void showLoading() {
 
     }
 
-    @Override
-    public void cancelLoading() {
-
-    }
 
     @Override
     public void onSuccess(Object data) {
@@ -241,7 +233,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                             CommonUtil.snackBar(MainActivity.this, "您还未登录", "登录", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    startActivity(LoginActivity.class);
+                                    Intent intent = new Intent(mContext, LoginActivity.class);
+                                    startActivityForResult(intent,ApiConfig.LOGINREQUESTCODE);
                                 }
                             });
                         }
@@ -259,7 +252,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void onGetNotificationCountSuccess(int count) {
         bottomNavigationBar.clearAll();
         if(count>0){
-
             TextBadgeItem textBadgeItem = new TextBadgeItem().setText(count+"");
             bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_black_24dp, "主页"))
                     .addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知").setBadgeItem(textBadgeItem))
@@ -273,11 +265,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                     .setMode(BottomNavigationBar.MODE_FIXED)
                     .initialise();
         }
-
+        bottomNavigationBar.selectTab(currentPosition);
     }
 
-
-//
-// TODO: 2017/10/29 内存泄漏处理
-//
 }

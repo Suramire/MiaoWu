@@ -1,7 +1,6 @@
 package com.suramire.miaowu.ui;
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -28,7 +27,6 @@ import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.PicassoUtil;
 import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.util.ToastUtil;
-import com.suramire.miaowu.wiget.MyToolbar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,14 +44,6 @@ import static com.suramire.miaowu.util.ApiConfig.BASUSERPICEURL;
 
 public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implements ProfileContract.View {
 
-    @Bind(R.id.toolbar_image_left)
-    ImageView toolbarImageLeft;
-    @Bind(R.id.toolbar_text_center)
-    TextView toolbarTextCenter;
-    @Bind(R.id.toolbar_text_right)
-    TextView toolbarTextRight;
-    @Bind(R.id.toolbar)
-    MyToolbar toolbar;
     @Bind(R.id.tv_username)
     TextView tvUsername;
     @Bind(R.id.img_icon)
@@ -71,7 +61,6 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
     @Bind(R.id.edt_contact)
     EditText edtContact;
     private User mUser;
-    private ProgressDialog progressDialog;
     private int uid;
     private String avaterPath;
     int year_begin;
@@ -80,15 +69,6 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
     long time_begin;
     private Calendar calendar;
 
-    @Override
-    public void showLoading() {
-        progressDialog.show();
-    }
-
-    @Override
-    public void cancelLoading() {
-        progressDialog.dismiss();
-    }
 
     @Override
     public void onSuccess(Object data) {
@@ -138,16 +118,13 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
         year_begin = calendar.get(Calendar.YEAR);//获取当前年份
         month_begin = calendar.get(Calendar.MONTH);//获取当前月份
         day_begin = calendar.get(Calendar.DAY_OF_MONTH);//获取当前天数
-        toolbar.setTitle("个人信息");
-        toolbarImageLeft.setImageResource(R.drawable.ic_arrow_back_black);
-        toolbarTextRight.setText("保存");
-        progressDialog = new ProgressDialog(mContext);
+        setTitle("个人信息");
+        setRightText("保存");
         progressDialog.setMessage("请稍候……");
-        progressDialog.setCancelable(false);
         uid = getIntent().getIntExtra("uid", 0);
         mPresenter.getProfile();
         String[] stringArray = getResources().getStringArray(R.array.contacts);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, stringArray);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, stringArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
@@ -177,7 +154,7 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
 
     @Override
     public void onUpdateSuccess(User user) {
-        ToastUtil.showShortToastCenter("用户信息修改成功");
+        ToastUtil.showLongToastCenter("用户信息修改成功");
         showData(user);
     }
 
@@ -188,19 +165,15 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
 
     @Override
     public void onUpdateAvaterSuccess() {
-        ToastUtil.showShortToastCenter("更新头像成功");
+        ToastUtil.showLongToastCenter("更新头像成功");
         mPresenter.getProfile();
     }
 
 
-    @OnClick({R.id.toolbar_image_left, R.id.toolbar_text_right, R.id.img_icon, R.id.edt_birthday,
+    @OnClick({R.id.toolbar_text_right, R.id.img_icon, R.id.edt_birthday,
             R.id.btn_loginout,R.id.tv_modify_password})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.toolbar_image_left:
-                // TODO: 2018/2/1 信息已修改 提示是否保存修改
-                finish();
-                break;
             case R.id.toolbar_text_right:
                 verifyUser();
                 mPresenter.updateProfile();
@@ -226,7 +199,7 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
                 break;
             case R.id.btn_loginout:
                 CommonUtil.loginOut();
-                ToastUtil.showShortToastCenter("注销成功");
+                ToastUtil.showLongToastCenter("注销成功");
                 setResult(ApiConfig.RESULTCODE);
                 finish();
                 break;
@@ -241,17 +214,16 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
     private void verifyUser() {
         String birthday = edtBirthday.getText().toString().trim();
 //        String phone = edtPhone.getText().toString().trim();
-        // TODO: 2018/2/1 修改手机需先验证
         int selectedItemPosition = spinner.getSelectedItemPosition();
         String contact = edtContact.getText().toString().trim();
         if(TextUtils.isEmpty(birthday)){
-            ToastUtil.showShortToastCenter("请填写生日信息");
+            ToastUtil.showLongToastCenter("请填写生日信息");
             return;
         }else{
             mUser.setBirthday(new Date(calendar.getTimeInMillis()));
         }
         if(selectedItemPosition!=0 && TextUtils.isEmpty(contact)){
-            ToastUtil.showShortToastCenter("若选择了联系方式请填写完整");
+            ToastUtil.showLongToastCenter("若选择了联系方式请填写完整");
             return;
         }
         mUser.setAddress(edtAddress.getText().toString().trim());

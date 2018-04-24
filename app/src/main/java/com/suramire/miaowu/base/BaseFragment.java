@@ -1,5 +1,6 @@
 package com.suramire.miaowu.base;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ public abstract class BaseFragment<T extends BasePresenter>  extends Fragment im
     protected T mPresenter;
     protected Context mContext;
     private View view;
+    protected ProgressDialog progressDialog;
 
     public void setRequireFresh(boolean requireFresh) {
         this.requireFresh = requireFresh;
@@ -31,6 +33,8 @@ public abstract class BaseFragment<T extends BasePresenter>  extends Fragment im
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mContext = getActivity();
+        progressDialog = new ProgressDialog(mContext);
+        progressDialog.setCancelable(false);
         if(requireFresh){
             view = inflater.inflate(bindLayout(), null);
             ButterKnife.bind(this, view);
@@ -65,6 +69,17 @@ public abstract class BaseFragment<T extends BasePresenter>  extends Fragment im
         }
     }
 
+
+
+    @Override
+    public void showLoading() {
+        progressDialog.show();
+    }
+
+    @Override
+    public void cancelLoading() {
+        progressDialog.dismiss();
+    }
 
     public void startActivityForResult(Class<?> cls,int requestCode){
         Intent intent = new Intent(mContext, cls);

@@ -46,7 +46,7 @@ public class NotePresenter implements NoteContract.Presenter {
                     @Override
                     public void onError(Throwable throwable) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取帖子列表失败:" + throwable.getMessage());
+                        ToastUtil.showLongToastCenter("获取帖子列表失败:" + throwable.getMessage());
                     }
 
                     @Override
@@ -66,7 +66,7 @@ public class NotePresenter implements NoteContract.Presenter {
                     @Override
                     public void onError(Throwable throwable) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取帖子列表失败:" + throwable.getMessage());
+                        ToastUtil.showLongToastCenter("获取帖子列表失败:" + throwable.getMessage());
                     }
 
                     @Override
@@ -86,7 +86,7 @@ public class NotePresenter implements NoteContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取帖子列表失败:" + e.getMessage());
+                        ToastUtil.showLongToastCenter("获取帖子列表失败:" + e.getMessage());
                     }
 
                     @Override

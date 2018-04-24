@@ -4,7 +4,6 @@ import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.ProfileContract;
 import com.suramire.miaowu.http.ApiLoader;
 import com.suramire.miaowu.http.base.ResponseFunc;
-import com.suramire.miaowu.util.L;
 import com.suramire.miaowu.util.SPUtils;
 
 import java.io.File;
@@ -13,7 +12,6 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import rx.Observable;
-import rx.functions.Action1;
 
 /**
  * Created by Suramire on 2017/10/29.

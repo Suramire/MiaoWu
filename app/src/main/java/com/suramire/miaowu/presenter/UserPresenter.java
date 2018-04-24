@@ -1,7 +1,5 @@
 package com.suramire.miaowu.presenter;
 
-import com.suramire.miaowu.bean.Catinfo;
-import com.suramire.miaowu.bean.Follow;
 import com.suramire.miaowu.bean.User;
 import com.suramire.miaowu.contract.UserContract;
 import com.suramire.miaowu.http.base.ResponseSubscriber;
@@ -9,10 +7,7 @@ import com.suramire.miaowu.model.UserModel;
 import com.suramire.miaowu.util.CommonUtil;
 import com.suramire.miaowu.util.ToastUtil;
 
-import java.util.List;
-
 import rx.Subscription;
-import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -49,12 +44,11 @@ public class UserPresenter implements UserContract.Presenter {
                     @Override
                     public void onError(Throwable throwable) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取用户信息失败:" + throwable.getMessage());
+                        ToastUtil.showLongToastCenter("获取用户信息失败:" + throwable.getMessage());
                     }
 
                     @Override
                     public void onNext(User user) {
-                        mView.cancelLoading();
                         mView.onGetInfoSuccess(user);
                         getUserFollowCount();
                     }
@@ -65,22 +59,36 @@ public class UserPresenter implements UserContract.Presenter {
     @Override
     public void getUserFollowCount() {
         Subscription subscribe = userModel.getUserFollowCount(mView.getUid())
-                .subscribe(new Action1<Integer>() {
-                    @Override
-                    public void call(Integer integer) {
-                        mView.onGetUserFollowCountSuccess(integer);
-                        getUserFollowerCount();
-                    }
-                });
+                .subscribe(
+                        new ResponseSubscriber<Integer>() {
+                            @Override
+                            public void onError(Throwable e) {
+                                mView.cancelLoading();
+                                ToastUtil.showLongToastCenter("获取关注数出错："+e.getMessage());
+                            }
+
+                            @Override
+                            public void onNext(Integer integer) {
+                                mView.onGetUserFollowCountSuccess(integer);
+                                getUserFollowerCount();
+                            }
+                        }
+        );
         compositeSubscription.add(subscribe);
     }
 
     @Override
     public void getUserFollowerCount() {
         Subscription subscribe = userModel.getUserFollowerCount(mView.getUid())
-                .subscribe(new Action1<Integer>() {
+                .subscribe(new ResponseSubscriber<Integer>() {
                     @Override
-                    public void call(Integer integer) {
+                    public void onError(Throwable e) {
+                        mView.cancelLoading();
+                        ToastUtil.showLongToastCenter("获取粉丝数出错："+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
                         mView.onGetUserFollowerCountSuccess(integer);
                         getUserNoteCount();
                     }
@@ -95,11 +103,13 @@ public class UserPresenter implements UserContract.Presenter {
                 .subscribe(new ResponseSubscriber<Integer>() {
                                @Override
                                public void onError(Throwable e) {
-                                   ToastUtil.showShortToastCenter("获取帖子数失败:"+e.getMessage());
+                                   mView.cancelLoading();
+                                   ToastUtil.showLongToastCenter("获取帖子数失败:"+e.getMessage());
                                }
 
                                @Override
                                public void onNext(Integer integer) {
+                                   mView.cancelLoading();
                                    mView.onGetUserNoteCountSuccess(integer);
                                }
                            });
@@ -113,7 +123,7 @@ public class UserPresenter implements UserContract.Presenter {
                 .subscribe(new ResponseSubscriber<Integer>() {
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtil.showShortToastCenter("获取用户关系失败:"+e.getMessage());
+                        ToastUtil.showLongToastCenter("获取用户关系失败:"+e.getMessage());
                     }
 
                     @Override
@@ -130,7 +140,7 @@ public class UserPresenter implements UserContract.Presenter {
                 .subscribe(new ResponseSubscriber<Object>() {
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtil.showShortToastCenter("关注用户失败:"+e.getMessage());
+                        ToastUtil.showLongToastCenter("关注用户失败:"+e.getMessage());
                     }
 
                     @Override
@@ -148,7 +158,7 @@ public class UserPresenter implements UserContract.Presenter {
                 .subscribe(new ResponseSubscriber<Object>() {
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtil.showShortToastCenter("取消关注用户失败:"+e.getMessage());
+                        ToastUtil.showLongToastCenter("取消关注用户失败:"+e.getMessage());
                     }
 
                     @Override

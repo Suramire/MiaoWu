@@ -27,7 +27,6 @@ public class MyToolbar extends Toolbar {
     private ImageView toolbarImageLeft;
     private TextView toolbarTextCenter;
     private TextView toolbarTextRight;
-    private boolean isSetted;//样式设置标志位，防止重复设置样式
 
     public MyToolbar(Context context) {
         super(context);
@@ -83,24 +82,8 @@ public class MyToolbar extends Toolbar {
         toolbarImageLeft.setImageResource(resId);
     }
 
-    /**
-     * 设置左边点击事件
-     * @param listener 点击事件
-     */
-    public void setLeftOnclickListener(OnClickListener listener) {
-        toolbarImageLeft.setOnClickListener(listener);
-    }
-
-    /**
-     * 设置右边点击事件
-     * @param listener 点击事件
-     */
-    public void setRightOnclickListener(OnClickListener listener) {
-        toolbarTextRight.setOnClickListener(listener);
-    }
 
     public void setStyle(int style){
-        if(!isSetted){
             switch (style){
                 case STYLE_TITLE_ONLY:{
                     toolbarImageLeft.setVisibility(GONE);
@@ -113,8 +96,6 @@ public class MyToolbar extends Toolbar {
                     toolbarImageLeft.setVisibility(GONE);
                 }break;
                 default:break;
-            }
-            isSetted = true;
         }
 
     }

@@ -1,8 +1,5 @@
 package com.suramire.miaowu.presenter;
 
-import android.os.Handler;
-import android.os.SystemClock;
-
 import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.http.base.ResponseSubscriber;
 import com.suramire.miaowu.model.PublishModel;
@@ -30,11 +27,6 @@ public class PublishPresenter implements PublishContract.Presenter {
             }
 
             @Override
-            public void onFailed(String failureMessage) {
-
-            }
-
-            @Override
             public void onSuccess(Object object) {
                 mView.cancelLoading();
                 mView.onUploadPicturesSuccess();
@@ -55,7 +47,7 @@ public class PublishPresenter implements PublishContract.Presenter {
                         //回调 出现异常时
                         mView.cancelLoading();//结束界面里的加载动画
                         ToastUtil.
-                        showShortToastCenter("发布帖子信息失败:"+
+                                showLongToastCenter("发布帖子信息失败:"+
                                 throwable.getMessage());
                     }
                     @Override
@@ -78,7 +70,7 @@ public class PublishPresenter implements PublishContract.Presenter {
                     @Override
                     public void onError(Throwable throwable) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("上传图片路径失败:" + throwable.getMessage());
+                        ToastUtil.showLongToastCenter("上传图片路径失败:" + throwable.getMessage());
                     }
 
                     @Override

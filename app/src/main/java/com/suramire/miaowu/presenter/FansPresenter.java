@@ -46,7 +46,7 @@ public class FansPresenter implements FansContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取关注列表失败:"+e.getMessage());
+                        ToastUtil.showLongToastCenter("获取关注列表失败:"+e.getMessage());
                     }
 
                     @Override
@@ -68,7 +68,7 @@ public class FansPresenter implements FansContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mView.cancelLoading();
-                        ToastUtil.showShortToastCenter("获取粉丝列表失败:"+e.getMessage());
+                        ToastUtil.showLongToastCenter("获取粉丝列表失败:"+e.getMessage());
                     }
 
                     @Override

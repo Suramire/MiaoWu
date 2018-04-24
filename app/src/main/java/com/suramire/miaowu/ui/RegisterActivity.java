@@ -1,6 +1,5 @@
 package com.suramire.miaowu.ui;
 
-import android.app.ProgressDialog;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
@@ -70,7 +69,6 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     // 2=进入密码设置界面
     private int step;
     private ViewGroup[] mViews;
-    private ProgressDialog mProgressDialog;
     private EventHandler mEventHandler;
 
 
@@ -86,19 +84,11 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
 
     @Override
     public void initView() {
-        mToolbarRegister.setTitle("注册");
-        mToolbarRegister.setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
-        mToolbarRegister.setLeftImage(R.drawable.ic_arrow_back_black);
-        mToolbarRegister.setLeftOnclickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        setTitle("注册");
+        setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
+
         mViews = new ViewGroup[]{mLlPhone, mLlValidation, mLlNamed};
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("请稍候……");
-        mProgressDialog.setCancelable(false);
+        progressDialog.setMessage("请稍候……");
 
         mEventHandler = new EventHandler() {
             public void afterEvent(int event, int result, Object data) {
@@ -108,7 +98,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            ToastUtil.showShortToastCenter(msg);
+                            ToastUtil.showLongToastCenter(msg);
                         }
                     });
                     // {"status":468,"detail":"需要校验的验证码错误"}
@@ -152,9 +142,9 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
             case R.id.btn_register_next:{
                 //输入验证
                 if(TextUtils.isEmpty(getPhoneNumber())){
-                    ToastUtil.showShortToastCenter("请输入手机号码");
+                    ToastUtil.showLongToastCenter("请输入手机号码");
                 }else if(!CommonUtil.isMobileNumber(getPhoneNumber())){
-                    ToastUtil.showShortToastCenter("请输入正确的手机号码");
+                    ToastUtil.showLongToastCenter("请输入正确的手机号码");
                 }else{
                     mPresenter.validatePhoneNumber();
                 }
@@ -165,9 +155,9 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
             case R.id.btn_register_next_validation: {
                 String validationNumber = mEditTextValidation.getText().toString().trim();
                 if(TextUtils.isEmpty(validationNumber)){
-                    ToastUtil.showShortToastCenter("请输入验证码");
+                    ToastUtil.showLongToastCenter("请输入验证码");
                 }else if(validationNumber.length()!=4){
-                    ToastUtil.showShortToastCenter("请输入4位验证码");
+                    ToastUtil.showLongToastCenter("请输入4位验证码");
                 }else{
                     SMSSDK.submitVerificationCode("86",getPhoneNumber(),validationNumber);
                 }
@@ -179,9 +169,9 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
                 if(TextUtils.isEmpty(getUserName())
                         ||TextUtils.isEmpty(getPassword())
                         ||TextUtils.isEmpty(getRePassword())){
-                    ToastUtil.showShortToastCenter("请将用户信息填写完整");
+                    ToastUtil.showLongToastCenter("请将用户信息填写完整");
                 }else if(!getRePassword().equals(getPassword())){
-                    ToastUtil.showShortToastCenter("两次输入的密码不一致，请重新输入");
+                    ToastUtil.showLongToastCenter("两次输入的密码不一致，请重新输入");
                 } else{
                     mPresenter.validateInformation();
 
@@ -238,18 +228,8 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     }
 
     @Override
-    public void showLoading() {
-        mProgressDialog.show();
-    }
-
-    @Override
-    public void cancelLoading() {
-        mProgressDialog.dismiss();
-    }
-
-    @Override
     public void onSuccess(Object data) {
-        ToastUtil.showShortToastCenter("注册成功！请前往登录");
+        ToastUtil.showLongToastCenter("注册成功！请前往登录");
         finish();
     }
 

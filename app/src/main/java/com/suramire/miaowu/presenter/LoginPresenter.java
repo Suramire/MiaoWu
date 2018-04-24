@@ -10,7 +10,6 @@ import com.suramire.miaowu.util.SPUtils;
 import com.suramire.miaowu.util.ToastUtil;
 
 import rx.Subscription;
-import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -43,7 +42,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                                    @Override
                                    public void onError(Throwable e) {
                                        mView.cancelLoading();
-                                       ToastUtil.showShortToastCenter(e.getMessage());
+                                       ToastUtil.showLongToastCenter(e.getMessage());
                                    }
                                    @Override
                                    public void onNext(User user) {
@@ -54,7 +53,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     );
             compositeSubscription.add(subscribe);
         }else{
-            ToastUtil.showShortToastCenter("用户名和密码不能为空！");
+            ToastUtil.showLongToastCenter("用户名和密码不能为空！");
         }
     }
 
@@ -67,7 +66,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     public void onError(Throwable throwable) {
                         mView.cancelLoading();
                         SPUtils.put("uid", 0);
-                        ToastUtil.showShortToastCenter("获取用户信息失败:" + throwable.getMessage());
+                        ToastUtil.showLongToastCenter("获取用户信息失败:" + throwable.getMessage());
                     }
 
                     @Override

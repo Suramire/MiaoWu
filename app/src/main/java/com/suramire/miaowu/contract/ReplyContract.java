@@ -22,7 +22,6 @@ public interface ReplyContract {
     }
 
     interface View extends BaseView {
-        void onDeleteSuccess();
 
         void onAddSuccess();
 

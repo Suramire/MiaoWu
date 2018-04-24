@@ -1,6 +1,5 @@
 package com.suramire.miaowu.model;
 
-import com.suramire.miaowu.bean.Catinfo;
 import com.suramire.miaowu.bean.Note;
 import com.suramire.miaowu.contract.PublishContract;
 import com.suramire.miaowu.http.ApiLoader;
@@ -49,10 +48,6 @@ public class PublishModel implements PublishContract.Model {
     }
 
 
-    @Override
-    public Observable<Integer> publishCatInfo(Catinfo catinfo) {
-        return ApiLoader.addCat(catinfo).map(new ResponseFunc<Integer>());
-    }
 
     @Override
     public Observable<Integer> publishNoteInfo(Note note) {
@@ -60,7 +55,8 @@ public class PublishModel implements PublishContract.Model {
         note.setThumbs(0);//初始化点赞数为0
         note.setViewcount(0);//初始化浏览数为0
         note.setVerified(0);//新帖默认为待审核状态
-        return ApiLoader.addNote(note).map(new ResponseFunc<Integer>());
+        return ApiLoader.addNote(note)//发帖成功后返回的是新帖子的编号
+                .map(new ResponseFunc<Integer>());
     }
 
     public void uploadPicture(final List<String> pictues, final int index, final int max, final int nid) {
