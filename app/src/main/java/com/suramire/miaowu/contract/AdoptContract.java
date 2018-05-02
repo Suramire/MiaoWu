@@ -24,7 +24,8 @@ public interface AdoptContract {
 
     }
 
-    interface Presenter extends BasePresenter<View> {
+    interface Presenter extends BasePresenter<AdoptContract.View> {
+
 
         void getAdoptHistory();
 
