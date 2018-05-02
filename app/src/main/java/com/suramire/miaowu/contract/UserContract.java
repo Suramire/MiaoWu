@@ -54,7 +54,7 @@ public interface UserContract {
 
         //根据用户id获取
         //单个用户信息
-        void getUserInfo();
+        void getUserInfo(int flag);
         //用户关注数
         void getUserFollowCount();
         //用户粉丝数

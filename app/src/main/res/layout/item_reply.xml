@@ -85,7 +85,6 @@
                 android:layout_weight="1"
                 android:maxLines="3"
                 android:layout_marginStart="56dp"
-
                 tools:text="@string/longtext"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"/>

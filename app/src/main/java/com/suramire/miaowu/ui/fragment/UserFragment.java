@@ -94,7 +94,7 @@ public class UserFragment extends BaseFragment<UserPresenter> implements UserCon
         if (CommonUtil.isLogined()) {
             llLogin.setVisibility(View.VISIBLE);
             llNotlogin.setVisibility(View.GONE);
-            mPresenter.getUserInfo();
+            mPresenter.getUserInfo(1);
         } else {
             llLogin.setVisibility(View.GONE);
             llNotlogin.setVisibility(View.VISIBLE);

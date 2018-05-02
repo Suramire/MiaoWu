@@ -37,7 +37,7 @@ public class UserPresenter implements UserContract.Presenter {
     }
 
     @Override
-    public void getUserInfo() {
+    public void getUserInfo(final int flag) {
         mView.showLoading();
         Subscription subscribe = userModel.getUserInfo(mView.getUid())
                 .subscribe(new ResponseSubscriber<User>() {
@@ -45,6 +45,10 @@ public class UserPresenter implements UserContract.Presenter {
                     public void onError(Throwable throwable) {
                         mView.cancelLoading();
                         ToastUtil.showLongToastCenter("获取用户信息失败:" + throwable.getMessage());
+                        if(flag==1){
+//                            在首页获取用户信息失败时 清空登录信息
+                            CommonUtil.loginOut();
+                        }
                     }
 
                     @Override
