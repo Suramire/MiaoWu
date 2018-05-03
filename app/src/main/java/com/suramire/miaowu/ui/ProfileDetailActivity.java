@@ -80,7 +80,7 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
 
     private void showData(User user) {
         String icon = user.getIcon();
-        PicassoUtil.showIcon(icon==null?null:BASUSERPICEURL+icon,(ImageView) imgIcon);
+        PicassoUtil.showIconNoCache(icon==null?null:BASUSERPICEURL+icon,(ImageView) imgIcon);
         edtUsername.setText(user.getNickname());
         Date birthday1 = user.getBirthday();
         edtBirthday.setText(CommonUtil.dateToString(birthday1));

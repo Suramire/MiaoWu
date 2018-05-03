@@ -2,6 +2,8 @@ package com.suramire.miaowu.util;
 
 import android.widget.ImageView;
 
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.App;
@@ -41,6 +43,26 @@ public class PicassoUtil {
                 .load(path)
                 .placeholder(R.mipmap.ic_cat_icon)
                 .error(R.mipmap.ic_loading_error)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .resize(100,100)
+                .centerCrop()
+                .into(target);
+
+    }
+
+    /**
+     * 加载头像图片 不缓存图片 用于头像修改后显示即时显示新头像
+     * @param path
+     * @param target
+     */
+    public static void showIconNoCache(String path, ImageView target){
+        Picasso.with(App.getInstance())
+                .load(path)
+                .placeholder(R.mipmap.ic_cat_icon)
+                .error(R.mipmap.ic_loading_error)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
                 .resize(100,100)
                 .centerCrop()
                 .into(target);
