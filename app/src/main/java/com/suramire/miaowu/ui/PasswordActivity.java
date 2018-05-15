@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.suramire.miaowu.R;
 import com.suramire.miaowu.base.BaseActivity;
@@ -29,11 +30,15 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
     EditText edtPasswrod1;
     @Bind(R.id.edt_passwrod2)
     EditText edtPasswrod2;
+    @Bind(R.id.ll_code)
+    LinearLayout llCode;
+    @Bind(R.id.ll_password)
+    LinearLayout llPassword;
     private boolean done;
     private boolean clicked;
     private boolean sendCode;
     private boolean verifyCode;
-    private int uid;
+//    private int uid;
     private String password;
     private boolean isPhoneOk;
     private String mPhone;
@@ -52,7 +57,7 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
     public void initView() {
         setTitle("修改密码");
         progressDialog.setMessage("请稍候……");
-        uid = getIntent().getIntExtra("uid", 0);
+//        uid = getIntent().getIntExtra("uid", 0);
         //短信验证码相关
         EventHandler mEventHandler = new EventHandler() {
             public void afterEvent(int event, int result, Object data) {
@@ -67,6 +72,7 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
                         }
                     });
                 } else {
+                    L.e("event:" + event);
                     if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                         // 成功发送短信
                         sendCode = true;
@@ -79,38 +85,19 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
                         L.e("成功发送验证码");
                     } else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                         verifyCode = true;
-                        ToastUtil.showLongToastCenter("成功验证验证码");
+//                        ToastUtil.showLongToastCenter("成功验证验证码");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                llCode.setVisibility(View.GONE);
+                                llPassword.setVisibility(View.VISIBLE);
+                            }
+                        });
                     }
                 }
             }
         };
         SMSSDK.registerEventHandler(mEventHandler);
-        edtVerifycode.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String code = s.toString().trim();
-                if(code.length()!=4){
-//                    ToastUtil.showLongToast("请输入4位验证码");
-                }else{
-                    //服务器收到验证码时
-                    if(sendCode){
-                        SMSSDK.submitVerificationCode("86",mPhone,code);
-                    }else{
-                        ToastUtil.showLongToastCenter("服务器尚未收到验证码");
-                    }
-                }
-            }
-        });
 
     }
 
@@ -120,7 +107,7 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
         ToastUtil.showLongToastCenter("已成功修改密码，请重新登录系统");
     }
 
-    @OnClick({R.id.btn_getverifycode, R.id.btn_modifypassword})
+    @OnClick({R.id.btn_getverifycode,R.id.btn_verifycode, R.id.btn_modifypassword})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_getverifycode:
@@ -143,6 +130,21 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
                     ToastUtil.showLongToastCenter("请输入正确的手机号码格式");
                 }
                 break;
+
+            case R.id.btn_verifycode:{
+                String code = edtVerifycode.getText().toString().trim();
+                L.e("code.length()" + code.length());
+                if(code.length()!=4){
+                    ToastUtil.showLongToastCenter("请输入4位验证码");
+                }else{
+                    //服务器收到验证码时
+                    if(sendCode){
+                        SMSSDK.submitVerificationCode("86",mPhone,code);
+                    }else{
+                        ToastUtil.showLongToastCenter("服务器尚未收到验证码");
+                    }
+                }
+            }break;
             case R.id.btn_modifypassword:
                 //未进行修改操作
                 if (!done) {
@@ -162,7 +164,7 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
                             }
                         //未验证手机号
                         }else{
-                            ToastUtil.showLongToastCenter("验证码不正确");
+                            ToastUtil.showLongToastCenter("验证码不正确,请重试");
                         }
                     }else{
                         ToastUtil.showLongToastCenter("请先进行手机号码验证");
@@ -177,7 +179,7 @@ public class PasswordActivity extends BaseActivity<PasswordPresenter> implements
     @Override
     public User getUser() {
         User user = new User();
-        user.setId(uid);
+//        user.setId(uid);
         user.setPhonenumber(mPhone);
         user.setPassword(password);
         return user;

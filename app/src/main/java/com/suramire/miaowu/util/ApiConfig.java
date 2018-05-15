@@ -7,8 +7,9 @@ package com.suramire.miaowu.util;
 
 public class ApiConfig {
     //服务器基址
-//    public static final String BASEURL = "http://10.0.2.2:8080/Miaowu/";
-    public static final String BASEURL = "http://kmlq1357.jsp.cdnjsp.cn/Miaowu/";
+//    public static final String BASEURL = "http://192.168.1.6:8080/Miaowu/";
+    public static final String BASEURL = "http://10.0.2.2:8080/Miaowu/";
+//    public static final String BASEURL = "http://kmlq1357.jsp.cdnjsp.cn/Miaowu/";
     public static final String BASNOTEPICEURL = BASEURL+"upload/note/";
     public static final String BASUSERPICEURL = BASEURL+"upload/user/";
     public static final String BASECATPICEURL = BASEURL+"upload/cat/";

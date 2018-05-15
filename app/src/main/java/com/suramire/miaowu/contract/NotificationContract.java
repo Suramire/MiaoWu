@@ -37,5 +37,6 @@ public interface NotificationContract {
 
         void readNotification();
 
+
     }
 }

@@ -193,16 +193,20 @@
 
                     </LinearLayout>
 
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/img_icon"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="120dp"
-                    android:elevation="4dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/ic_cat_icon"
-                    app:riv_oval="true"/>
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/img_icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="120dp"
+            android:elevation="8dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_cat_icon"
+            app:riv_border_width="2dp"
+            app:riv_border_color="@color/white"
+            app:riv_oval="true"/>
+
+
 
             </RelativeLayout>
 

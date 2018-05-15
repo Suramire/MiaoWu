@@ -5,6 +5,8 @@
     android:background="@color/white"
     android:divider="@drawable/divider"
     android:showDividers="middle|end"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <ScrollView

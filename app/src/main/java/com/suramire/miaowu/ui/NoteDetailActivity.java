@@ -35,7 +35,8 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
- * Created by Suramire on 2017/10/17.
+ * 帖子详情页
+ * 同时也是帖子审核页
  */
 
 public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implements NoteDetailContract.View {
@@ -81,8 +82,8 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
     @Override
     public void initView() {
         setStyle(MyToolbar.STYLE_LEFT_AND_TITLE);
-        setRightText("帖子选项(长按)");
-        registerForContextMenu(toolbarTextRight);
+
+
         noteId = getIntent().getIntExtra("noteId", 0);
         userId = getIntent().getIntExtra("userId", 0);
 
@@ -169,13 +170,14 @@ public class NoteDetailActivity extends BaseActivity<NoteDetailPresenter> implem
         mThumbs = note.getThumbs();
         thumb(mThumbs);
         // 管理员身份判断
-        if (note.getVerified() == 0  && CommonUtil.isAdmin() ) {
-            //显示审核按钮
-            llBottomadmin.setVisibility(View.VISIBLE);
-            llBottom.setVisibility(View.GONE);
+        if(note.getVerified() == 0){
+            toolbarTextRight.setVisibility(View.GONE);
+            if(CommonUtil.isAdmin()){
+                //显示审核按钮
+                llBottomadmin.setVisibility(View.VISIBLE);
+                llBottom.setVisibility(View.GONE);
+            }
         }
-
-
     }
 
     @Override

@@ -99,7 +99,13 @@ public class NewCatActivity extends BaseActivity<CatPresenter> implements CatCon
                     }
                 });
 
-            } else {
+            } else if(mPhotos.size()<1) {
+                CommonUtil.snackBar(this, "请选择猫咪配图", "去完善", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+            } else{
                 Catinfo catinfo = new Catinfo();
                 catinfo.setAge(spAge.getSelectedItemPosition());
                 catinfo.setSex(spSex.getSelectedItemPosition());
@@ -111,6 +117,7 @@ public class NewCatActivity extends BaseActivity<CatPresenter> implements CatCon
                 intent.putExtra("catinfo", catinfo);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+
             }
 
         }

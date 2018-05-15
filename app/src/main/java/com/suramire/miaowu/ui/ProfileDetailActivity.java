@@ -120,7 +120,7 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
         day_begin = calendar.get(Calendar.DAY_OF_MONTH);//获取当前天数
         setTitle("个人信息");
         setRightText("保存");
-        progressDialog.setMessage("正在保存个人信息，请稍候……");
+        progressDialog.setMessage("正在获取个人信息，请稍候……");
         uid = getIntent().getIntExtra("uid", 0);
         mPresenter.getProfile();
         String[] stringArray = getResources().getStringArray(R.array.contacts);
@@ -204,9 +204,9 @@ public class ProfileDetailActivity extends BaseActivity<ProfilePresenter> implem
                 finish();
                 break;
             case R.id.tv_modify_password:
-                Bundle bundle = new Bundle();
-                bundle.putInt("uid",getUid());
-                startActivity(PasswordActivity.class,bundle);
+//                Bundle bundle = new Bundle();
+//                bundle.putInt("uid",getUid());
+                startActivity(PasswordActivity.class);
                 break;
         }
     }

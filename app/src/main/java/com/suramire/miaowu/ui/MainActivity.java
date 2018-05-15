@@ -29,7 +29,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
- * Created by Suramire on 2017/10/16.
+ * 首页
  */
 
 public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View {
@@ -89,22 +89,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         notificationFragment.setListener(new NotificationFragment.onNotificationListener() {
             @Override
             public void onChange(int count) {
-                bottomNavigationBar.clearAll();
-                if(count>0){
-                    TextBadgeItem textBadgeItem = new TextBadgeItem().setText(count+"");
-                    bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_black_24dp, "主页"))
-                            .addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知").setBadgeItem(textBadgeItem))
-                            .addItem(new BottomNavigationItem(R.drawable.ic_person_black, "我的"))
-                            .setMode(BottomNavigationBar.MODE_FIXED)
-                            .initialise();
-                }else{
-                    bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_black_24dp, "主页"))
-                            .addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知"))
-                            .addItem(new BottomNavigationItem(R.drawable.ic_person_black, "我的"))
-                            .setMode(BottomNavigationBar.MODE_FIXED)
-                            .initialise();
-                }
-                bottomNavigationBar.selectTab(currentPosition);
+                setBottomBar(count);
             }
         });
         UserFragment userFragment2 = new UserFragment();
@@ -137,13 +122,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 return fragments.size();
             }
         });
-        bottomNavigationBar.clearAll();
-
-        bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_black_24dp, "主页"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_person_black, "我的"))
-                .setMode(BottomNavigationBar.MODE_FIXED)
-                .initialise();
+        setBottomBar(0);
         bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int i) {
@@ -250,21 +229,26 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @Override
     public void onGetNotificationCountSuccess(int count) {
+        setBottomBar(count);
+    }
+
+    /**
+     * 设置底部导航条
+     * @param count 未读通知数
+     */
+    private void setBottomBar(int count){
         bottomNavigationBar.clearAll();
+        BottomNavigationBar home = bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_black_24dp, "主页"));
+        BottomNavigationBar notification;
         if(count>0){
             TextBadgeItem textBadgeItem = new TextBadgeItem().setText(count+"");
-            bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_black_24dp, "主页"))
-                    .addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知").setBadgeItem(textBadgeItem))
-                    .addItem(new BottomNavigationItem(R.drawable.ic_person_black, "我的"))
-                    .setMode(BottomNavigationBar.MODE_FIXED)
-                    .initialise();
+            notification = home.addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知").setBadgeItem(textBadgeItem));
         }else{
-            bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_black_24dp, "主页"))
-                    .addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知"))
-                    .addItem(new BottomNavigationItem(R.drawable.ic_person_black, "我的"))
-                    .setMode(BottomNavigationBar.MODE_FIXED)
-                    .initialise();
+            notification = home.addItem(new BottomNavigationItem(R.drawable.ic_notifications_black_24dp, "通知"));
         }
+        notification.addItem(new BottomNavigationItem(R.drawable.ic_person_black, "我的"))
+                .setMode(BottomNavigationBar.MODE_FIXED)
+                .initialise();
         bottomNavigationBar.selectTab(currentPosition);
     }
 

@@ -113,7 +113,7 @@
                     android:inputType="none"
                     android:maxLines="1"
                     android:textSize="@dimen/textsize_content_small"
-                    tools:text="Alexandra" />
+                    tools:text="Hello" />
 
             </LinearLayout>
 
@@ -284,7 +284,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="点击修改"
+                    android:text="@string/clicktomodify"
                     android:textSize="@dimen/textsize_content_small" />
 
             </LinearLayout>

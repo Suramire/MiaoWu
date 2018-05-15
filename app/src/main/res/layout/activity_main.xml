@@ -25,6 +25,7 @@
         android:layout_gravity="bottom"
         android:background="@color/white"
         android:elevation="@dimen/toolbarElevation"
+        android:theme="@style/BottomBarStyle"
         android:minHeight="?attr/actionBarSize"/>
 
 

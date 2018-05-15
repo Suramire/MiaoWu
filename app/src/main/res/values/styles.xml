@@ -6,5 +6,10 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="BottomBarStyle" parent="AppTheme">
+        <item name="colorPrimary">@color/mainblue</item>
+        <item name="colorAccent">@color/mainblue</item>
+    </style>
+
 
 </resources>

@@ -2,8 +2,8 @@
 <resources>
     <!--tablayout高度-->
     <dimen name="tab_height">40dp</dimen>
-    <dimen name="margin_content">16dp</dimen>
-    <dimen name="textsize_content">18sp</dimen>
+    <dimen name="margin_content">14dp</dimen>
+    <dimen name="textsize_content">16sp</dimen>
     <dimen name="textsize_content_big">22sp</dimen>
     <dimen name="textsize_content_small">16sp</dimen>
 
